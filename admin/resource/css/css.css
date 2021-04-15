@@ -1,0 +1,65 @@
+/* CSS Document */
+body{
+	margin:0px;
+	font-family: Arial, sans-serif;
+	font-size:11px;
+}
+body *{
+	font-family:Arial, Tahoma, Geneva, sans-serif;
+	font-size:11px;
+}
+.bold{
+	font-weight:bold;
+	color:#15428B;
+}
+.form{
+	border:solid 1px #CCCCCC;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding: 2px;
+}
+.bg{
+	background:url(../images/grid3-hrow.gif) repeat-x scroll 0 0 transparent;
+	font-family:Arial, Tahoma, Verdana; font-size:11px;
+}
+.table{ border-collapse:collapse;}
+.table td{
+	font-family: Arial, Tahoma,Verdana;
+	font-size: 12px;
+}
+.textBold{
+	font-weight:bold;
+	color:#15428B;
+}
+
+#dhtmltooltip{
+	border-right: black 1px solid;
+	padding-right: 4px;
+	border-top: black 1px solid;
+	padding-left: 4px;
+	font-size: 10pt;
+	z-index: 100;
+	filter: alpha(opacity=99);
+	-moz-opacity: .99;
+	-khtml-opacity: .99;
+	opacity: .99;
+	left: -300px;
+	visibility: hidden;
+	padding-bottom: 4px;
+	border-left: black 1px solid;
+	padding-top: 4px;
+	border-bottom: black 1px solid;
+	font-family: Arial;
+	position: absolute;
+	background-color: lightyellow;
+}
+#dhtmlpointer{
+	z-index: 101;
+	left: -300px;
+	visibility: hidden;
+	position: absolute;
+}
+.bt_delete{ background:#FFFFFF; color:#FF0000; font-weight:bold;}
+.listItem{ float:left; margin:0px 5px;}
+.clear{ clear:both;}
+.land_more{ line-height:24px; width:300px; float:left;}

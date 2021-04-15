@@ -1,0 +1,7 @@
+{
+    "require": {
+        "robmorgan/phinx": "^0.12.1",
+        "odan/phinx-migrations-generator": "^5.0",
+      "ext-mysqli": "*"
+    }
+}

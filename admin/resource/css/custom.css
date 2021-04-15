@@ -1,0 +1,419 @@
+body{
+	min-height: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 22px;
+	position: relative;
+	background: url("../images/body.jpg") left top repeat;
+	display: block;
+}
+.blue {
+	color: #28C5FF;
+}
+.red {
+	color: #FF0400;
+}
+.bold {
+	font-weight: bold;
+}
+
+#adlogo {
+	display: inline-block;
+	font-size: 15px;
+	font-weight: bold;
+	color: #BCEEFF;
+}
+#body {
+	padding: 10px;
+}
+#body h2 {
+	font-size: 18px;
+	margin: 0 !important;
+	text-shadow: 0 1px 0 #fff;
+}
+#body ul li {
+	list-style: none;
+	line-height: 23px;
+}
+#body ul li span {
+	text-shadow: 0 1px 0 #fff;
+}
+
+.header{
+	color:#FFFFFF;
+	font-weight:bold;
+	padding: 0px 5px;
+	height: 40px;
+	line-height: 40px;
+	background: url(../images/header.jpg) left top repeat-x;
+}
+.header a{
+	color: #FFFFFF;
+	font-family: arial;
+	text-decoration: none;
+}
+
+.left_title{
+	height: 24px;
+	border-bottom: 1px solid #CCC;
+	background: url(../images/nav.jpg) left top repeat-x;
+	margin: 0;
+	padding: 0px;
+	padding-left: 10px;
+	line-height: 24px;
+}
+.left_title span{
+	color: #a5302c;
+}
+.relo{
+	float:left;
+	width:14px;
+	height:14px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.reload_hide{
+	display:none;
+}
+
+.ui-tabs-selected .reload_hide{
+	display: block;
+	padding-right: 2px;
+	margin-top: 4px;
+	font-weight: bold;
+}
+
+.raquo{
+	color: #051BDA;
+	padding: 2px !important;
+}
+
+
+#today-job h3 {
+	color: #175D9B;
+	font-size: 18px;
+}
+#today-job img {
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 5px;
+}
+#today-job p{
+	margin: 3px 0px;
+	text-align: center;
+}
+#today-job p a {
+	color: #0008FF;
+	text-decoration: none;
+	position: relative;
+}
+.wifull{
+	float: left;
+	width: 100%;
+	margin-bottom: 15px;
+}
+.break{
+	padding: 0 3px;
+}
+.titledayly{
+	display: none;
+}
+.tbl_statistic td{
+	padding: 5px;
+}
+.tbl_statistic *, .tbl_statistic_normal *{
+	font-size: 12px;
+}
+.tbl_statistic th{
+	background-color: #D6E5F8;
+	border: 1px #1C396F solid;
+	color: #15428B;
+}
+.tbl_statistic p{
+	margin: 2px 0px;
+}
+.tbl_statistic .type{
+	text-align: center;
+	font-weight: bold;
+}
+.tbl_statistic .amount{
+	text-align: right;
+	color: #0008FF;
+}
+.tbl_statistic .last{
+	text-align: right;
+	border-right: 1px #1C396F solid;
+	color: #0008FF;
+}
+.tbl_statistic .number{
+	color: #0008FF;
+	margin-right: 2px;
+}
+.tbl_statistic tr td:first-child{
+	border-left: 1px #1C396F solid;
+}
+.tbl_statistic tr td:last-child{
+	border-right: 1px #1C396F solid;
+}
+.tbl_statistic tr:last-child td{
+	border-bottom: 1px #1C396F solid;
+}
+.tbl_statistic .total{
+	color: #FF0000;
+}
+.tbl_statistic .trevent{
+	background-color: #F2F2F2;
+}
+.table .trevent{
+	background-color: #F6F6F6;
+}
+.tbl_statistic .money{
+	color: #FF0000;
+}
+.tbl_statistic .d{
+	color: #000000;
+	font-weight: normal;
+}
+.tbl_statistic .g{
+	border-right: 1px #1C396F solid;
+	border-bottom: 1px #1C396F solid;
+	font-weight: bold;
+	color: #0008FF;
+	text-align: center;
+}
+
+.table_menu{
+	margin-bottom: 0px;
+}
+.table_menu > tbody+tbody{
+	border-top: 1px solid #dddddd;
+}
+.table_menu tbody tr td, .table_menu tr td{
+	border: none;
+	vertical-align: middle;
+	padding: 5px 3px;
+}
+table.table p{
+	margin: 5px 0px;
+}
+.tbl_statistic .th{
+	font-weight: bold;
+	text-align: center;
+	color: #15428B;
+	background: url("../images/grid/fhbg.gif") repeat scroll 0 0 transparent;
+}
+.tbl_statistic .a{
+	color: #15428B;
+}
+.tbl_statistic a{
+	text-decoration: none;
+}
+
+.tbl_statistic_normal td, .tbl_statistic_normal th{
+	padding: 5px;
+}
+
+
+.ulsearchloc li{
+	margin-bottom: 8px;
+}
+.ac_results .ac_rc{
+	width: 200px;
+}
+.colormoney{
+	color: #2D81FB !important;
+}
+.tbladd{
+	padding-top: 5px;
+	border-top: 1px solid #ccc;
+	margin-top: 5px;
+}
+.posrel{
+	position: relative;
+}
+.note_status{
+	background: #FFF;
+	border: 1px solid #AAAAAA;
+	left: -165px;
+	padding: 5px;
+	position: absolute;
+	top: 0;
+	width: 150px;
+	display: none;
+}
+p.note, p.ended, p.order{
+	padding: 3px;
+	font-weight: normal;
+	color: #000;
+}
+
+.table tr.note, p.note{
+	background-color: #FFFF82!important;
+}
+.table tr.ended, p.ended{
+	background-color: #FFCECE!important;
+}
+.table tr.order, p.order{
+	background-color: #CEFFFF;
+}
+.table tr.different{
+	background-color: #FFCE9D;
+}
+.table tr.trhover:hover{
+	background-color: #F4FFFF;
+}
+.table th.month_other b{
+	color: #ff0000;
+}
+
+.table .price{
+	color: #FF0000;
+}
+
+.range{
+	width: 80px;
+	text-align: right;
+}
+.item_staff{
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.line_price{
+	margin: 0 0 4px;
+}
+
+#LeftPane {
+	/* optional, initial splitbar position */
+	overflow: auto;
+	float:left;
+	font-family: Arial,Helvetica,sans-serif;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	font-size: 12px;
+	width: 200px;
+}
+#LeftPane #test-list{
+	padding: 0;
+	margin: 0;
+}
+#LeftPane #test-list a{
+	color: #333;
+	text-decoration: none;
+}
+.abcde{
+	background: url(../images/header.jpg) left top repeat-x;
+	padding: 9px 10px 10px;
+	color: #FFFFFF;
+	font-weight: bold;
+	border-top: 1px solid #ccc;
+}
+#LeftPane #test-list li{
+	list-style: none;
+}
+#RightPane {
+	height:auto;
+	padding: 0px;
+	overflow: auto;
+	margin-left: 205px;
+}
+#title_tabs{
+	height: 24px;
+	border-bottom: 1px solid #CCC;
+	background: url(../images/nav.jpg) left top repeat-x;
+	margin: 0;
+	padding: 0px;
+ }
+#title_tabs li{
+	background: #dddddd;
+	border: 1px solid #97AEAF;
+	border-radius: 3px 3px 0 0;
+	float: left;
+	height: 22px;
+	line-height: 22px;
+	list-style: none outside none;
+	margin: 0 1px 1px;
+	padding: 0 6px;
+	position: relative;
+	top: 2px;
+	white-space: nowrap;
+	font-weight: bold;
+}
+#title_tabs li .glyphicon-refresh{
+	display: none;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 10px;
+	color: #bba509;
+}
+#title_tabs li .glyphicon-remove{
+	cursor: pointer;
+	font-size: 10px;
+	color: #666;
+}
+#title_tabs li a{
+	color: #555555;
+	font-weight: bold;
+	text-decoration: none;
+	display: inline-block;
+}
+#title_tabs li.active{
+	background: #FFFFFF;
+}
+#title_tabs li.active .glyphicon-remove{
+	color: #da2c03;
+}
+#title_tabs li.active .glyphicon-refresh{
+	display: inline-block;
+}
+
+.breadLine {
+	height: 28px;
+	border-bottom: 1px solid #CCC;
+	background: #ededed;
+	border-bottom: 1px solid #CCC;
+}
+.clear{
+	clear: both;
+}
+.adminControl {
+	padding: 4px 10px 0px;
+	font-size: 11px;
+	color: #333;
+	cursor: pointer;
+	text-shadow: 0 1px 0 #FFFFFF;
+}
+.admin {
+	padding: 10px 5px;
+}
+.admin .avatar {
+	background: #FFFFFF;
+	width: 60px;
+	margin-right: 8px;
+	height: 60px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 4px;
+	float: left;
+}
+.admin .avatar .image{
+	background: url("../images/avatar_admin.jpg") left top repeat-x;
+	background-size: 100%;
+	width: 50px;
+	height: 50px;
+	display: block;
+}
+.admin ul.control, .headInfo ul.control {
+	display: block;
+	float: left;
+	width: 105px;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+.admin ul.control li a{
+	font-size: 11px;
+	color: #333;
+	text-shadow: 0 1px 0 #FFFFFF;
+}

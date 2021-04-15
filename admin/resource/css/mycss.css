@@ -1,0 +1,189 @@
+.bg {
+    background-color: #F7F7F9;
+}
+
+.avatar-img {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    margin: 1px auto;
+}
+
+.avatar-img img {
+    width: 100%;
+    height: auto;
+}
+
+.table-container {
+    width: 99.5%;
+    /* height: 427px; */
+    height: 74.5%;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.table-container2 {
+    width: 99.4%;
+    height: 64.5%;
+    position: absolute;
+    overflow-y: auto;
+}
+
+.table-sticky {
+    position: relative;
+}
+
+table.table-sticky tr.stick td {
+    position: sticky;
+    top: -1px;
+}
+
+#finish-alert,
+#start-alert {
+    border: 1px solid grey;
+    border-radius: 6px;
+    background-color: white;
+    padding: 13px 10px;
+    position: absolute;
+    box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.3);
+    left: 480px;
+    margin-top: 102px;
+    z-index: 1000;
+    font-size: 13px;
+    transition: opacity 0.5s;
+}
+
+#start-alert {
+    left: 110px;
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    position: relative;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid grey;
+    top: -40px;
+    left: -180px
+}
+
+.arrow-up::before {
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 9px solid white;
+    top: 15px;
+    left: -6px;
+}
+
+#finish-remove,
+#start-remove {
+    margin-left: -10px;
+    cursor: pointer;
+}
+
+#error {
+    border: 1px solid red;
+    width: 200px;
+    height: 150px;
+    position: relative;
+}
+
+.no-data {
+    /* width: 300px; */
+    width: 100%;
+    height:250px;
+    position: absolute;
+    top: 230px;
+    left: 0;
+    overflow: hidden;
+}
+
+.no-data img {
+    width: 90px;
+    height: auto;
+    display: block;
+    margin: 40px auto;
+}
+
+.no-data p {
+    color: grey;
+    font-size: 18px;
+    font-weight: bold;
+    text-align:center;
+    margin-top: -10px;
+}
+
+.profile-change tr td{
+    font-family: 'Roboto';
+    font-size: 12px;
+}
+
+.profile-form tr td {
+    padding: 5px 15px 5px 15px;
+}
+
+.form {
+    outline: none;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 99.4%;
+}
+
+.table-color1 td {
+    background-color: white;
+}
+
+.table-color2 tr:nth-child(1n+2) td {
+    background-color: white;
+}
+
+#loading {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    position: absolute;
+    right: 135px;
+    bottom: 14px;
+    display: none;
+}
+
+#loading .loader {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid silver;
+    width: 25px;
+    height: 25px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+
+#excel-button {
+    width: 110px;
+    height: auto;
+    float: right;
+    position: relative;
+}
+
+#excel-button #blur {
+    background-color: rgba(255,255,255,0.5);
+    position: absolute;
+    width: 110px;
+    height: 35px;
+    top: 0;
+    left: 0;
+    display: none;  
+}
+

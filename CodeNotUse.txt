@@ -1,0 +1,88 @@
+Please read the note below each code!!!
+
+--------------- This code use for searching by checkin_time---------------------------------------------
+	**Note: This code has finished for seaching checkout time by checkin_time but checkin time by checkin_time!
+ 		So it needs to finish searching checkin time by checkin time! 
+		The end of this code has query for searching checkin time and checkout time! Check it if you need!
+
+if(isset($checkin_time) && $checkin_time != "" && strpos($checkin_time, ":")){
+    $time = explode(":", $checkin_time);
+    $db_temp;
+    if($time[1] == 0){
+        $sqlQuery_checkin = "SELECT * FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                "GROUP BY DATE(member_checkin.checkin_time), member_id )temp
+                                WHERE HOUR(checkin_time) = ".$time[0];
+        $db_temp = new db_query("SELECT member_id, Day(checkin_time) as day 
+                                FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                " GROUP BY DATE(member_checkin.checkin_time), member_id)temp
+                                WHERE HOUR(checkin_time) = ".$time[0]);
+    }
+    else{
+        $sqlQuery_checkin = "SELECT * FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.")temp 
+                            WHERE HOUR(checkin_time) = ".$time[0]. 
+                            " AND MINUTE(checkin_time) = ".$time[1];
+        $db_temp = new db_query("SELECT member_id, Day(checkin_time) as day 
+                                FROM (".$sqlQuery_checkin_select  .$sqlQuery_checkin_where  .$sqlWhere.
+                                " GROUP BY DATE(member_checkin.checkin_time), member_id)temp
+                                WHERE HOUR(checkin_time) = ".$time[0]. " AND MINUTE(checkin_time) = ".$time[1]);
+    }
+    
+    $db_member_id = ""; 
+    $db_day = "";
+    $i = 0;
+    while($listing = mysqli_fetch_assoc($db_temp->result)){
+        if($db_member_id != "" && $db_day != ""){
+            $db_member_id .= ",".$listing["member_id"];
+            $db_day       .= ",".$listing["day"];
+        }else{
+            $db_member_id .= $listing["member_id"];
+            $db_day       .= $listing["day"];
+        }
+    }
+
+    if($db_member_id == "" || $db_day == ""){
+        $sqlQuery_checkout = "";
+        $NoData = "Dữ liệu không tồn tại!";
+    }
+    else{
+        $sqlQuery_checkout = $sqlQuery_checkout_select 
+    ."WHERE members.id IN (".$db_member_id.")
+        AND member_checkin.id IN (SELECT MAX(member_checkin.id) 
+                                    FROM member_checkin, members
+                                    WHERE MONTH(member_checkin.checkin_time)= 7 
+                                        AND YEAR(member_checkin.checkin_time) = 2020
+                                        AND members.active = 1 AND member_checkin.active = 1
+                                        AND DAY(member_checkin.checkin_time) IN (".$db_day.")
+                                        AND member_checkin.member_id IN (".$db_member_id.")
+                                    GROUP BY DATE(checkin_time), member_id)" .$sqlQuery_checkout_limit;
+    }                             
+}
+
+Query Example:
+	//Search checkin time by checkin_time! Not ready yet!
+	SELECT * 
+	FROM ( 
+		SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time 
+		FROM member_checkin, members 
+		WHERE MONTH(member_checkin.checkin_time)= 7 
+				AND YEAR(member_checkin.checkin_time) = 2020 
+				AND member_checkin.member_id = members.id 
+				AND members.active = 1 
+				AND member_checkin.active = 1 )temp 
+	WHERE HOUR(checkin_time) = 09 AND MINUTE(checkin_time) = 20
+
+	
+	//Search checckout time by checkin_time! READY!
+	SELECT * 
+	FROM ( 
+		SELECT member_checkin.id,member_id, members.name, members.avatar, member_checkin.image, member_checkin.checkin_time 
+		FROM member_checkin, members 
+		WHERE MONTH(member_checkin.checkin_time)= 7 
+			AND YEAR(member_checkin.checkin_time) = 2020 
+			AND member_checkin.member_id = members.id 
+			AND members.active = 1 AND member_checkin.active = 1 
+		GROUP BY DATE(member_checkin.checkin_time), member_id 
+		) temp
+	WHERE HOUR(checkin_time) = 17
+
+======================================================================================================================

@@ -1,0 +1,160 @@
+<!--
+ * FCKeditor - The text editor for internet
+ * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * 
+ * Licensed under the terms of the GNU Lesser General Public License:
+ * 		http://www.opensource.org/licenses/lgpl-license.php
+ * 
+ * For further information visit:
+ * 		http://www.fckeditor.net/
+ * 
+ * "Support Open Source software. What about a donation today?"
+ * 
+ * File Name: frmupload.html
+ * 	Page used to upload new files in the current folder.
+ * 
+ * File Authors:
+ * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<link href="browser.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript" src="js/common.js"></script>
+		<script language="javascript">
+
+function SetCurrentFolder( resourceType, folderPath )
+{
+	var sUrl = oConnector.ConnectorUrl +'Command=FileUpload' ;
+	sUrl += '&Type=' + resourceType ;
+	sUrl += '&CurrentFolder=' + folderPath ;
+	
+	document.getElementById('frmUpload').action = sUrl ;
+}
+
+function OnSubmit()
+{
+	if ( document.getElementById('NewFile').value.length == 0 )
+	{
+		alert( 'Please select a file from your computer' ) ;
+		return false ;
+	}
+
+	// Set the interface elements.
+	document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder (Upload in progress, please wait...)' ;
+	document.getElementById('btnUpload').disabled = true ;
+	
+	return true ;
+}
+
+function OnUploadCompleted( errorNumber, data )
+{
+	// Reset the Upload Worker Frame.
+	window.parent.frames['frmUploadWorker'].location = '../../../fckblank.html' ;
+	
+	// Reset the upload form (On IE we must do a little trick to avout problems).
+	if ( document.all ){
+		document.getElementById('NewFile').outerHTML = '<input id="NewFile" name="NewFile" style="WIDTH: 95%" type="file">' ;
+		for(i=2; i<=15; i++){
+			document.getElementById('NewFile_' + i).outerHTML = '<input id="NewFile_' + i + '" name="NewFile_' + i + '" style="WIDTH: 95%" type="file">' ;
+		}
+	}
+	else
+		document.getElementById('frmUpload').reset() ;
+	
+	// Reset the interface elements.
+	document.getElementById('eUploadMessage').innerHTML = 'Upload a new file in this folder' ;
+	document.getElementById('btnUpload').disabled = false ;
+	
+	switch ( errorNumber )
+	{
+		case 0 :
+			window.parent.frames['frmResourcesList'].Refresh() ;
+			break ;
+		case 1 :	// Custom error.
+			window.parent.frames['frmResourcesList'].Refresh() ;
+			alert( data ) ;
+			break ;
+		case 201 :
+			window.parent.frames['frmResourcesList'].Refresh() ;
+			alert( 'A file with the same name is already available. The uploaded file has been renamed to "' + data + '"' ) ;
+			break ;
+		case 202 :
+			window.parent.frames['frmResourcesList'].Refresh() ;
+			alert( 'Invalid file' ) ;
+			break ;
+		default :
+			window.parent.frames['frmResourcesList'].Refresh() ;
+			alert( 'Error on file upload. Error number: ' + errorNumber ) ;
+			break ;
+	}
+}
+
+window.onload = function()
+{
+	window.top.IsLoadedUpload = true ;
+}
+		</script>
+	</head>
+	<body bottomMargin="0" topMargin="0">
+		<form id="frmUpload" action="" target="frmUploadWorker" method="post" enctype="multipart/form-data" onSubmit="return OnSubmit();">
+			<table height="100%" cellSpacing="0" cellPadding="0" width="100%" border="0">
+				<tr>
+					<td nowrap>
+						<span id="eUploadMessage">Upload a new file in this folder</span><br>
+						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+							<tr>
+								<td width="100%" nowrap="nowrap">1. <input id="NewFile" name="NewFile" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">2. <input id="NewFile_2" name="NewFile_2" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">3. <input id="NewFile_3" name="NewFile_3" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">4. <input id="NewFile_4" name="NewFile_4" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">5. <input id="NewFile_5" name="NewFile_5" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">6. <input id="NewFile_6" name="NewFile_6" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">7. <input id="NewFile_7" name="NewFile_7" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">8. <input id="NewFile_8" name="NewFile_8" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">9. <input id="NewFile_9" name="NewFile_9" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">10. <input id="NewFile_10" name="NewFile_10" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">11. <input id="NewFile_11" name="NewFile_11" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">12. <input id="NewFile_12" name="NewFile_12" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">13. <input id="NewFile_13" name="NewFile_13" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">14. <input id="NewFile_14" name="NewFile_14" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td width="100%" nowrap="nowrap">15. <input id="NewFile_15" name="NewFile_15" style="WIDTH: 95%" type="file"></td>
+							</tr>
+							<tr>
+								<td nowrap><input id="btnUpload" type="submit" value="Upload"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
