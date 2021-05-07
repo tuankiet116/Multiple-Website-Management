@@ -1,0 +1,680 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background-color: #e5f6f5 !important;
+}
+
+
+/********** HEAD **********/
+
+/***** Menu *****/
+
+#menu {
+    width: 100%;
+    height: 75px;
+    background-color: #33beb3;
+    position: fixed;
+    z-index: 30;
+    box-shadow: 5px 5px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+#menu #menu-container {
+    width: 80%;
+    height: 100%;
+    margin: 2px auto;
+    position: relative;
+}
+
+#menu .bars-icon {
+    font-size: 25px;
+    color: white;
+    display: none;
+    position: absolute;
+    right: 5%;
+    top: 28px;
+    z-index: 30;
+}
+
+#menu .close-navbar {
+    width: 100%;
+    height: 1000px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    display: none;
+}
+
+#menu #menu-container ul#navbar {
+    position: absolute;
+    right: 0;
+    font-family: 'Roboto',sans-serif;
+    top: 20px;
+    z-index: 30;
+}
+
+#menu #menu-container ul#navbar li{
+    list-style-type : none;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    /* border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 50px;
+    transition: .3s; */
+    padding: 6px 3px 6px 3px;
+}
+
+/* #menu #menu-container ul#navbar li:hover{
+    border: 2px solid white;
+    border-radius: 50px;
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li:hover div.sub-content {
+    display: block;
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li:hover div.sub-content div.sub-navbar {
+    display: block;
+    transition: .3s;
+    animation-name: sub_navbar;
+    animation-duration: 1s;
+} */
+
+#menu #menu-container ul#navbar li a{
+    text-decoration: none;
+    color: white;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 50px;
+    padding: 5px 10px 5px 10px;
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li a:hover{
+    border: 2px solid white;
+    border-radius: 50px;
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li a.hover-navbar:hover + div.sub-content {
+    display: block;
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li a.hover-navbar:hover + div.sub-content div.sub-navbar {
+    display: block;
+    transition: .3s;
+    animation-name: sub_navbar;
+    animation-duration: 1s;
+}
+
+#menu #menu-container ul#navbar li div.sub-content:hover {
+    display: block;
+}
+
+#menu #menu-container ul#navbar li div.sub-content:hover div.sub-navbar{
+    display: block;
+    transition: .3s;
+    animation-name: sub_navbar;
+    animation-duration: 1s;
+}
+
+#menu #menu-container ul#navbar li a i{
+    color: white;
+    padding-right: 0;
+}
+
+#menu #menu-container ul#navbar li div.sub-content {
+    width: 250px;
+    height: 100px;
+    position: relative;
+    display: none;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar {
+    position: absolute;
+    top: 20px;
+    border-radius: 10px;
+    border: 1px solid rgb(240, 240, 240);
+    overflow: hidden;
+    box-shadow: 5px 5px 8px 2px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table{
+    border-collapse: collapse;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table tr:first-child td,
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table tr:last-child td {
+    border: none;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table tr td{
+    border-top: 1px solid rgb(240, 240, 240);
+    border-bottom: 1px solid rgb(240, 240, 240);
+    background-color: white;
+    overflow: hidden;
+    padding: 15px 20px 15px 15px;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table tr td a{
+    font-size: 13px;
+    color: rgb(90, 90, 90);
+    transition: .3s;
+}
+
+#menu #menu-container ul#navbar li div.sub-content div.sub-navbar table tr td a:hover{
+    color: #33beb3;
+    transition: .3s;
+}
+
+/***** Sub menu *****/
+
+#submenu-container {
+    position: relative;
+    top: -4px;
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    display: none;
+    z-index: 29;
+    padding-bottom: 0px;
+    display: none;
+    border: 1px solid rgb(240, 240, 240);
+    box-shadow: 5px 5px 6px 2px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+}
+
+#submenu-container div.submenu-content{
+    width: 100%;
+    height: auto;
+}
+
+#submenu-container div.submenu-content a div{
+    color: rgb(120, 120, 120);
+    width: 100%;
+    height: auto;
+    padding: 15px 0 15px 30px;
+    background-color: white;
+    font-weight: bold;
+    font-family: 'Roboto',sans-serif;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 1px solid rgb(240, 240, 240);
+    transition: .3s;
+}
+
+#submenu-container div.submenu-content a div i{
+    color: #33beb3;
+    width: 25px;
+}
+
+#submenu-container div.submenu-content a div:hover{
+    background-color: rgb(240, 240, 240);
+    transition: .3s;
+}
+
+#submenu-container div.submenu-content .sub-link {
+    display: none;
+}
+
+#submenu-container div.submenu-content .sub-link a div {
+    width: 100%;
+    height: auto;
+    padding: 15px 0 15px 60px;
+    color: white;
+    background-color: #fb7f7f;
+    border-top: 1px solid rgb(240, 240, 240);
+    border-bottom: none;
+}
+
+#submenu-container div.submenu-content .sub-link a:first-child div {
+    border-top: none;
+}
+
+/* #submenu-container div.submenu-content .sub-link div:first-child {
+    border-top: none;
+} */
+
+#submenu-container div.submenu-content a{
+    color: white;
+    font-weight: bold;
+    font-family: 'Roboto',sans-serif;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/* #submenu-container div.submenu-content:last-child a div{
+    border: none;
+} */
+
+#submenu-container ul#sub-navbar {
+    width: 100%;
+    list-style-type: none;
+    box-shadow: 5px 5px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+#submenu-container ul#sub-navbar li{
+    text-align: left;
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 0;
+    height: 55px;
+    background-color: white;
+}
+
+/* #submenu-container ul#sub-navbar li div.main-navbar{
+    width: 100%;
+    height: auto;
+    background-color: red;
+    position: relative;
+} */
+
+#submenu-container ul#sub-navbar li a{
+    position: absolute;
+    color: rgb(120, 120, 120);
+    width: 100%;
+    height: 55px;
+    padding-top: 16.5px;
+    padding-left: 30px;
+    background-color: white;
+    border: 1px solid rgb(240, 240, 240);
+    border-top: 1px solid rgba(0, 0, 0, 0);
+    font-weight: bold;
+    font-family: 'Roboto',sans-serif;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+#submenu-container ul#sub-navbar li a:hover{
+    background-color:rgb(240, 240, 240);
+    transition: .3s;
+}
+
+#submenu-container ul#sub-navbar li a i{
+    padding-right: 20px;
+    width: 30px;
+    color: #33beb3;
+}
+
+#submenu-container ul#sub-navbar li div.dropdown-navbar{
+    border: 1px solid red;
+    width: 100%;
+    height: 150px;
+    margin-top: 55px;
+}
+
+#submenu-container ul#sub-navbar li div.dropdown-navbar .dropdown-container {
+    width: 100%;
+    list-style-type: none;
+}
+
+#submenu-container ul#sub-navbar li div.dropdown-navbar .dropdown-container li {
+    text-align: left;
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 0;
+    height: auto;
+    background-color: white;
+}
+
+/* #submenu-container ul#sub-navbar li div.dropdown-navbar .dropdown-content li:nth-child(n+2) {
+    margin-top: 
+} */
+
+#submenu-container ul#sub-navbar li div.dropdown-navbar .dropdown-content li a.dropdown-content{
+    padding: 5px;
+}
+
+
+/********** Responsive navbar **********/
+
+@media screen and (max-width: 1170px) {
+
+    #menu #menu-container ul#navbar{
+        right: 0;
+        top: 75px;
+        width: 100%;
+        display: none;
+        overflow: hidden;
+        box-shadow: 5px 5px 8px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    #menu .bars-icon {
+        display: block;
+    } 
+}
+
+
+
+/********** CONTENT **********/
+
+.main-container {
+    margin-top: 100px;
+    padding-bottom: 80px;
+}
+
+.main-container .service-title {
+    margin: 5px auto;
+    color: #fb7f7f;
+    font-family: 'Dancing Script', cursive;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    padding-top: 100px;
+    padding-bottom: 10px;
+}
+
+.main-container .cleaning-title {
+    margin: 5px auto;
+    margin-bottom: 40px;
+    color: #1b685f;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-container .service-container {
+    border-radius: 12px;
+    height: 300px;
+    width: 100%;
+    margin-top: 40px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.main-container .service-container a{
+    text-decoration: none;
+}
+
+.main-container .service-container .service-card {
+    width: 100%;
+    height: 200px;
+    cursor: pointer;
+    position: relative;
+}
+
+.main-container .service-container .service-card div.service-front,
+.main-container .service-container .service-card div.service-back {
+    height: 200px;
+    width: 100%;
+    backface-visibility: hidden;
+    transition: transform .4s linear;
+    overflow: hidden;
+}
+
+.main-container .service-container div.service-front img{
+    width: 100%;
+    height: 200px;
+}
+
+.main-container .service-container div.service-front {
+    transform: perspective(600px) rotateY(0deg);
+}
+
+.main-container .service-container div.service-back {
+    position: absolute;
+    background-image: url(../Images/cleaning-bg2.jpg);
+    background-size: cover;
+    background-position: center center;
+    top: 0;
+    left: 0;
+    transform: perspective(600px) rotateY(180deg);
+}
+
+.main-container .service-container div.service-back div{
+    color: white;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 60px 30px 0 30px;
+}
+
+.main-container .service-container .service-card:hover > .service-front {
+    transform: perspective(600px) rotateY(-180deg);
+}
+
+.main-container .service-container .service-card:hover > .service-back {
+    transform: perspective(600px) rotateY(0deg);
+}
+
+.main-container .service-container div.service-name {
+    height: 100px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: #1b685f;
+    text-align: center;
+    text-transform: capitalize;
+    padding-top: 35px;
+}
+
+
+
+/********** SERVICE **********/
+
+.service {
+    margin-top: 120px;
+}
+
+.breadcrumbs {
+    list-style-type: none;
+    padding: 10px 20px;
+    background-color: #33beb3;
+    width: 100%;
+    border-radius: 6px;
+}
+
+.breadcrumbs .separator{
+    padding: 0 5px;
+}
+
+.breadcrumbs li {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    display: inline-block;
+}
+
+.breadcrumbs li a{
+    color: white;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.breadcrumbs li a:hover{
+    color: #ff938f;
+    transition: .3s;
+}
+
+.service-container {
+    background-color: white;
+    height: 600px;
+    margin-top: 20px;
+}
+
+
+
+
+
+
+/********** CONTACT **********/
+
+#contact {
+    position: fixed;
+    bottom: 50px;
+    right: 30px;
+    cursor: pointer;
+    border: 3px solid #fb7f7f;
+    border-radius: 30px;
+    background-color: white;
+    overflow: hidden;
+    transition: .5s;
+    z-index: 10;
+}
+
+#contact:hover > #number,
+#contact #phone:hover > #number {
+    padding: 14px 10px;
+    width: auto;
+    transition: .5s;
+}
+
+#contact #phone {
+    background-color: #ff938f;
+    border-radius: 50%;
+    animation: ring 3s .7s ease-in-out infinite;
+    display: inline-block;
+    z-index: 10;
+    cursor: pointer;
+    transition: .5s;
+}
+
+#contact #phone i{
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#contact #number{
+    background-color: white;
+    float: right;
+    position: relative;
+    padding: 14px 0;
+    top: -1px;
+    color: #ff938f;
+    font-size: 15px;
+    font-weight: bold;
+    z-index: -1;
+    cursor: pointer;
+    width: 0;
+    transition: .5s;
+}
+
+
+
+/********** FOOTER **********/
+
+#footer {
+    width: 100%;
+    height: auto;
+    padding-bottom: 80px;
+    background-color: #1e3633;
+}
+
+#footer div.footer-container {
+    height: 200px;
+    padding-top: 30px;
+}
+
+#footer div.footer-container div {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+#footer div.footer-container table tr td{
+    color: #bcc0bf;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    padding-top: 10px;
+}
+
+#footer div.footer-container table tr td:nth-child(2){
+    padding-left: 10px;
+}
+
+
+
+/********** Animation **********/
+
+@keyframes sub_navbar {
+    0%   {top: 0; opacity: 0;}
+    50%  {top: 26px; opacity: 0.9;}
+    100% {top: 20px; opacity: 1;}
+}
+
+@keyframes ring {
+    0%   {transform: rotate(0);}
+    5%   {transform: rotate(-20deg);}
+    10%   {transform: rotate(18deg);}
+    15%   {transform: rotate(-24deg);}
+    20%   {transform: rotate(22deg);}
+    25%   {transform: rotate(-20deg);}
+    30%   {transform: rotate(18deg);}
+    35%   {transform: rotate(-16deg);}
+    40%   {transform: rotate(14deg);}
+    45%   {transform: rotate(-12deg);}
+    50%   {transform: rotate(10deg);}
+    55%   {transform: rotate(-9deg);}
+    60%   {transform: rotate(6deg);}
+    65%   {transform: rotate(-5deg);}
+    70%   {transform: rotate(2deg);}
+    75%   {transform: rotate(-1deg);}
+    80%   {transform: rotate(-2deg);}
+    85%   {transform: rotate(3deg);}
+    90%   {transform: rotate(-6deg);}
+    95%   {transform: rotate(7deg);}
+    100%  {transform: rotate(-10deg);}
+}
+
+
+@media screen and (max-width: 768px) {
+
+    .main-container .cleaning-title {
+        font-size: 35px;
+    }
+
+    .main-container .service-container {
+        height: 450px;
+    }
+
+    .main-container .service-container .service-card {
+        height: 300px;
+    }
+
+    .main-container .service-container .service-card div.service-front,
+    .main-container .service-container .service-card div.service-back {
+        height: 300px;
+    }
+
+    .main-container .service-container div.service-front img{
+        width: 100%;
+        height: 300px;
+    }
+
+    .main-container .service-container div.service-back div{
+        font-size: 18px;
+        padding: 120px 30px 0 30px;
+    }
+
+    .main-container .service-container div.service-name {
+        height: 150px;
+        padding-top: 60px;
+    }
+}
+
+@media screen and (max-width: 553px) {
+    .main-container .cleaning-title {
+        font-size: 30px;
+    }
+}
