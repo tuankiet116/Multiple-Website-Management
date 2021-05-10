@@ -9,10 +9,13 @@ header('Content-Type: application/json');
 // include database and object files
 include_once '../objects/website_config.php';
 include_once '../config/database.php';
-  
+
+//prepare database connection
+$database = new ConfigAPI();
+$db = $database->getConnection();
+
 // prepare website object
-$databse = new ConfigAPI();
-$webconfig = new Website_Config($databse);
+$webconfig = new Website_Config($db);
   
 // set Term property of record to read
 $webconfig->term = isset($_GET['term']) ? $_GET['term'] : die();
