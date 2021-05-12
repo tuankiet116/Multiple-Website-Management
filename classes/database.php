@@ -22,7 +22,6 @@ class db_init
 	var $slave_server;
 	var $slave_username;
 	var $slave_password;
-	
 	/**
 	 * File error mà lớn hơn 3k (~ 120 kết nối lỗi) -> loại khỏi node
 	 */

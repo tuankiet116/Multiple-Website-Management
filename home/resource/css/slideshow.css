@@ -27,7 +27,7 @@ svg {
       -ms-user-select: none;
           user-select: none;
   overflow: hidden;
-  top: 100px;
+  top: 25px;
 }
 
 .slider-control {

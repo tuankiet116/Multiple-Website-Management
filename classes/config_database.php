@@ -1,6 +1,6 @@
 <?php
 define("DATABASE_HOST", "localhost");
-define("DATABASE_NAME", "face_id");
+define("DATABASE_NAME", "web_cleaning_introduces");
 define("DATABASE_USERNAME", "root");
 define("DATABASE_PASSWORD", "");
 
