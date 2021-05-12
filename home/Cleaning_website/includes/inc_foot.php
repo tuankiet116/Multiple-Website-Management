@@ -7,4 +7,4 @@
 <!-- Fontawesome -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <!-- JS -->
-<script src="../resource/js/script.js"></script>
+<script src="../Cleaning_website/resource/js/script.js"></script>
