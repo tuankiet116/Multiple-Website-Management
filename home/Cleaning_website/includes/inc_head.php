@@ -8,5 +8,5 @@
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Dancing+Script" />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="../home/resource/css/style.css">
-<link rel="stylesheet" href="../home/resource/css/slideshow.css">
+<link rel="stylesheet" href="../Cleaning_website/resource/css/style.css">
+<link rel="stylesheet" href="../Cleaning_website/resource/css/slideshow.css">
