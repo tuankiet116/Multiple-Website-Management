@@ -3,13 +3,13 @@
 
 <head>
     <title> Dịch vụ vệ sinh - CleanHouse </title>
-    <? include("../includes/inc_head.php") ?>
+    <? include("./includes/inc_head.php"); ?>
 </head>
 
 <body>
     <!--------------- HEADER --------------->
 
-    <? include("../includes/inc_header.php"); ?>
+    <? include("./includes/inc_header.php"); ?>
 
     <!--------------- CONTENT --------------->
 
@@ -283,9 +283,9 @@
 
     <!--------------- FOOT --------------->
 
-    <? include("../includes/inc_foot.php"); ?>
+    <? include("./includes/inc_foot.php"); ?>
 
-    <? include("../includes/inc_footer.php") ?>
+    <? include("./includes/inc_footer.php") ?>
 
 </body>
 
