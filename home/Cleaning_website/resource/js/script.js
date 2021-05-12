@@ -157,11 +157,24 @@ $(document).ready(function () {
     }
   });
 
-  $("#submenu_1").click(function () {
-    $("#submenu_1 .sub-link").slideToggle("slow");
-  });
+  $('.submenu-content').click(function(){
+    $(this).children('.sub-link').slideToggle('slow');
+  })
 
-  $("#submenu_2").click(function () {
-    $("#submenu_2 .sub-link").slideToggle("slow");
-  });
+  // $(window).scroll(function(){
+  //   $(window).scrollTop()> 300 ? $('#menu').css("position", "fixed"): $('#menu').css("position", "sticky");
+  // })
+
+  window.onload = (function() {
+    $(window).scroll(function() {
+      if ($(window).scrollTop() > 300) {
+        $("#menu").css("position", "fixed");
+        $("#menu").addClass("menu-fixed");
+      }
+      if ($(window).scrollTop() == 0) {
+        $("#menu").css("position", "relative");
+        $("#menu").removeClass("menu-fixed");
+      }
+    });
+  }); 
 });

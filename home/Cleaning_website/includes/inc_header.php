@@ -1,190 +1,147 @@
+<?php
+require_once('../classes/database.php');
+$web_id = 'web_id = 1';
+
+// $arr_result_parents = array();
+// $sql = "SELECT * FROM categories_multi_parent WHERE cmp_child_id IS NOT NULL AND $web_id";
+// $result = new db_query($sql);
+
+// if (mysqli_num_rows($result->result) > 0) {
+//     while ($row = mysqli_fetch_assoc($result->result)) {
+//         array_push($arr_result_parents, $row);
+//     }
+// }
+// unset($result, $sql);
+
+// $arr_result_child = array();
+// $sql ="SELECT cmp_id, cmp_name FROM categories_multi_parent WHERE cmp_child_id IS NULL AND $web_id";
+// $result = new db_query($sql);
+
+// if(mysqli_num_rows($result->result)> 0 ){
+//     while($row = mysqli_fetch_assoc($result->result)){
+//         array_push($arr_result_child, $row);
+//     }
+// }
+
+// unset($result, $sql);
+// $con = $arr_result_child[3]['cmp_id'];
+// $cha = explode(",", $arr_result_parents[0]['cmp_child_id']);
+// // if(in_array($con, $cha)){
+// //     echo 'true';
+// // }
+// // else {
+// //     echo 'false';
+// // }
+$arr_topic_parents = array();
+$sql = "SELECT * FROM categories_multi_parent WHERE ";
+
+
+?>
+
 <div id="menu" class="topnav">
     <div id="menu-container">
-        <ul id="navbar">
-            <li>
-                <a href="#" target="_self">
-                    <i class="fas fa-home"></i>
-                    Trang chủ 
-                </a>
-            </li>
-            <li>
-                <a href="#" target="_self" class="hover-navbar">
-                    <i class="fas fa-soap"></i>
-                    Dịch vụ giặt là công nghiệp
-                </a>
-                <div class="sub-content">
-                    <div class="sub-navbar">
-                        <table>
-                            <tr>
-                                <td> <a href="#" target="_self"> Dịch vụ giặt thảm gia đình </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Giặt ghế sofa da, sofa nỉ </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Giặt thảm văn phòng </a> </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <a href="#" target="_self" class="hover-navbar">
-                    <i class="fas fa-broom"></i>
-                    Dịch vụ vệ sinh công nghiệp
-                </a>
-                <div class="sub-content">
-                    <div class="sub-navbar">
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href="#" target="_self"> Vệ sinh kính tòa nhà </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh bảng hiệu </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh văn phòng </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh bệnh viện </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh sau xây dựng </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh trường học </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh nhà cửa </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh trọn gói </a> </td>
-                            </tr>
-                            <tr>
-                                <td> <a href="#" target="_self"> Vệ sinh công nghiệp </a> </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <a href="#" target="_self">
-                    <i class="fas fa-user-plus"></i>
-                    Tuyển dụng
-                </a>
-            </li>
-            <li>
-                <a href="#" target="_self">
-                    <i class="fas fa-phone-volume"></i>
-                    Liên hệ
-                </a>
-            </li>
+        <ul id="navbar" style="width: 100%; text-align: right;">
+            <?php 
+                // foreach($arr_result_parents as $key => $topic){
+                //     if($topic['cmp_has_child'] == 1 && $topic['cmp_active'] == 1){
+                //         $arr_child_id = explode(",", $topic['cmp_child_id']);
+                //         echo '
+                //             <li>
+                //                 <a href="javascript:void(0)" target="_self" class="hover-navbar" style="position: relative;">
+                //                     '.$topic['cmp_icon'].'
+                //                     '.$topic['cmp_name'].'
+                //                 </a>';
+                //         echo '  <div class="sub-content">
+                //                     <div class="sub-navbar"> 
+                //                         <table>';
+                //                 foreach($arr_result_child as $key=>$topic_child){
+                //                     if(in_array($topic_child['cmp_id'], $arr_child_id)){
+                                        
+                //                         echo '
+                //                             <tr>
+                //                                 <td> <a href="./sub.php?act='.$topic_child['cmp_id'].'" target="_self"> '.$topic_child['cmp_name'].' </a> </td>
+                //                             </tr>    
+                //                         ';
+                //                     }
+
+                //                 }
+                //         echo'           </table>
+                //                     </div>
+                //                 </div>
+                //             </li>';
+                //     }
+                //     else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1){
+                //         echo '
+                //             <li>
+                //                 <a href="./sub.php?act='.$topic['cmp_id'].'" target="_self">
+                //                     '.$topic['cmp_icon'].'
+                //                     '.$topic['cmp_name'].'
+                //                 </a>
+                //             </li>
+                //         ';
+                //     }
+                // }
+            ?>
         </ul>
     </div>
     <a id="btn-navbar" href="javascript:void(0);"><i class="fas fa-bars bars-icon"></i></a>
 
     <div id="submenu-container">
-        <div id="submenu_0" class="submenu-content">
-            <a href="#" target="_self">
-                <div>
-                    <i class="fas fa-home"></i>
-                    Trang chủ
-                </div>
-            </a>
-        </div>
+        <?php 
+            // foreach($arr_result_parents as $key=>$topic){
+            //     if($topic['cmp_has_child']==1){
+            //         $child_id = explode(",", $topic['cmp_child_id']);
+            //         $child1 = $child_id[1];
+            //         $child2 = $child_id[2];
 
-        <div id="submenu_1" class="submenu-content">
-            <a href="#" target="_self">
-                <div>
-                    <i class="fas fa-soap"></i>
-                    Dịch vụ giặt là công nghiệp
-                </div>
-            </a>
+            //         $arr_result_child = array();
+            //         $sql = "SELECT cmp_id, cmp_name FROM categories_multi_parent WHERE cmp_id = $child1 OR cmp_id = $child2 AND cmp_web_id = 1";
+            //         $result = new db_query($sql);
+            //         if (mysqli_num_rows($result->result) > 0) {
+            //             while ($row = mysqli_fetch_assoc($result->result)) {
+            //                 array_push($arr_result_child, $row);
+            //             }
+            //         }
+            //         unset($sql, $result);
 
-            <div class="sub-link">
-                <a href="#" target="_self">
-                    <div> Dịch vụ giặt thảm gia đình </div>
-                </a>
+            //         echo '
+            //             <div class="submenu-content">
+            //                 <a href="javascript:void(0)" target="_self">
+            //                     <div>
+            //                         '.$topic['cmp_icon'].'
+            //                         '.$topic['cmp_name'].'
+            //                     </div>
+            //                 </a>
+                
+            //                 <div class="sub-link">   
+            //         ';
+            //         foreach($arr_result_child as $key=>$sub_topic){
+            //             echo '
+            //                     <a href="./sub.php?act='.$sub_topic['cmp_id'].'" target="_self">
+            //                         <div>'.$sub_topic['cmp_name'].' </div>
+            //                     </a>
+            //             ';
+            //         }
+            //         echo'
+            //                 </div>
+            //             </div>
+            //         ';
+            //     }
+            //     else{
+            //         echo'
+            //             <div class="submenu-content">
+            //                 <a href="./sub.php?act='.$topic['cmp_id'].'" target="_self">
+            //                     <div>
+            //                     '.$topic['cmp_icon'].'
+            //                     '.$topic['cmp_name'].'
+            //                     </div>
+            //                 </a>
+            //             </div>
+            //         ';
+            //     }
+            // }
+        ?>
 
-                <a href="#" target="_self">
-                    <div> Giặt ghế sofa da, sofa nỉ </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div>
-                        Giặt thảm văn phòng
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div id="submenu_2" class="submenu-content">
-            <a href="#" target="_self">
-                <div>
-                    <i class="fas fa-broom"></i>
-                    Dịch vụ vệ sinh công nghiệp
-                </div>
-            </a>
-
-            <div class="sub-link">
-                <a href="#" target="_self">
-                    <div> Vệ sinh kính tòa nhà </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh bảng hiệu </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh văn phòng </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh bệnh viện </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh sau xây dựng </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh trường học </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh nhà cửa </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh trọn gói </div>
-                </a>
-
-                <a href="#" target="_self">
-                    <div> Vệ sinh công nghiệp </div>
-                </a>
-            </div>
-
-        </div>
-
-        <div id="submenu_3" class="submenu-content">
-            <a href="#" target="_self">
-                <div>
-                    <i class="fas fa-user-plus"></i>
-                    Tuyển dụng
-                </div>
-            </a>
-        </div>
-
-        <div id="submenu_4" class="submenu-content">
-            <a href="#" target="_self">
-                <div>
-                    <i class="fas fa-phone-volume"></i>
-                    Liên hệ
-                </div>
-            </a>
-        </div>
     </div>
 
     <div class="close-navbar"></div>

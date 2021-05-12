@@ -5,6 +5,7 @@
 
 html, body {
     background-color: #e5f6f5 !important;
+    
 }
 
 
@@ -16,9 +17,14 @@ html, body {
     width: 100%;
     height: 75px;
     background-color: #33beb3;
-    position: fixed;
+    position: relative;
     z-index: 30;
     box-shadow: 5px 5px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+.menu-fixed {
+    animation-name: menu_fixed;
+    animation-duration: .5s;
 }
 
 #menu #menu-container {
@@ -66,6 +72,7 @@ html, body {
     border-radius: 50px;
     transition: .3s; */
     padding: 6px 3px 6px 3px;
+    margin-top: -5px;
 }
 
 /* #menu #menu-container ul#navbar li:hover{
@@ -86,6 +93,17 @@ html, body {
     animation-duration: 1s;
 } */
 
+#menu #menu-container ul#navbar li:hover div.sub-content {
+    position: absolute;
+    width: 150px;
+    height: 20px;
+    top: 35px;
+}
+
+#menu #menu-container ul#navbar li:hover div.sub-content div.sub-navbar {
+    top: 20px;
+} 
+
 #menu #menu-container ul#navbar li a{
     text-decoration: none;
     color: white;
@@ -93,6 +111,7 @@ html, body {
     border-radius: 50px;
     padding: 5px 10px 5px 10px;
     transition: .3s;
+    float: left;
 }
 
 #menu #menu-container ul#navbar li a:hover{
@@ -635,6 +654,11 @@ html, body {
     90%   {transform: rotate(-6deg);}
     95%   {transform: rotate(7deg);}
     100%  {transform: rotate(-10deg);}
+}
+
+@keyframes menu_fixed {
+    0%    {top: -75px;}
+    100%  {top: 0;}
 }
 
 
