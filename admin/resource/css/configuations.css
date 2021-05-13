@@ -24,7 +24,7 @@
 }
 
 .select2-result-language__icon img{
-    width: 50px;
+    width: 40px;
 }
 
 .configuations{
@@ -32,8 +32,21 @@
     margin: auto auto;
 }
 
-.form-configuations label{
+.configuations form div input{
+    font-size: 14px;
+    padding-left: 15px;
+}
 
+.configuations form div input::placeholder {
+    font-size: 14px;
+}
+
+.form-configuations{
+    margin-bottom: 20px;
+}
+
+.form-configuations label{
+    font-size: 15px;
 }
 
 .form-control{
@@ -44,4 +57,64 @@
     border-radius: 10px;
     border: 2px solid rgb(0, 0, 55);
     box-shadow: rgb(0 0 55 / 25%) 0px 0px 0px 0.2rem;
+}
+
+.form-check{
+    padding-left: 0px;
+}
+
+.form-check label{
+    font-size: 15px;
+}
+
+.form-input-background-homepage{
+    display: none !important;
+}
+
+.input-image{
+    border: dashed 1px blue;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    z-index: 10;
+}
+
+.form-image-input{
+    display: flex;
+}   
+
+.input-image-container{
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+}
+
+.input-image:hover{
+    opacity: 0.3;
+}
+
+.input-image-container p{
+    text-align: center;
+}
+
+.input-image img{
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+
+.input-image-container i{
+    color: green;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 80px;
+    font-size: 20px;
+    display: none;
+    z-index: 1000;
+}
+
+.input-image svg{
 }

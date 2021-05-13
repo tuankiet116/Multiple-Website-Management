@@ -84,6 +84,39 @@ $(document).ready(function(){
     templateResult: formatRepoLanguage,
     templateSelection: formatRepoSelectionLanguage
   });
+
+  $(".input-image").on("click", function(e){
+    var id = $(this).attr("id");
+    id = id.replace('input_image_', '');
+    id = "input-background-homepage_" + id;
+    //alert(id);
+    $('#'+id)[0].click();  
+    return;
+  });
+
+  $(".input-image img").hover(function(e){
+    $(this).closest("div").siblings("i").css("display", "block");
+  });
+
+  $(".input-image img").mouseout(function(e){
+    $(this).closest("div").siblings("i").css("display", "none");
+  });
+
+  $(".input-image-container i").hover(function(e){
+    $(this).css("display", "block");
+  });
+
+  $(".input-image-container i").mouseout(function(e){
+    $(this).css("display", "none");
+  });
+
+  $(".input-image-container i").click(function(e){
+    alert("click");
+  });
+
+  $(".form-input-background-homepage").on("change", function(e){
+
+  });
 });
 
 var base_url_icon = "../../../";
@@ -157,7 +190,7 @@ function formatRepoSelectionLanguage (state) {
 
   // Use .text() instead of HTML string concatenation to avoid script injection issues
   $state.find("span").text(state.text);
-  $state.find("img").attr("src", base_url_icon + state.image.toLowerCase());
+  $state.find("img").attr("src", base_url_icon + state.image);
 
   return $state;
 }
