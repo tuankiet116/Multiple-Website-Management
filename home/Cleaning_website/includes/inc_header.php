@@ -1,39 +1,32 @@
 <?php
-require_once('../classes/database.php');
+require_once("../../classes/database.php");
 $web_id = 'web_id = 1';
 
-// $arr_result_parents = array();
-// $sql = "SELECT * FROM categories_multi_parent WHERE cmp_child_id IS NOT NULL AND $web_id";
-// $result = new db_query($sql);
-
-// if (mysqli_num_rows($result->result) > 0) {
-//     while ($row = mysqli_fetch_assoc($result->result)) {
-//         array_push($arr_result_parents, $row);
-//     }
-// }
-// unset($result, $sql);
-
-// $arr_result_child = array();
-// $sql ="SELECT cmp_id, cmp_name FROM categories_multi_parent WHERE cmp_child_id IS NULL AND $web_id";
-// $result = new db_query($sql);
-
-// if(mysqli_num_rows($result->result)> 0 ){
-//     while($row = mysqli_fetch_assoc($result->result)){
-//         array_push($arr_result_child, $row);
-//     }
-// }
-
-// unset($result, $sql);
-// $con = $arr_result_child[3]['cmp_id'];
-// $cha = explode(",", $arr_result_parents[0]['cmp_child_id']);
-// // if(in_array($con, $cha)){
-// //     echo 'true';
-// // }
-// // else {
-// //     echo 'false';
-// // }
 $arr_topic_parents = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE ";
+$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND $web_id";
+$result = new db_query($sql);
+
+if(mysqli_num_rows($result->result)>0){
+    while($row = mysqli_fetch_assoc($result->result)){
+        array_push($arr_topic_parents, $row);
+    }
+}
+unset($sql, $result);
+
+$arr_topic_child = array();
+$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND $web_id";
+$result = new db_query($sql);
+
+if(mysqli_num_rows($result->result)>0){
+    while($row = mysqli_fetch_assoc($result->result)){
+        array_push($arr_topic_child, $row);
+    }
+}
+
+$clone = $arr_topic_child;
+unset($sql, $result);
+$arr_parent_1 = array();
+
 
 
 ?>
@@ -42,50 +35,68 @@ $sql = "SELECT * FROM categories_multi_parent WHERE ";
     <div id="menu-container">
         <ul id="navbar" style="width: 100%; text-align: right;">
             <?php 
-                // foreach($arr_result_parents as $key => $topic){
-                //     if($topic['cmp_has_child'] == 1 && $topic['cmp_active'] == 1){
-                //         $arr_child_id = explode(",", $topic['cmp_child_id']);
-                //         echo '
-                //             <li>
-                //                 <a href="javascript:void(0)" target="_self" class="hover-navbar" style="position: relative;">
-                //                     '.$topic['cmp_icon'].'
-                //                     '.$topic['cmp_name'].'
-                //                 </a>';
-                //         echo '  <div class="sub-content">
-                //                     <div class="sub-navbar"> 
-                //                         <table>';
-                //                 foreach($arr_result_child as $key=>$topic_child){
-                //                     if(in_array($topic_child['cmp_id'], $arr_child_id)){
-                                        
-                //                         echo '
-                //                             <tr>
-                //                                 <td> <a href="./sub.php?act='.$topic_child['cmp_id'].'" target="_self"> '.$topic_child['cmp_name'].' </a> </td>
-                //                             </tr>    
-                //                         ';
-                //                     }
+                foreach($arr_topic_parents as $key => $topic_parents){
+                    if($topic_parents['cmp_has_child']==1 && $topic_parents['cmp_active'] == 1){
+                        echo '
+                            <li>
+                                <a href="javascript:void(0)" target="_self" class="hover-navbar" style="position: relative;">
+                                    '.$topic_parents['cmp_icon'].'
+                                    '.$topic_parents['cmp_name'].'
+                                </a>';
+                        echo '  <div class="sub-content">
+                                    <div class="sub-navbar"> 
+                                        <table>';
+                                            foreach($arr_topic_child as $key => $topic_child){
+                                                if($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active']==1){
+                                                    echo '
+                                                        <tr>
+                                                    ';
+                                                        if($topic_child['cmp_has_child']==1){
+                                                            echo'
+                                                                <td>';
+                                                            echo'        
+                                                                    <a>'.$topic_child['cmp_name'].'</a>';
+                                                                foreach($clone as $value){
+                                                                    if($value['cmp_parent_id']==$topic_child['cmp_id']){
+                                                                        echo '<a href="">'.$value['cmp_name'].'</a>';
+                                                                    }
+                                                                }
+                                                            echo'
+                                                                </td>
+                                                            ';
+                                                        }
+                                                        else{
+                                                            echo'
+                                                                <td><a>'.$topic_child['cmp_name'].'</a></td>
+                                                            ';
+                                                        }   
+                                                    echo'
+                                                        </tr>
+                                                    ';
+                                                }
+                                            }
+                        echo'           </table>
+                                    </div>
+                                </div>
+                            </li>';
+                    }
 
-                //                 }
-                //         echo'           </table>
-                //                     </div>
-                //                 </div>
-                //             </li>';
-                //     }
-                //     else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1){
-                //         echo '
-                //             <li>
-                //                 <a href="./sub.php?act='.$topic['cmp_id'].'" target="_self">
-                //                     '.$topic['cmp_icon'].'
-                //                     '.$topic['cmp_name'].'
-                //                 </a>
-                //             </li>
-                //         ';
-                //     }
-                // }
+                    else if ($topic_parents['cmp_has_child']== 0 && $topic_parents['cmp_active'] == 1){
+                        echo '
+                            <li>
+                                <a href="" target="_self">
+                                    '.$topic_parents['cmp_icon'].'
+                                    '.$topic_parents['cmp_name'].'
+                                </a>
+                            </li>
+                        ';
+                    }
+                }
             ?>
         </ul>
     </div>
     <a id="btn-navbar" href="javascript:void(0);"><i class="fas fa-bars bars-icon"></i></a>
-
+                <!-- <?php var_dump($arr_parent_1);?> -->
     <div id="submenu-container">
         <?php 
             // foreach($arr_result_parents as $key=>$topic){
@@ -140,6 +151,9 @@ $sql = "SELECT * FROM categories_multi_parent WHERE ";
             //         ';
             //     }
             // }
+            foreach($arr_topic_parents as $key => $topic_parents){
+                
+            }
         ?>
 
     </div>
