@@ -1,0 +1,137 @@
+/********** Slideshow **********/
+
+.owl-carousel .owl-item {
+    height: 400px !important; 
+}
+
+.owl-carousel .owl-item img {
+    height: auto !important;
+}
+
+
+
+/********** CONTAINER **********/
+/***** News *****/
+
+/* #news-container {
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+}
+
+#news-container .title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 40px;
+}
+
+#news-container .breadcrumbs div {
+    display: inline-block;
+    padding-top: 5px;
+}
+
+#news-container .breadcrumbs div p{
+    display: inline-block;
+    color: black;
+    font-size: 11px;
+}
+
+#news-container .text {
+    padding-bottom: 40px;
+}
+
+#news-container .text p {
+    color: rgb(30, 30, 30);
+    font-size: 17px;
+    font-weight: 400;
+    text-align: justify;
+}
+
+#news-container .text p span {
+    font-weight: bold;
+    color: #ed4848;
+}
+
+#news-container #new-news {
+    padding-bottom: 40px;
+}
+
+#news-container #new-news #new-news-title{
+    color: #f79a1d;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#news-container #new-news .line{
+    border-top: 1px solid rgba(0,0,0,0.2);
+    margin-top: -8px;
+    margin-bottom: 12px;
+}
+
+#news-container #new-news .dashed{
+    border-top: 1px dashed rgba(0,0,0,0.2);
+    margin-top: 5px;
+    margin-bottom: 12px;
+}
+
+#news-container #new-news a {
+    color: rgb(120, 120, 120);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 15px;
+} */
+
+.container .row .news-left,
+.container .row .news-right {
+    height: 300px;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.container .row .news-left {
+    border: 1px solid rgb(220, 220, 220);
+    position: relative;
+}
+
+.container .row .news-left .news-left-title {
+    background-color: #4ca246;
+    padding: 10px 15px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    position: absolute;
+    top: -23px;
+    left: -23px;
+    box-shadow: 7px 7px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+.container .row .news-left .news-left-content {
+    border: 1px solid red;
+    width: 100%;
+    height: 100px;
+    margin-top: 40px;
+}
+
+.container .row .news-right {
+    padding: 0 0 0 15px;
+}
+
+.container .row .news-right .news-right-container {
+    border: 1px solid rgb(220, 220, 220);
+    width: 100%;
+    height: 200px;
+    /* background-color: rgb(250, 250, 250); */
+}
+
+
+/********** Responsive **********/
+
+@media screen and (max-width: 720px) {
+    #news-container {
+        width: 80%;
+    }
+}
+
