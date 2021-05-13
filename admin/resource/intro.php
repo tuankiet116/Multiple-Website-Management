@@ -7,10 +7,9 @@
 
 <body style="overflow: hidden">
     <div style="width:960px; margin: auto; overflow: hidden">
-        <h3 style="color: #002247; text-align: center">FACE-EPU SYSTEM</h3>
+        <h3 style="color: #002247; text-align: center">WEBSITE MULTIPLE MANAGEMENT</h3>
         <p style="text-align: center; position: relative">
             <img src="/images/face_epu.jpg" alt="Face EPU">
-            <img src="/images/logoepu.svg" style="width: 150px; position: absolute; top: 10px; right: 10px">
         </p>
     </div>
 </body>

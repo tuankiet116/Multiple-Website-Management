@@ -1,0 +1,47 @@
+.title{
+    margin: 2% auto auto 2%;
+}
+
+.box{
+    margin: auto auto auto 5% ;
+}
+
+.selection img{
+    width: 9%;
+    margin-top: -1%;
+}
+
+.select2-result-website {
+    display: flex;
+}
+
+.select2-result-website__icon img{
+    width: 50px;
+}
+
+.select2-result-language {
+    display: flex;
+}
+
+.select2-result-language__icon img{
+    width: 50px;
+}
+
+.configuations{
+    width: 80%;
+    margin: auto auto;
+}
+
+.form-configuations label{
+
+}
+
+.form-control{
+    border-radius: 10px;
+}
+
+.form-control:focus{
+    border-radius: 10px;
+    border: 2px solid rgb(0, 0, 55);
+    box-shadow: rgb(0 0 55 / 25%) 0px 0px 0px 0.2rem;
+}

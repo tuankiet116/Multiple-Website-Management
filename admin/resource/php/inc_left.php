@@ -53,7 +53,7 @@ unset($arrayTemp);
 unset($db_menu);
 unset($db_order);
 ?>
-<ul id="test-list" style="margin-top: 80px">
+<ul id="test-list">
 	<?
 	$i=0;
 	foreach($arrayModule as $key=>$row){

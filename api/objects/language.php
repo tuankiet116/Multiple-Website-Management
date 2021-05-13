@@ -1,17 +1,17 @@
 <?php
 //require_once("../inc_security.php");
-class Website_Config{
+class LanguageConfig{
   
     // database connection and table name
     private $conn;
-    private $table_name = "website_config";
+    private $table_name = "languages";
   
     // object properties
-    public $web_id;
-    public $web_name;
-    public $web_active;
-    public $web_url;
-    public $web_icon;
+    public $lang_id;
+    public $lang_name;
+    public $lang_path;
+    public $lang_image;
+    public $lang_domain;
     public $term;
     public $result;
   
@@ -25,7 +25,7 @@ class Website_Config{
         $count = 0;
         // query to read single record
         if(!isset($query)){
-            $query = "SELECT * FROM " .$this->table_name. " WHERE web_name LIKE '%".$this->term."%'";
+            $query = "SELECT * FROM " .$this->table_name. " WHERE lang_name LIKE '%".$this->term."%'";
         }
         
         //prepare query statement
