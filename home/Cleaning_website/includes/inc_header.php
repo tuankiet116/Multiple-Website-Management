@@ -1,5 +1,5 @@
 <?php
-require_once('../classes/database.php');
+require_once('../../classes/database.php');
 $web_id = 'web_id = 1';
 
 // $arr_result_parents = array();

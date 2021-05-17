@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -20,7 +19,9 @@
         <ul class="slider-pagi"></ul>
         <div class="slider">
             <div class="slide slide-0 active">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/clean-slideshow5.jpg" alt="slide image">
+                </div>
                 <div class="slide__content">
                     <svg class="slide__overlay" viewBox="0 0 720 405" preserveAspectRatio="xMaxYMax slice">
                         <path class="slide__overlay-path" d="M0,0 150,0 500,405 0,405" />
@@ -34,7 +35,9 @@
                 </div>
             </div>
             <div class="slide slide-1 ">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/wash-slideshow1.jpg" alt="slide image">
+                </div>
                 <div class="slide__content">
                     <svg class="slide__overlay" viewBox="0 0 720 405" preserveAspectRatio="xMaxYMax slice">
                         <path class="slide__overlay-path" d="M0,0 150,0 500,405 0,405" />
@@ -48,7 +51,9 @@
                 </div>
             </div>
             <div class="slide slide-2">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/clean-slideshow6.jpg" alt="slide image">
+                </div>
             </div>
         </div>
     </div>
