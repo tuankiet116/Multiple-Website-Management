@@ -28,7 +28,6 @@ unset($sql, $result);
 $arr_parent_1 = array();
 
 
-
 ?>
 
 <div id="menu" class="topnav">
@@ -57,8 +56,12 @@ $arr_parent_1 = array();
                                                             echo'        
                                                                     <a>'.$topic_child['cmp_name'].'</a>';
                                                                 foreach($clone as $value){
-                                                                    if($value['cmp_parent_id']==$topic_child['cmp_id']){
-                                                                        echo '<a href="">'.$value['cmp_name'].'</a>';
+                                                                    if($value['cmp_parent_id']==$topic_child['cmp_id'] && $value['cmp_active']==1){
+                                                                        echo '
+                                                                            <ul class="sub-menu-1">
+                                                                                <li>'.$value['cmp_name'].'</li>
+                                                                            </ul>
+                                                                        ';
                                                                     }
                                                                 }
                                                             echo'
@@ -152,7 +155,7 @@ $arr_parent_1 = array();
             //     }
             // }
             foreach($arr_topic_parents as $key => $topic_parents){
-                
+
             }
         ?>
 
