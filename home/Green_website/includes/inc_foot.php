@@ -1,4 +1,3 @@
-<script src="../Green_website/resource/js/slideshow/jquery-3.3.1.min.js"></script>
 <script src="../Green_website/resource/js/slideshow/popper.min.js"></script>
 <script src="../Green_website/resource/js/slideshow/bootstrap.min.js"></script>
 <script src="../Green_website/resource/js/slideshow/owl.carousel.min.js"></script>

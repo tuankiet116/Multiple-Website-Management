@@ -21,29 +21,33 @@ $(document).ready(function() {
     n--;
   });
 
+  /********** Carousel **********/
+
+    $(".carousel-item:first").addClass("active");
+
   /********** Chevron icon **********/
 
-  var m = 0;
+  // var m = 0;
 
-  $("#sub_1").click(function () {
-    $("#sub_content_1").slideToggle("slow");
-  });
+  // $("#sub_1").click(function () {
+  //   $("#sub_content_1").slideToggle("slow");
+  // });
 
-  $("#sub_1").click(function () {
-    if (m == 0) {
-      $("#sub-menu #sub-menu-container a#sub_1 div i").css(
-        "transform",
-        "rotate(180deg)"
-      );
-      m++;
-    } else {
-      $("#sub-menu #sub-menu-container a#sub_1 div i").css(
-        "transform",
-        "rotate(0deg)"
-      );
-      m--;
-    }
-  });
+  // $("#sub_1").click(function () {
+  //   if (m == 0) {
+  //     $("#sub-menu #sub-menu-container a#sub_1 div i").css(
+  //       "transform",
+  //       "rotate(180deg)"
+  //     );
+  //     m++;
+  //   } else {
+  //     $("#sub-menu #sub-menu-container a#sub_1 div i").css(
+  //       "transform",
+  //       "rotate(0deg)"
+  //     );
+  //     m--;
+  //   }
+  // });
 
   /********** Window resize sub menu **********/
 

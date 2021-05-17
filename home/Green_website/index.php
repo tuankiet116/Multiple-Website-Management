@@ -24,6 +24,7 @@
     <? include('./includes/inc_footer.php') ?>
 
     <? include('./includes/inc_foot.php') ?>
+
 </body>
 
 </html>

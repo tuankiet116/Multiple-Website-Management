@@ -1,214 +1,112 @@
+<?php
+require_once('../../classes/database.php');
+
+/********** TITLE **********/
+$arr_title = array();
+$sql = "SELECT * FROM post_type";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_title, $row);
+    }
+}
+unset($result, $sql);
+
+/********** POST **********/
+$post = "SELECT post_id, post_title, post_description, post_image_background FROM post";
+$result_post = new db_query($post);
+
+/********** CAROUSEL **********/
+$arr_carousel = array();
+$sql = "SELECT * FROM categories_multi_parent WHERE bgt_type = 'carousel' AND $web_id";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_carousel, $row);
+    }
+}
+unset($result, $sql);
+
+?>
+
 <div id="main-container">
     <div class="container">
-        <div class="title">
-            <p class="main-title">Dịch vụ chính của chúng tôi! </p>
-            <p class="sub-title">
-                Chúng tôi cung cấp các dịch vụ chuyên nghiệp về ngành hàng đầu hiện nay!
-            </p>
-            <div class="line-title"></div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="services">
-                    <a href="./news.php" target="_self">
-                        <div class="sv-img">
-                            <img src="../Green_website/resource/images/garden3.jpg" alt="garden">
-                        </div>
-                        <div class="sv-title">
-                            <p>Thiết kế thi công sân vườn biệt thự</p>
-                        </div>
-                        <div class="sv-text">
-                            <p>
-                                Cuộc sống hiện đại, nhu cầu gần gũi với thiên nhiên càng lớn.
-                                Nếu bạn sở hữu một không gian rộng lớn như biệt thự ...
+        <?php
+        foreach ($arr_title as $key => $title) {
+            if ($title['post_type_id'] == 1 && $title['post_type_show'] == 'title') {
+                echo '
+                        <div class="title">
+                            <p class="main-title"> ' . $title['post_type_title'] . ' </p>
+                            <p class="sub-title">
+                                ' . $title['post_type_description'] . '
                             </p>
-                        </div>
-                    </a>
-                </div>
-            </div>
+                            <div class="line-title"></div>
+                        </div>';
+            }
+        }
+        ?>
 
-            <div class="col-lg-6">
-                <div class="services">
-                    <div class="services">
-                        <a href="./news.php" target="_self">
-                            <div class="sv-img">
-                                <img src="../Green_website/resource/images/slideshow/koi-pond2.jpeg" alt="koi pond">
-                            </div>
-                            <div class="sv-title">
-                                <p>Thiết kế thi công hồ cá Koi</p>
-                            </div>
-                            <div class="sv-text">
-                                <p>
-                                    Nguồn gốc hồ cá Koi đã không còn xa lạ gì với mọi người;
-                                    những ngôi nhà vườn, thiết ...
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
 
-            <div class="col-lg-6">
-                <div class="services">
-                    <div class="services">
-                        <a href="./news.php" target="_self">
-                            <div class="sv-img">
-                                <img src="../Green_website/resource/images/landscape5.jpeg" alt="mansion landscape">
+            <?php
+            while ($row = mysqli_fetch_assoc($result_post->result)) {
+                echo '
+                        <div class="col-lg-6">
+                            <div class="services">
+                                <a href="./news.php" target="_self">
+                                    <div class="sv-img">
+                                        <img src="' . $row['post_image_background'] . '" alt="garden">
+                                    </div>
+                                    <div class="sv-title">
+                                        <p> ' . $row['post_title'] . ' </p>
+                                    </div>
+                                    <div class="sv-text">
+                                        <p>
+                                            ' . $row['post_description'] . '
+                                        </p>
+                                    </div>
+                                </a>
                             </div>
-                            <div class="sv-title">
-                                <p>Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài</p>
-                            </div>
-                            <div class="sv-text">
-                                <p>
-                                    Giới siêu giàu tại Việt Nam ngày nay không còn hiếm mà ngược lại
-                                    rất phổ biến. Lâu đài, biệt thủ xuất hiện khắp các ...
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                        </div>';
+            }
+            ?>
 
-            <div class="col-lg-6">
-                <div class="services">
-                    <div class="services">
-                        <a href="./news.php" target="_self">
-                            <div class="sv-img">
-                                <img src="../Green_website/resource/images/hotel1.jpg" alt="hotel landscape">
-                            </div>
-                            <div class="sv-title">
-                                <p>Thiết kế và thi công cảnh quan nhà hàng, khách sạn</p>
-                            </div>
-                            <div class="sv-text">
-                                <p>
-                                    Với đội ngũ kiến trúc sư giàu kinh nghiệm thiết kế và thi
-                                    công cảnh quan xanh cho nhà hàng ngập tràn màu xanh của ...
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="services">
-                    <div class="services">
-                        <a href="./news.php" target="_self">
-                            <div class="sv-img">
-                                <img src="../Green_website/resource/images/resort3.jpg" alt="resort landscape">
-                            </div>
-                            <div class="sv-title">
-                                <p>Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort</p>
-                            </div>
-                            <div class="sv-text">
-                                <p>
-                                    Đất nước phát triển, đời sống được nâng cao thì nhu cầu hưởng thụ
-                                    của con người sẽ tăng dẫn đến các dịch vụ và khu ...
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="services">
-                    <div class="services">
-                        <a href="./news.php" target="_self">
-                            <div class="sv-img">
-                                <img src="../Green_website/resource/images/factory2.jpg" alt="factory landscape">
-                            </div>
-                            <div class="sv-title">
-                                <p>Thiết kế và thi công cảnh quan nhà hàng, khách sạn</p>
-                            </div>
-                            <div class="sv-text">
-                                <p>
-                                    Hiện nay, Khu công nghiệp, nhà máy, xí nghiệp... mọc lên như nấm
-                                    và đang trên đà phát triển mạnh. Không ...
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="col-lg-4">
-                <div class="services">
-
-                </div>
-            </div> -->
         </div>
     </div>
 
     <div class="container text-center">
-        <div class="title">
-            <p class="main-title">Sản phẩm tiêu biểu </p>
-            <div class="line-title" style="margin-top: 25px;"></div>
-        </div>
+        <?php
+        foreach ($arr_title as $key => $title) {
+            if ($title['post_type_id'] == 2 && $title['post_type_show'] == 'title') {
+                echo '
+                        <div class="title">
+                            <p class="main-title"> ' . $title['post_type_title'] . ' </p>
+                            <div class="line-title"></div>
+                        </div>';
+            }
+        }
+        ?>
 
         <div class="row mx-auto my-auto">
             <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                 <div class="carousel-inner w-100" role="listbox">
-                    <div class="carousel-item active">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/hon-non-bo1.jpg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Hòn non bộ
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/slideshow/koi-pond1.jpeg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Hồ cá Koi
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/rooftop-garden1.jpg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Sân vườn trên mái
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/tieu-canh1.jpg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Tiểu cảnh
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/modern-garden1.jpg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Sân vườn hiện đại
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="carousel-content">
-                                <img class="img-fluid" src="../Green_website/resource/images/japan-garden3.jpg" alt="carousel image">
-                                <div class="carousel-title">
-                                    Sân vườn Nhật Bản
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                    foreach ($arr_carousel as $key => $carousel) {
+                        if ($carousel['cmp_active'] == 1) {
+                            echo '
+                                    <div class="carousel-item">
+                                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">
+                                            <div class="carousel-content">
+                                                <img class="img-fluid" src=" ' . $carousel['cmp_background'] . ' " alt="carousel image">
+                                                <div class="carousel-title">
+                                                    ' . $carousel['cmp_name'] . '
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                        }
+                    }
+                    ?>
                 </div>
                 <a class="carousel-control-prev bg-dark " href="#myCarousel" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -223,11 +121,18 @@
     </div>
 
     <div class="container">
-        <div class="title">
-            <p class="main-title">Tại sao chọn chúng tôi </p>
-            <div class="line-title" style="margin-top: 25px;"></div>
-        </div>
-
+        <?php
+        foreach ($arr_title as $key => $title) {
+            if ($title['post_type_id'] == 3 && $title['post_type_show'] == 'title') {
+                echo '
+                        <div class="title">
+                            <p class="main-title"> ' . $title['post_type_title'] . ' </p>
+                            <div class="line-title" style="margin-top: 25px;"></div>
+                        </div>';
+            }
+        }
+        ?>
+  
         <div class="row">
             <div class="choose-container col-lg-6">
                 <a class="choose-left" href="#" target="_self">
