@@ -2,6 +2,7 @@
 require_once('../../classes/database.php');
 
 /********** TITLE **********/
+
 $arr_title = array();
 $sql = "SELECT * FROM post_type";
 $result = new db_query($sql);
@@ -13,10 +14,19 @@ if (mysqli_num_rows($result->result)) {
 unset($result, $sql);
 
 /********** POST **********/
-$post = "SELECT post_id, post_title, post_description, post_image_background FROM post";
-$result_post = new db_query($post);
+
+$arr_post = array();
+$sql = "SELECT * FROM post";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_post, $row);
+    }
+}
+unset($result, $sql);
 
 /********** CAROUSEL **********/
+
 $arr_carousel = array();
 $sql = "SELECT * FROM categories_multi_parent WHERE bgt_type = 'carousel' AND $web_id";
 $result = new db_query($sql);
@@ -27,6 +37,17 @@ if (mysqli_num_rows($result->result)) {
 }
 unset($result, $sql);
 
+/********** IMAGE BANNER **********/
+
+$arr_banner = array();
+$sql = "SELECT * FROM categories_multi_parent WHERE bgt_type = 'banner' AND $web_id";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_banner, $row);
+    }
+}
+unset($result, $sql);
 ?>
 
 <div id="main-container">
@@ -49,25 +70,27 @@ unset($result, $sql);
         <div class="row">
 
             <?php
-            while ($row = mysqli_fetch_assoc($result_post->result)) {
-                echo '
+            foreach ($arr_post as $key => $post) {
+                if ($post['cmp_id'] == 3) {
+                    echo '
                         <div class="col-lg-6">
                             <div class="services">
                                 <a href="./news.php" target="_self">
                                     <div class="sv-img">
-                                        <img src="' . $row['post_image_background'] . '" alt="garden">
+                                        <img src="' . $post['post_image_background'] . '" alt="garden">
                                     </div>
                                     <div class="sv-title">
-                                        <p> ' . $row['post_title'] . ' </p>
+                                        <p> ' . $post['post_title'] . ' </p>
                                     </div>
                                     <div class="sv-text">
                                         <p>
-                                            ' . $row['post_description'] . '
+                                            ' . $post['post_description'] . '
                                         </p>
                                     </div>
                                 </a>
                             </div>
                         </div>';
+                }
             }
             ?>
 
@@ -132,194 +155,130 @@ unset($result, $sql);
             }
         }
         ?>
-  
+
         <div class="row">
-            <div class="choose-container col-lg-6">
-                <a class="choose-left" href="#" target="_self">
-                    <img src="../Green_website/resource/images/choose3.jpg" alt="choose image left">
-                    <div class="choose-content">
-                        <div class="choose-text">
-                            <p class="choose-title"> Giá thi công cạnh tranh.</p>
+            <?php
+            foreach ($arr_post as $key => $post) {
+                if ($post['cmp_id'] == 7 && $post['post_description'] != '') {
+                    echo '
+                        <div class="choose-container col-lg-6">
+                            <a class="choose-left" href="#" target="_self">
+                                <img src="' . $post['post_image_background'] . '" alt="choose image left">
+                                <div class="choose-content">
+                                    <div class="choose-text">
+                                        <p class="choose-title">' . $post['post_title'] . '</p>
 
-                            <div class="choose-line"></div>
+                                        <div class="choose-line"></div>
 
-                            <p class="choose-word">Tại sao nên chọn chúng tôi</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                                        <p class="choose-word">' . $post['post_description'] . '</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>';
+                }
+            }
+            ?>
 
             <div class="choose-container col-lg-6">
                 <div class="row">
-                    <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="choose-right" href="#" target="_self">
-                            <img src="../Green_website/resource/images/hon-non-bo2.jpg" alt="choose right image">
-                            <div class="choose-right-content">
-                                <div class="choose-right-text">
-                                    <p class="choose-right-title">Dự án thiết kế & thi công</p>
+                    <?php
+                    foreach ($arr_post as $key => $post) {
+                        if ($post['cmp_id'] == 7 && $post['post_description'] == '') {
+                            echo '
+                                <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <a class="choose-right" href="#" target="_self">
+                                        <img src="' . $post['post_image_background'] . '" alt="choose right image">
+                                        <div class="choose-right-content">
+                                            <div class="choose-right-text">
+                                                <p class="choose-right-title">' . $post['post_title'] . '</p>
 
-                                    <div class="choose-right-line"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="choose-right" href="#" target="_self">
-                            <img src="../Green_website/resource/images/slideshow/koi-pond2.jpeg" alt="choose right image">
-                            <div class="choose-right-content">
-                                <div class="choose-right-text">
-                                    <p class="choose-right-title">Dịch vụ hỗ trợ 24/7</p>
-
-                                    <div class="choose-right-line"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="choose-right" href="#" target="_self">
-                            <img src="../Green_website/resource/images/garden2.jpg" alt="choose right image">
-                            <div class="choose-right-content">
-                                <div class="choose-right-text">
-                                    <p class="choose-right-title">Đội ngũ thiết kế, thi công trình độ cao</p>
-
-                                    <div class="choose-right-line"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                        <a class="choose-right" href="#" target="_self">
-                            <img src="../Green_website/resource/images/slideshow/villa2.jpg" alt="choose right image">
-                            <div class="choose-right-content">
-                                <div class="choose-right-text">
-                                    <p class="choose-right-title">Thi công sân vườn chuyên nghiệp</p>
-
-                                    <div class="choose-right-line"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                                                <div class="choose-right-line"></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>';
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="contact">
-        <img src="../Green_website/resource/images/contact-image6.png" alt="contact image">
-    </div>
+    <?php
+    foreach ($arr_banner as $key => $banner) {
+        if ($banner['cmp_active'] == 1) {
+            echo '
+                <div id="contact">
+                    <img src="' . $banner['cmp_background'] . '" alt="contact image">
+                </div>';
+        }
+    }
+    ?>
 
     <div class="container">
-        <div class="title">
-            <p class="main-title">Tin nổi bật </p>
-            <p class="sub-title">
-                Tin tức mới nhất từ trang của chúng tôi
-            </p>
-            <div class="line-title"></div>
-        </div>
+        <?php
+        foreach ($arr_title as $key => $title) {
+            if ($title['post_type_id'] == 4 && $title['post_type_show'] == 'title') {
+                echo '
+                        <div class="title">
+                            <p class="main-title"> ' . $title['post_type_title'] . ' </p>
+                            <p class="sub-title">
+                                ' . $title['post_type_description'] . '
+                            </p>
+                            <div class="line-title"></div>
+                        </div>';
+            }
+        }
+        ?>
 
         <div class="row">
-            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="row news-all">
-                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                        <a href="./news.php" target="_self">
-                            <img src="../Green_website/resource/images/japan-garden1.jpg" alt="news image">
-                        </a>
-                    </div>
+            <?php
+            foreach ($arr_post as $key => $post) {
+                if ($post['cmp_id'] == 8 && $post['post_description'] == '' && $post['post_meta_description'] != 'more') {
+                    echo '
+                        <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="row news-all">
+                                <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
+                                    <a href="./news.php" target="_self">
+                                        <img src="' . $post['post_image_background'] . '" alt="news image">
+                                    </a>
+                                </div>
 
-                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                        <p class="news-date"> 10/05/2021 </p>
+                                <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
+                                    <p class="news-date">' . $post['post_datetime_create'] . '</p>
 
-                        <a href="./news.php" target="_self" class="news-title">Nhà vườn kiểu Nhật</a>
+                                    <a href="" target="_self" class="news-title">
+                                        ' . $post['post_title'] . '
+                                    </a>
 
-                        <a href="./news.php" target="_self" class="news-viewmore">
-                            <i class="fas fa-angle-right"></i>
-                            Xem tiếp
-                        </a>
-                    </div>
+                                    <a href="" target="_self" class="news-viewmore">
+                                        <i class="fas fa-angle-right"></i>
+                                        Xem tiếp
+                                    </a>
+                                </div>
 
-                    <div class="news-color-line"></div>
-                </div>
-            </div>
-
-            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="row news-all">
-                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                        <a href="./news.php" target="_self">
-                            <img src="../Green_website/resource/images/slideshow/lake-house2.jpg" alt="news image">
-                        </a>
-                    </div>
-
-                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                        <p class="news-date"> 06/05/2021 </p>
-
-                        <a href="./news.php" target="_self" class="news-title">Biệt phủ với sân vườn hồ cá đẳng cấp</a>
-
-                        <a href="./news.php" target="_self" class="news-viewmore">
-                            <i class="fas fa-angle-right"></i>
-                            Xem tiếp
-                        </a>
-                    </div>
-
-                    <div class="news-color-line"></div>
-                </div>
-            </div>
-
-            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="row news-all">
-                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                        <a href="./news.php" target="_self">
-                            <img src="../Green_website/resource/images/garden4.jpg" alt="news image">
-                        </a>
-                    </div>
-
-                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                        <p class="news-date"> 28/04/2021 </p>
-
-                        <a href="./news.php" target="_self" class="news-title">Tuyển kiến trúc sư cảnh quan</a>
-
-                        <a href="./news.php" target="_self" class="news-viewmore">
-                            <i class="fas fa-angle-right"></i>
-                            Xem tiếp
-                        </a>
-                    </div>
-
-                    <div class="news-color-line"></div>
-                </div>
-            </div>
-
-            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="row news-all">
-                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                        <a href="./news.php" target="_self">
-                            <img src="../Green_website/resource/images/slideshow/koi-pond6.jpg" alt="news image">
-                        </a>
-                    </div>
-
-                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                        <p class="news-date"> 12/04/2021 </p>
-
-                        <a href="./news.php" target="_self" class="news-title">Hồ Koi vườn nhật đẹp như công viên</a>
-
-                        <a href="./news.php" target="_self" class="news-viewmore">
-                            <i class="fas fa-angle-right"></i>
-                            Xem tiếp
-                        </a>
-                    </div>
-
-                    <div class="news-color-line"></div>
-                </div>
-            </div>
+                                <div class="news-color-line"></div>
+                            </div>
+                        </div>';
+                }
+            }
+            ?>
         </div>
 
-        <div class="see-more">
-            <a href="#" target="_self">
-                <i class="fas fa-angle-double-right"></i>
-                Xem thêm
-            </a>
-        </div>
+        <?php
+        foreach ($arr_post as $key => $post) {
+            if ($post['cmp_id'] == 8 && $post['post_description'] == '' && $post['post_meta_description'] == 'more') {
+                echo '
+                        <div class="see-more">
+                            <a href="#" target="_self">
+                                <i class="fas fa-angle-double-right"></i>
+                                ' . $post['post_title'] . '
+                            </a>
+                        </div>';
+            }
+        }
+        ?>
     </div>
 
 </div>
