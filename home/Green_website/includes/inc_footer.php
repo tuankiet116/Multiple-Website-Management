@@ -92,22 +92,6 @@ unset($result, $sql);
                             }
                         }
                         ?>
-
-                        <!-- <li>
-                            <a href="#" target="_self">
-                                Thiết kế thi công sân vườn biệt thự
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" target="_self">
-                                Thiết kế thi công hồ cá Koi
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" target="_self">
-                                Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài
-                            </a>
-                        </li> -->
                     </ul>
                 </div>
             </div>
