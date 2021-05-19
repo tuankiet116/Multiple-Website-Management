@@ -7,26 +7,23 @@
         $url = $_GET['url'];
     }
 
-    if(strpos($url,"/") != false){
-        header('location: Cleaning_website/index.php');
-    }
+    // if(strpos($url,"/") != false){
+    //     header('location: Cleaning_website/index.php');
+    // }
     function get_data($url, $web_id){
-        $sql = "SELECT * FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND $web_id" ;
+        $sql = "SELECT * FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND $web_id";
         $result = new db_query($sql);
-        $arr_data = array();
         if(mysqli_num_rows($result->result)>0){
-            while($row = mysqli_fetch_assoc($result->result)){
-                array_push($arr_data, $row);
-            }
+            $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
         }
         unset($sql, $result);
-        return $arr_data;
+        return $data;
     }
-    $a = get_data($url,  $web_id);
+    $a = get_data($url, $web_id);
     if(empty($a)){
         header('location: ./');
     }
-    print_r($a);
+    // print_r($a['cmp_background']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +45,9 @@
         <ul class="slider-pagi"></ul>
         <div class="slider">
             <div class="slide slide-0 active">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/clean-slideshow5.jpg" alt="slide image">
+                </div>
                 <div class="slide__content">
                     <svg class="slide__overlay" viewBox="0 0 720 405" preserveAspectRatio="xMaxYMax slice">
                         <path class="slide__overlay-path" d="M0,0 150,0 500,405 0,405" />
@@ -62,7 +61,9 @@
                 </div>
             </div>
             <div class="slide slide-1 ">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/wash-slideshow1.jpg" alt="slide image">
+                </div>
                 <div class="slide__content">
                     <svg class="slide__overlay" viewBox="0 0 720 405" preserveAspectRatio="xMaxYMax slice">
                         <path class="slide__overlay-path" d="M0,0 150,0 500,405 0,405" />
@@ -76,7 +77,9 @@
                 </div>
             </div>
             <div class="slide slide-2">
-                <div class="slide__bg"></div>
+                <div class="slide__bg">
+                    <img src="../Cleaning_website/resource/images/clean-slideshow6.jpg" alt="slide image">
+                </div>
             </div>
         </div>
     </div>

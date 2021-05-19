@@ -1,7 +1,6 @@
 <?php
 // require_once("../../classes/database.php");
 
-
 $arr_topic_parents = array();
 $sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND $web_id";
 $result = new db_query($sql);
@@ -51,8 +50,9 @@ $arr_parent_1 = array();
                                                         if($topic_child['cmp_has_child']==1){
                                                             echo'
                                                                 <td>';
-                                                            echo'        
-                                                                    <a href="'.$topic_child['cmp_rewrite_name'].'">    
+                                                            echo'      
+                                                                      
+                                                                    <a href="'.$topic_child['cmp_rewrite_name'].'">   
                                                                         '.$topic_child['cmp_name'].'
                                                                     </a>
                                                                         <ul class="sub-menu-1">
@@ -76,7 +76,9 @@ $arr_parent_1 = array();
                                                         }
                                                         else{
                                                             echo'
-                                                                <td><a href="'.$topic_child['cmp_rewrite_name'].'">'.$topic_child['cmp_name'].'</a></td>
+                                                                <td>
+                                                                    <a href="'.$topic_child['cmp_rewrite_name'].'">'.$topic_child['cmp_name'].'</a>
+                                                                </td>
                                                             ';
                                                         }   
                                                     echo'
