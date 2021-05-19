@@ -1,11 +1,17 @@
 <?php
 require_once('../../classes/database.php');
+$web_id = 'web_id = 2';
 
 /********** TITLE **********/
 
 $arr_title = array();
 $sql = "SELECT * FROM post_type";
 $result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_title, $row);
+    }
+}
 unset($result, $sql);
 
 /********** POST **********/
@@ -101,6 +107,7 @@ unset($result, $sql);
             }
         }
         ?>
+
         <div class="row mx-auto my-auto">
             <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
                 <div class="carousel-inner w-100" role="listbox">
@@ -133,6 +140,7 @@ unset($result, $sql);
             </div>
         </div>
     </div>
+
     <div class="container">
         <?php
         foreach ($arr_title as $key => $title) {
