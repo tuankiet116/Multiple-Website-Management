@@ -1,4 +1,33 @@
+<?php 
+    require_once('../../classes/database.php');
+    $web_id = 'web_id = 1';
+    $url = 'trang-chu';
 
+    if(isset($_GET['url'])){
+        $url = $_GET['url'];
+    }
+
+    if(strpos($url,"/") != false){
+        header('location: Cleaning_website/index.php');
+    }
+    function get_data($url, $web_id){
+        $sql = "SELECT * FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND $web_id" ;
+        $result = new db_query($sql);
+        $arr_data = array();
+        if(mysqli_num_rows($result->result)>0){
+            while($row = mysqli_fetch_assoc($result->result)){
+                array_push($arr_data, $row);
+            }
+        }
+        unset($sql, $result);
+        return $arr_data;
+    }
+    $a = get_data($url,  $web_id);
+    if(empty($a)){
+        header('location: ./');
+    }
+    print_r($a);
+?>
 <!DOCTYPE html>
 <html>
 
@@ -11,9 +40,8 @@
     <!--------------- HEADER --------------->
 
     <? include("./includes/inc_header.php"); ?>
-
+    
     <!--------------- CONTENT --------------->
-
     <div class="slider-container">
         <div class="slider-control left inactive"></div>
         <div class="slider-control right"></div>
