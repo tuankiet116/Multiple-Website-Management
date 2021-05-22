@@ -1,3 +1,7 @@
+<?php 
+    $a = get_data_row("");
+
+?>
 <div id="footer">
     <div class="container">
         <div class="row">

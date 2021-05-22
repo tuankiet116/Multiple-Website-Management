@@ -236,7 +236,9 @@ html, body {
 
 #submenu-container div.submenu-content a div i{
     color: #33beb3;
-    width: 25px;
+    width: auto;
+    transition: all  0.3s linear;
+    margin-right: 25px;
 }
 
 #submenu-container div.submenu-content a div:hover{
@@ -398,7 +400,7 @@ html, body {
     text-align: center;
     width: 100%;
     height: auto;
-    padding-top: 100px;
+    padding-top: 40px;
     padding-bottom: 10px;
 }
 
@@ -419,6 +421,7 @@ html, body {
     height: 300px;
     width: 100%;
     margin-top: 40px;
+    margin-bottom: 40px;
     overflow: hidden;
     background-color: white;
 }
@@ -708,4 +711,9 @@ html, body {
     .main-container .cleaning-title {
         font-size: 30px;
     }
+}
+
+.roteta-icon > a > div > i {
+    transform: rotate(180deg) !important;
+    transition: all .3s linear;
 }

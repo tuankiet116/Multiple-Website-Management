@@ -8,3 +8,5 @@
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <!-- JS -->
 <script src="../Cleaning_website/resource/js/script.js"></script>
+<!-- Slick -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

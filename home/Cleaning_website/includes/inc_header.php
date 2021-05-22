@@ -1,30 +1,6 @@
 <?php
-// require_once("../../classes/database.php");
-
-$arr_topic_parents = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND $web_id";
-$result = new db_query($sql);
-
-if(mysqli_num_rows($result->result)>0){
-    while($row = mysqli_fetch_assoc($result->result)){
-        array_push($arr_topic_parents, $row);
-    }
-}
-unset($sql, $result);
-
-$arr_topic_child = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND $web_id";
-$result = new db_query($sql);
-
-if(mysqli_num_rows($result->result)>0){
-    while($row = mysqli_fetch_assoc($result->result)){
-        array_push($arr_topic_child, $row);
-    }
-}
-
-$clone = $arr_topic_child;
-unset($sql, $result);
-$arr_parent_1 = array();
+$arr_topic_parents = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
+$arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
 ?>
 
 <div id="menu" class="topnav">
@@ -57,7 +33,7 @@ $arr_parent_1 = array();
                                                                     </a>
                                                                         <ul class="sub-menu-1">
                                                                 ';
-                                                                foreach($clone as $value){
+                                                                foreach($arr_topic_child as $value){
                                                                     if($value['cmp_parent_id']==$topic_child['cmp_id'] && $value['cmp_active']==1){
                                                                         echo '
                                                                             <li >
@@ -107,15 +83,14 @@ $arr_parent_1 = array();
         </ul>
     </div>
     <a id="btn-navbar" href="javascript:void(0);"><i class="fas fa-bars bars-icon"></i></a>
-                <!-- <?php var_dump($arr_parent_1);?> -->
     <div id="submenu-container">
         <?php 
             foreach($arr_topic_parents as $key => $topic_parents){
                 if($topic_parents['cmp_has_child']==1 && $topic_parents['cmp_active'] == 1){
                     echo '
-                        <div class="submenu-content">
+                        <div class="submenu-content ">
                             <a href="javascript:void(0)" target="_self">
-                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;" class="wrap-sub-content">
                                     <p style="margin: 0">
                                         '.$topic_parents['cmp_icon'].'
                                         '.$topic_parents['cmp_name'].'
@@ -135,19 +110,18 @@ $arr_parent_1 = array();
                                         <div>
                                     ';
                                     echo '
-                                            <a href="" target="_self">
+                                            <a href="'.$topic_child['cmp_rewrite_name'].'" target="_self">
                                                 <div>
                                                     '.$topic_child['cmp_name'].'
-                                                    
                                                 </div>
                                             </a>
                                             <ul style="margin: 0">
                                     ';
-                                    foreach($clone as $value){
+                                    foreach($arr_topic_child as $value){
                                         if($value['cmp_parent_id']==$topic_child['cmp_id'] && $value['cmp_active']==1){
                                                 echo '
                                                     <li>
-                                                        <a href="" style="padding: 0">
+                                                        <a href="'.$value['cmp_rewrite_name'].'" style="padding: 0">
                                                             <div style="padding-left: 80px"> -'.$value['cmp_name'].'</div>
                                                         </a>
                                                     </li>  
@@ -162,7 +136,7 @@ $arr_parent_1 = array();
                                 else {
                                     echo'
                                         <div>
-                                            <a href="" target="_self">
+                                            <a href="'.$topic_child['cmp_rewrite_name'].'" target="_self">
                                                 <div>'.$topic_child['cmp_name'].' </div>
                                             </a>
                                         </div>
@@ -182,10 +156,12 @@ $arr_parent_1 = array();
                 else if ($topic_parents['cmp_has_child']== 0 && $topic_parents['cmp_active'] == 1){
                     echo'
                         <div class="submenu-content">
-                            <a href="" target="_self">
+                            <a href="'.$topic_parents['cmp_rewrite_name'].'" target="_self">
                                 <div>
-                                '.$topic_parents['cmp_icon'].'
-                                '.$topic_parents['cmp_name'].'
+                                    <p style="margin:0">
+                                        '.$topic_parents['cmp_icon'].'
+                                        '.$topic_parents['cmp_name'].'
+                                    </p>
                                 </div>
                             </a>
                         </div>
