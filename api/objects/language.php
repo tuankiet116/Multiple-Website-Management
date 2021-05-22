@@ -36,5 +36,22 @@ class LanguageConfig{
 
         return $stmt;
     }
+
+    function getLangByID(){
+        $query = "SELECT * FROM " .$this->table_name. " WHERE lang_id = ?";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1, $this->lang_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->lang_name   = $row['lang_name'];
+        $this->lang_path   = $row['lang_path'];
+        $this->lang_image  = $row['lang_image'];
+        $this->lang_domain = $row['lnag_domain'];
+    }
 }
 ?>
