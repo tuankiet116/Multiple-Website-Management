@@ -27,6 +27,19 @@ if (mysqli_num_rows($result->result)) {
     }
 }
 unset($result, $sql);
+
+/********** BUY **********/
+
+$arr_buy = array();
+$sql = "SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
+        FROM configuration WHERE $web_id ";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_buy, $row);
+    }
+}
+unset($result, $sql);
 ?>
 
 
@@ -115,6 +128,7 @@ unset($result, $sql);
                             </div>
                         </div>';
             echo '
+                    <script src="../Green_website/resource/js/slideshow/jquery-3.3.1.min.js"></script>
                     <script type="text/javascript">
                         $(document).ready(function(){
                             var m = 0;
@@ -157,19 +171,26 @@ unset($result, $sql);
 
 <!---------- BUY & CONTACT ---------->
 <div id="func_btn">
-    <div id="buy">
-        <div id="buy-container">
-            <a href="#" target="_self">
-                <div class="func_icon">
-                    <i class="fas fa-shopping-cart"></i>
+
+    <?php
+    foreach ($arr_buy as $key => $buy) {
+        echo '
+            <div id="buy">
+                <div id="buy-container">
+                    <a href="#" target="_self">
+                        <div class="func_icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="buy-content">
+                            <p>Mua hàng:</p>
+                            <p>' . $buy['con_hotline_banhang'] . '</p>
+                        </div>
+                    </a>
                 </div>
-                <div class="buy-content">
-                    <p>Mua hàng:</p>
-                    <p>035.955.9225</p>
-                </div>
-            </a>
-        </div>
-    </div>
+            </div>';
+    }
+    ?>
+    
     <div id="scroll-top">
         <div id="scroll-container">
             <a href="#" target="_self">

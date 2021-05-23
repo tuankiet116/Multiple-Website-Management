@@ -1,29 +1,30 @@
-<?php 
-    require_once('../../classes/database.php');
-    $web_id = 'web_id = 1';
-    $url = 'trang-chu';
+<?php
+require_once('../../classes/database.php');
+$web_id = 'web_id = 1';
+$url = 'trang-chu';
 
-    if(isset($_GET['url'])){
-        $url = $_GET['url'];
-    }
+if (isset($_GET['url'])) {
+    $url = $_GET['url'];
+}
 
-    // if(strpos($url,"/") != false){
-    //     header('location: Cleaning_website/index.php');
-    // }
-    function get_data($url, $web_id){
-        $sql = "SELECT * FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND $web_id";
-        $result = new db_query($sql);
-        if(mysqli_num_rows($result->result)>0){
-            $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
-        }
-        unset($sql, $result);
-        return $data;
+// if(strpos($url,"/") != false){
+//     header('location: Cleaning_website/index.php');
+// }
+function get_data($url, $web_id)
+{
+    $sql = "SELECT * FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND $web_id";
+    $result = new db_query($sql);
+    if (mysqli_num_rows($result->result) > 0) {
+        $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
     }
-    $a = get_data($url, $web_id);
-    if(empty($a)){
-        header('location: ./');
-    }
-    // print_r($a['cmp_background']);
+    unset($sql, $result);
+    return $data;
+}
+$a = get_data($url, $web_id);
+// if (empty($a)) {
+//     header('location: ./');
+// }
+// print_r($a['cmp_background']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,7 +38,7 @@
     <!--------------- HEADER --------------->
 
     <? include("./includes/inc_header.php"); ?>
-    
+
     <!--------------- CONTENT --------------->
     <div class="slider-container">
         <div class="slider-control left inactive"></div>
