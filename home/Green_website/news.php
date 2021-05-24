@@ -70,7 +70,7 @@ unset($result, $sql);
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 order-lg-1 order-md-2 order-sm-2 order-2">
                 <div class="news-left">
                     <div class="news-left-title">
                         <?php
@@ -256,7 +256,7 @@ unset($result, $sql);
                 </div>
             </div>
 
-            <div class="news-right col-lg-9">
+            <div class="news-right col-lg-9 order-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="news-right-container">
                     <div class="breadcrumb">
                         <a href="#" target="_self">Trang chủ</a>

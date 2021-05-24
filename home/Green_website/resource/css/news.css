@@ -285,9 +285,19 @@ body {
 
 /********** Responsive **********/
 
+@media screen and (max-width: 991px) {
+    .container .row .news-left .news-left-content .hotline-logo {
+        width: 25%;
+    }
+}
+
 @media screen and (max-width: 720px) {
     #news-container {
         width: 80%;
+    }
+
+    .container .row .news-left .news-left-content .hotline-logo {
+        width: 40%;
     }
 }
 
