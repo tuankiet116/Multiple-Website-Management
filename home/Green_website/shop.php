@@ -57,7 +57,7 @@ $pageLink = "";
         <div id="shop-container">
             <div class="container-fluid">
                 <div class="breadcrumb">
-                    <a href="#" target="_self">Trang chủ</a>
+                    <a href="#" target="_self">Trang chủ </a>
 
                     <span class="navigation-pipe">
                         <i class="fas fa-chevron-right"></i>

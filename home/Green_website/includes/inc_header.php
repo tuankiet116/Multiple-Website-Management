@@ -85,7 +85,7 @@ unset($result, $sql);
             } else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
                 echo '
                             <li>
-                                <a href="" target="_self">
+                                <a href="http://localhost:8091/home/Green_website/shop.php" target="_self">
                                     <span>' . $topic['cmp_name'] . '</span>
                                 </a>
                             </li>
