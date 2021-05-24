@@ -39,53 +39,48 @@ $arr_parent_1 = array();
                                     ' . $topic_parents['cmp_icon'] . '
                                     ' . $topic_parents['cmp_name'] . '
                                 </a>';
-                    echo '  <div class="sub-content">
+                        echo '  <div class="sub-content">
                                     <div class="sub-navbar"> 
                                         <table>';
-                    foreach ($arr_topic_child as $key => $topic_child) {
-                        if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active'] == 1) {
-                            echo '
-                                                        <tr>
-                                                    ';
-                            if ($topic_child['cmp_has_child'] == 1) {
-                                echo '
-                                                                <td>';
-                                echo '      
-                                                                      
-                                                                    <a href="' . $topic_child['cmp_rewrite_name'] . '">   
-                                                                        ' . $topic_child['cmp_name'] . '
-                                                                    </a>
-                                                                        <ul class="sub-menu-1">
+                                        foreach ($arr_topic_child as $key => $topic_child) {
+                                            if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active'] == 1) {
+                                                echo '
+                                                    <tr>';
+                                                if ($topic_child['cmp_has_child'] == 1) {
+                                                        echo '
+                                                            <td>';
+
+                                                        echo '                            
+                                                                <a href="' . $topic_child['cmp_rewrite_name'] . '">   
+                                                                    ' . $topic_child['cmp_name'] . '
+                                                                </a>
+                                                                    <ul class="sub-menu-1">
+                                                            ';
+                                                            foreach ($clone as $value) {
+                                                                if ($value['cmp_parent_id'] == $topic_child['cmp_id'] && $value['cmp_active'] == 1) {
+                                                                    echo '
+                                                                        <li>
+                                                                            <a href="' . $value['cmp_rewrite_name'] . '"> -' . $value['cmp_name'] . ' </a>
+                                                                        </li>  
+                                                                    ';
+                                                                }
+                                                            }
+                                                                echo '
+                                                                    </ul>
                                                                 ';
-                                foreach ($clone as $value) {
-                                    if ($value['cmp_parent_id'] == $topic_child['cmp_id'] && $value['cmp_active'] == 1) {
-                                        echo '
-                                                                            <li >
-                                                                                <a href="' . $value['cmp_rewrite_name'] . '"> -' . $value['cmp_name'] . ' </a>
-                                                                            </li>  
-                                                                        ';
-                                    }
-                                }
-                                echo '
-                                                                        </ul>
-                                                            ';
-                                echo '
-                                                                       
-                                                                </td>
-                                                            ';
-                            } else {
-                                echo '
-                                                                <td>
-                                                                    <a href="' . $topic_child['cmp_rewrite_name'] . '">' . $topic_child['cmp_name'] . '</a>
-                                                                </td>
-                                                            ';
-                            }
-                            echo '
-                                                        </tr>
-                                                    ';
-                        }
-                    }
-                    echo '           </table>
+                                                        echo '                     
+                                                            </td>';
+                                                } else {
+                                                        echo '
+                                                            <td>
+                                                                <a href="' . $topic_child['cmp_rewrite_name'] . '">' . $topic_child['cmp_name'] . '</a>
+                                                            </td>';
+                                                    }
+                                                echo '
+                                                    </tr>';
+                                            }
+                                        }
+                        echo '          </table>
                                     </div>
                                 </div>
                             </li>';
