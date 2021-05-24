@@ -1,7 +1,7 @@
 <?php 
 require_once('./helper/funtion.php');
 require_once('../../classes/database.php');
-error_reporting(0);
+
 $web_id = 1;
 $url = 'trang-chu';
 
@@ -10,11 +10,10 @@ if(isset($_GET['url'])){
 }
 
 if(strpos($url,"/") !=false){
-    $url = 'trang-chu';
     header('location: http://localhost:8091/home/Cleaning_website/');
 }
 
-$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
+$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
 $url_slide = explode(",", $category['cmp_background']);
 if(empty($category) || $category['cmp_active']==0){
     header('location: http://localhost:8091/home/Cleaning_website/');
@@ -24,6 +23,7 @@ if(empty($category) || $category['cmp_active']==0){
 $post_type = get_data_rows("SELECT * FROM post_type");
 $id_category = get_data_row("SELECT cmp_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
 $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = post_type.post_type_id");  
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -92,7 +92,7 @@ $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = p
                                 echo '
                                     <div class="col-lg-4 col-md-6">
                                         <div class="service-container">
-                                            <a href="detail.php?name='.$p['post_rewrite_name'].'&title='.$p['post_title'].'" target="_self">
+                                            <a href="detail.php?name='.$p['post_rewrite_name'].'&title='.$p['post_title'].'&breadcrumbs='.$category['cmp_rewrite_name'].'&nameBreadcrumbs='.$category['cmp_name'].'" target="_self">
                                                 <div class="service-card">
                                                     <div class="service-front">
                                                         <img src="../../data/web_1/'.$p['post_image_background'].'" alt="carpet cleaning">
@@ -115,22 +115,41 @@ $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = p
                 }
             ?>
         </div>
+        <div class="panigation">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+
+    <!--------------- FOOT --------------->
+
+    <? include("./includes/inc_footer.php") ?>
+    
 
     <div id="contact">
         <div id="phone">
             <i class="fas fa-phone-alt"></i>
         </div>
 
-        <div id="number"> 035.955.9225 </div>
+        <div id="number"> <?php echo $info_footer['con_hotline']?> </div>
     </div>
-
-    <!--------------- FOOT --------------->
-
-    <? include("./includes/inc_footer.php") ?>
-
+    
     <? include("./includes/inc_foot.php"); ?>
-
 
 </body>
 

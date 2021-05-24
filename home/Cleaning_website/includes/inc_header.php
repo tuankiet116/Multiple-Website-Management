@@ -6,6 +6,12 @@ $arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cm
 <div id="menu" class="topnav">
     <div id="menu-container">
         <ul id="navbar" style="width: 100%; text-align: right;">
+            <!-- <li>
+                <a href="" style="font-weight: bold">TIN TỨC</a>
+            </li>
+            <li>
+                <a href="" style="font-weight: bold">TRANG TRỦ</a>
+            </li> -->
             <?php 
                 foreach($arr_topic_parents as $key => $topic_parents){
                     if($topic_parents['cmp_has_child']==1 && $topic_parents['cmp_active'] == 1){
@@ -84,6 +90,16 @@ $arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cm
     </div>
     <a id="btn-navbar" href="javascript:void(0);"><i class="fas fa-bars bars-icon"></i></a>
     <div id="submenu-container">
+        <div class="submenu-content">
+            <a href="" target="_self">
+                <div>
+                    <p style="margin:0">
+                        <i class="fas fa-home"></i>
+                        Tin tức
+                    </p>
+                </div>
+            </a>
+        </div>
         <?php 
             foreach($arr_topic_parents as $key => $topic_parents){
                 if($topic_parents['cmp_has_child']==1 && $topic_parents['cmp_active'] == 1){

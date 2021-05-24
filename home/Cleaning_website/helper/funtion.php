@@ -13,7 +13,6 @@
     }
 
     function get_data_row($query){
-        $data = '';
         $result = new db_query($query);
         if(mysqli_num_rows($result->result)>0){
             $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
