@@ -71,7 +71,8 @@ $(document).ready(function() {
   };
 
   $("#myCarousel").carousel({
-    interval: 5000,
+    interval: 5000, 
+    target: '+=1'
   });
 
   $(".carousel .carousel-item").each(function () {
@@ -98,5 +99,9 @@ $(document).ready(function() {
     $("html, body").animate({ scrollTop: 0}, 500);
     return false;
   });
+
+  /********** Carousel  **********/
+
+  $("#myCarousel .carousel-inner .carousel-item:first-child").addClass("active");
 });
 

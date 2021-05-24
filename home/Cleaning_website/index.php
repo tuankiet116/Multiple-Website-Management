@@ -1,6 +1,5 @@
-<?php 
+<?php  
 require_once('./helper/funtion.php');
-require_once('../../classes/database.php');
 
 $web_id = 1;
 $url = 'trang-chu';
@@ -9,16 +8,20 @@ if(isset($_GET['url'])){
     $url = $_GET['url'];
 }
 
+if(isset($_GET['page'])){
+    echo '<h1>'.$_GET['page'].'</h1>';
+}
+
 if(strpos($url,"/") !=false){
     header('location: http://localhost:8091/home/Cleaning_website/');
 }
 
 $category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
+
 $url_slide = explode(",", $category['cmp_background']);
 if(empty($category) || $category['cmp_active']==0){
     header('location: http://localhost:8091/home/Cleaning_website/');
 }
-
 
 $post_type = get_data_rows("SELECT * FROM post_type");
 $id_category = get_data_row("SELECT cmp_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
@@ -46,7 +49,7 @@ $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = p
     <!--------------- HEADER --------------->
 
     <? include("./includes/inc_header.php"); ?>
-    
+
     <!--------------- CONTENT --------------->
     <div class="slide-container" style="padding-top: 20px;">
         <?php if($category['bgt_type']=='slide'){?>
@@ -123,9 +126,9 @@ $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = p
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="<?php echo $category['cmp_rewrite_name']?>&page=1">1</a></li>
+                    <li class="page-item"><a class="page-link" href="<?php echo $category['cmp_rewrite_name']?>&page=2">2</a></li>
+                    <li class="page-item"><a class="page-link" href="<?php echo $category['cmp_rewrite_name']?>&page=3">3</a></li>
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>

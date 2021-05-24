@@ -1,6 +1,5 @@
 <?php 
     require_once('../../classes/database.php');
-
     function get_data_rows($query){
         $arr = array();
         $result = new db_query($query);
