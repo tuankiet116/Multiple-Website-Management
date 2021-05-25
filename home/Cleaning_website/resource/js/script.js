@@ -17,6 +17,15 @@ $(document).ready(function () {
       if (!i) $li.addClass("active");
       $pagination.append($li);
     }
+
+    $(".slider-slick").slick({
+      dots: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 1,
+      adaptiveHeight: true,
+      arrows: false,
+    });
   }
 
   createBullets();
@@ -72,47 +81,47 @@ $(document).ready(function () {
     changeSlides();
   }
 
-  $(document).on("mousedown touchstart", ".slider", function (e) {
-    if (animating) return;
-    window.clearTimeout(autoSlideTimeout);
-    var startX = e.pageX || e.originalEvent.touches[0].pageX,
-      winW = $(window).width();
-    diff = 0;
+  // $(document).on("mousedown touchstart", ".slider", function (e) {
+  //   if (animating) return;
+  //   window.clearTimeout(autoSlideTimeout);
+  //   var startX = e.pageX || e.originalEvent.touches[0].pageX,
+  //     winW = $(window).width();
+  //   diff = 0;
 
-    $(document).on("mousemove touchmove", function (e) {
-      var x = e.pageX || e.originalEvent.touches[0].pageX;
-      diff = ((startX - x) / winW) * 70;
-      if ((!curSlide && diff < 0) || (curSlide === numOfSlides && diff > 0))
-        diff /= 2;
-      $slider.css(
-        "transform",
-        "translate3d(" + (-curSlide * 100 - diff) + "%,0,0)"
-      );
-      $slideBGs.css(
-        "transform",
-        "translate3d(" + (curSlide * 50 + diff / 2) + "%,0,0)"
-      );
-    });
-  });
+  //   $(document).on("mousemove touchmove", function (e) {
+  //     var x = e.pageX || e.originalEvent.touches[0].pageX;
+  //     diff = ((startX - x) / winW) * 70;
+  //     if ((!curSlide && diff < 0) || (curSlide === numOfSlides && diff > 0))
+  //       diff /= 2;
+  //     $slider.css(
+  //       "transform",
+  //       "translate3d(" + (-curSlide * 100 - diff) + "%,0,0)"
+  //     );
+  //     $slideBGs.css(
+  //       "transform",
+  //       "translate3d(" + (curSlide * 50 + diff / 2) + "%,0,0)"
+  //     );
+  //   });
+  // });
 
-  $(document).on("mouseup touchend", function (e) {
-    $(document).off("mousemove touchmove");
-    if (animating) return;
-    if (!diff) {
-      changeSlides(true);
-      return;
-    }
-    if (diff > -8 && diff < 8) {
-      changeSlides();
-      return;
-    }
-    if (diff <= -8) {
-      navigateLeft();
-    }
-    if (diff >= 8) {
-      navigateRight();
-    }
-  });
+  // $(document).on("mouseup touchend", function (e) {
+  //   $(document).off("mousemove touchmove");
+  //   if (animating) return;
+  //   if (!diff) {
+  //     changeSlides(true);
+  //     return;
+  //   }
+  //   if (diff > -8 && diff < 8) {
+  //     changeSlides();
+  //     return;
+  //   }
+  //   if (diff <= -8) {
+  //     navigateLeft();
+  //   }
+  //   if (diff >= 8) {
+  //     navigateRight();
+  //   }
+  // });
 
   $(document).on("click", ".slider-control", function () {
     if ($(this).hasClass("left")) {
@@ -157,17 +166,18 @@ $(document).ready(function () {
     }
   });
 
-  $('.submenu-content').click(function(){
-    $(this).children('.sub-link').slideToggle('slow');
-  })
+  $(".submenu-content").click(function () {
+    $(this).children(".sub-link").slideToggle("slow");
+    $(this).toggleClass("roteta-icon");
+  });
 
   // $(window).scroll(function(){
   //   $(window).scrollTop()> 300 ? $('#menu').css("position", "fixed"): $('#menu').css("position", "sticky");
   // })
 
-  window.onload = (function() {
-    $(window).scroll(function() {
-      if ($(window).scrollTop() > 300) {
+  window.onload = function () {
+    $(window).scroll(function () {
+      if ($(window).scrollTop() > 100) {
         $("#menu").css("position", "fixed");
         $("#menu").addClass("menu-fixed");
       }
@@ -176,5 +186,42 @@ $(document).ready(function () {
         $("#menu").removeClass("menu-fixed");
       }
     });
-  }); 
+  };
+
+  var slide_left = 0;
+  var slide_bgLeft = 0;
+  $(".slide").each(function () {
+    slide_left += 100;
+    $(this).css("left", slide_left + "%");
+  });
+  $(".slide .slide__bg").each(function () {
+    slide_bgLeft += -50;
+    $(this).css("left", slide_bgLeft + "%");
+  });
+
+  /********** Scroll to top  **********/
+
+  $("#scroll-top").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    return false;
+  });
 });
+
+$('.slider .slide:first-child').addClass('active');
+
+function escapeHtml(text) {
+  var map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+
+
+
+

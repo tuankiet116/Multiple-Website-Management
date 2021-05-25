@@ -1,49 +1,20 @@
-<!---------- MENU ---------->
-
 <?php
-require_once('../../classes/database.php');
-$web_id = 'web_id = 2';
+
+$web_id = 2;
 
 /********** Parents **********/
 
-$arr_topic_parents = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND $web_id";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_topic_parents, $row);
-    }
-}
-unset($result, $sql);
+$arr_topic_parents = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
 
 /********** Child **********/
 
-$arr_topic_child = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND $web_id";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_topic_child, $row);
-    }
-}
-unset($result, $sql);
+$arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
 
 /********** BUY **********/
 
-$arr_buy = array();
-$sql = "SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
-        FROM configuration WHERE $web_id ";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_buy, $row);
-    }
-}
-unset($result, $sql);
+$arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
+                            FROM configuration WHERE web_id = $web_id ");
 ?>
-
-
-
 
 <div id="menu">
     <div id="logo">

@@ -1,62 +1,42 @@
 <?php
-require_once('../../classes/database.php');
-$web_id = 'web_id = 2';
+require_once("./helper/function.php");
+$web_id = 2;
+
+if (isset($_GET['name'])) {
+    $name = $_GET['name'];
+    $title1 = $_GET['title'];
+    $breadcrumbs = $_GET['breadcrumbs'];
+    $name_breadcrumbs = $_GET['nameBreadcrumbs'];
+    $post_news = $_GET['postNews'];
+}
+
+$post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FROM post_detail, post WHERE post.ptd_id = post_detail.ptd_id AND post.post_rewrite_name = '$name'");
+$post_content = get_data_rows("SELECT * FROM post_detail");
 
 /********** LEFT TITLE  **********/
 
-$arr_left_title = array();
-$sql = "SELECT * FROM post_type";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_left_title, $row);
-    }
-}
-unset($result, $sql);
+$arr_left_title = get_data_rows("SELECT * FROM post_type");
 
 /********** HOUSE **********/
 
-$arr_house = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE cmp_parent_id = 8 AND $web_id";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_house, $row);
-    }
-}
-unset($result, $sql);
+$arr_house = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id = 8 AND web_id = $web_id");
 
 /********** NEWS POST **********/
 
-$arr_news_post = array();
-$sql = "SELECT * FROM post ORDER BY post_datetime_create DESC LIMIT 6";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_news_post, $row);
-    }
-}
-unset($result, $sql);
+$arr_news_post = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC LIMIT 6");
 
 /********** CONTACT **********/
 
-$arr_contact = array();
-$sql = "SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
-        FROM configuration WHERE $web_id ";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_contact, $row);
-    }
-}
-unset($result, $sql);
+$arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
+                                FROM configuration WHERE web_id = $web_id ");
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title> Dịch vụ mua bán cây cảnh </title>
+    <title> <?php echo $title1 ?> </title>
     <? include("./includes/inc_head.php"); ?>
     <link rel="stylesheet" href="../Green_website/resource/css/news.css">
 </head>
@@ -271,11 +251,17 @@ unset($result, $sql);
                             <i class="fas fa-chevron-right"></i>
                         </span>
 
-                        <a href="#" target="_self">Thiết kế thi công sân vườn biệt thự</a>
+                        <a href="#" target="_self"><?php echo $title1 ?></a>
                     </div>
 
                     <div class="news-right-content">
-                        <p></p>
+                        <?php 
+                            foreach($post_content as $p_content) {
+                                if ($p_content['ptd_id'] == $post_news) {
+                                    echo $p_content['ptd_text'];
+                                } 
+                            }      
+                        ?>
                     </div>
 
                     <div class="contact-footer">
