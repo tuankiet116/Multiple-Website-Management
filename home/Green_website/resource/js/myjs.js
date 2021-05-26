@@ -99,5 +99,9 @@ $(document).ready(function() {
     $("html, body").animate({ scrollTop: 0}, 500);
     return false;
   });
+
+  /********** Carousel  **********/
+
+  $("#myCarousel .carousel-inner .carousel-item:first-child").addClass("active");
 });
 

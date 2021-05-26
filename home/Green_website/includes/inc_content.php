@@ -1,6 +1,4 @@
 <?php
-require_once('../../classes/database.php');
-$web_id = 'web_id = 2';
 
 /********** TITLE **********/
 
@@ -46,6 +44,18 @@ $result = new db_query($sql);
 if (mysqli_num_rows($result->result)) {
     while ($row = mysqli_fetch_assoc($result->result)) {
         array_push($arr_banner, $row);
+    }
+}
+unset($result, $sql);
+
+/********** NEWS **********/
+
+$arr_news = array();
+$sql = "SELECT * FROM post ORDER BY post_datetime_create DESC LIMIT 5";
+$result = new db_query($sql);
+if (mysqli_num_rows($result->result)) {
+    while ($row = mysqli_fetch_assoc($result->result)) {
+        array_push($arr_news, $row);
     }
 }
 unset($result, $sql);
@@ -228,20 +238,24 @@ unset($result, $sql);
 
         <div class="row">
             <?php
-            foreach ($arr_post as $key => $post) {
-                if ($post['cmp_id'] == 8 && $post['post_description'] == '' && $post['post_meta_description'] != 'more') {
+            foreach ($arr_news as $key => $news) {
+                if ($news['cmp_id'] == 8 && $news['post_description'] == '' && $news['post_meta_description'] != 'more') {
+
+                    $date = $news['post_datetime_create'];
+                    $myDate = date("d-m-Y", strtotime($date));
+
                     echo '
                         <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="row news-all">
                                 <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
                                     <a href="./news.php" target="_self">
-                                        <img src="' . $post['post_image_background'] . '" alt="news image">
+                                        <img src="' . $news['post_image_background'] . '" alt="news image">
                                     </a>
                                 </div>
                                 <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                                    <p class="news-date">' . $post['post_datetime_create'] . '</p>
+                                    <p class="news-date">' . $myDate . '</p>
                                     <a href="" target="_self" class="news-title">
-                                        ' . $post['post_title'] . '
+                                        ' . $news['post_title'] . '
                                     </a>
                                     <a href="" target="_self" class="news-viewmore">
                                         <i class="fas fa-angle-right"></i>
