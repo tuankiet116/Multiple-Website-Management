@@ -51,7 +51,7 @@ class LanguageConfig{
         $this->lang_name   = $row['lang_name'];
         $this->lang_path   = $row['lang_path'];
         $this->lang_image  = $row['lang_image'];
-        $this->lang_domain = $row['lnag_domain'];
+        $this->lang_domain = $row['lang_domain'];
     }
 }
 ?>

@@ -8,7 +8,7 @@
 */
 
 var oldValue;
-var newValue;
+var found = false;
 
 $(document).ready(function(){
   $('b[role="presentation"]').hide();
@@ -122,12 +122,20 @@ $(document).ready(function(){
       async: false,
       success: function(data){
         if(parseInt(data.code) == 200){// Request OK
+          found = true;
           getSuccessDataConfiguration(data);
           oldValue = data;
-          //console.log(oldValue);
+          delete oldValue.code;
+          delete oldValue.con_banner_image;
+          delete oldValue.con_background_homepage;
+          delete oldValue.con_logo_bottom;
+          delete oldValue.con_logo_top;
+          delete oldValue.con_id;
+          console.log(oldValue);
         }
         if(parseInt(data.code) == 404){
           ResetForm();
+          found = false;
         }
       },
       error: function(){
@@ -138,7 +146,13 @@ $(document).ready(function(){
 
   //Check Old Value With New Value
   $('.configuations input').on('keyup', function(){
-    GetAllData();
+    data_new = GetAllData();
+    if(JSON.stringify(data_new) == JSON.stringify(oldValue)){
+      $('#submit_configuation').attr('disabled', true);
+    }
+    else{
+      $('#submit_configuation').attr('disabled', false);
+    }
   });
 
   // Input Image Processing When Image Is NULL
@@ -150,11 +164,16 @@ $(document).ready(function(){
 
     $('#'+id).change(function(e) {
       var filename = exGetImg(e.target, '#' + id);
+      $('#submit_configuation').attr('disabled', false);
     });
   });
 
   $(".input-image-container i").on('click',function(e){
-    
+    var image_element = $(this).siblings('.input-image').find('img');
+    var id_image = "#" + image_element.attr('id');
+    $(id_image).attr('src', '#');
+    $(id_image).css('display', 'none');
+    $(id_image).siblings('svg').css('display', 'block');
   });
 
   $(".input-image img").hover(function(e){
@@ -173,8 +192,9 @@ $(document).ready(function(){
     $(this).css("display", "none");
   });
 
-  $(".form-input-background-homepage").on("change", function(e){
-    
+  $("#submit_configuation").on('click', function(e){
+    e.preventDefault();
+    uploadInformation();
   });
 });
 
@@ -427,80 +447,98 @@ function ResetForm(){
 
 //Get Data From Input
 function GetAllData(){
-  input_email = $('#input-admin-email').val();
-  input_site_title = $('#input-site-title').val();
-  input_meta_description = $('#input-meta-description').val();
-  input_meta_keyword = $('#input-meta-keyword').val();
-  input_rewrite = $('#input-rewrite').val();
-  input_extention = $('#input-extention').val();
-  pick_language = $('.pick_language').select2('val');
-  input_hotline = $('#input-hotline').val();
-  input_hotline_banhang = $('#input-hotline-banhang').val();
-  input_hotline_kythuat = $('#input-hotline-kythuat').val();
-  input_address = $('#input-address').val();
-  check_active_contact = $('#check-active-contact').val();
-
-  // //Set image Data
-  // setImageData(data.con_background_homepage, '#image_background_homepage_', 7);
-
-  // $('#input-payment').val(data.con_info_payment);
-  // $('#input-fee-transport').val(data.con_fee_transport);
-  // $('#input-contact-sale').val(data.con_contact_sale);
-  // $('#input-info-company').val(data.con_info_company);
-
-  // //Set Logo-Top and Bottom Data
-  // setImageData(data.con_logo_top, '#image_logo_top');
-  // setImageData(data.con_logo_bottom, '#image_logo_bottom');
-
-  // $('#input-page-fb').val(data.con_page_fb);
-  // $('#input-link-fb').val(data.con_link_fb);
-  // $('#input-link-insta').val(data.con_link_insta);
-  // $('#input-link-twitter').val(data.con_link_twitter);
-  // $('#input-map').val(data.con_map);
-
-  // //Set Image Banner
-  // setImageData(data.con_banner_image, '#image_banner');
-
-  // $('#input-banner-title').val(data.con_banner_title);
-  // $('#input-banner-description').val(data.con_banner_description);
-
-  // //Set Check Active Banner
-  // if(parseInt(data.con_banner_active) == 1){
-  //   $('#check-active-banner').prop('checked', true);
-  // }
-  // else{
-  //   $('#check-active-banner').prop('checked', false);
-  // }
+  input_email              = $('#input-admin-email').val();
+  input_site_title         = $('#input-site-title').val();
+  input_meta_description   = $('#input-meta-description').val();
+  input_meta_keyword       = $('#input-meta-keyword').val();
+  input_rewrite            = $('#input-rewrite').val() == 'on'? '1':'0';
+  input_extention          = $('#input-extention').val();
+  pick_language            = $('.pick_language').select2('val');
+  input_hotline            = $('#input-hotline').val();
+  input_hotline_banhang    = $('#input-hotline-banhang').val();
+  input_hotline_kythuat    = $('#input-hotline-kythuat').val();
+  input_address            = $('#input-address').val();
+  check_active_contact     = $('#check-active-contact').val() == 'on'? '1':'0';
+  input_payment            = $('#input-payment').val();
+  input_fee_transport      = $('#input-fee-transport').val();
+  input_contact_sale       = $('#input-contact-sale').val();
+  input_info_company       = $('#input-info-company').val();
+  input_page_fb            = $('#input-page-fb').val();
+  input_link_fb            = $('#input-link-fb').val();
+  input_link_insta         = $('#input-link-insta').val();
+  input_link_twitter       = $('#input-link-twitter').val();
+  input_map                = $('#input-map').val();
+  input_banner_title       = $('#input-banner-title').val();
+  input_banner_description = $('#input-banner-description').val();
+  check_active_banner      = $('#check-active-banner').val() == 'on'? '1':'0';
 
   data = {
     con_admin_email           : input_email.trim(),
-    con_site_title            : input_site_title,
-    con_meta_description      : input_meta_description,
-    con_meta_keyword          : input_meta_keyword,
+    con_site_title            : input_site_title.trim(),
+    con_meta_description      : input_meta_description.trim(),
+    con_meta_keyword          : input_meta_keyword.trim(),
     con_mod_rewrite           : input_rewrite,
-    con_extenstion            : input_extention,
-    lang_id                   : pick_language,
+    con_extenstion            : input_extention.trim(),
+    lang_id                   : pick_language.trim(),
     con_active_contact        : check_active_contact,
-    con_hotline               : input_hotline,
-    con_hotline_banhang       : input_hotline_banhang,
-    con_hotline_hotro_kythuat : input_hotline_kythuat,
-    con_address               : input_address,
-    // con_background_homepage   : con_background_homepage,
-    // con_info_payment          : con_info_payment,
-    // con_fee_transport         : con_fee_transport,
-    // con_contact_sale          : con_contact_sale,
-    // con_info_company          : con_info_company,
-    // con_logo_top              : con_logo_top,
-    // con_logo_bottom           : con_logo_bottom,
-    // con_page_fb               : con_page_fb,
-    // con_link_fb               : con_link_fb,
-    // con_link_twitter          : con_link_twitter,
-    // con_link_insta            : con_link_insta,
-    // con_map                   : con_map,
-    // con_banner_title          : con_banner_title,
-    // con_banner_description    : con_banner_description,
-    // con_banner_active         : con_banner_active
+    con_hotline               : input_hotline.trim(),
+    con_hotline_banhang       : input_hotline_banhang.trim(),
+    con_hotline_hotro_kythuat : input_hotline_kythuat.trim(),
+    con_address               : input_address.trim(),
+    con_info_payment          : input_payment.trim(),
+    con_fee_transport         : input_fee_transport.trim(),
+    con_contact_sale          : input_contact_sale.trim(),
+    con_info_company          : input_info_company.trim(),
+    con_page_fb               : input_page_fb.trim(),
+    con_link_fb               : input_link_fb.trim(),
+    con_link_twitter          : input_link_twitter.trim(),
+    con_link_insta            : input_link_insta.trim(),
+    con_map                   : input_map.trim(),
+    con_banner_title          : input_banner_title.trim(),
+    con_banner_description    : input_banner_description.trim(),
+    con_banner_active         : check_active_banner
   }
   console.log(data);
+  return data;
 }
 
+function uploadInformation(){
+  data = GetAllData();
+  data.image_background_homepage_1 = $('#image_background_homepage_1').attr('src');
+  data.image_background_homepage_2 = $('#image_background_homepage_2').attr('src');
+  data.image_background_homepage_3 = $('#image_background_homepage_3').attr('src');
+  data.image_background_homepage_4 = $('#image_background_homepage_4').attr('src');
+  data.image_background_homepage_5 = $('#image_background_homepage_5').attr('src');
+  data.image_background_homepage_6 = $('#image_background_homepage_6').attr('src');
+  data.image_background_homepage_7 = $('#image_background_homepage_7').attr('src');
+  data.image_logo_top        = $('#image_logo_top').attr('src');
+  data.image_logo_bottom     = $('#image_logo_bottom').attr('src');
+  data.image_banner          = $('#image_banner').attr('src');
+  console.log(data);
+
+  var url = '../../../api/Controller/createConfigurations.php';
+  if(found){
+    var url = '../../../api/Controller/updateConfigurations.php';
+  }
+  
+  data = JSON.stringify(data);
+  $.ajax({
+    type: 'POST',
+    dataType: 'JSON',
+    data: data,
+    url: url,
+    success: function(data){
+      if(found){
+        alert("Success Update");
+      }
+      alert("Success Create");
+      found = true;
+    },
+    error: function(){
+      if(found){
+        alert("Error Update");
+      }
+      alert("Error Create");
+    }
+  });
+}
