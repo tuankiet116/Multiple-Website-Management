@@ -8,6 +8,7 @@
 */
 
 var oldValue;
+var found = false;
 
 $(document).ready(function(){
   $('b[role="presentation"]').hide();
@@ -121,6 +122,7 @@ $(document).ready(function(){
       async: false,
       success: function(data){
         if(parseInt(data.code) == 200){// Request OK
+          found = true;
           getSuccessDataConfiguration(data);
           oldValue = data;
           delete oldValue.code;
@@ -133,6 +135,7 @@ $(document).ready(function(){
         }
         if(parseInt(data.code) == 404){
           ResetForm();
+          found = false;
         }
       },
       error: function(){
@@ -501,20 +504,41 @@ function GetAllData(){
 
 function uploadInformation(){
   data = GetAllData();
-  data.background_homepage_1 = $('#image_background_homepage_1').attr('src');
-  data.background_homepage_2 = $('#image_background_homepage_2').attr('src');
-  data.background_homepage_3 = $('#image_background_homepage_3').attr('src');
-  data.background_homepage_4 = $('#image_background_homepage_4').attr('src');
-  data.background_homepage_5 = $('#image_background_homepage_5').attr('src');
-  data.background_homepage_6 = $('#image_background_homepage_6').attr('src');
-  data.background_homepage_7 = $('#image_background_homepage_7').attr('src');
+  data.image_background_homepage_1 = $('#image_background_homepage_1').attr('src');
+  data.image_background_homepage_2 = $('#image_background_homepage_2').attr('src');
+  data.image_background_homepage_3 = $('#image_background_homepage_3').attr('src');
+  data.image_background_homepage_4 = $('#image_background_homepage_4').attr('src');
+  data.image_background_homepage_5 = $('#image_background_homepage_5').attr('src');
+  data.image_background_homepage_6 = $('#image_background_homepage_6').attr('src');
+  data.image_background_homepage_7 = $('#image_background_homepage_7').attr('src');
   data.image_logo_top        = $('#image_logo_top').attr('src');
   data.image_logo_bottom     = $('#image_logo_bottom').attr('src');
   data.image_banner          = $('#image_banner').attr('src');
   console.log(data);
 
+  var url = '../../../api/Controller/createConfigurations.php';
+  if(found){
+    var url = '../../../api/Controller/updateConfigurations.php';
+  }
+  
   data = JSON.stringify(data);
   $.ajax({
-    
+    type: 'POST',
+    dataType: 'JSON',
+    data: data,
+    url: url,
+    success: function(data){
+      if(found){
+        alert("Success Update");
+      }
+      alert("Success Create");
+      found = true;
+    },
+    error: function(){
+      if(found){
+        alert("Error Update");
+      }
+      alert("Error Create");
+    }
   });
 }

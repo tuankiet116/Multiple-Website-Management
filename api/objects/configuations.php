@@ -102,15 +102,15 @@ class Configuations{
                   Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt  = $this->conn->prepare($query);
 
-        $stmt->bindParam(1,  $this->web_id);
+        $stmt->bindParam(1,  $this->web_id,  PDO::PARAM_INT);
         $stmt->bindParam(2,  $this->con_admin_email);
         $stmt->bindParam(3,  $this->con_site_title);
         $stmt->bindParam(4,  $this->con_meta_description);
         $stmt->bindParam(5,  $this->con_meta_keyword);
-        $stmt->bindParam(6,  $this->con_mod_rewrite);
+        $stmt->bindParam(6,  $this->con_mod_rewrite, PDO::PARAM_INT);
         $stmt->bindParam(7,  $this->con_extenstion);
-        $stmt->bindParam(8,  $this->lang_id);
-        $stmt->bindParam(9,  $this->con_active_contact);
+        $stmt->bindParam(8,  $this->lang_id, PDO::PARAM_INT);
+        $stmt->bindParam(9,  $this->con_active_contact, PDO::PARAM_INT);
         $stmt->bindParam(10, $this->con_hotline);
         $stmt->bindParam(11, $this->con_hotline_banhang);
         $stmt->bindParam(12, $this->con_hotline_hotro_kythuat);
@@ -130,13 +130,12 @@ class Configuations{
         $stmt->bindParam(26, $this->con_banner_image);
         $stmt->bindParam(27, $this->con_banner_title);
         $stmt->bindParam(28, $this->con_banner_description);
-        $stmt->bindParam(29, $this->con_banner_active);
+        $stmt->bindParam(29, $this->con_banner_active, PDO::PARAM_INT);
 
-        if($stmt->excute()){
+        if($stmt->execute()){
             return true;
         }
         return false;
-
     }
 
     function update(){
@@ -172,15 +171,15 @@ class Configuations{
                   WHERE web_id              = :web_id";
         $stmt  = $this->conn->prepare($query);
 
-        $stmt->bindParam(':web_id'                   , $this->web_id);
+        $stmt->bindParam(':web_id'                   , $this->web_id, PDO::PARAM_INT);
         $stmt->bindParam(':con_admin_email'          , $this->con_admin_email);
         $stmt->bindParam(':con_site_title'           , $this->con_site_title);
         $stmt->bindParam(':con_meta_description'     , $this->con_meta_description);
         $stmt->bindParam(':con_meta_keyword'         , $this->con_meta_keyword);
-        $stmt->bindParam(':con_mod_rewrite'          , $this->con_mod_rewrite);
+        $stmt->bindParam(':con_mod_rewrite'          , $this->con_mod_rewrite, PDO::PARAM_INT);
         $stmt->bindParam(':con_extenstion'           , $this->con_extenstion);
-        $stmt->bindParam(':lang_id'                  , $this->lang_id);
-        $stmt->bindParam(':con_active_contact'       , $this->con_active_contact);
+        $stmt->bindParam(':lang_id'                  , $this->lang_id, PDO::PARAM_INT);
+        $stmt->bindParam(':con_active_contact'       , $this->con_active_contact, PDO::PARAM_INT);
         $stmt->bindParam(':con_hotline'              , $this->con_hotline);
         $stmt->bindParam(':con_hotline_banhang'      , $this->con_hotline_banhang);
         $stmt->bindParam(':con_hotline_hotro_kythuat', $this->con_hotline_hotro_kythuat);
@@ -200,9 +199,9 @@ class Configuations{
         $stmt->bindParam(':con_banner_image'         , $this->con_banner_image);
         $stmt->bindParam(':con_banner_title'         , $this->con_banner_title);
         $stmt->bindParam(':con_banner_description'   , $this->con_banner_description);
-        $stmt->bindParam(':con_banner_active'        , $this->con_banner_active);
+        $stmt->bindParam(':con_banner_active'        , $this->con_banner_active, PDO::PARAM_INT);
 
-        if($stmt->excute()){
+        if($stmt->execute()){
             return true;
         }
         return false;

@@ -60,6 +60,42 @@ class upload_image{
 		}
 	}
 
+	//Update By TuanKiet
+	function upload_base64($data, $url ,$extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
+		$pos  = strpos($data, ';');
+		$type = explode(':image/', substr($data, 0, $pos))[1]; // jpg, png, gif
+		$data = substr($data, strpos($data, ',') + 1);
+	
+		// //Check upload extension
+		// if($this->checkExtension($type, $extension_list, 1) != 1){
+		// 	$this->common_error		= "&bull; Phần mở rộng của file không đúng.<br />&bull; Bạn chỉ upload được những file có phần mở rộng là: " . strtoupper($extension_list) . "<br />";
+		// 	$this->warning_error		= $this->common_error;
+		// 	return;
+		// }
+
+		// //Check file_size
+		// if((int)strlen(rtrim($data, '=')) * 0.75 > $limit_size * 1024){
+		// 	$this->common_error		= "&bull; Yêu cầu dung lượng ảnh tải lên nhỏ hơn " . $limit_size . " KB.<br />";
+		// 	$this->warning_error	= $this->common_error;
+		// 	return;
+		// }
+
+		$data = str_replace( ' ', '+', $data );
+		$data = base64_decode($data);
+		
+		if ($data === false) {
+			throw new \Exception('base64_decode failed');
+		}
+
+		//Generate new filename
+		$new_filename					= $this->generate_name($filename, $name_prefix);
+		$this->file_name				= $new_filename;
+
+		file_put_contents("{$url}/{$new_filename}.{$type}", $data);
+		return "$url/$new_filename".$type;
+	}
+
+
 	/*
 	Show error for coder
 	*/
@@ -86,8 +122,11 @@ class upload_image{
 	/*
 	Check extension file
 	*/
-	function checkExtension($filename, $allowList){
-		$sExtension = $this->getExtension($filename);
+	function checkExtension($filename, $allowList, $isExtension = 0){
+		$sExtension = $filename;
+		if($isExtension == 0){
+			$sExtension = $this->getExtension($filename);
+		}
 		$allowArray	= explode(",", $allowList);
 		$allowPass	= 0;
 		for($i=0; $i<count($allowArray); $i++){
