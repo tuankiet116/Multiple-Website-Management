@@ -28,7 +28,7 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
                 $arr_child_id = explode(",", $topic['cmp_has_child']);
                 echo '
                         <li>
-                            <a href="#" target="_self">
+                            <a href="' . $topic['cmp_post'] . '" target="_self">
                                 <span>' . $topic['cmp_name'] . '</span>
                             </a>';
                 echo '
@@ -40,7 +40,7 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
                         echo '
                                             <tr>
                                                 <td>
-                                                    <a href="" target="_self">
+                                                    <a href="' . $topic['cmp_post'] . '" target="_self">
                                                         <div> ' . $topic_child['cmp_name'] . ' </div>
                                                     </a>
                                                 </td>
@@ -56,7 +56,7 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
             } else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
                 echo '
                             <li>
-                                <a href="http://localhost:8091/home/Green_website/shop.php" target="_self">
+                                <a href="' . $topic['cmp_post'] . '" target="_self">
                                     <span>' . $topic['cmp_name'] . '</span>
                                 </a>
                             </li>
@@ -127,7 +127,7 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
         } else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
             echo '
                                 <div id="sub-menu-container">
-                                    <a href="#" target="_self">
+                                    <a href="' . $topic['cmp_post'] . '" target="_self">
                                         <div>
                                             ' . $topic['cmp_name'] . '
                                         </div>

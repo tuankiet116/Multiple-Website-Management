@@ -21,10 +21,6 @@ $arr_left_title = get_data_rows("SELECT * FROM post_type");
 
 $arr_house = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id = 8 AND web_id = $web_id");
 
-/********** NEWS POST **********/
-
-$arr_news_post = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC LIMIT 6");
-
 /********** CONTACT **********/
 
 $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
@@ -55,7 +51,7 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                     <div class="news-left-title">
                         <?php
                         foreach ($arr_left_title as $key => $title) {
-                            if ($title['post_type_id'] == 5 && $title['post_type_show'] == 'title') {
+                            if ($title['post_type_show'] == 'nha-dep') {
                                 echo '
                                     <a href="#" target="_self">
                                         ' . $title['post_type_title'] . '
@@ -87,13 +83,15 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                 <div class="news-left">
                     <?php
                     foreach ($arr_left_title as $key => $title) {
-                        if ($title['post_type_id'] == 6 && $title['post_type_show'] == 'title') {
+                        if ($title['post_type_show'] == 'bai-viet-moi') {
                             echo '
                                     <div class="news-left-title">
                                         <a href="#" target="_self">
                                             ' . $title['post_type_title'] . '
                                         </a>
                                     </div>';
+
+                            $left_id = $title['cmp_id'];
                         }
                     }
                     ?>
@@ -101,8 +99,9 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                     <div class="news-left-content">
                         <ul class="list-news">
                             <?php
+                            $arr_news_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $left_id ORDER BY post_datetime_create DESC LIMIT 6");
                             foreach ($arr_news_post as $key => $news_post) {
-                                if ($news_post['cmp_id'] == 8 && $news_post['post_image_background'] != '') {
+                                if ($news_post['post_image_background'] != '') {
 
                                     $date = $news_post['post_datetime_create'];
                                     $myDate = date("d-m-Y", strtotime($date));
@@ -137,7 +136,7 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                 <div class="news-left">
                     <?php
                     foreach ($arr_left_title as $key => $title) {
-                        if ($title['post_type_id'] == 7 && $title['post_type_show'] == 'title') {
+                        if ($title['post_type_show'] == 'ho-tro-truc-tuyen') {
                             echo '
                                     <div class="news-left-title">
                                         <a href="#" target="_self">
@@ -151,7 +150,7 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                     <div class="news-left-content">
                         <?php
                         foreach ($arr_left_title as $key => $title) {
-                            if ($title['post_type_id'] == 8 && $title['post_type_show'] == 'sub-title') {
+                            if ($title['post_type_show'] == 'truc-tuyen') {
                                 echo '
                                     <div class="hotline-title">' . $title['post_type_title'] . '</div>';
                             }
@@ -206,7 +205,7 @@ $arr_contact = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hot
                         <div class="hotline-support">
                             <?php
                             foreach ($arr_left_title as $key => $title) {
-                                if ($title['post_type_id'] == 9 && $title['post_type_show'] == 'sub-title') {
+                                if ($title['post_type_show'] == 'ho-tro') {
                                     echo '
                                         <div class="hotline-title">' . $title['post_type_title'] . '</div>';
                                 }
