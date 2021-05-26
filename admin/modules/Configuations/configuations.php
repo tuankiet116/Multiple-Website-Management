@@ -1,6 +1,6 @@
 <?
     require("inc_security.php");
-    
+    require("upload.php");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -37,58 +37,58 @@
             </div>
 
             <div class="configuations">
-                <form enctype='multipart/form-data' method='post' action=''>
+                <form enctype='multipart/form-data' method='post' action='#'>
                     <div class="form-group form-configuations">
                         <label for="input-admin-email"><?=translate_text('Admin Email')?></label>
-                        <input type="email" class="form-control" id="input-admin-email" value="" placeholder="<?=translate_text('Thêm Admin Email')?>">
+                        <input name="input-admin-email" type="email" class="form-control" id="input-admin-email" value="" placeholder="<?=translate_text('Thêm Admin Email')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-site-title"><?=translate_text('Tiêu Đề Website')?></label>
-                        <input type="text" class="form-control" id="input-site-title" placeholder="<?=translate_text('Thêm Tiêu Đề')?>">
+                        <input name="input-site-title" type="text" class="form-control" id="input-site-title" placeholder="<?=translate_text('Thêm Tiêu Đề')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-meta-description"><?=translate_text('Meta Description')?></label>
-                        <input type="text" class="form-control" id="input-meta-description" placeholder="<?=translate_text('Meta Description')?>">
+                        <input name="input-meta-description" type="text" class="form-control" id="input-meta-description" placeholder="<?=translate_text('Meta Description')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-meta-keyword"><?=translate_text('Meta Keyword')?></label>
-                        <input type="text" class="form-control" id="input-meta-keyword" placeholder="<?=translate_text('Meta Keyword')?>">
+                        <input name="input-meta-keyword" type="text" class="form-control" id="input-meta-keyword" placeholder="<?=translate_text('Meta Keyword')?>">
                     </div>
                     <div class="form-check form-configuations">
                         <label class="label-form-check" for="input-rewrite"><?=translate_text('Kích Hoạt Rewrite')?></label>
                         <label class="switch">
-                            <input class="check-box" id="input-rewrite" type="checkbox">
+                            <input name="input-rewrite" class="check-box" id="input-rewrite" type="checkbox">
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-extention"><?=translate_text('Đuôi Mở Rộng')?></label>
-                        <input type="text" class="form-control" id="input-extention" placeholder="<?=translate_text('Thêm Đuôi Mở Rộng')?>">
+                        <input name="input-extention" type="text" class="form-control" id="input-extention" placeholder="<?=translate_text('Thêm Đuôi Mở Rộng')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="pick_language"><?=translate_text('Ngôn Ngữ')?></label>
-                        <select id="pick_language" class="pick_language form-control" style="width: 20%;"></select>
+                        <select name="pick_language" id="pick_language" class="pick_language form-control" style="width: 20%;"></select>
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-hotline"><?=translate_text('Hotline')?></label>
-                        <input type="text" class="form-control" id="input-hotline" placeholder="<?=translate_text('Thêm Hotline')?>">
+                        <input name="input-hotline" type="text" class="form-control" id="input-hotline" placeholder="<?=translate_text('Thêm Hotline')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-hotline-banhang"><?=translate_text('Hotline Bán Hàng')?></label>
-                        <input type="text" class="form-control" id="input-hotline-banhang" placeholder="<?=translate_text('Thêm Hotline Bán Hàng')?>">
+                        <input name="input-hotline-banhang" type="text" class="form-control" id="input-hotline-banhang" placeholder="<?=translate_text('Thêm Hotline Bán Hàng')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-hotline-kythuat"><?=translate_text('Hotline Kỹ Thuật')?></label>
-                        <input type="text" class="form-control" id="input-hotline-kythuat" placeholder="<?=translate_text('Thêm Hotline Kỹ Thuật')?>">
+                        <input name="input-hotline-kythuat" type="text" class="form-control" id="input-hotline-kythuat" placeholder="<?=translate_text('Thêm Hotline Kỹ Thuật')?>">
                     </div>
                     <div class="form-group form-configuations">
                         <label for="input-address"><?=translate_text('Địa Chỉ')?></label>
-                        <input type="text" class="form-control" id="input-address" placeholder="<?=translate_text('Thêm Địa Chỉ')?>">
+                        <input name="input-address" type="text" class="form-control" id="input-address" placeholder="<?=translate_text('Thêm Địa Chỉ')?>">
                     </div>
                     <div class="form-check form-configuations">
                         <label class="form-check-active-contact-label" for="check-active-contact"><?=translate_text('Kích Hoạt Liên Hệ')?></label>
                         <label class="switch">
-                            <input class="check-box" id="check-active-contact" type="checkbox">
+                            <input name="check-active-contact" class="check-box" id="check-active-contact" type="checkbox">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -101,7 +101,7 @@
                                     <div class="input-image" id="input_image_background_homepage_1">
                                         <img id="image_background_homepage_1" src="#"> 
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                        <input type="file" class="form-input-image" id="input_background_homepage_1">
+                                        <input name="input_background_homepage_1" type="file" class="form-input-image" id="input_background_homepage_1">
                                     </div>
                                     <p><?= translate_text('Hình 1')?></p>
                                 </div>

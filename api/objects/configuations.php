@@ -91,5 +91,121 @@ class Configuations{
         }
         return $query;
     }
+
+    function create(){
+        $query = "INSERT INTO configuration(web_id, con_admin_email, con_site_title, con_meta_description, 
+                  con_meta_keywords, con_mod_rewrite, con_extenstion, lang_id, con_active_contact, con_hotline, 
+                  con_hotline_banhang, con_hotline_hotro_kythuat, con_address, con_background_homepage, con_info_payment, 
+                  con_fee_transport, con_contact_sale, con_info_company, con_logo_top, con_logo_bottom, con_page_fb, con_link_fb, 
+                  con_link_twitter, con_link_insta, con_map, con_banner_image, con_banner_title, con_banner_description, 
+                  con_banner_active)
+                  Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stmt  = $this->conn->prepare($query);
+
+        $stmt->bindParam(1,  $this->web_id);
+        $stmt->bindParam(2,  $this->con_admin_email);
+        $stmt->bindParam(3,  $this->con_site_title);
+        $stmt->bindParam(4,  $this->con_meta_description);
+        $stmt->bindParam(5,  $this->con_meta_keyword);
+        $stmt->bindParam(6,  $this->con_mod_rewrite);
+        $stmt->bindParam(7,  $this->con_extenstion);
+        $stmt->bindParam(8,  $this->lang_id);
+        $stmt->bindParam(9,  $this->con_active_contact);
+        $stmt->bindParam(10, $this->con_hotline);
+        $stmt->bindParam(11, $this->con_hotline_banhang);
+        $stmt->bindParam(12, $this->con_hotline_hotro_kythuat);
+        $stmt->bindParam(13, $this->con_address);
+        $stmt->bindParam(14, $this->con_background_homepage);
+        $stmt->bindParam(15, $this->con_info_payment);
+        $stmt->bindParam(16, $this->con_fee_transport);
+        $stmt->bindParam(17, $this->con_contact_sale);
+        $stmt->bindParam(18, $this->con_info_company);
+        $stmt->bindParam(19, $this->con_logo_top);
+        $stmt->bindParam(20, $this->con_logo_bottom);
+        $stmt->bindParam(21, $this->con_page_fb);
+        $stmt->bindParam(22, $this->con_link_fb);
+        $stmt->bindParam(23, $this->con_link_twitter);
+        $stmt->bindParam(24, $this->con_link_insta);
+        $stmt->bindParam(25, $this->con_map);
+        $stmt->bindParam(26, $this->con_banner_image);
+        $stmt->bindParam(27, $this->con_banner_title);
+        $stmt->bindParam(28, $this->con_banner_description);
+        $stmt->bindParam(29, $this->con_banner_active);
+
+        if($stmt->excute()){
+            return true;
+        }
+        return false;
+
+    }
+
+    function update(){
+        $query = "UPDATE configuration SET
+                  con_admin_email           = :con_admin_email, 
+                  con_site_title            = :con_site_title, 
+                  con_meta_description      = :con_meta_description, 
+                  con_meta_keywords         = :con_meta_keyword, 
+                  con_mod_rewrite           = :con_mod_rewrite, 
+                  con_extenstion            = :con_extenstion, 
+                  lang_id                   = :lang_id, 
+                  con_active_contact        = :con_active_contact, 
+                  con_hotline               = :con_hotline, 
+                  con_hotline_banhang       = :con_hotline_banhang, 
+                  con_hotline_hotro_kythuat = :con_hotline_hotro_kythuat, 
+                  con_address               = :con_address, 
+                  con_background_homepage   = :con_background_homepage, 
+                  con_info_payment          = :con_info_payment, 
+                  con_fee_transport         = :con_fee_transport, 
+                  con_contact_sale          = :con_contact_sale, 
+                  con_info_company          = :con_info_company,
+                  con_logo_top              = :con_logo_top, 
+                  con_logo_bottom           = :con_logo_bottom, 
+                  con_page_fb               = :con_page_fb, 
+                  con_link_fb               = :con_link_fb, 
+                  con_link_twitter          = :con_link_twitter, 
+                  con_link_insta            = :con_link_insta, 
+                  con_map                   = :con_map, 
+                  con_banner_image          = :con_banner_image,
+                  con_banner_title          = :con_banner_title, 
+                  con_banner_description    = :con_banner_description, 
+                  con_banner_active         = :con_banner_active)
+                  WHERE web_id              = :web_id";
+        $stmt  = $this->conn->prepare($query);
+
+        $stmt->bindParam(':web_id'                   , $this->web_id);
+        $stmt->bindParam(':con_admin_email'          , $this->con_admin_email);
+        $stmt->bindParam(':con_site_title'           , $this->con_site_title);
+        $stmt->bindParam(':con_meta_description'     , $this->con_meta_description);
+        $stmt->bindParam(':con_meta_keyword'         , $this->con_meta_keyword);
+        $stmt->bindParam(':con_mod_rewrite'          , $this->con_mod_rewrite);
+        $stmt->bindParam(':con_extenstion'           , $this->con_extenstion);
+        $stmt->bindParam(':lang_id'                  , $this->lang_id);
+        $stmt->bindParam(':con_active_contact'       , $this->con_active_contact);
+        $stmt->bindParam(':con_hotline'              , $this->con_hotline);
+        $stmt->bindParam(':con_hotline_banhang'      , $this->con_hotline_banhang);
+        $stmt->bindParam(':con_hotline_hotro_kythuat', $this->con_hotline_hotro_kythuat);
+        $stmt->bindParam(':con_address'              , $this->con_address);
+        $stmt->bindParam(':con_background_homepage'  , $this->con_background_homepage);
+        $stmt->bindParam(':con_info_payment'         , $this->con_info_payment);
+        $stmt->bindParam(':con_fee_transport'        , $this->con_fee_transport);
+        $stmt->bindParam(':con_contact_sale'         , $this->con_contact_sale);
+        $stmt->bindParam(':con_info_company'         , $this->con_info_company);
+        $stmt->bindParam(':con_logo_top'             , $this->con_logo_top);
+        $stmt->bindParam(':con_logo_bottom'          , $this->con_logo_bottom);
+        $stmt->bindParam(':con_page_fb'              , $this->con_page_fb);
+        $stmt->bindParam(':con_link_fb'              , $this->con_link_fb);
+        $stmt->bindParam(':con_link_twitter'         , $this->con_link_twitter);
+        $stmt->bindParam(':con_link_insta'           , $this->con_link_insta);
+        $stmt->bindParam(':con_map'                  , $this->con_map);
+        $stmt->bindParam(':con_banner_image'         , $this->con_banner_image);
+        $stmt->bindParam(':con_banner_title'         , $this->con_banner_title);
+        $stmt->bindParam(':con_banner_description'   , $this->con_banner_description);
+        $stmt->bindParam(':con_banner_active'        , $this->con_banner_active);
+
+        if($stmt->excute()){
+            return true;
+        }
+        return false;
+    }
 }
 ?>
