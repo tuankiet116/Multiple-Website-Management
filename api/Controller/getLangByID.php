@@ -1,8 +1,5 @@
 <?php
 // required headers
-
-use JetBrains\PhpStorm\Language;
-
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");

@@ -7,7 +7,7 @@ class ConfigAPI{
     private $db_name  = DATABASE_NAME;
     private $username = DATABASE_USERNAME;
     private $password = DATABASE_PASSWORD;
-    public $conn;
+    public  $conn;
   
     // get the database connection
     public function getConnection(){
