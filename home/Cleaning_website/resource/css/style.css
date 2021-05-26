@@ -538,9 +538,6 @@ html, body {
 
 
 
-
-
-
 /********** CONTACT **********/
 
 #contact {
@@ -593,6 +590,42 @@ html, body {
     cursor: pointer;
     width: 0;
     transition: .5s;
+}
+
+
+
+/********** SCROLL TOP **********/
+
+#scroll-top {
+    position: fixed;
+    bottom: 125px;
+    right: 30px;
+    cursor: pointer;
+    border: 3px solid #fb7f7f;
+    border-radius: 30px;
+    background-color: #fb7f7f;
+    overflow: hidden;
+    transition: .5s;
+    z-index: 10;
+    cursor: pointer;
+    transition: .3s;
+}
+
+#scroll-top i {
+    color: white;
+    padding: 15px 16px;
+    font-size: 20px;
+    transition: .3s;
+}
+
+#scroll-top:hover {
+    background-color: white;
+    transition: .3s;
+}
+
+#scroll-top:hover i {
+    color: #fb7f7f;
+    transition: .3s;
 }
 
 
@@ -763,7 +796,6 @@ html, body {
     margin-top: 20px;
 }
 
-.post p{ margin: 0; font-size: 20px; font-weight: 700;}
+.post p{ margin: 0; font-size: 15px; color: red;}
 .panigation { display: flex; justify-content: center;}
-li.page-item > a.page-link { font-size: 20px; padding: 10px 10px; color: #33beb3}
-
+.page-item a { font-size: 20px; padding: 10px 10px; text-align: center;} 

@@ -128,6 +128,18 @@ body {
     padding: 5px 15px 5px 0;
 }
 
+#shop #shop-container .container-fluid .shop-content .shop-image .new-sticker {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 15px;
+    background-color: #ff9900;
+}
+
 
 
 /********** BREADCRUMB **********/

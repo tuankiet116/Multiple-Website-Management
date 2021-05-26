@@ -1,5 +1,5 @@
 <?php
-require_once('../../classes/database.php');
+require_once("./helper/function.php");
 
 $per_page_record = 9;
 
@@ -13,19 +13,10 @@ $start_from = ($page - 1) * $per_page_record;
 
 /********** SHOP **********/
 
-$arr_shop = array();
-$sql = "SELECT * FROM produce LIMIT $start_from, $per_page_record";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_shop, $row);
-    }
-}
-unset($result, $sql);
+$arr_shop = get_data_rows("SELECT * FROM produce LIMIT $start_from, $per_page_record");
 
 /********** PAGINATION **********/
 
-$arr_count = array();
 $sql = "SELECT COUNT(*) FROM produce";
 $result = new db_query($sql);
 $row = mysqli_fetch_row($result->result);
@@ -83,6 +74,8 @@ $pageLink = "";
                                                     <div> Chi tiết </div>
                                                 </div>
                                             </a>
+
+                                            <div class="new-sticker"> New </div>
                                         </div>
 
                                         <div class="shop-name">
@@ -142,7 +135,7 @@ $pageLink = "";
                                 prev_disable.style.display = 'block';
 
                                 var prev_button = document.getElementById('prev-btn');
-                                prev_button.style.backgroundColor = 'rgb(210, 210, 210)';
+                                prev_button.style.display = 'none';
                             </script>";
                     }
 
@@ -153,7 +146,7 @@ $pageLink = "";
                                 next_disable.style.display = 'block';
 
                                 var next_button = document.getElementById('next-btn');
-                                next_button.style.backgroundColor = 'rgb(210, 210, 210)';
+                                next_button.style.display = 'none';
                             </script>";
                     }
                 ?>

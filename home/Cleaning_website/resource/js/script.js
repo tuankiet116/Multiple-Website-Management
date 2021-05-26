@@ -18,6 +18,7 @@ $(document).ready(function () {
       $pagination.append($li);
     }
 
+<<<<<<< HEAD
   $('.slider-slick').slick({
     dots: true,
     infinite: true,
@@ -28,6 +29,17 @@ $(document).ready(function () {
   });
 
 }
+=======
+    $(".slider-slick").slick({
+      dots: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 1,
+      adaptiveHeight: true,
+      arrows: false,
+    });
+  }
+>>>>>>> 28bbfe3e248ec3763561acb5a77c16af15543567
 
   createBullets();
 
@@ -167,18 +179,25 @@ $(document).ready(function () {
     }
   });
 
+<<<<<<< HEAD
   $('.submenu-content').click(function(){
     $(this).children('.sub-link').slideToggle('slow');
     $(this).toggleClass('roteta-icon');
   })
+=======
+  $(".submenu-content").click(function () {
+    $(this).children(".sub-link").slideToggle("slow");
+    $(this).toggleClass("roteta-icon");
+  });
+>>>>>>> 28bbfe3e248ec3763561acb5a77c16af15543567
 
   // $(window).scroll(function(){
   //   $(window).scrollTop()> 300 ? $('#menu').css("position", "fixed"): $('#menu').css("position", "sticky");
   // })
 
-  window.onload = (function() {
-    $(window).scroll(function() {
-      if ($(window).scrollTop() > 300) {
+  window.onload = function () {
+    $(window).scroll(function () {
+      if ($(window).scrollTop() > 100) {
         $("#menu").css("position", "fixed");
         $("#menu").addClass("menu-fixed");
       }
@@ -187,6 +206,7 @@ $(document).ready(function () {
         $("#menu").removeClass("menu-fixed");
       }
     });
+<<<<<<< HEAD
   }); 
 
   var slide_left = 0;
@@ -198,6 +218,26 @@ $(document).ready(function () {
   $('.slide .slide__bg').each(function() {
     slide_bgLeft += -50;
     $(this).css("left", slide_bgLeft + '%');
+=======
+  };
+
+  var slide_left = 0;
+  var slide_bgLeft = 0;
+  $(".slide").each(function () {
+    slide_left += 100;
+    $(this).css("left", slide_left + "%");
+  });
+  $(".slide .slide__bg").each(function () {
+    slide_bgLeft += -50;
+    $(this).css("left", slide_bgLeft + "%");
+  });
+
+  /********** Scroll to top  **********/
+
+  $("#scroll-top").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    return false;
+>>>>>>> 28bbfe3e248ec3763561acb5a77c16af15543567
   });
 });
 
@@ -218,3 +258,7 @@ function escapeHtml(text) {
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 28bbfe3e248ec3763561acb5a77c16af15543567
