@@ -1,12 +1,14 @@
 <?php
-require_once("./helper/funtion.php");
-$web_id = 1;
+require_once("./config/funtion.php");
+require_once("./config/config.php");
+
 if (isset($_GET['name'])) {
     $name = $_GET['name'];
     $title = $_GET['title'];
-    $breadcrumbs = $_GET['breadcrumbs'];
+    $link_breadcrumbs = $_GET['breadcrumbs'];
     $name_breadcrumbs = $_GET['nameBreadcrumbs'];
 }
+
 $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FROM post_detail, post WHERE post.ptd_id = post_detail.ptd_id AND post.post_rewrite_name = '$name'");
 ?>
 <!DOCTYPE html>
@@ -24,9 +26,15 @@ $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FRO
             <div class="service col-lg-12">
                 <ul id="breadcrumbs" class="breadcrumbs">
                     <li class="item-home">
-                        <a href="http://localhost:8091/home/Cleaning_website/<?php echo $breadcrumbs ?>" target="_self"><?php echo $name_breadcrumbs ?></a>
+                        <a href="http://localhost:8091/home/Cleaning_website/" target="_self">Trang chủ</a>
                     </li>
-                    <li class="separator" style="font-size: 16px"> >> </li>
+                    <?php if($link_breadcrumbs != 'trang-chu'){?>
+                    <li class="separator" style="font-size: 16px"> » </li>
+                    <li class="item-home">
+                        <a href="http://localhost:8091/home/Cleaning_website/<?php echo $link_breadcrumbs?>" target="_self"><?php echo $name_breadcrumbs?></a>
+                    </li>
+                    <?php }?>
+                    <li class="separator" style="font-size: 16px"> » </li>
                     <li class="item-cat">
                         <p><?php echo $title ?></p>
                     </li>

@@ -8,7 +8,7 @@
                 array_push($arr, $row);
             }
         }
-        return $arr;
+        return $arr ?? '';
     }
 
     function get_data_row($query){
@@ -16,6 +16,6 @@
         if(mysqli_num_rows($result->result)>0){
             $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
         }
-        return $data;
+        return $data ?? '';
     }
 ?>

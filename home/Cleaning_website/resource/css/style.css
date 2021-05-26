@@ -763,6 +763,7 @@ html, body {
     margin-top: 20px;
 }
 
-.post p{ margin: 0; font-size: 15px; color: red;}
+.post p{ margin: 0; font-size: 20px; font-weight: 700;}
 .panigation { display: flex; justify-content: center;}
-.page-item a { font-size: 20px; padding: 10px 10px; text-align: center;} 
+li.page-item > a.page-link { font-size: 20px; padding: 10px 10px; color: #33beb3}
+
