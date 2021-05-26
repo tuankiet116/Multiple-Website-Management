@@ -33,19 +33,19 @@ $image_banner_data = array($data->image_banner);
 $web_id = $data->web_id;
 
 //Save Image Hompage Background
-$url_save = '../../data/image/image_background_homepage/Web-'.$web_id;
+$url_save = '../../data/image/image_background_homepage/';
 $image_background = saveBase64($image_homepage_background, $url_save, 'jpg, png', 2000, '', 'Background_HomePage');
 
 //Save Logo Top
-$url_save = '../../data/image/Logo_Top/Web-'.$web_id;
+$url_save = '../../data/image/Logo_Top';
 $logo_top = saveBase64($logo_top_data, $url_save, 'jpg, png, svg', 2000, '', 'LogoTop');
 
 //Save Logo Top
-$url_save = '../../data/image/Logo_Bottom/Web-'.$web_id;
+$url_save = '../../data/image/Logo_Bottom';
 $logo_bottom = saveBase64($logo_bottom_data, $url_save, 'jpg, png, svg', 2000, '', 'LogoBottom');
 
 //Save Logo Top
-$url_save = '../../data/image/image_banner/Web-'.$web_id;
+$url_save = '../../data/image/image_banner';
 $image_banner = saveBase64($image_banner_data, $url_save, 'jpg, png', 5000, '', 'Banner');
 
 
@@ -104,27 +104,29 @@ else{
 function saveBase64($data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();
     $UploadBase64 = new upload_image();
-    $result = "fail";
+
+    //mkdir can not be done yet!!!!
+    //$result = "fail";
     // if (!file_exists("../".$url_save)) {
     //     chmod("../".$url_save, 0777);
     //     if(mkdir("../".$url_save, 0777, true)){
     //         $result = 'success';
     //     };
     // }
-    if (!file_exists("../".$url_save)) {
-        exec ('sudo chmod ../' . $url_save . '-R 777');
-        if(mkdir("../".$url_save, 0777, true)){
-            $result = 'success';
-        };
-    }
-    $name = '';
+    // if (!file_exists("../".$url_save)) {
+    //     exec ('sudo chmod ../' . $url_save . '-R 777');
+    //     if(mkdir("../".$url_save, 777, true)){
+    //         $result = 'success';
+    //     };
+    // }
+
     foreach($data as $value){
         if($value != '' && $value != '#' && $value != null){
             $name = $UploadBase64->upload_base64($value, $url_save, $extension_list, $limit_size, $filename, $name_prefix);
             array_push($image_url,substr($name, 6));
         }
     }
-    //$result = implode(",", $image_url);
+    $result = implode(",", $image_url);
     return $result ;
 }
 
