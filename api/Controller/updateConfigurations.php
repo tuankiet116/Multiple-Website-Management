@@ -95,7 +95,7 @@ else{
             $stmt = $config -> update();
             if($stmt === true){
                 http_response_code(200);
-                echo json_encode(array("message" => "Update Success", "code" => 200));
+                echo json_encode(array("message" => "Update Success ", "code" => 200));
             }
             else{
                 http_response_code(200);
@@ -136,10 +136,10 @@ function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_siz
             if($name === false){
                 return $name;
             }
-            array_push($image_url,substr($name, 6));
+            array_push($image_url,$name);
         }
     }
     $result = implode(",", $image_url);
-    return $result ;
+    return $result;
 }
 ?>

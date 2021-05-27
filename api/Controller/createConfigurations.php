@@ -133,7 +133,7 @@ function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_siz
             if($name === false){
                 return $name;
             }
-            array_push($image_url,substr($name, 6));
+            array_push($image_url,$name);
         }
     }
     $result = implode(",", $image_url);

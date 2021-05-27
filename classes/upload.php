@@ -62,11 +62,10 @@ class upload_image{
 
 	//Update By TuanKiet
 	function upload_base64($data, $url ,$extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
-		if (preg_match('/^data:image\/(\w+);base64,/', $data)){
-			$pos  = strpos($data, ';');
-			$type = explode(':image/', substr($data, 0, $pos))[1]; // jpg, png, gif
+		if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)){
 			$data = substr($data, strpos($data, ',') + 1);
-		
+			$type = strtolower($type[1]);
+
 			//Check upload extension
 			if($this->checkExtension($type, $extension_list, 1) != 1){
 				$this->common_error	 = "Phần mở rộng của file ảnh " .$filename. " không đúng (".$type." + ".$this->checkExtension($type, $extension_list, 1).").<br /> Bạn chỉ upload được những file có phần mở rộng là: " . strtoupper($extension_list) . "<br />";
@@ -94,11 +93,15 @@ class upload_image{
 			$new_filename					= $this->generate_name($filename, $name_prefix);
 			$this->file_name				= $new_filename;
 
-			file_put_contents("{$url}/{$new_filename}{$type}", $data);
-			return "$url/$new_filename".$type;
+			file_put_contents("{$url}/{$new_filename}.{$type}", $data);
+			$result = "{$url}/{$new_filename}.{$type}";
+			$result = substr($result, 6);
+			return $result;
 		}
 		else{
-			return $data;
+			$result = $data;
+			$result = substr($result, 9);
+			return $result;
 		}
 		
 	}
