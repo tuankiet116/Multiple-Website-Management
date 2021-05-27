@@ -192,8 +192,15 @@ body {
     background-color: #4ca246;
     border: none;
     outline: none;
-    padding: 5px 12px;
     z-index: 10;
+}
+
+#pagination #pag-btn a #prev-btn {
+    padding: 5px 14px 5px 12px;
+}
+
+#pagination #pag-btn a #next-btn {
+    padding: 5px 12px 5px 13px;
 }
 
 #pagination #pag-btn a #prev-btn i,
@@ -216,7 +223,7 @@ body {
 
 #pagination a.pages-number {
     color: rgb(60, 60, 60);
-    padding: 8px 10px 8px 12px;
+    padding: 8px 10px 8px 13px;
     font-size: 14px;
     border: 1px solid rgb(210, 210, 210);
     margin: -1px 5px 0 5px;
