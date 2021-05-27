@@ -8,6 +8,6 @@
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Dancing+Script" />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="../Cleaning_website/resource/css/style.css">
-<link rel="stylesheet" href="../Cleaning_website/resource/css/slideshow.css">
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" href="../Cleaning_website/resource/css/slideshow.css">
+<link rel="stylesheet" href="../Cleaning_website/resource/css/style.css">

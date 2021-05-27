@@ -1,15 +1,9 @@
 <?php  
-require_once('./helper/function.php');
-
-$web_id = 1;
-$url = 'trang-chu';
+require_once('./config/funtion.php');
+require_once('./config/config.php');
 
 if(isset($_GET['url'])){
     $url = $_GET['url'];
-}
-
-if(isset($_GET['page'])){
-    echo '<h1>'.$_GET['page'].'</h1>';
 }
 
 if(strpos($url,"/") !=false){
@@ -17,15 +11,15 @@ if(strpos($url,"/") !=false){
 }
 
 $category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
-
 $url_slide = explode(",", $category['cmp_background']);
 if(empty($category) || $category['cmp_active']==0){
     header('location: http://localhost:8091/home/Cleaning_website/');
 }
 
 $post_type = get_data_rows("SELECT * FROM post_type");
-// $post = get_data_rows("SELECT * FROM post, post_type WHERE post.post_type_id = post_type.post_type_id");  
 
+$info_support = get_data_row("SELECT con_admin_email, con_hotline, con_link_fb, con_link_insta, con_link_twiter
+                                 FROM configuration WHERE web_id = $web_id");
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,7 +40,6 @@ $post_type = get_data_rows("SELECT * FROM post_type");
 
 <body>
     <!--------------- HEADER --------------->
-
     <? include("./includes/inc_header.php"); ?>
 
     <!--------------- CONTENT --------------->
@@ -117,37 +110,31 @@ $post_type = get_data_rows("SELECT * FROM post_type");
                             echo '</div>';
                         }
                         else {
-                            
-                            
                             echo'<div id="post">';
                             echo'   <div class="row">';
                             echo'       <div class="left-post col-lg-9">
                                             <ul id="breadcrumbs" class="breadcrumbs">
                                                 <li class="item-home">
-                                                    <a href="#" target="_self">Trang chủ</a>
+                                                    <a href="http://localhost:8091/home/Cleaning_website/" target="_self">Trang chủ</a>
                                                 </li>
                                                 <li class="separator"> » </li>
                                                 <li class="item-cat">
-                                                    <a href="#" target="_self">Dịch vụ giặt là công nghiệp</a>
-                                                </li>
-                                                <li class="separator"> » </li>
-                                                <li class="item-current">
-                                                    <a href="#" target="_self">Dịch vụ giặt thảm gia đình</a>
+                                                    <p>'.$category['cmp_name'].'</p>
                                                 </li>
                                             </ul>
                                             <div class="post-container">
                                                 <div class="post-title">'.$pt['post_type_title'].'</div>
-                                                <div class="post-content">
-                            ';
+                                                <div class="post-content">';
                                                 foreach($post as $p){
-                                                    $date1 = $p['post_datetime_create'];
-                                                    $date = date_format($date1, "Y/m/d");
+                                                    $date = explode(" ", $p['post_datetime_create']);
+                                                    $strtotime = strtotime($date[0]);
+                                                    $dateFormat = date("Y/m/d", $strtotime);
                                                     echo'
                                                         <div class="post-item">
                                                             <div class="row">
                                                                 <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                                                     <div class="post-item-img">
-                                                                        <a href="" target="_self">
+                                                                        <a href="detail.php?name='.$p['post_rewrite_name'].'&title='.$p['post_title'].'&breadcrumbs='.$category['cmp_rewrite_name'].'&nameBreadcrumbs='.$category['cmp_name'].'" target="_self">
                                                                             <img src="../../data/image/images/Web-1/'.$p['post_image_background'].'" alt="post image">
                                                                         </a>
                                                                     </div>
@@ -155,13 +142,13 @@ $post_type = get_data_rows("SELECT * FROM post_type");
                             
                                                                 <div class="col-lg-8 col-md-8 col-sm-12 col-12" style="padding: 0">
                                                                     <div class="post-item-content">
-                                                                        <a href="" target="_self">
+                                                                        <a href="detail.php?name='.$p['post_rewrite_name'].'&title='.$p['post_title'].'&breadcrumbs='.$category['cmp_rewrite_name'].'&nameBreadcrumbs='.$category['cmp_name'].'" target="_self">
                                                                             <div class="post-item-title">
                                                                                 '.$p['post_title'].'
                                                                             </div>
                                                                         </a>
                             
-                                                                        <div class="post-item-date"> '.$date.' </div>
+                                                                        <div class="post-item-date"> '.$dateFormat.' </div>
                             
                                                                         <div class="post-item-text">
                                                                             <p>
@@ -170,7 +157,7 @@ $post_type = get_data_rows("SELECT * FROM post_type");
                                                                         </div>
                             
                                                                         <div class="post-item-more">
-                                                                            <a href="" target="_self">
+                                                                            <a href="detail.php?name='.$p['post_rewrite_name'].'&title='.$p['post_title'].'&breadcrumbs='.$category['cmp_rewrite_name'].'&nameBreadcrumbs='.$category['cmp_name'].'" target="_self">
                                                                                 Xem chi tiết
                                                                                 <i class="fas fa-chevron-right"></i>
                                                                             </a>
@@ -184,6 +171,53 @@ $post_type = get_data_rows("SELECT * FROM post_type");
                             echo'               </div>
                                             </div>
                                         </div>';
+                            echo'       <div class="right-post col-lg-3">';
+                            echo'
+                                            <div class="right-post-container">
+                                                <div class="right-post-title">
+                                                    Hỗ trợ trực tuyến
+                                                </div>
+                        
+                                                <div class="right-post-support">
+                                                    <div class="right-post-logo">
+                                                        <img src="../../data/image/images/Web-1/hotline2-new.png" alt="hotline logo">
+                                                    </div>
+                        
+                                                    <div class="right-post-contact">
+                                                        <i class="fas fa-phone-alt"></i>
+                                                        '.$info_support['con_hotline'].'
+                                                    </div>
+                        
+                                                    <div class="right-post-contact">
+                                                        <i class="far fa-envelope"></i>
+                                                        '.$info_support['con_admin_email'].'
+                                                    </div>
+                        
+                                                    <div class="right-post-media">
+                                                        <a href="'.$info_support['con_link_fb'].'" target="_blank">
+                                                            <i class="fab fa-facebook fb-icon"></i>
+                                                        </a>
+                                                        <a href="'.$info_support['con_link_twiter'].'" target="_blank">
+                                                            <i class="fab fa-twitter tw-icon"></i>
+                                                        </a>
+                                                        <a href="'.$info_support['con_link_insta'].'" target="_blank">
+                                                            <i class="fab fa-instagram ins-icon"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="right-post-container">
+                                                <div class="right-post-title">
+                                                    Facebook fanpage
+                                                </div>
+
+                                                <div class="right-post-fanpage">
+                                                    <!-- <p style="font-size: 15px;">Chèn fanpage facebook vào đây</p> -->
+                                                </div>
+                                            </div>
+                            ';
+                            echo'       </div>';    
                             echo'   </div>';        
                             echo'</div>';
                         }
@@ -217,13 +251,14 @@ $post_type = get_data_rows("SELECT * FROM post_type");
 
     <? include("./includes/inc_footer.php") ?>
     
-
-    <div id="contact">
+    <div id="scroll-top">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+    <div  id="contact">
         <div id="phone">
             <i class="fas fa-phone-alt"></i>
         </div>
-
-        <div id="number"> <?php echo $info_footer['con_hotline']?> </div>
+        <a id="number" href="tel:<?php echo str_replace(".", "", $info_footer['con_hotline'])?>"> <?php echo $info_footer['con_hotline']?> </a>
     </div>
     
     <? include("./includes/inc_foot.php"); ?>

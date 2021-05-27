@@ -1,6 +1,7 @@
 <?php
-require_once("./helper/function.php");
-$web_id = 1;
+require_once('./config/funtion.php');
+require_once('./config/config.php');
+
 if (isset($_GET['name'])) {
     $name = $_GET['name'];
     $title = $_GET['title'];
@@ -24,9 +25,15 @@ $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FRO
             <div class="service col-lg-12">
                 <ul id="breadcrumbs" class="breadcrumbs">
                     <li class="item-home">
+                        <a href="http://localhost:8091/home/Cleaning_website/" target="_self">Trang chủ</a>
+                    </li>
+                    <li class="separator" style="font-size: 16px"> » </li> 
+                    <?php if($breadcrumbs != 'trang-chu'){?>
+                    <li class="item-cat">
                         <a href="http://localhost:8091/home/Cleaning_website/<?php echo $breadcrumbs ?>" target="_self"><?php echo $name_breadcrumbs ?></a>
                     </li>
-                    <li class="separator" style="font-size: 16px"> >> </li>
+                    <li class="separator" style="font-size: 16px"> » </li>  
+                    <?php }?>
                     <li class="item-cat">
                         <p><?php echo $title ?></p>
                     </li>
@@ -34,6 +41,7 @@ $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FRO
 
                 <div class="service-container">
                     <?php echo $post_detail['ptd_text'] ?>
+                    
                 </div>
             </div>
         </div>

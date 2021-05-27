@@ -203,7 +203,15 @@ $(document).ready(function () {
 
   $("#scroll-top").click(function () {
     $("html, body").animate({ scrollTop: 0 }, 500);
-    return false;
+  });
+  
+  $(window).scroll(function(){
+    if($(this).scrollTop() > 200){
+      $("#scroll-top").fadeIn(200, "swing");
+    }
+    else{
+      $("#scroll-top").fadeOut(200, "swing");
+    }
   });
 });
 

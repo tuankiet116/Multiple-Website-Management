@@ -91,7 +91,7 @@ class upload_image{
 		$new_filename					= $this->generate_name($filename, $name_prefix);
 		$this->file_name				= $new_filename;
 
-		file_put_contents("{$url}/{$new_filename}.{$type}", $data);
+		//file_put_contents("{$url}/{$new_filename}.{$type}", $data);
 		return "$url/$new_filename".$type;
 	}
 

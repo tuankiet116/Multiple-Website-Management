@@ -112,7 +112,7 @@ function saveBase64($data, $url_save, $extension_list, $limit_size, $filename = 
     //     };
     // }
     if (!file_exists("../".$url_save)) {
-        exec ('sudo chmod ../' . $url_save . '-R 777');
+        //exec ('sudo chmod ../' . $url_save . '-R 777');
         if(mkdir("../".$url_save, 0777, true)){
             $result = 'success';
         };

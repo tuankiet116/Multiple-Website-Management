@@ -552,7 +552,9 @@ html, body {
     transition: .5s;
     z-index: 10;
 }
-
+#contact #number{
+    text-decoration: none;
+}
 #contact:hover > #number,
 #contact #phone:hover > #number {
     padding: 14px 10px;
@@ -609,6 +611,7 @@ html, body {
     z-index: 10;
     cursor: pointer;
     transition: .3s;
+    display: none;
 }
 
 #scroll-top i {
@@ -752,7 +755,7 @@ html, body {
 }
 
 .service {
-    margin-top: 100px;
+    margin-top: 50px;
 }
 .item-cat p{
     font-size: 16px;
