@@ -178,6 +178,22 @@ $(document).ready(function(){
     uploadInformation();
   });
 
+  $("#cancel_configuation").on('click', function(e){
+    $('.configuations input').attr('disabled', false);
+    $('.configuations select').attr('disabled', false);
+    $('.configuations textarea').attr('disabled', false);
+    $('#cancel_configuration').attr('disabled', false);
+
+    var id = $('.pick_website_select').select2('data');
+    web_id = id[0].data.web_id;
+    var data = {
+      "web_id": web_id
+    }
+    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+
+    ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
+  });
+
   $('.form-check span').on('click', function(){
     $('#submit_configuation').attr('disabled', false);
     if($(this).siblings('input').val() == 'on'){
@@ -209,7 +225,6 @@ var exGetImg = function(extag, element) {
   readers.readAsDataURL(file); //Convert the read file path to a url type    
   readers.onload = function() {//Call onload() method after conversion
           var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
-          //console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
           $(element).siblings('img').css('display', 'block');
           $(element).siblings('svg').css('display', 'none');
           $(element).siblings('img').attr('src', imgsSrc);    
@@ -236,7 +251,7 @@ function loadSuccessConfiguration(data){
 }
 
 function errorLoadConfiguration(data){
-  alert('ERROR: Get Configuration');
+  showAlert('error','<strong>ERROR:</strong> Get Configuration');
 }
 
 // Website function Select2
@@ -304,7 +319,7 @@ function formatRepoSelectionLanguage (state) {
     return state.text;
   }
   var $state = $(
-    '<span id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
+    '<span class="language-picker" id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
   );
 
   // Use .text() instead of HTML string concatenation to avoid script injection issues
@@ -341,7 +356,7 @@ function getLanguage(data){
       result = data;
     },
     error: function(data){
-      alert('ERROR: Get Language')
+      showAlert('error','<strong>ERROR:</strong> Get Language')
       result = "NOT_FOUND";
     }
   });
@@ -388,11 +403,11 @@ function getSuccessDataConfiguration(data){
   //Set active contact
   if(parseInt(data.con_active_contact) == 1){
     $('#check-active-contact').prop('checked', true);
-    $('#input-rewrite').val('on');
+    $('#check-active-contact').val('on');
   }
   else{
     $('#check-active-contact').prop('checked', false);
-    $('#input-rewrite').val('off');
+    $('#check-active-contact').val('off');
   }
 
   //Set image Data
@@ -422,11 +437,11 @@ function getSuccessDataConfiguration(data){
   //Set Check Active Banner
   if(parseInt(data.con_banner_active) == 1){
     $('#check-active-banner').prop('checked', true);
-    $('#input-rewrite').val('on');
+    $('#check-active-banner').val('on');
   }
   else{
     $('#check-active-banner').prop('checked', false);
-    $('#input-rewrite').val('off');
+    $('#check-active-banner').val('off');
   }
 
   //End Of Call Data
@@ -438,22 +453,21 @@ function setImageData(data, element, max=0){
   if(data && element){
     if(max != 0){
       var data_arr = data.split(",");
-      //console.log(data_arr);
       if(data_arr.length<=7){
         var i = 1;
         data_arr.forEach(function(value, key){
           value = value.trim();
           key = key+1;
           $(element + key).attr("src", base_url + value);
-          $(element + key).css('display', 'block');
           $(element).siblings('svg').css('display', 'none');
+          $(element + key).css('display', 'block');
         });
       }
     }
     else{
       $(element).attr("src", base_url + data);
-      $(element).css('display', 'block');
       $(element).siblings('svg').css('display', 'none');
+      $(element).css('display', 'block');
     }
   }
 }
@@ -524,7 +538,6 @@ function GetAllData(){
     con_banner_description    : input_banner_description.trim(),
     con_banner_active         : check_active_banner
   }
-  //console.log(data);
   return data;
 }
 
@@ -541,13 +554,11 @@ function uploadInformation(){
   data.image_logo_top              = $('#image_logo_top').attr('src');
   data.image_logo_bottom           = $('#image_logo_bottom').attr('src');
   data.image_banner                = $('#image_banner').attr('src');
-  //console.log(data);
 
   var url = '../../../api/Controller/createConfigurations.php';
   if(found){
     var url = '../../../api/Controller/updateConfigurations.php';
   }
-  console.log(data.con_active_contact);
   data = JSON.stringify(data);
   ajax(data, url, successUpload, errorUpload, 'POST', 'JSON');
 }
@@ -555,7 +566,8 @@ function uploadInformation(){
 function successUpload(data){
   if(data.code == 200){
     found = true;
-    alert(data.message);
+    $('#submit_configuation').attr('disabled', true);
+    showAlert('success', data.message)
     var data_webID = {
       "web_id": web_id
     }
@@ -563,14 +575,13 @@ function successUpload(data){
     ajax(JSON.stringify(data_webID), url, loadSuccessConfiguration, errorLoadConfiguration);
   }
   else{
-    alert(data.message);
+    showAlert('warning', data.message);
   }
 }
 
 function errorUpload(data){
   found = false;
-  alert('ERROR: Update Or Create');
-  console.log(data);
+  showAlert('error', '<strong>ERROR:</strong> Update Or Create get trouble!')
 }
 
 function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', async = true){
@@ -582,5 +593,34 @@ function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', asyn
     url: url,
     success: success,
     error: error
+  });
+}
+
+function showAlert(type, message){
+  $('.alert').removeClass("alert-success");
+  $('.alert').removeClass("alert-warning");
+  $('.alert').removeClass("alert-danger");
+
+  switch(String(type)){
+    case "success":
+      $('.alert').addClass('alert-success');
+      $('.alert-heading').html('<i class="fas fa-check-circle"></i> Success!');
+      break;
+    case "error":
+      $('.alert').addClass('alert-danger');
+      $('.alert-heading').html('<i class="fas fa-exclamation-circle"></i> Error!');
+      break;
+    case "warning":
+      $('.alert').addClass('alert-warning');
+      $('.alert-heading').html('<i class="fa fa-warning"></i> Warning!');
+      break;
+  }
+
+  $('.alert .message').html(message);
+  $('.alert').addClass('show');
+  setTimeout(function(){ $('.alert').removeClass('show'); }, 3000);
+
+  $('.alert button.close').on('click', function(){
+    $('.alert').removeClass('show');
   });
 }
