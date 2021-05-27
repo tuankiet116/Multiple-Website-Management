@@ -31,22 +31,23 @@ $image_banner_data = array($data->image_banner);
 //upload image
 
 $web_id = $data->web_id;
+$UploadBase64 = new upload_image();
 
 //Save Image Hompage Background
-$url_save = '../../data/image/image_background_homepage/';
-$image_background = saveBase64($image_homepage_background, $url_save, 'jpg, png', 2000, '', 'Background_HomePage');
+$url_save = '../../data/image/image_background_homepage';
+$image_background = saveBase64($UploadBase64,$image_homepage_background, $url_save, 'jpg, png', 2000, 'Background_HomePage', 'Background_HomePage');
 
 //Save Logo Top
-$url_save = '../../data/image/Logo_Top';
-$logo_top = saveBase64($logo_top_data, $url_save, 'jpg, png, svg', 2000, '', 'LogoTop');
+$url_save = '../../data/image/logo_top';
+$logo_top = saveBase64($UploadBase64, $logo_top_data, $url_save, 'jpg, png, svg', 2000, 'LogoTop', 'LogoTop');
 
 //Save Logo Top
-$url_save = '../../data/image/Logo_Bottom';
-$logo_bottom = saveBase64($logo_bottom_data, $url_save, 'jpg, png, svg', 2000, '', 'LogoBottom');
+$url_save = '../../data/image/logo_bottom';
+$logo_bottom = saveBase64($UploadBase64, $logo_bottom_data, $url_save, 'jpg, png, svg', 2000, 'LogoBottom', 'LogoBottom');
 
 //Save Logo Top
 $url_save = '../../data/image/image_banner';
-$image_banner = saveBase64($image_banner_data, $url_save, 'jpg, png', 5000, '', 'Banner');
+$image_banner = saveBase64($UploadBase64, $image_banner_data, $url_save, 'jpg, png', 5000, 'Banner', 'Banner');
 
 
 // set Term property of record to update
@@ -81,29 +82,64 @@ $config->con_banner_description    = $data->con_banner_description;
 $config->con_banner_active         = $data->con_banner_active;
 
 
-
-if(isset($config->web_id)){
-    if($config -> create()){
-        http_response_code(200);
-        echo json_encode(array("message" => "Create Success", "code" => 200,
-                                "result" => $image_background));
-    }
-    else{
-        http_response_code(500);
-        echo json_encode(array('message' => "Something has wrong", 'code' => 500));
-    }
+$count = $config -> getByWebID($data->web_id, false);
+if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
+    http_response_code(200);
+    echo json_encode(array("message" => $UploadBase64->common_error,
+                            "code"    => 500));
 }
 else{
-    http_response_code(200);
-    echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
-                           "code"    => 500));
+    if($count>0){
+        http_response_code(200);
+        echo json_encode(array("message" => "This Website Have Exists Configuration",
+                               "code"    => 500));
+    }
+    else{
+        if(isset($config->web_id)){
+            if($config -> create()){
+                http_response_code(200);
+                echo json_encode(array("message" => "Create Success", "code" => 200));
+            }
+            else{
+                http_response_code(200);
+                echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+            }
+        }
+        else{
+            http_response_code(200);
+            echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
+                                   "code"    => 500));
+        }
+        
+    }
 }
 
 
-
-function saveBase64($data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
+function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();
-    $UploadBase64 = new upload_image();
+
+    $count = count($data);
+    $stt   = 1;
+    foreach($data as $value){
+        if($value != '' && $value != '#' && $value != null){
+            if($count > 1){
+                $new_filename = $filename."_".$stt; 
+                $stt++;
+            }
+            else{
+                $new_filename = $filename;
+            }
+            $name = $UploadBase64->upload_base64($value, $url_save, $extension_list, $limit_size, $new_filename, $name_prefix);
+            if($name === false){
+                return $name;
+            }
+            array_push($image_url,substr($name, 6));
+        }
+    }
+    $result = implode(",", $image_url);
+    return $result ;
+}
+
 
     //mkdir can not be done yet!!!!
     //$result = "fail";
@@ -119,15 +155,4 @@ function saveBase64($data, $url_save, $extension_list, $limit_size, $filename = 
     //         $result = 'success';
     //     };
     // }
-
-    foreach($data as $value){
-        if($value != '' && $value != '#' && $value != null){
-            $name = $UploadBase64->upload_base64($value, $url_save, $extension_list, $limit_size, $filename, $name_prefix);
-            array_push($image_url,substr($name, 6));
-        }
-    }
-    $result = implode(",", $image_url);
-    return $result ;
-}
-
 ?>
