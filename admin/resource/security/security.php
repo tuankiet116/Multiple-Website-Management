@@ -26,8 +26,8 @@ $lang_id = getValue("lang_id", "int", "SESSION");
 require_once("../../../config/const.php");
 
 // Chuyen sang dung ckeditor
-$wys_path = "../../resource/ckeditor/";
-require_once($wys_path . "ckeditor.php");
+//$wys_path = "../../resource/ckeditor/";
+//require_once($wys_path . "ckeditor.php");
 
 require_once("functions.php");
 require_once("template.php");
@@ -50,7 +50,7 @@ $wys_cssadd = "/css/all.css";
 //$load_header 			= '<link rel="stylesheet" type="text/css" href="../../resource/css/layout.css" />' . "\n";
 $load_header = '<link href="../../resource/css/calendar.css" rel="stylesheet" type="text/css">' . "\n";
 $load_header .= '<link href="../../resource/js/jwysiwyg/jquery.wysiwyg.css" rel="stylesheet" type="text/css">' . "\n";
-$load_header .= '<link href="../../resource/ckeditor/contents.css" rel="stylesheet" type="text/css">' . "\n";
+//$load_header .= '<link href="../../resource/ckeditor/contents.css" rel="stylesheet" type="text/css">' . "\n";
 $load_header .= '<link href="../../resource/css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">' . "\n";
 $load_header .= '<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">' . "\n";
 $load_header .= '<link href="../../resource/css/style.css" rel="stylesheet" type="text/css">' . "\n";
@@ -63,7 +63,7 @@ $load_header .= '<script language="javascript" src="../../resource/js/calendar.j
 $load_header .= '<script language="javascript" src="../../resource/js/jquery.jeditable.js"></script>' . "\n";
 $load_header .= '<script language="javascript" src="../../resource/js/swfObject.js"></script>' . "\n";
 $load_header .= '<script language="javascript" src="../../resource/js/jwysiwyg/jquery.wysiwyg.js"></script>' . "\n";
-$load_header .= '<script language="javascript" src="../../resource/ckeditor/ckeditor.js"></script>' . "\n";
+//$load_header .= '<script language="javascript" src="../../resource/ckeditor/ckeditor.js"></script>' . "\n";
 $load_header .= '<script language="javascript" src="../../resource/css/bootstrap/js/bootstrap.min.js"></script>' . "\n";
 
 $load_header .= '<link href="../../resource/js/windowPrompt/windowPrompt.css" rel="stylesheet" type="text/css">' . "\n";

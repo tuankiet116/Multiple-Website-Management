@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../resource/css/add_post.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../../resource/ckeditor5/ckeditor.js"></script>
+    <script src="../../resource/ckeditor/ckeditor.js"></script>
     <script src="../../../plugins/select2/js/select2.min.js"></script>
     <script language="javascript" src="../../resource/js/add_post.js"></script>
 </head>
