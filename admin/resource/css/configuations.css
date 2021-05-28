@@ -226,7 +226,7 @@ input:checked + .slider:before {
 .alert-message{
     position: fixed;
     right: 50px;
-    width: 20%;
+    width: 30%;
 }
 
 /* .fade{

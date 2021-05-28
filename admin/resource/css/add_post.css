@@ -1,0 +1,21 @@
+.title{
+    margin: 2% auto auto 2%;
+}
+
+.box{
+    margin: auto auto auto 5% ;
+}
+
+.pick_website_container .selection img{
+    width: 5%;
+    margin-top: -1%;
+}
+
+.select2-result-website {
+    display: flex;
+}
+
+.select2-result-website__icon img{
+    width: 30px;
+    padding-right: 10px;
+}
