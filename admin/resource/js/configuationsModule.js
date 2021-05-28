@@ -9,6 +9,7 @@
 
 var oldValue;
 var found = false;
+var web_id = null;
 
 $(document).ready(function(){
   $('b[role="presentation"]').hide();
@@ -111,41 +112,21 @@ $(document).ready(function(){
     $('#cancel_configuration').attr('disabled', false);
 
     var id = $('.pick_website_select').select2('data');
+    web_id = id[0].data.web_id;
     var data = {
-      "web_id": id[0].data.web_id
+      "web_id": web_id
     }
-    $.ajax({
-      url: 'http://cleaning.com:8080/api/Controller/getConfiguations.php',
-      dataType: 'json',
-      data: JSON.stringify(data),
-      type: 'POST',
-      async: false,
-      success: function(data){
-        if(parseInt(data.code) == 200){// Request OK
-          found = true;
-          getSuccessDataConfiguration(data);
-          oldValue = data;
-          delete oldValue.code;
-          delete oldValue.con_banner_image;
-          delete oldValue.con_background_homepage;
-          delete oldValue.con_logo_bottom;
-          delete oldValue.con_logo_top;
-          delete oldValue.con_id;
-          console.log(oldValue);
-        }
-        if(parseInt(data.code) == 404){
-          ResetForm();
-          found = false;
-        }
-      },
-      error: function(){
+    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
 
-      }
-    });
+    ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
+  });
+
+  $('.input-image-container i').on('click', function(){
+    $('#submit_configuation').attr('disabled', false);
   });
 
   //Check Old Value With New Value
-  $('.configuations input').on('keyup', function(){
+  $('.configuations input, .configuations textarea').on('keyup', function(){
     data_new = GetAllData();
     if(JSON.stringify(data_new) == JSON.stringify(oldValue)){
       $('#submit_configuation').attr('disabled', true);
@@ -196,7 +177,36 @@ $(document).ready(function(){
     e.preventDefault();
     uploadInformation();
   });
+
+  $("#cancel_configuation").on('click', function(e){
+    $('.configuations input').attr('disabled', false);
+    $('.configuations select').attr('disabled', false);
+    $('.configuations textarea').attr('disabled', false);
+    $('#cancel_configuration').attr('disabled', false);
+
+    var id = $('.pick_website_select').select2('data');
+    web_id = id[0].data.web_id;
+    var data = {
+      "web_id": web_id
+    }
+    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+
+    ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
+  });
+
+  $('.form-check span').on('click', function(){
+    $('#submit_configuation').attr('disabled', false);
+    if($(this).siblings('input').val() == 'on'){
+      $(this).siblings('input').val('off');
+    }
+    else{
+      $(this).siblings('input').val('on');
+    }
+  });
 });
+
+
+
 
 var base_url = "../../../";
 var data_language_default = {
@@ -215,13 +225,34 @@ var exGetImg = function(extag, element) {
   readers.readAsDataURL(file); //Convert the read file path to a url type    
   readers.onload = function() {//Call onload() method after conversion
           var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
-          console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
           $(element).siblings('img').css('display', 'block');
           $(element).siblings('svg').css('display', 'none');
           $(element).siblings('img').attr('src', imgsSrc);    
   }
 }
 
+function loadSuccessConfiguration(data){
+  if(parseInt(data.code) == 200){// Request OK
+          
+    found = true;
+    getSuccessDataConfiguration(data);
+    oldValue = data;
+    delete oldValue.code;
+    delete oldValue.con_banner_image;
+    delete oldValue.con_background_homepage;
+    delete oldValue.con_logo_bottom;
+    delete oldValue.con_logo_top;
+    delete oldValue.con_id;
+  }
+  if(parseInt(data.code) == 404){
+    ResetForm();
+    found = false;
+  }
+}
+
+function errorLoadConfiguration(data){
+  showAlert('error','<strong>ERROR:</strong> Get Configuration');
+}
 
 // Website function Select2
 function formatRepoWebsite (repo) {
@@ -288,7 +319,7 @@ function formatRepoSelectionLanguage (state) {
     return state.text;
   }
   var $state = $(
-    '<span id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
+    '<span class="language-picker" id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
   );
 
   // Use .text() instead of HTML string concatenation to avoid script injection issues
@@ -324,7 +355,8 @@ function getLanguage(data){
     success: function(data){
       result = data;
     },
-    error: function(){
+    error: function(data){
+      showAlert('error','<strong>ERROR:</strong> Get Language')
       result = "NOT_FOUND";
     }
   });
@@ -350,9 +382,11 @@ function getSuccessDataConfiguration(data){
   //Set mode_rewrite
   if(parseInt(data.con_mod_rewrite) == 1){
     $('#input-rewrite').prop('checked', true);
+    $('#input-rewrite').val('on');
   }
   else{
     $('#input-rewrite').prop('checked', false);
+    $('#input-rewrite').val('off');
   }
   $('#input-extention').val(data.con_extenstion);
   var lang_data     = getLanguage(data.lang_id);
@@ -369,9 +403,11 @@ function getSuccessDataConfiguration(data){
   //Set active contact
   if(parseInt(data.con_active_contact) == 1){
     $('#check-active-contact').prop('checked', true);
+    $('#check-active-contact').val('on');
   }
   else{
     $('#check-active-contact').prop('checked', false);
+    $('#check-active-contact').val('off');
   }
 
   //Set image Data
@@ -401,9 +437,11 @@ function getSuccessDataConfiguration(data){
   //Set Check Active Banner
   if(parseInt(data.con_banner_active) == 1){
     $('#check-active-banner').prop('checked', true);
+    $('#check-active-banner').val('on');
   }
   else{
     $('#check-active-banner').prop('checked', false);
+    $('#check-active-banner').val('off');
   }
 
   //End Of Call Data
@@ -415,22 +453,21 @@ function setImageData(data, element, max=0){
   if(data && element){
     if(max != 0){
       var data_arr = data.split(",");
-      //console.log(data_arr);
       if(data_arr.length<=7){
         var i = 1;
         data_arr.forEach(function(value, key){
           value = value.trim();
           key = key+1;
           $(element + key).attr("src", base_url + value);
-          $(element + key).css('display', 'block');
           $(element).siblings('svg').css('display', 'none');
+          $(element + key).css('display', 'block');
         });
       }
     }
     else{
       $(element).attr("src", base_url + data);
-      $(element).css('display', 'block');
       $(element).siblings('svg').css('display', 'none');
+      $(element).css('display', 'block');
     }
   }
 }
@@ -441,36 +478,39 @@ function ResetForm(){
   $('.check-box').prop('checked', false);
   $('.configuations textarea').val('');
   $('.configuations #submit_configuation').attr('disabled', false);
+  $('.input-image img').attr('src', '#');
+  $('.input-image img').css('display', 'none');
+  $('.input-image svg').css('display', 'block');
   var select_option = "<option selected value = '"+data_language_default.lang_id+"' title = '"+data_language_default.lang_image+"' >"+data_language_default.lang_name+"</option>";
   setSelect2DataLanguage('.pick_language', select_option, data_language_default);
 }
 
 //Get Data From Input
 function GetAllData(){
-  input_email              = $('#input-admin-email').val();
-  input_site_title         = $('#input-site-title').val();
-  input_meta_description   = $('#input-meta-description').val();
-  input_meta_keyword       = $('#input-meta-keyword').val();
-  input_rewrite            = $('#input-rewrite').val() == 'on'? '1':'0';
-  input_extention          = $('#input-extention').val();
-  pick_language            = $('.pick_language').select2('val');
-  input_hotline            = $('#input-hotline').val();
-  input_hotline_banhang    = $('#input-hotline-banhang').val();
-  input_hotline_kythuat    = $('#input-hotline-kythuat').val();
-  input_address            = $('#input-address').val();
-  check_active_contact     = $('#check-active-contact').val() == 'on'? '1':'0';
-  input_payment            = $('#input-payment').val();
-  input_fee_transport      = $('#input-fee-transport').val();
-  input_contact_sale       = $('#input-contact-sale').val();
-  input_info_company       = $('#input-info-company').val();
-  input_page_fb            = $('#input-page-fb').val();
-  input_link_fb            = $('#input-link-fb').val();
-  input_link_insta         = $('#input-link-insta').val();
-  input_link_twitter       = $('#input-link-twitter').val();
-  input_map                = $('#input-map').val();
-  input_banner_title       = $('#input-banner-title').val();
-  input_banner_description = $('#input-banner-description').val();
-  check_active_banner      = $('#check-active-banner').val() == 'on'? '1':'0';
+  input_email              = $('#input-admin-email').val().replace(/"/g, "'");
+  input_site_title         = $('#input-site-title').val().replace(/"/g, "'");
+  input_meta_description   = $('#input-meta-description').val().replace(/"/g, "'");
+  input_meta_keyword       = $('#input-meta-keyword').val().replace(/"/g, "'");
+  input_rewrite            = $('#input-rewrite').val() == 'on'? 1:0;
+  input_extention          = $('#input-extention').val().replace(/"/g, "'");
+  pick_language            = $('.pick_language').select2('val').replace(/"/g, "'");
+  input_hotline            = $('#input-hotline').val().replace(/"/g, "'");;
+  input_hotline_banhang    = $('#input-hotline-banhang').val().replace(/"/g, "'");
+  input_hotline_kythuat    = $('#input-hotline-kythuat').val().replace(/"/g, "'");
+  input_address            = $('#input-address').val().replace(/"/g, "'");
+  check_active_contact     = $('#check-active-contact').val() == 'on'? 1:0;
+  input_payment            = $('#input-payment').val().replace(/"/g, "'");
+  input_fee_transport      = $('#input-fee-transport').val().replace(/"/g, "'");
+  input_contact_sale       = $('#input-contact-sale').val().replace(/"/g, "'");
+  input_info_company       = $('#input-info-company').val().replace(/"/g, "'");
+  input_page_fb            = $('#input-page-fb').val().replace(/"/g, "'");
+  input_link_fb            = $('#input-link-fb').val().replace(/"/g, "'");
+  input_link_insta         = $('#input-link-insta').val().replace(/"/g, "'");
+  input_link_twitter       = $('#input-link-twitter').val().replace(/"/g, "'");
+  input_map                = $('#input-map').val().replace(/"/g, "'");
+  input_banner_title       = $('#input-banner-title').val().replace(/"/g, "'");
+  input_banner_description = $('#input-banner-description').val().replace(/"/g, "'");
+  check_active_banner      = $('#check-active-banner').val() == 'on'? 1:0;
 
   data = {
     con_admin_email           : input_email.trim(),
@@ -498,12 +538,12 @@ function GetAllData(){
     con_banner_description    : input_banner_description.trim(),
     con_banner_active         : check_active_banner
   }
-  console.log(data);
   return data;
 }
 
 function uploadInformation(){
   data = GetAllData();
+  data.web_id                      = web_id;
   data.image_background_homepage_1 = $('#image_background_homepage_1').attr('src');
   data.image_background_homepage_2 = $('#image_background_homepage_2').attr('src');
   data.image_background_homepage_3 = $('#image_background_homepage_3').attr('src');
@@ -511,34 +551,76 @@ function uploadInformation(){
   data.image_background_homepage_5 = $('#image_background_homepage_5').attr('src');
   data.image_background_homepage_6 = $('#image_background_homepage_6').attr('src');
   data.image_background_homepage_7 = $('#image_background_homepage_7').attr('src');
-  data.image_logo_top        = $('#image_logo_top').attr('src');
-  data.image_logo_bottom     = $('#image_logo_bottom').attr('src');
-  data.image_banner          = $('#image_banner').attr('src');
-  console.log(data);
+  data.image_logo_top              = $('#image_logo_top').attr('src');
+  data.image_logo_bottom           = $('#image_logo_bottom').attr('src');
+  data.image_banner                = $('#image_banner').attr('src');
 
   var url = '../../../api/Controller/createConfigurations.php';
   if(found){
     var url = '../../../api/Controller/updateConfigurations.php';
   }
-  
   data = JSON.stringify(data);
-  $.ajax({
-    type: 'POST',
-    dataType: 'JSON',
-    data: data,
-    url: url,
-    success: function(data){
-      if(found){
-        alert("Success Update");
-      }
-      alert("Success Create");
-      found = true;
-    },
-    error: function(){
-      if(found){
-        alert("Error Update");
-      }
-      alert("Error Create");
+  ajax(data, url, successUpload, errorUpload, 'POST', 'JSON');
+}
+
+function successUpload(data){
+  if(data.code == 200){
+    found = true;
+    $('#submit_configuation').attr('disabled', true);
+    showAlert('success', data.message)
+    var data_webID = {
+      "web_id": web_id
     }
+    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+    ajax(JSON.stringify(data_webID), url, loadSuccessConfiguration, errorLoadConfiguration);
+  }
+  else{
+    showAlert('warning', data.message);
+  }
+}
+
+function errorUpload(data){
+  found = false;
+  showAlert('error', '<strong>ERROR:</strong> Update Or Create get trouble!')
+}
+
+function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', async = true){
+  $.ajax({
+    type: type,
+    data: data,
+    async: async,
+    dataType: dataType,
+    url: url,
+    success: success,
+    error: error
+  });
+}
+
+function showAlert(type, message){
+  $('.alert').removeClass("alert-success");
+  $('.alert').removeClass("alert-warning");
+  $('.alert').removeClass("alert-danger");
+
+  switch(String(type)){
+    case "success":
+      $('.alert').addClass('alert-success');
+      $('.alert-heading').html('<i class="fas fa-check-circle"></i> Success!');
+      break;
+    case "error":
+      $('.alert').addClass('alert-danger');
+      $('.alert-heading').html('<i class="fas fa-exclamation-circle"></i> Error!');
+      break;
+    case "warning":
+      $('.alert').addClass('alert-warning');
+      $('.alert-heading').html('<i class="fa fa-warning"></i> Warning!');
+      break;
+  }
+
+  $('.alert .message').html(message);
+  $('.alert').addClass('show');
+  setTimeout(function(){ $('.alert').removeClass('show'); }, 3000);
+
+  $('.alert button.close').on('click', function(){
+    $('.alert').removeClass('show');
   });
 }

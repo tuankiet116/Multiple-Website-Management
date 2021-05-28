@@ -10,8 +10,8 @@
     margin: auto auto auto 5% ;
 }
 
-.selection img{
-    width: 9%;
+.pick_website_container .selection img{
+    width: 5%;
     margin-top: -1%;
 }
 
@@ -20,7 +20,8 @@
 }
 
 .select2-result-website__icon img{
-    width: 50px;
+    width: 30px;
+    padding-right: 10px;
 }
 
 .select2-result-language {
@@ -28,7 +29,13 @@
 }
 
 .select2-result-language__icon img{
-    width: 40px;
+    width: 30px;
+    padding-right: 10px;
+}
+
+.language-picker img{
+    width: 6%;
+    margin-top: -1%;
 }
 
 .configuations{
@@ -214,3 +221,22 @@ input:checked + .slider:before {
 .form-check .label-form-check{
     
 }
+
+/* CSS Alert Bootstrap */
+.alert-message{
+    position: fixed;
+    right: 50px;
+    width: 20%;
+}
+
+/* .fade{
+    animation: move_alert 2s !important;
+}
+
+@keyframes move_alert {
+    0%   {right: 50px; opacity: 0.7}
+    25%  {right: 30px; opacity: 0.5}
+    75%  {right: 10px; opacity: 0.2}
+    100% {right: 0px; opacity: 0}
+  } */
+

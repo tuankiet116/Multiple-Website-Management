@@ -20,6 +20,14 @@
 </head>
 
 <body>
+    <div class="alert alert-warning alert-dismissible fade alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">   
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="main_container">
         <div class="pick_website_container">
             <div class="title_pick_website title">
@@ -53,11 +61,11 @@
                         <label for="input-meta-keyword"><?=translate_text('Meta Keyword')?></label>
                         <input name="input-meta-keyword" type="text" class="form-control" id="input-meta-keyword" placeholder="<?=translate_text('Meta Keyword')?>">
                     </div>
-                    <div class="form-check form-configuations">
+                    <div id="form-check-rewrite" class="form-check form-configuations">
                         <label class="label-form-check" for="input-rewrite"><?=translate_text('Kích Hoạt Rewrite')?></label>
                         <label class="switch">
                             <input name="input-rewrite" class="check-box" id="input-rewrite" type="checkbox">
-                            <span class="slider round"></span>
+                            <span id="check-button-rewrite" class="slider round"></span>
                         </label>
                     </div>
                     <div class="form-group form-configuations">
@@ -84,11 +92,11 @@
                         <label for="input-address"><?=translate_text('Địa Chỉ')?></label>
                         <input name="input-address" type="text" class="form-control" id="input-address" placeholder="<?=translate_text('Thêm Địa Chỉ')?>">
                     </div>
-                    <div class="form-check form-configuations">
+                    <div id="form-check-contact" class="form-check form-configuations">
                         <label class="form-check-active-contact-label" for="check-active-contact"><?=translate_text('Kích Hoạt Liên Hệ')?></label>
                         <label class="switch">
                             <input name="check-active-contact" class="check-box" id="check-active-contact" type="checkbox">
-                            <span class="slider round"></span>
+                            <span id="check-button-contact" class="slider round"></span>
                         </label>
                     </div>
                     <div class="form-group form-configuations">
@@ -247,11 +255,11 @@
                         <label for="input-banner-description"><?=translate_text('Mô Tả Banner')?></label>
                         <textarea class="form-control" id="input-banner-description" placeholder="<?=translate_text('Mô Tả')?>"></textarea>
                     </div>
-                    <div class="form-check form-configuations">
+                    <div id="form-check-banner" class="form-check form-configuations">
                         <label class="label-form-check form-check-active-banner" for="check-active-banner"><?=translate_text('Kích Hoạt Banner')?></label>
                         <label class="switch">
                             <input class="check-box" id="check-active-banner" type="checkbox">
-                            <span class="slider round"></span>
+                            <span id="check-button-banner" class="slider round"></span>
                         </label>
                     </div>
                     <div class="button_configuation">

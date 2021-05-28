@@ -14,10 +14,6 @@ $category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name,
 
 $arr_title = get_data_rows("SELECT * FROM post_type");
 
-/********** POST **********/
-
-$arr_post = get_data_rows("SELECT * FROM post");
-
 /********** CAROUSEL **********/
 
 $arr_carousel = get_data_rows("SELECT * FROM categories_multi_parent WHERE bgt_type = 'carousel' AND web_id = $web_id");
@@ -26,9 +22,6 @@ $arr_carousel = get_data_rows("SELECT * FROM categories_multi_parent WHERE bgt_t
 
 $arr_banner = get_data_rows("SELECT * FROM categories_multi_parent WHERE bgt_type = 'banner' AND web_id = $web_id");
 
-/********** NEWS **********/
-
-$arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +47,7 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
         <div class="container">
             <?php
             foreach ($arr_title as $key => $title) {
-                if ($title['post_type_id'] == 1 && $title['post_type_show'] == 'title') {
+                if ($title['post_type_show'] == 'dich-vu') {
                     echo '
                         <div class="title">
                             <p class="main-title"> ' . $title['post_type_title'] . ' </p>
@@ -63,33 +56,34 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
                             </p>
                             <div class="line-title"></div>
                         </div>';
+
+                    $pt_id = $title['post_type_id'];
                 }
             }
             ?>
             <div class="row">
 
                 <?php
+                $arr_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id");
                 foreach ($arr_post as $key => $post) {
-                    if ($post['cmp_id'] == 3) {
-                        echo '
-                        <div class="col-lg-6">
-                            <div class="services">
-                                <a href="news.php?name=' . $post['post_rewrite_name'] . '&title=' . $post['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $post['ptd_id'] . '" target="_self">
-                                    <div class="sv-img">
-                                        <img src="' . $post['post_image_background'] . '" alt="garden">
-                                    </div>
-                                    <div class="sv-title">
-                                        <p> ' . $post['post_title'] . ' </p>
-                                    </div>
-                                    <div class="sv-text">
-                                        <p>
-                                            ' . $post['post_description'] . '
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>';
-                    }
+                    echo '
+                    <div class="col-lg-6">
+                        <div class="services">
+                            <a href="news.php?name=' . $post['post_rewrite_name'] . '&title=' . $post['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $post['ptd_id'] . '" target="_self">
+                                <div class="sv-img">
+                                    <img src="' . $post['post_image_background'] . '" alt="garden">
+                                </div>
+                                <div class="sv-title">
+                                    <p> ' . $post['post_title'] . ' </p>
+                                </div>
+                                <div class="sv-text">
+                                    <p>
+                                        ' . $post['post_description'] . '
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>';
                 }
                 ?>
             </div>
@@ -97,7 +91,7 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
         <div class="container text-center">
             <?php
             foreach ($arr_title as $key => $title) {
-                if ($title['post_type_id'] == 2 && $title['post_type_show'] == 'title') {
+                if ($title['post_type_show'] == 'san-pham') {
                     echo '
                         <div class="title">
                             <p class="main-title"> ' . $title['post_type_title'] . ' </p>
@@ -143,19 +137,22 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
         <div class="container">
             <?php
             foreach ($arr_title as $key => $title) {
-                if ($title['post_type_id'] == 3 && $title['post_type_show'] == 'title') {
+                if ($title['post_type_show'] == 'tai-sao') {
                     echo '
                         <div class="title">
                             <p class="main-title"> ' . $title['post_type_title'] . ' </p>
                             <div class="line-title" style="margin-top: 25px;"></div>
                         </div>';
+
+                    $pt_id = $title['post_type_id'];
                 }
             }
             ?>
             <div class="row">
                 <?php
+                $arr_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id");
                 foreach ($arr_post as $key => $post) {
-                    if ($post['cmp_id'] == 7 && $post['post_description'] != '') {
+                    if ($post['post_description'] != '') {
                         echo '
                         <div class="choose-container col-lg-6">
                             <a class="choose-left" href="#" target="_self">
@@ -176,8 +173,9 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
                 <div class="choose-container col-lg-6">
                     <div class="row">
                         <?php
+                        $arr_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id");
                         foreach ($arr_post as $key => $post) {
-                            if ($post['cmp_id'] == 7 && $post['post_description'] == '') {
+                            if ($post['post_description'] == '') {
                                 echo '
                                 <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
                                     <a class="choose-right" href="#" target="_self">
@@ -212,7 +210,7 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
         <div class="container">
             <?php
             foreach ($arr_title as $key => $title) {
-                if ($title['post_type_id'] == 4 && $title['post_type_show'] == 'title') {
+                if ($title['post_type_show'] == 'tin-noi-bat') {
                     echo '
                         <div class="title">
                             <p class="main-title"> ' . $title['post_type_title'] . ' </p>
@@ -221,52 +219,56 @@ $arr_news = get_data_rows("SELECT * FROM post ORDER BY post_datetime_create DESC
                             </p>
                             <div class="line-title"></div>
                         </div>';
+
+                    $pt_id = $title['post_type_id'];
                 }
             }
             ?>
 
             <div class="row">
                 <?php
+                $arr_news = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id ORDER BY post_datetime_create DESC LIMIT 5");
                 foreach ($arr_news as $key => $news) {
-                    if ($news['cmp_id'] == 8 && $news['post_description'] == '' && $news['post_meta_description'] != 'more') {
 
-                        $date = $news['post_datetime_create'];
-                        $myDate = date("d-m-Y", strtotime($date));
+                    $date = $news['post_datetime_create'];
+                    $myDate = date("d-m-Y", strtotime($date));
 
+                    if ($news['post_meta_description'] == '') {
                         echo '
-                        <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="row news-all">
-                                <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                                    <a href="./news.php" target="_self">
-                                        <img src="' . $news['post_image_background'] . '" alt="news image">
-                                    </a>
+                            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row news-all">
+                                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <a href="./news.php" target="_self">
+                                            <img src="' . $news['post_image_background'] . '" alt="news image">
+                                        </a>
+                                    </div>
+                                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <p class="news-date">' . $myDate . '</p>
+                                        <a href="" target="_self" class="news-title">
+                                            ' . $news['post_title'] . '
+                                        </a>
+                                        <a href="" target="_self" class="news-viewmore">
+                                            <i class="fas fa-angle-right"></i>
+                                            Xem tiếp
+                                        </a>
+                                    </div>
+                                    <div class="news-color-line"></div>
                                 </div>
-                                <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
-                                    <p class="news-date">' . $myDate . '</p>
-                                    <a href="" target="_self" class="news-title">
-                                        ' . $news['post_title'] . '
-                                    </a>
-                                    <a href="" target="_self" class="news-viewmore">
-                                        <i class="fas fa-angle-right"></i>
-                                        Xem tiếp
-                                    </a>
-                                </div>
-                                <div class="news-color-line"></div>
-                            </div>
-                        </div>';
+                            </div>';
                     }
                 }
                 ?>
             </div>
 
             <?php
-            foreach ($arr_post as $key => $post) {
-                if ($post['cmp_id'] == 8 && $post['post_description'] == '' && $post['post_meta_description'] == 'more') {
+            $arr_news = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id");
+            foreach ($arr_news as $key => $news) {
+                if ($news['post_description'] == '' && $news['post_meta_description'] == 'more') {
                     echo '
                         <div class="see-more">
                             <a href="#" target="_self">
                                 <i class="fas fa-angle-double-right"></i>
-                                ' . $post['post_title'] . '
+                                ' . $news['post_title'] . '
                             </a>
                         </div>';
                 }

@@ -23,7 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
 $web_id = $data->web_id; 
 
 // read the details of product to be edited
-$result = $config->getByWebID($web_id);
+$result = $config->getByWebID($web_id, true);
 
 if($config->con_id != null){
     //website array
