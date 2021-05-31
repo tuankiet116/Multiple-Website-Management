@@ -250,7 +250,7 @@
     margin: 0 auto;
 }
 
-#main-container .container .row .services {
+#main-container .container-fluid .row .services {
     width: 100%;
     height: 300px;
     background-color: rgb(250, 250, 250);
@@ -259,12 +259,12 @@
     box-shadow: 10px 10px 0px 2px rgba(220, 220, 220, 0.6);
 }
 
-#main-container .container .row .services a:hover .sv-img img {
+#main-container .container-fluid .row .services a:hover .sv-img img {
     transform: scale(1.1);
     transition: .5s;
 }
 
-#main-container .container .row .services .sv-img{
+#main-container .container-fluid .row .services .sv-img{
     position: absolute;
     width: 100%;
     height: 300px;
@@ -273,13 +273,13 @@
     overflow: hidden;
 }
 
-#main-container .container .row .services .sv-img img {
+#main-container .container-fluid .row .services .sv-img img {
     width: 100%;
     height: auto;
     transition: .5s;
 }
 
-#main-container .container .row .services .sv-title{
+#main-container .container-fluid .row .services .sv-title{
     background-color: rgba(76, 162, 70, 0.8);
     position: absolute;
     width: 180px;
@@ -289,7 +289,7 @@
     z-index: 20;
 }
 
-#main-container .container .row .services .sv-title p{
+#main-container .container-fluid .row .services .sv-title p{
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
@@ -303,7 +303,7 @@
     margin: 0 auto;
 }
 
-#main-container .container .row .services .sv-text{
+#main-container .container-fluid .row .services .sv-text{
     background-color: rgba(255, 255, 255, 0.8);
     width: 300px;
     height: 150px;
@@ -315,7 +315,7 @@
     z-index: 19;
 }
 
-#main-container .container .row .services .sv-text p{
+#main-container .container-fluid .row .services .sv-text p{
     width: 270px;
     height: 102px;
     overflow: hidden;
@@ -326,18 +326,18 @@
     z-index: 19;
 }
 
-#main-container .container .row div .image {
+#main-container .container-fluid .row div .image {
     overflow: hidden;
     width: 100%;
     height: 450px;
 }
 
-#main-container .container .row div .image img{
+#main-container .container-fluid .row div .image img{
     width: 100%;
     height: auto;
 }
 
-#main-container .container .row div .title {
+#main-container .container-fluid .row div .title {
     color: #848484;
     text-align: center;
     text-transform: uppercase;
@@ -347,7 +347,7 @@
     margin-top: 50px;
 }
 
-#main-container .container .row div .text {
+#main-container .container-fluid .row div .text {
     color: rgb(30, 30, 30);
     font-size: 16px;
     text-align: justify;
@@ -355,7 +355,7 @@
     padding-left: 10px;
 }
 
-#main-container .container .row div .text span{
+#main-container .container-fluid .row div .text span{
     font-weight: bold;
     color: #ed4848;
 }

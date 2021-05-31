@@ -32,7 +32,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title> Báo giá sản phẩm </title>
+    <title> Báo giá s?n ph?m </title>
     <? include("./includes/inc_head.php"); ?>
     <link rel="stylesheet" href="../Green_website/resource/css/shop.css">
 </head>
@@ -44,34 +44,42 @@ $pageLink = "";
 
     <!--------------- CONTENT --------------->
 
+    <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
     <div id="shop">
         <div id="shop-container">
             <div class="container-fluid">
                 <div class="breadcrumb">
-                    <a href="#" target="_self">Trang chủ </a>
-
-                    <span class="navigation-pipe">
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-
-                    <a href="#" target="_self">Báo giá sản phẩm</a>
-                </div>
-
-                <div class="shop-title"> Báo giá sản phẩm </div>
-
-                <div class="row">
                     <?php
-                    foreach ($arr_shop as $key => $shop) {
-                        if ($shop['produce_active'] == 1) {
+                    foreach ($bread_topic as $key => $bread) {
+                        if ($bread['cmp_rewrite_name'] == 'trang-chu') {
                             echo '
+                                    <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>';
+                        }
+
+                        if ($bread['cmp_rewrite_name'] == 'san-pham') {
+                            echo '
+                                    <span class="navigation-pipe">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                    <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>
+                                </div>
+                                <div class="shop-title">' . $bread['cmp_name'] . '</div>';
+                        }
+                    } ?>
+
+                    <div class="row">
+                        <?php
+                        foreach ($arr_shop as $key => $shop) {
+                            if ($shop['produce_active'] == 1) {
+                                echo '
                                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                     <div class="shop-content">
                                         <div class="shop-image">
                                             <a href="#" target="_self">
-                                                <img src="' . $shop['produce_image_path'] . '" alt="shop image">
+                                                <img src="../../data/image/images/Web-2/' . $shop['produce_image_path'] . '" alt="shop image">
 
                                                 <div class="shop-detail">
-                                                    <div> Chi tiết </div>
+                                                    <div> Chi ti?t </div>
                                                 </div>
                                             </a>
 
@@ -87,14 +95,14 @@ $pageLink = "";
                                         <div class="shop-code">' . $shop['produce_description'] . '</div>
                                     </div>
                                 </div>';
+                            }
                         }
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
-            </div>
 
-            <div id="pagination">
-                <?php
+                <div id="pagination">
+                    <?php
                     echo "
                         <div id='pag-btn'>
                             <a href='shop.php?page=" . ($page - 1) . "'> 
@@ -109,7 +117,7 @@ $pageLink = "";
                     for ($i = 1; $i <= $total_pages; $i++) {
                         if ($i == $page) {
                             $pageLink .= "<a class='pages-number active' href='shop.php?page="
-                                            . $i . "'>" . $i . " </a>";
+                                . $i . "'>" . $i . " </a>";
                         } else {
                             $pageLink .= "<a class='pages-number' href='shop.php?page=" . $i . "'>   
                                             " . $i . " </a>";
@@ -149,16 +157,16 @@ $pageLink = "";
                                 next_button.style.display = 'none';
                             </script>";
                     }
-                ?>
+                    ?>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!--------------- FOOTER --------------->
+        <!--------------- FOOTER --------------->
 
-    <? include('./includes/inc_footer.php') ?>
+        <? include('./includes/inc_footer.php') ?>
 
-    <? include('./includes/inc_foot.php') ?>
+        <? include('./includes/inc_foot.php') ?>
 </body>
 
 </html>

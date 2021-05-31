@@ -47,7 +47,7 @@
   -webkit-backface-visibility: hidden;
   -webkit-touch-callout: none;
   overflow: hidden;
-  height: 500px;
+  height: 500px !important;
 }
 .owl-carousel .owl-item img {
   display: block;
