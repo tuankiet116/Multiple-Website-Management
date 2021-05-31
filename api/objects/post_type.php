@@ -16,6 +16,7 @@
         }
 
         function searchTerm(){
+            $query = "SELECT * FROM categories_multi_parent WHERE cmp_id = :cmp_id";
             $query = "SELECT * FROM ".$this->table_name." WHERE post_type_title LIKE '%".$this->term."%' AND post_type_active = 1 AND cmp_id = :cmp_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':cmp_id', $this->cmp_id);
