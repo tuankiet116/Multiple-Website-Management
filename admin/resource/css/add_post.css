@@ -6,7 +6,19 @@
     margin: auto auto auto 5% ;
 }
 
-.pick_website_container .selection img{
+.box .select2-container{
+    width: 100% !important;
+}
+
+.choose-container{
+    display: flex;
+}
+
+.select-container{
+    width: 100%;
+}
+
+.select-container .selection img{
     width: 5%;
     margin-top: -1%;
 }
@@ -15,7 +27,28 @@
     display: flex;
 }
 
-.select2-result-website__icon img{
+.select2-container img{
     width: 30px;
     padding-right: 10px;
+}
+
+.editor-form{
+    margin: 7% auto;
+}
+
+.button-container{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container input{
+    width: 100px;
+    margin: 0 50px 100px 0;
+}
+
+.image-loading{
+    width: 40px;
+    display: none;
 }

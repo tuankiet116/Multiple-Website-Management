@@ -95,7 +95,7 @@ class upload_image{
 
 			file_put_contents("{$url}/{$new_filename}.{$type}", $data);
 			$result = "{$url}/{$new_filename}.{$type}";
-			$result = substr($result, 6);
+			$result = substr($result, 6);	
 			return $result;
 		}
 		else{
