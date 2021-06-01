@@ -23,7 +23,7 @@ if (isset($_GET['page'])) {
 }
 
 if (strpos($url, "/") != false) {
-    header('location: http://localhost:8091/home/Green_website/');
+    header('location: ../home/Green_website/');
 }
 
 $category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");

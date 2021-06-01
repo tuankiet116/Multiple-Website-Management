@@ -116,7 +116,7 @@ $(document).ready(function(){
     var data = {
       "web_id": web_id
     }
-    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+    url = '../../../api/Controller/getConfiguations.php';
 
     ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
   });
@@ -189,7 +189,7 @@ $(document).ready(function(){
     var data = {
       "web_id": web_id
     }
-    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+    url = '../../../api/Controller/getConfiguations.php';
 
     ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
   });
@@ -571,7 +571,7 @@ function successUpload(data){
     var data_webID = {
       "web_id": web_id
     }
-    url = 'http://cleaning.com:8080/api/Controller/getConfiguations.php';
+    url = '../../../api/Controller/getConfiguations.php';
     ajax(JSON.stringify(data_webID), url, loadSuccessConfiguration, errorLoadConfiguration);
   }
   else{
