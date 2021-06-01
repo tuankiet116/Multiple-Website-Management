@@ -264,7 +264,7 @@ body {
 
 .container .row .news-right .news-right-container .contact-footer {
     width: 100%;
-    height: 200px;
+    height: auto;
     padding: 12px 14px 15px 14px;
 }
 

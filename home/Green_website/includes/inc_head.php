@@ -18,3 +18,5 @@
 <!-- Style -->
 <link rel="stylesheet" href="../Green_website/resource/css/slideshow/slideshow.css">
 <link rel="stylesheet" href="../Green_website/resource/css/style.css">
+<link rel="stylesheet" href="../Green_website/resource/css/shop.css">
+<link rel="stylesheet" href="../Green_website/resource/css/news.css">

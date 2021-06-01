@@ -1,20 +1,15 @@
-<?php
+<!---------- MENU ---------->
 
+<?php
 $web_id = 2;
 
-/********** Parents **********/
-
 $arr_topic_parents = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
-
-/********** Child **********/
-
 $arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
-
-/********** BUY **********/
-
-$arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_email 
-                            FROM configuration WHERE web_id = $web_id ");
+$arr_buy = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
 ?>
+
+
+
 
 <div id="menu">
     <div id="logo">
@@ -23,29 +18,29 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
 
     <ul id="navbar">
         <?php
-        foreach ($arr_topic_parents as $key => $topic) {
-            if ($topic['cmp_has_child'] == 1 && $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
-                $arr_child_id = explode(",", $topic['cmp_has_child']);
+        foreach ($arr_topic_parents as $key => $topic_parents) {
+            if ($topic_parents['cmp_has_child'] == 1 && $topic_parents['cmp_active'] == 1) {
+                $arr_child_id = explode(",", $topic_parents['cmp_has_child']);
                 echo '
                         <li>
-                            <a href="' . $topic['cmp_post'] . '" target="_self">
-                                <span>' . $topic['cmp_name'] . '</span>
+                            <a href="#" target="_self">
+                                <span>' . $topic_parents['cmp_name'] . '</span>
                             </a>';
                 echo '
                             <div class="sub-navbar">
                                 <div class="sub-container"></div>
                                 <table>';
                 foreach ($arr_topic_child as $key => $topic_child) {
-                    if (in_array($topic_child['cmp_parent_id'] == $topic['cmp_id'], $arr_child_id)) {
+                    if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active'] == 1) {
                         echo '
-                                            <tr>
-                                                <td>
-                                                    <a href="' . $topic['cmp_post'] . '" target="_self">
-                                                        <div> ' . $topic_child['cmp_name'] . ' </div>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        ';
+                            <tr>
+                                <td>
+                                    <a href="' . $topic_child['cmp_rewrite_name'] . '" target="_self">
+                                        <div> ' . $topic_child['cmp_name'] . ' </div>
+                                    </a>
+                                </td>
+                            </tr>
+                        ';
                     }
                 }
                 echo '
@@ -53,11 +48,11 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
                             </div>
                         </li>
                     ';
-            } else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
+            } else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
                 echo '
                             <li>
-                                <a href="' . $topic['cmp_post'] . '" target="_self">
-                                    <span>' . $topic['cmp_name'] . '</span>
+                                <a href="' . $topic_parents['cmp_rewrite_name'] . '" target="_self">
+                                    <span>' . $topic_parents['cmp_name'] . '</span>
                                 </a>
                             </li>
                         ';
@@ -73,26 +68,26 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
 
 <div id="sub-menu">
     <?php
-    foreach ($arr_topic_parents as $key => $topic) {
-        if ($topic['cmp_has_child'] == 1 && $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
-            $arr_child_id = explode(",", $topic['cmp_has_child']);
+    foreach ($arr_topic_parents as $key => $topic_parents) {
+        if ($topic_parents['cmp_has_child'] == 1 && $topic_parents['cmp_active'] == 1) {
+            $arr_child_id = explode(",", $topic_parents['cmp_has_child']);
             echo '
                         <div id="sub-menu-container">
-                            <a id="sub_' . $topic['cmp_id'] . '" href="#" target="_self">
+                            <a id="sub_' . $topic_parents['cmp_id'] . '" href="#" target="_self">
                                 <div>
-                                    ' . $topic['cmp_name'] . '
+                                    ' . $topic_parents['cmp_name'] . '
                                     <i class="fas fa-chevron-down"></i>
                                 </div>
                             </a>';
             echo '
-                            <div id="sub_content_' . $topic['cmp_id'] . '" class="sub-menu-content">';
+                            <div id="sub_content_' . $topic_parents['cmp_id'] . '" class="sub-menu-content">';
             foreach ($arr_topic_child as $key => $topic_child) {
-                if (in_array($topic_child['cmp_parent_id'] == $topic['cmp_id'], $arr_child_id)) {
+                if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_parents['cmp_active'] == 1) {
                     echo '
                                 <a href="#" target="_self">
                                     <div>' . $topic_child['cmp_name'] . '</div>
                                 </a>
-                        ';
+                            ';
                 }
             }
             echo '
@@ -103,18 +98,18 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
                     <script type="text/javascript">
                         $(document).ready(function(){
                             var m = 0;
-                            $("#sub_' . $topic['cmp_id'] . '").click(function () {
-                                $("#sub_content_' . $topic['cmp_id'] . '").slideToggle("slow");
+                            $("#sub_' . $topic_parents['cmp_id'] . '").click(function () {
+                                $("#sub_content_' . $topic_parents['cmp_id'] . '").slideToggle("slow");
                             });
-                            $("#sub_' . $topic['cmp_id'] . '").click(function () {
+                            $("#sub_' . $topic_parents['cmp_id'] . '").click(function () {
                                 if (m == 0) {
-                                $("#sub-menu #sub-menu-container a#sub_' . $topic['cmp_id'] . ' div i").css(
+                                $("#sub-menu #sub-menu-container a#sub_' . $topic_parents['cmp_id'] . ' div i").css(
                                     "transform",
                                     "rotate(180deg)"
                                 );
                                 m++;
                                 } else {
-                                $("#sub-menu #sub-menu-container a#sub_' . $topic['cmp_id'] . ' div i").css(
+                                $("#sub-menu #sub-menu-container a#sub_' . $topic_parents['cmp_id'] . ' div i").css(
                                     "transform",
                                     "rotate(0deg)"
                                 );
@@ -124,12 +119,12 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
                         });
                     </script>
                 ';
-        } else if ($topic['cmp_has_child'] == 0 &&  $topic['cmp_active'] == 1 && $topic['bgt_type'] == '') {
+        } else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
             echo '
                                 <div id="sub-menu-container">
-                                    <a href="' . $topic['cmp_post'] . '" target="_self">
+                                    <a href="' . $topic_parents['cmp_rewrite_name'] . '" target="_self">
                                         <div>
-                                            ' . $topic['cmp_name'] . '
+                                            ' . $topic_parents['cmp_name'] . '
                                         </div>
                                     </a>
                                 </div>';
@@ -142,26 +137,23 @@ $arr_buy = get_data_rows("  SELECT con_hotline, con_hotline_banhang, con_hotline
 
 <!---------- BUY & CONTACT ---------->
 <div id="func_btn">
-
-    <?php
-    foreach ($arr_buy as $key => $buy) {
-        echo '
-            <div id="buy">
-                <div id="buy-container">
-                    <a href="#" target="_self">
-                        <div class="func_icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="buy-content">
-                            <p>Mua hàng:</p>
-                            <p>' . $buy['con_hotline_banhang'] . '</p>
-                        </div>
-                    </a>
-                </div>
-            </div>';
-    }
-    ?>
-    
+    <div id="buy">
+        <div id="buy-container">
+            <?php foreach($arr_buy as $key => $buy) { ?>
+                <a href="tel: <?php echo $buy['con_hotline_banhang'] ?> " target="_self">
+                    <div class="func_icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="buy-content">
+                        <p>Mua hàng:</p>
+                        <p>
+                            <?php echo $buy['con_hotline_banhang'] ?>
+                        </p>
+                    </div>
+                </a>
+            <?php } ?>
+        </div>
+    </div>
     <div id="scroll-top">
         <div id="scroll-container">
             <a href="#" target="_self">

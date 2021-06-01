@@ -2,15 +2,3 @@ body {
     background-color: rgb(250, 250, 250);
 }
 
-
-
-/********** Slideshow **********/
-
-.owl-carousel .owl-item {
-    height: 660px !important; 
-    top: 60px;
-}
-
-.owl-carousel .owl-item img {
-    height: auto !important;
-}

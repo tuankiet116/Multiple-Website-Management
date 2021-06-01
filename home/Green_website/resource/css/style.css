@@ -545,6 +545,25 @@
     background-color: white;
 }
 
+.container .row .choose-container .choose-right-container .choose-right-content .choose-right-text p.choose-right-word {
+    width: 250px;
+    margin: 0 auto;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.container .row .choose-container .choose-right-container:nth-child(even) .choose-right-content .choose-right-text p.choose-right-word {
+    color: white;
+}
+
+.container .row .choose-container .choose-right:hover .choose-right-content .choose-right-text p.choose-right-word {
+    transition: .3s;
+    color: white;
+}
+
 /***** CONTACT *****/
 
 #contact {
@@ -631,6 +650,16 @@
     text-transform: uppercase;
     text-decoration: none;
     transition: .4s;
+}
+
+.container .row .news .news-content p.news-text {
+    color: rgb(60, 60, 60);
+    margin-left: 20px;
+    margin-top: 5px;
+    font-size: 13px;
+    max-height: 38px;
+    overflow-y: hidden;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .container .row .news .news-content a.news-title:hover {
@@ -971,6 +1000,14 @@
     padding: 10px 0;
     font-weight: bold;
     color: white;
+}
+
+.carousel-item .carousel-img .carousel-content .carousel-text {
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    max-height: 50px;
+    overflow-y: hidden;
 }
 
 .carousel-item .carousel-img .carousel-content img {

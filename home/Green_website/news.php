@@ -1,6 +1,19 @@
 <?php
 require_once("./helper/function.php");
 $web_id = 2;
+$url = 'trang-chu';
+
+if (isset($_GET['url'])) {
+    $url = $_GET['url'];
+}
+
+if (isset($_GET['page'])) {
+    echo '<h1>' . $_GET['page'] . '</h1>';
+}
+
+if (strpos($url, "/") != false) {
+    header('location: ./');
+}
 
 if (isset($_GET['name'])) {
     $name = $_GET['name'];
@@ -13,18 +26,19 @@ if (isset($_GET['name'])) {
 $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FROM post_detail, post WHERE post.ptd_id = post_detail.ptd_id AND post.post_rewrite_name = '$name'");
 $post_content = get_data_rows("SELECT * FROM post_detail");
 
+$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id, post_type_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
+
 /********** LEFT TITLE  **********/
 
 $arr_left_title = get_data_rows("SELECT * FROM post_type");
 
 /********** HOUSE **********/
 
-$arr_house = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id = 26 AND web_id = $web_id");
+$arr_house = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id = 18 AND web_id = $web_id");
 
 /********** CONTACT **********/
 
-$arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline_banhang, con_hotline_hotro_kythuat, con_link_fb, con_link_twiter, con_link_insta
-                                FROM configuration WHERE web_id = $web_id ");
+$arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
 
 ?>
 
@@ -110,13 +124,13 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                                         <li>
                                             <div class="list-news-container">
                                                 <div class="list-news-image">
-                                                    <a href="#" target="_self">
+                                                    <a href="news.php?name=' . $news_post['post_rewrite_name'] . '&title=' . $news_post['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $news_post['ptd_id'] . '" target="_self">
                                                         <img src="../../data/image/images/Web-2/' . $news_post['post_image_background'] . '" alt="list news image">
                                                     </a>
                                                 </div>
 
                                                 <div class="list-news-content">
-                                                    <a href="#" target="_self">
+                                                    <a href="news.php?name=' . $news_post['post_rewrite_name'] . '&title=' . $news_post['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $news_post['ptd_id'] . '" target="_self">
                                                         ' . $news_post['post_title'] . '
                                                     </a>
 
@@ -165,7 +179,7 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                         foreach ($arr_contact as $key => $contact) {
                             echo '
                                 <div class="hotline-contact">
-                                    <a href="#" target="_self">
+                                    <a href="tel:' . $contact['con_hotline'] . '" target="_self">
                                         <i class="fas fa-phone-alt"></i>
                                         ' . $contact['con_hotline'] . '
                                     </a>
@@ -183,16 +197,16 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                         <div class="hotline-social-media">
                             <table>
                                 <tr>
-                                    <?php
-                                    foreach ($arr_contact as $key => $contact) {
-                                        echo '
+                                    <?php 
+                                        foreach ($arr_contact as $key => $contact) { 
+                                            echo '
                                                 <td>
                                                     <a href="' . $contact['con_link_fb'] . '" target="_self">
                                                         <i class="fab fa-facebook-square fb"></i>
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="' . $contact['con_link_twiter'] . '" target="_self">
+                                                    <a href="' . $contact['con_link_twitter'] . '" target="_self">
                                                         <i class="fab fa-twitter-square tw"></i>
                                                     </a>
                                                 </td>
@@ -201,7 +215,7 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                                                         <i class="fab fa-instagram-square ins"></i>
                                                     </a>
                                                 </td>';
-                                    }
+                                        }
                                     ?>
                                 </tr>
                             </table>
@@ -221,7 +235,7 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                             foreach ($arr_contact as $key => $contact) {
                                 echo '
                                     <div class="hotline-contact">
-                                        <a href="#" target="_self" style="font-size: 22px">
+                                        <a href="tel:' . $contact['con_hotline_hotro_kythuat'] . '" target="_self" style="font-size: 22px">
                                             <i class="fas fa-mobile-alt"></i>
                                             ' . $contact['con_hotline_hotro_kythuat'] . '
                                         </a>
@@ -245,19 +259,19 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                 <div class="news-right-container">
                     <div class="breadcrumb">
                         <?php
-                        foreach ($bread_topic as $key => $bread) {
-                            if ($bread['cmp_rewrite_name'] == 'trang-chu') {
-                                echo '
+                            foreach ($bread_topic as $key => $bread) {
+                                if ($bread['cmp_rewrite_name'] == 'trang-chu') {
+                                    echo'
                                         <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>';
-                            }
+                                }
 
-                            if ($bread['cmp_rewrite_name'] == 'dich-vu') {
-                                echo '
+                                if ($bread['cmp_rewrite_name'] == 'dich-vu') {
+                                    echo'
                                         <span class="navigation-pipe">
                                             <i class="fas fa-chevron-right"></i>
                                         </span>
                                         <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>';
-                            }
+                                }      
                         } ?>
 
                         <span class="navigation-pipe">
@@ -268,20 +282,24 @@ $arr_contact = get_data_rows("  SELECT con_admin_email, con_hotline, con_hotline
                     </div>
                     <div class="news-right-content">
                         <?php
-                        foreach ($post_content as $p_content) {
-                            if ($p_content['ptd_id'] == $postNews) {
-                                echo $p_content['ptd_text'];
+                            foreach ($post_content as $p_content) {
+                                if ($p_content['ptd_id'] == $postNews) {
+                                    echo $p_content['ptd_text'];
+                                }
                             }
-                        }
                         ?>
                     </div>
 
                     <div class="contact-footer">
-                        <h5>M?i liên h?:</h5>
-                        <p>Ð?a ch?: </p>
-                        <p>VPGD: </p>
-                        <p>Nhà vu?n: </p>
-                        <p>Hotline: </p>
+                        <h5>Mời liên hệ:</h5>
+                        <?php
+                            foreach ($arr_contact as $key => $call) {
+                                echo'
+                                    <p> Địa chỉ: ' . $call['con_address'] . '</p>
+                                    <p> Hotline: ' . $call['con_hotline'] . '</p>
+                                ';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
