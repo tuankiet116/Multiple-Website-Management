@@ -120,12 +120,12 @@ $(document).ready(function(){
           templateSelection: formatRepoSelectionCategories
       })
     }
-    
-    $('#submit_button').on('click', function(e){
-      e.preventDefault();
-      var data = CKEDITOR.instances.post_editor.getData();
-      console.log(data);
-    });
+  });
+
+  $('#submit_button').on('click', function(e){
+    e.preventDefault();
+    var data = CKEDITOR.instances.post_editor.getData();
+    console.log(data);
   });
 });
 
