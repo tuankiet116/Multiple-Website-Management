@@ -47,12 +47,10 @@
   -webkit-backface-visibility: hidden;
   -webkit-touch-callout: none;
   overflow: hidden;
-  height: 500px !important;
 }
 .owl-carousel .owl-item img {
   display: block;
   width: 100%;
-  height: auto;
 }
 .owl-carousel .owl-dots.disabled,
 .owl-carousel .owl-nav.disabled {
@@ -185,4 +183,19 @@
   height: 100%;
   width: 100%;
 }
+
+
+
+/********** Responsive **********/
+
+/* @media screen and (max-width:) {
+  .owl-carousel .owl-item {
+      height: 660px !important; 
+      top: 60px;
+  }
+
+  .owl-carousel .owl-item img {
+      height: auto !important;
+  }
+} */
 

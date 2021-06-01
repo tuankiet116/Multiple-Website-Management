@@ -13,11 +13,11 @@ $start_from = ($page - 1) * $per_page_record;
 
 /********** SHOP **********/
 
-$arr_shop = get_data_rows("SELECT * FROM produce LIMIT $start_from, $per_page_record");
+$arr_shop = get_data_rows("SELECT * FROM product LIMIT $start_from, $per_page_record");
 
 /********** PAGINATION **********/
 
-$sql = "SELECT COUNT(*) FROM produce";
+$sql = "SELECT COUNT(*) FROM product";
 $result = new db_query($sql);
 $row = mysqli_fetch_row($result->result);
 $total_record = $row[0];
@@ -32,7 +32,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title> Báo giá s?n ph?m </title>
+    <title> Báo giá sản phẩm </title>
     <? include("./includes/inc_head.php"); ?>
     <link rel="stylesheet" href="../Green_website/resource/css/shop.css">
 </head>
@@ -70,16 +70,16 @@ $pageLink = "";
                     <div class="row">
                         <?php
                         foreach ($arr_shop as $key => $shop) {
-                            if ($shop['produce_active'] == 1) {
+                            if ($shop['product_active'] == 1) {
                                 echo '
                                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                     <div class="shop-content">
                                         <div class="shop-image">
                                             <a href="#" target="_self">
-                                                <img src="../../data/image/images/Web-2/' . $shop['produce_image_path'] . '" alt="shop image">
+                                                <img src="../../data/image/images/Web-2/' . $shop['product_image_path'] . '" alt="shop image">
 
                                                 <div class="shop-detail">
-                                                    <div> Chi ti?t </div>
+                                                    <div> Chi tiết </div>
                                                 </div>
                                             </a>
 
@@ -88,11 +88,11 @@ $pageLink = "";
 
                                         <div class="shop-name">
                                             <a href="#" target="_self">
-                                                ' . $shop['produce_name'] . '
+                                                ' . $shop['product_name'] . '
                                             </a>
                                         </div>
 
-                                        <div class="shop-code">' . $shop['produce_description'] . '</div>
+                                        <div class="shop-code">' . $shop['product_description'] . '</div>
                                     </div>
                                 </div>';
                             }
