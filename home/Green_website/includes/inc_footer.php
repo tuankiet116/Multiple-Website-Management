@@ -1,17 +1,7 @@
 <?php
 require_once('../../classes/database.php');
-$web_id = 'web_id = 2';
+$web_id = 2;
 
-/********** TITLE **********/
-$arr_footer = array();
-$sql = "SELECT * FROM categories_multi_parent WHERE $web_id";
-$result = new db_query($sql);
-if (mysqli_num_rows($result->result)) {
-    while ($row = mysqli_fetch_assoc($result->result)) {
-        array_push($arr_footer, $row);
-    }
-}
-unset($result, $sql);
 ?>
 
 <div id="footer">
@@ -28,7 +18,7 @@ unset($result, $sql);
                         </li>
                         <li>
                             <a href="#" target="_self">
-                                Địa chỉ: Số 39, ngõ 100/12 Sài Đồng, Long Biên, Hà Nội
+                                Ðịa chỉ: Số 39, ngõ 100/12 Sài Đồng, Long Biên, Hà Nội
                             </a>
                         </li>
                         <li>
@@ -43,7 +33,7 @@ unset($result, $sql);
                         </li>
                         <li>
                             <a href="#" target="_self">
-                                ĐKKD/MST: 0107351360 do sở KHĐT cấp ngày 10/03/2016
+                                ÐKKD/MST: 0107351360 do sở KHÐT cấp ngày 10/03/2016
                             </a>
                         </li>
                         <li>
@@ -62,11 +52,12 @@ unset($result, $sql);
                     <p>Danh mục</p>
                     <ul class="footer-link">
                         <?php
+                        $arr_footer = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
                         foreach ($arr_footer as $key => $footer_menu) {
-                            if ($footer_menu['cmp_active'] == 1 && $footer_menu['cmp_meta_description'] == 'menu') {
+                            if ($footer_menu['cmp_active'] == 1 && $footer_menu['cmp_parent_id'] == '') {
                                 echo '
                                     <li>
-                                        <a href="#" target="_self">
+                                        <a href="' . $footer_menu['cmp_rewrite_name'] . '" target="_self">
                                             ' . $footer_menu['cmp_name'] . '
                                         </a>
                                     </li>';
@@ -81,7 +72,7 @@ unset($result, $sql);
                     <ul class="footer-link">
                         <?php
                         foreach ($arr_footer as $key => $footer_services) {
-                            if ($footer_services['cmp_active'] == 1 && $footer_services['cmp_parent_id'] == 3) {
+                            if ($footer_services['cmp_active'] == 1 && $footer_services['cmp_parent_id'] == 10) {
                                 echo '
                                     <li>
                                         <a href="#" target="_self">

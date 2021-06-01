@@ -1,9 +1,9 @@
-﻿-- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 27, 2021 lúc 05:29 AM
+-- Thời gian đã tạo: Th5 31, 2021 lúc 06:49 AM
 -- Phiên bản máy phục vụ: 10.4.13-MariaDB
 -- Phiên bản PHP: 7.4.8
 
@@ -923,12 +923,12 @@ CREATE TABLE `categories_multi_parent` (
   `cmp_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `cmp_rewrite_name` varchar(255) COLLATE armscii8_bin NOT NULL,
   `cmp_icon` varchar(255) COLLATE armscii8_bin DEFAULT NULL,
-  `cmp_has_child` bit(1) NOT NULL,
+  `cmp_has_child` bit(64) NOT NULL,
   `cmp_post` text COLLATE armscii8_bin DEFAULT NULL,
   `cmp_background` varchar(255) COLLATE armscii8_bin DEFAULT NULL,
   `bgt_type` varchar(255) COLLATE armscii8_bin DEFAULT NULL,
   `cmp_meta_description` varchar(255) COLLATE armscii8_bin DEFAULT NULL,
-  `cmp_active` bit(1) DEFAULT NULL,
+  `cmp_active` bit(64) DEFAULT NULL,
   `cmp_parent_id` int(11) DEFAULT NULL,
   `cmp_order` int(11) NOT NULL,
   `web_id` int(11) NOT NULL
@@ -939,35 +939,34 @@ CREATE TABLE `categories_multi_parent` (
 --
 
 INSERT INTO `categories_multi_parent` (`cmp_id`, `cmp_name`, `cmp_rewrite_name`, `cmp_icon`, `cmp_has_child`, `cmp_post`, `cmp_background`, `bgt_type`, `cmp_meta_description`, `cmp_active`, `cmp_parent_id`, `cmp_order`, `web_id`) VALUES
-(1, 'Trang chủ', 'trang-chu', NULL, b'0', 'index.php', '', '', 'menu', b'1', NULL, 0, 2),
-(2, 'Giới thiệu', '', NULL, b'0', NULL, NULL, NULL, 'menu', b'1', NULL, 0, 2),
-(3, 'Dịch vụ', '', NULL, b'1', NULL, NULL, NULL, 'menu', b'1', NULL, 0, 2),
-(4, 'Thiết kế thi công sân vườn biệt thự', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(5, 'Thiết kế thi công hồ cá Koi', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(6, 'Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(7, 'Báo giá sản phẩm', 'san-pham', NULL, b'0', 'shop.php', NULL, NULL, 'menu', b'1', NULL, 0, 2),
-(8, 'Chuyên mục nhà đẹp', '', NULL, b'1', NULL, NULL, NULL, 'menu', b'1', NULL, 0, 2),
-(9, 'Cảnh quan sân vườn đẹp', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 8, 0, 2),
-(10, 'Hồ cá Koi đẹp', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 8, 0, 2),
-(11, 'Vườn tường xanh', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 8, 0, 2),
-(12, 'Chăm sóc hoa và cây cảnh', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 8, 0, 2),
-(13, 'Hỏi đáp', '', NULL, b'0', NULL, NULL, NULL, 'menu', b'1', NULL, 0, 2),
-(14, 'Thiết kế và thi công cảnh quan nhà hàng, khách sạn', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(15, 'Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(16, 'Thiết kế và thi công cảnh quan nhà máy', '', NULL, b'0', NULL, NULL, NULL, NULL, b'1', 3, 0, 2),
-(17, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/plant3.jpg', 'slide', NULL, b'1', NULL, 0, 2),
-(18, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/lake-house4.jpg', 'slide', NULL, b'1', NULL, 0, 2),
-(19, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/villa7-new.jpg', 'slide', NULL, b'1', NULL, 0, 2),
-(20, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/flower2-new.jpg', 'slide', NULL, b'1', NULL, 0, 2),
-(21, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/koi-pond3-new.jpg', 'slide', NULL, b'1', NULL, 0, 2),
-(22, 'Hòn non bộ', '', NULL, b'0', NULL, '../../data/image/images/Web-2/hon-non-bo1.jpg', 'carousel', NULL, b'1', NULL, 0, 2),
-(23, 'Hồ cá Koi', '', NULL, b'0', NULL, '../../data/image/images/Web-2/slideshow/koi-pond1.jpeg', 'carousel', NULL, b'1', NULL, 0, 2),
-(24, 'Sân vườn trên mái', '', NULL, b'0', NULL, '../../data/image/images/Web-2/rooftop-garden1.jpg', 'carousel', NULL, b'1', NULL, 0, 2),
-(25, 'Tiểu cảnh', '', NULL, b'0', NULL, '../../data/image/images/Web-2/tieu-canh1.jpg', 'carousel', NULL, b'1', NULL, 0, 2),
-(26, 'Sân vườn hiện đại', '', NULL, b'0', NULL, '../../data/image/images/Web-2/modern-garden1.jpg', 'carousel', NULL, b'1', NULL, 0, 2),
-(27, 'Sân vườn Nhật Bản', '', NULL, b'0', NULL, '../../data/image/images/Web-2/japan-garden3.jpg', 'carousel', NULL, b'1', NULL, 0, 2),
-(28, '', '', NULL, b'0', NULL, '../../data/image/images/Web-2/contact-image6.png', 'banner', NULL, b'1', NULL, 0, 2),
-(29, 'Trang chủ', 'trang-chu', NULL, b'0', NULL, NULL, NULL, NULL, b'1', NULL, 0, 1);
+(1, 'trang chủ', 'trang-chu', '<i class=\"fas fa-home\"></i>', b'0000000000000000000000000000000000000000000000000000000000000000', '<h1>this is port quan ao</h1>', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', 'slide', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 1),
+(2, 'áo', 'ao', '<i class=\"fas fa-home\"></i>', b'0000000000000000000000000000000000000000000000000000000000000000', '<h1>this is post child</h1>', 'clean-slideshow6.jpg', 'static', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', 1, 0, 1),
+(3, 'quần', 'quan', '<i class=\"fas fa-home\"></i>', b'0000000000000000000000000000000000000000000000000000000000000000', '<h1>this is post</h1>', 'n-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', 'slide', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', 1, 0, 1),
+(4, 'phụ kiện', 'phu-kien', '<i class=\"fas fa-bell\"></i>', b'0000000000000000000000000000000000000000000000000000000000000001', '<h1>this is post</h1>', 'clean-slideshow5.jpg', 'static', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 1),
+(5, 'mũ', 'mu', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', '<h1> this is post </h1>', 'clean-slideshow5.jpg', 'static', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 4, 0, 1),
+(6, 'tất', 'tat', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', '<h1>this is post</h1>', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', 'slide', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', b'0000000000000000000000000000000000000000000000000000000000000001', 4, 0, 1),
+(7, 'liên hệ', 'lien-he', '<i class=\"fas fa-moon\"></i>', b'0000000000000000000000000000000000000000000000000000000000000000', '<h1>this is post</h1>', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 1),
+(9, 'dịch vụ vệ sinh', 'dich-vu-ve-sinh', '<i class=\"fas fa-home\"></i>', b'0000000000000000000000000000000000000000000000000000000000000001', 'dsa', 'clean-slideshow5.jpg', 'static', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 1),
+(10, 'lau nhà', 'lau-nha', '<i class=\"fas fa-home\">', b'0000000000000000000000000000000000000000000000000000000000000001', 'das', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', 'slide', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', b'0000000000000000000000000000000000000000000000000000000000000001', 9, 0, 1),
+(11, 'nhà cao tầng', 'nha-cao-tang', '<i class=\"fas fa-home\"></i>', b'0000000000000000000000000000000000000000000000000000000000000000', NULL, 'clean-slideshow5.jpg', 'static', 'static', b'0000000000000000000000000000000000000000000000000000000000000000', 10, 0, 1),
+(12, 'nhà thấp tầng', 'nha-thap-tang', '<i class=\"fas fa-home\">', b'0000000000000000000000000000000000000000000000000000000000000000', NULL, 'clean-slideshow5.jpg', 'static', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', 10, 0, 1),
+(15, 'lau vườn', 'lau-vuon', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', 'ddddd', 'clean-slideshow5.jpg,wash-slideshow1.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg,clean-slideshow6.jpg', 'slide', 'ssssssss', b'0000000000000000000000000000000000000000000000000000000000000001', 9, 0, 1),
+(16, 'Trang chủ', 'trang-chu', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, 'plant3.jpg,lake-house4.jpg,villa7-new.jpg,flower2-new.jpg,koi-pond3-new.jpg', 'slide', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2),
+(17, 'Giới thiệu', 'gioi-thieu', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2),
+(18, 'Dịch vụ', 'dich-vu', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2),
+(19, 'Thiết kế thi công sân vườn biệt thự', 'tktc-biet-thu', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(20, 'Thiết kế thi công hồ cá Koi', 'tktc-ca-koi', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(21, 'Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài', 'tktc-lau-dai', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(22, 'Thiết kế và thi công cảnh quan nhà hàng, khách sạn', 'tktc-nha-hang-ks', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(23, 'Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort', 'tktc-resort', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(24, 'Thiết kế và thi công cảnh quan nhà máy', 'tktc-nha-may', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 18, 0, 2),
+(25, 'Báo giá sản phẩm', 'san-pham', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2),
+(26, 'Chuyên mục nhà đẹp', 'nha-dep', NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2),
+(27, 'Cảnh quan sân vườn đẹp', 'canh-quan-san-vuo', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 26, 0, 2),
+(28, 'Hồ cá Koi đẹp', 'ho-ca-koi-dep', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 26, 0, 2),
+(29, 'Vườn tường xanh', 'vuon-tuong-xanh', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 26, 0, 2),
+(30, 'Chăm sóc hoa và cây cảnh', 'cham-soc-hoa', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', 26, 0, 2),
+(31, 'Hỏi đáp', 'hoi-dap', NULL, b'0000000000000000000000000000000000000000000000000000000000000000', NULL, NULL, NULL, NULL, b'0000000000000000000000000000000000000000000000000000000000000001', NULL, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -1005,17 +1004,16 @@ CREATE TABLE `configuration` (
   `con_banner_image` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `con_banner_title` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `con_banner_description` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `con_banner_active` bit(1) NOT NULL,
-  `con_email` varchar(255) DEFAULT NULL
+  `con_banner_active` bit(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
 -- Đang đổ dữ liệu cho bảng `configuration`
 --
 
-INSERT INTO `configuration` (`con_id`, `web_id`, `con_admin_email`, `con_site_title`, `con_meta_description`, `con_meta_keywords`, `con_mod_rewrite`, `con_extenstion`, `lang_id`, `con_active_contact`, `con_hotline`, `con_hotline_banhang`, `con_hotline_hotro_kythuat`, `con_address`, `con_background_homepage`, `con_info_payment`, `con_fee_transport`, `con_contact_sale`, `con_info_company`, `con_logo_top`, `con_logo_bottom`, `con_page_fb`, `con_link_fb`, `con_link_twiter`, `con_link_insta`, `con_map`, `con_banner_image`, `con_banner_title`, `con_banner_description`, `con_banner_active`, `con_email`) VALUES
-(2, 2, NULL, 'Green website', 'Giới thiệu và dịch vụ bán cây cảnh', NULL, 0, '\'html\'', 1, b'0', '0359559225', '0359559225', '0359559225', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', 'doanphilong2k@gmail.com'),
-(1, 1, NULL, 'Cleaning website', 'Giới thiệu về dịch vụ dọn dẹp vệ sinh', NULL, 0, '\'html\'', 1, b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL);
+INSERT INTO `configuration` (`con_id`, `web_id`, `con_admin_email`, `con_site_title`, `con_meta_description`, `con_meta_keywords`, `con_mod_rewrite`, `con_extenstion`, `lang_id`, `con_active_contact`, `con_hotline`, `con_hotline_banhang`, `con_hotline_hotro_kythuat`, `con_address`, `con_background_homepage`, `con_info_payment`, `con_fee_transport`, `con_contact_sale`, `con_info_company`, `con_logo_top`, `con_logo_bottom`, `con_page_fb`, `con_link_fb`, `con_link_twiter`, `con_link_insta`, `con_map`, `con_banner_image`, `con_banner_title`, `con_banner_description`, `con_banner_active`) VALUES
+(2, 1, 'webcleaning@gmail.com', 'DỊCH VỤ VỆ SINH CHUYÊN NGHIỆP', NULL, NULL, 0, '\'html\'', 1, b'0', '035.955.9225', '096.755.9885', '036485214', 'Nhà 2B Ngõ 19, Liễu Giai, Quận Ba Đình, Hà Nội', NULL, NULL, NULL, NULL, 'Nhà 2B Ngõ 19, Liễu Giai, Quận Ba Đình, Hà Nội', NULL, NULL, NULL, 'https://facebook.com', 'https://twitter.com', 'https://instagram.com', NULL, NULL, NULL, NULL, b'0'),
+(1, 2, 'webgreen@gmail.com', 'THIẾT KÊ THI CÔNG SÂN VƯỜN', NULL, NULL, 0, '\'html\'', 1, b'0', '035.955.9225', '096.755.9885', '036485214', 'Số 39, ngõ 100/12 Sài Đồng, Long Biên, Hà Nội', NULL, NULL, NULL, NULL, 'Số 5, ngõ 139/69, phố Hoa Lâm, Long Biên, Hà Nội', NULL, NULL, NULL, 'https://facebook.com', 'https://twitter.com', 'https://instagram.com', NULL, NULL, NULL, NULL, b'0');
 
 -- --------------------------------------------------------
 
@@ -1061,7 +1059,7 @@ CREATE TABLE `modules` (
 
 INSERT INTO `modules` (`mod_id`, `mod_name`, `mod_path`, `mod_listname`, `mod_listfile`, `mod_order`, `mod_help`) VALUES
 (16, 'Cài Đặt Website', 'WebsiteManage', 'Cài Đặt', 'website.php', 3, NULL),
-(15, 'Cài Đặt Menu', 'Categories', 'Cài Đặt', 'categories.php', 2, NULL),
+(15, 'Quản Lý Danh Mục', 'Categories', 'Cài Đặt', 'categories.php', 2, NULL),
 (14, 'Cài Đặt Hiển Thị', 'Configuations', 'Cài đặt', 'configuations.php', 1, NULL);
 
 -- --------------------------------------------------------
@@ -1073,14 +1071,14 @@ INSERT INTO `modules` (`mod_id`, `mod_name`, `mod_path`, `mod_listname`, `mod_li
 CREATE TABLE `post` (
   `post_id` int(11) NOT NULL,
   `post_title` varchar(100) DEFAULT NULL,
-  `post_description` text NOT NULL,
+  `post_description` varchar(100) DEFAULT NULL,
   `post_type_background` varchar(100) DEFAULT NULL,
   `post_image_background` varchar(100) DEFAULT NULL,
   `post_color_background` varchar(100) DEFAULT NULL,
   `post_profile` varchar(100) DEFAULT NULL,
   `post_meta_description` varchar(100) DEFAULT NULL,
   `post_rewrite_name` varchar(100) DEFAULT NULL,
-  `cmp_id` int(11) DEFAULT NULL,
+  `cmp_id` varchar(100) DEFAULT NULL,
   `ptd_id` int(11) DEFAULT NULL,
   `post_type_id` varchar(100) DEFAULT NULL,
   `produce_id` int(11) DEFAULT NULL,
@@ -1093,22 +1091,33 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`post_id`, `post_title`, `post_description`, `post_type_background`, `post_image_background`, `post_color_background`, `post_profile`, `post_meta_description`, `post_rewrite_name`, `cmp_id`, `ptd_id`, `post_type_id`, `produce_id`, `post_datetime_create`, `post_datetime_update`) VALUES
-(1, 'Thiết kế thi công sân vườn biệt thự', 'Cuộc sống hiện đại, nhu cầu gần gũi với thiên nhiên càng lớn. Nếu bạn sở hữu một không gian rộng lớn như biệt thự ...', 'static', '../../data/image/images/Web-2/garden3.jpg', NULL, NULL, NULL, 'bai-viet', 3, 1, '1', NULL, '2021-05-13 15:27:00', '2021-05-13 15:27:00'),
-(2, 'Thiết kế thi công hồ cá Koi', 'Nguồn gốc hồ cá Koi đã không còn xa lạ gì với mọi người; những ngôi nhà vườn, thiết ...', 'static', '../../data/image/images/Web-2/slideshow/koi-pond2.jpeg', NULL, NULL, NULL, 'bai-viet', 3, 2, '1', NULL, '2021-05-13 17:16:48', '2021-05-13 17:16:48'),
-(3, 'Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài', 'Giới siêu giàu tại Việt Nam ngày nay không còn hiếm mà ngược lại rất phổ biến. Lâu đài, biệt thủ xuất hiện khắp các ...', 'static', '../../data/image/images/Web-2/landscape5.jpeg', NULL, NULL, NULL, 'bai-viet', 3, 3, '1', NULL, '2021-05-13 17:21:23', '2021-05-13 17:21:23'),
-(4, 'Thiết kế và thi công cảnh quan nhà hàng, khách sạn', 'Với đội ngũ kiến trúc sư giàu kinh nghiệm thiết kế và thi công cảnh quan xanh cho nhà hàng ngập tràn màu xanh của ...', 'static', '../../data/image/images/Web-2/hotel1.jpg', NULL, NULL, NULL, 'bai-viet', 3, 4, '1', NULL, '2021-05-13 17:24:24', '2021-05-13 17:24:24'),
-(5, 'Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort', 'Đất nước phát triển, đời sống được nâng cao thì nhu cầu hưởng thụ của con người sẽ tăng dẫn đến các dịch vụ và khu ...', 'static', '../../data/image/images/Web-2/resort3.jpg', NULL, NULL, NULL, 'bai-viet', 3, 5, '1', NULL, '2021-05-13 17:25:27', '2021-05-13 17:25:27'),
-(6, 'Thiết kế và thi công cảnh quan nhà máy', 'Hiện nay, Khu công nghiệp, nhà máy, xí nghiệp... mọc lên như nấm và đang trên đà phát triển mạnh. Không ...', 'static', '../../data/image/images/Web-2/factory2.jpg', NULL, NULL, NULL, 'bai-viet', 3, 6, '1', NULL, '2021-05-13 17:26:13', '2021-05-13 17:26:13'),
-(7, 'Giá thi công cạnh tranh', 'Tại sao nên chọn chúng tôi', 'static', '../../data/image/images/Web-2/choose3.jpg', NULL, NULL, NULL, NULL, 7, NULL, '3', NULL, '2021-05-18 14:36:10', '2021-05-18 14:36:10'),
-(8, 'Dự án thiết kế & thi công', '', 'static', '../../data/image/images/Web-2/hon-non-bo2.jpg', NULL, NULL, NULL, NULL, 7, NULL, '3', NULL, '2021-05-18 15:00:33', '2021-05-18 15:00:33'),
-(9, 'Dịch vụ hỗ trợ 24/7', '', 'static', '../../data/image/images/Web-2/slideshow/koi-pond2.jpeg', NULL, NULL, NULL, NULL, 7, NULL, '3', NULL, '2021-05-18 15:01:44', '2021-05-18 15:01:44'),
-(10, 'Đội ngũ thiết kế, thi công trình độ cao', '', 'static', '../../data/image/images/Web-2/garden2.jpg', NULL, NULL, NULL, NULL, 7, NULL, '3', NULL, '2021-05-18 15:02:13', '2021-05-18 15:02:13'),
-(11, 'Thi công sân vườn chuyên nghiệp', '', 'static', '../../data/image/images/Web-2/slideshow/villa2.jpg', NULL, NULL, NULL, NULL, 7, NULL, '3', NULL, '2021-05-18 15:02:44', '2021-05-18 15:02:44'),
-(12, 'Nhà vườn kiểu nhật', '', 'static', '../../data/image/images/Web-2/japan-garden1.jpg', NULL, NULL, NULL, NULL, 8, NULL, '4', NULL, '2021-05-18 23:34:35', '2021-05-18 23:34:35'),
-(13, 'Biệt phủ với sân vườn hồ cá đẳng cấp', '', 'static', '../../data/image/images/Web-2/slideshow/lake-house2.jpg', NULL, NULL, NULL, NULL, 8, NULL, '4', NULL, '2021-05-18 23:35:50', '2021-05-18 23:35:50'),
-(14, 'Tuyển kiến trúc sư cảnh quan', '', 'static', '../../data/image/images/Web-2/garden4.jpg', NULL, NULL, NULL, NULL, 8, NULL, '4', NULL, '2021-05-18 23:36:20', '2021-05-18 23:36:20'),
-(15, 'Hồ Koi vườn nhật đẹp như công viên', '', 'static', '../../data/image/images/Web-2/slideshow/koi-pond6.jpg', NULL, NULL, NULL, NULL, 8, NULL, '4', NULL, '2021-05-18 23:37:13', '2021-05-18 23:37:13'),
-(16, 'Xem thêm', '', 'static', NULL, NULL, NULL, 'more', NULL, 8, NULL, '4', NULL, '2021-05-19 00:25:05', '2021-05-19 00:25:05');
+(1, 'dịch vụ giặt thảm gia đình', 'Dịch vụ giặt thảm tại nhà uy tín chuyên nghiệp tại hà nội. Để góp phần làm đẹp', 'static', 'carpet-cleaning.jpg', '#ffffff', 'carpet-cleaning.jpg', NULL, 'dich-vu-giat-tham-gia-dinh', '1', 1, '1', 1, '2021-05-19 15:21:47', '2021-05-19 15:21:47'),
+(2, 'giặt ghế sofa da, sofa nỉ', 'Giặt ghế sofa uy tín chuyên nghiệp tại hà nội của công ty vệ sinh công nghiệp Hà Nội 1', 'static', 'sofa-cleaning.jpeg', '#ffffff', 'sofa-cleaning.jpeg', NULL, 'giat-ghe-sofa-da-va-sofa-ni', '1', 2, '1', 1, '2021-05-19 16:01:17', '2021-05-19 16:01:17'),
+(3, 'khuyến mãi lên đến 50%', 'tất các dịch vụ bên chúng tôi đồng loạt giảm giá đến 50% trong ngày hôm nay', 'static', 'window-washing2.jpg', NULL, 'profile.png', NULL, 'khuyen-mai-50%', '1', 3, '2', 2, '2021-05-20 11:03:26', '2021-05-20 11:03:26'),
+(4, 'dịch vụ dọn nhà', 'dọn nhà đón tết, lộc đẩy sân', NULL, 'carpet-cleaning.jpg', NULL, NULL, NULL, 'dich-vu-don-nha', '1', 4, '2', 1, '2021-05-24 14:47:43', '2021-05-24 14:47:43'),
+(5, 'Thiết kế thi công sân vườn biệt thự', 'Cuộc sống hiện đại, nhu cầu gần gũi với thiên nhiên càng lớn. Nếu bạn sở hữu một không gian rộng lớn', 'static', 'garden3.jpg', NULL, 'garden3.jpg', NULL, 'tktc-san-vuon', '16,19', 5, '3', NULL, '2021-05-27 11:18:10', '2021-05-27 11:18:10'),
+(6, 'Thiết kế thi công hồ cá Koi', 'Nguồn gốc hồ cá Koi đã không còn xa lạ gì với mọi người; những ngôi nhà vườn, thiết ...', 'static', 'slideshow/koi-pond2.jpeg', NULL, 'koi-pond2.jpeg', NULL, 'tktc-ho-ca-koi', '16,20', 6, '3', NULL, '2021-05-27 11:19:26', '2021-05-27 11:19:26'),
+(7, 'Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài', 'Giới siêu giàu tại Việt Nam ngày nay không còn hiếm mà ngược lại rất phổ biến. Lâu đài, biệt thủ xuấ', 'static', 'landscape5.jpeg', NULL, 'landscape5.jpeg', NULL, 'tktc-biet-phu', '16,21', 7, '3', NULL, '2021-05-27 11:19:47', '2021-05-27 11:19:47'),
+(8, 'Thiết kế và thi công cảnh quan nhà hàng, khách sạn', 'Với đội ngũ kiến trúc sư giàu kinh nghiệm thiết kế và thi công cảnh quan xanh cho nhà hàng ngập tràn', 'static', 'hotel1.jpg', NULL, 'hotel1.jpg', NULL, 'tktc-khach-san', '16,22', 8, '3', NULL, '2021-05-27 11:21:09', '2021-05-27 11:21:09'),
+(9, 'Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort', 'Đất nước phát triển, đời sống được nâng cao thì nhu cầu hưởng thụ của con người sẽ tăng dẫn đến các ', 'static', 'resort3.jpg', NULL, 'resort3.jpg', NULL, 'tktc-resort', '16,23', 9, '3', NULL, '2021-05-27 11:21:38', '2021-05-27 11:21:38'),
+(10, 'Thiết kế và thi công cảnh quan nhà máy', 'Hiện nay, Khu công nghiệp, nhà máy, xí nghiệp... mọc lên như nấm và đang trên đà phát triển mạnh. Kh', 'static', 'factory2.jpg', NULL, 'factory2.jpg', NULL, 'tktc-nha-may', '16', 10, '3', NULL, '2021-05-27 11:22:36', '2021-05-27 11:22:36'),
+(11, 'Hòn non bộ', NULL, 'carousel', 'hon-non-bo1.jpg', NULL, 'hon-non-bo1.jpg', NULL, 'hon-no-bo', '16', NULL, '4', NULL, '2021-05-27 11:22:43', '2021-05-27 11:22:43'),
+(12, 'Hồ cá Koi', NULL, 'carousel', 'slideshow/koi-pond1.jpeg', NULL, 'slideshow/koi-pond1.jpeg', NULL, 'ho-ca-koi', '16', NULL, '4', NULL, '2021-05-28 00:49:11', '2021-05-28 00:49:11'),
+(13, 'Sân vườn trên mái', NULL, 'carousel', 'rooftop-garden1.jpg', NULL, 'rooftop-garden1.jpg', NULL, 'san-vuon-tren-mai', '16', NULL, '4', NULL, '2021-05-28 00:49:44', '2021-05-28 00:49:44'),
+(14, 'Tiểu cảnh', NULL, 'carousel', 'tieu-canh1.jpg', NULL, 'tieu-canh1.jpg', NULL, 'tieu-canh', '16', NULL, '4', NULL, '2021-05-28 00:50:00', '2021-05-28 00:50:00'),
+(15, 'Sân vườn hiện đại', NULL, 'carousel', 'modern-garden1.jpg', NULL, 'modern-garden1.jpg', NULL, 'san-vuon-hien-dai', '16', NULL, '4', NULL, '2021-05-28 00:51:12', '2021-05-28 00:51:12'),
+(16, 'Sân vườn Nhật Bản', NULL, 'carousel', 'japan-garden3.jpg', NULL, 'japan-garden3.jpg', NULL, 'san-vuon-nhat-ban', '16', NULL, '4', NULL, '2021-05-28 00:51:39', '2021-05-28 00:51:39'),
+(17, 'Giá thi công cạnh tranh', 'Tại sao nên chọn chúng tôi', 'static', 'choose3.jpg', NULL, 'choose3.jpg', NULL, 'gia-thi-cong', '16', NULL, '5', NULL, '2021-05-28 01:23:21', '2021-05-28 01:23:21'),
+(18, 'Dự án thiết kế & thi công', NULL, 'static', 'hon-non-bo2.jpg', NULL, 'hon-non-bo2.jpg', NULL, 'du-an-thiet-ke', '16', NULL, '5', NULL, '2021-05-28 01:24:09', '2021-05-28 01:24:09'),
+(19, 'Dịch vụ hỗ trợ 24/7', NULL, 'static', 'slideshow/koi-pond2.jpeg', NULL, 'slideshow/koi-pond2.jpeg', NULL, 'dich-vu-ho-tro-24-7', '16', NULL, '5', NULL, '2021-05-28 02:25:22', '2021-05-28 02:25:22'),
+(20, 'Đội ngũ thiết kế, thi công trình độ cao', NULL, 'static', 'garden2.jpg', NULL, 'garden2.jpg', NULL, 'doi-ngu-thiet-ke', '16', NULL, '5', NULL, '2021-05-28 02:26:09', '2021-05-28 02:26:09'),
+(21, 'Thi công sân vườn chuyên nghiệp', NULL, 'static', 'slideshow/villa2.jpg', NULL, 'slideshow/villa2.jpg', NULL, 'thi-cong-san-vuon', '16', NULL, '5', NULL, '2021-05-28 02:26:30', '2021-05-28 02:26:30'),
+(22, NULL, NULL, 'static', 'contact-image6.png', NULL, 'contact-image6.png', NULL, 'banner', '16', NULL, '6', NULL, '2021-05-28 10:55:42', '2021-05-28 10:55:42'),
+(23, 'Nhà vườn kiểu nhật', NULL, 'static', 'japan-garden1.jpg', NULL, 'japan-garden1.jpg', NULL, 'nha-vuon-kieu-nhat', '16', NULL, '7,10', NULL, '2021-05-28 12:54:43', '2021-05-28 12:54:43'),
+(24, 'Biệt phủ với sân vườn hồ cá đẳng cấp', NULL, 'static', 'slideshow/lake-house2.jpg', NULL, 'slideshow/lake-house2.jpg', NULL, 'biet-phu-voi-san-vuon', '16', NULL, '7,10', NULL, '2021-05-28 12:55:21', '2021-05-28 12:55:21'),
+(25, 'Tuyển kiến trúc sư cảnh quan', NULL, 'static', 'garden4.jpg', NULL, 'garden4.jpg', NULL, 'tuyen-kien-truc-su', '16', NULL, '7,10', NULL, '2021-05-28 12:56:27', '2021-05-28 12:56:27'),
+(26, 'Hồ Koi vườn nhật đẹp như công viên', NULL, 'static', 'slideshow/koi-pond6.jpg', NULL, 'slideshow/koi-pond6.jpg', NULL, 'ho-koi-vuon-nhat', '16', NULL, '7,10', NULL, '2021-05-28 12:57:00', '2021-05-28 12:57:00'),
+(27, 'Xem thêm', NULL, NULL, NULL, NULL, NULL, NULL, 'xem-them', '16', NULL, '7', NULL, '2021-05-28 12:57:11', '2021-05-28 12:57:11');
 
 -- --------------------------------------------------------
 
@@ -1126,12 +1135,16 @@ CREATE TABLE `post_detail` (
 --
 
 INSERT INTO `post_detail` (`ptd_id`, `ptd_text`) VALUES
-(1, '<p> Thiết kế thi công sân vườn biệt thự </p>'),
-(2, '<p> Thiết kế thi công hồ cá Koi </p>'),
-(3, '<p> Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài </p>'),
-(4, '<p> Thiết kế và thi công cảnh quan nhà hàng, khách sạn </p>'),
-(5, '<p> Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort </p>'),
-(6, '<p> Thiết kế và thi công cảnh quan nhà máy </p>');
+(1, '<div class=\"post\">\r\n    <p>\r\n        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto fuga cumque tempora vero officiis nostrum, et maiores voluptatum voluptates odio, in illum incidunt porro illo facilis corrupti fugit! Sit, voluptatibus?\r\n    </p>\r\n</div>'),
+(2, '<div class=\"post\">\r\n    <p>\r\n        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto fuga cumque tempora vero officiis nostrum, et maiores voluptatum voluptates odio, in illum incidunt porro illo facilis corrupti fugit! Sit, voluptatibus?\r\n    </p>\r\n</div>'),
+(3, '<div class=\"post\">\r\n    <p>\r\n        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto fuga cumque tempora vero officiis nostrum, et maiores voluptatum voluptates odio, in illum incidunt porro illo facilis corrupti fugit! Sit, voluptatibus?\r\n    </p>\r\n</div>'),
+(4, '<div class=\"post\"><p>hahhahaha</p></div>'),
+(5, '<p> Thiết kế thi công sân vườn biệt thự </p>'),
+(6, '<p> Thiết kế thi công hồ cá Koi </p>'),
+(7, '<p> Thiết kế thi công cảnh quan ngoại cảnh biệt phủ, lâu đài </p>'),
+(8, '<p> Thiết kế và thi công cảnh quan nhà hàng, khách sạn </p>'),
+(9, '<p> Thiết kế và thi công cảnh quan khu nghỉ dưỡng - resort </p>'),
+(10, '<p> Thiết kế và thi công cảnh quan nhà máy </p>');
 
 -- --------------------------------------------------------
 
@@ -1142,9 +1155,9 @@ INSERT INTO `post_detail` (`ptd_id`, `ptd_text`) VALUES
 CREATE TABLE `post_type` (
   `post_type_id` int(11) NOT NULL,
   `post_type_title` varchar(100) NOT NULL,
-  `post_type_description` varchar(255) DEFAULT NULL,
+  `post_type_description` varchar(100) DEFAULT NULL,
   `post_type_show` varchar(100) DEFAULT NULL,
-  `cmp_id` varchar(100) DEFAULT NULL
+  `cmp_id` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1152,15 +1165,19 @@ CREATE TABLE `post_type` (
 --
 
 INSERT INTO `post_type` (`post_type_id`, `post_type_title`, `post_type_description`, `post_type_show`, `cmp_id`) VALUES
-(1, 'Dịch vụ chính của chúng tôi', 'Chúng tôi cung cấp các dịch vụ chuyên nghiệp về ngành hàng đầu hiện nay!', 'dich-vu', ''),
-(2, 'Sản phẩm tiêu biểu', NULL, 'san-pham', ''),
-(3, 'Tại sao chọn chúng tôi', NULL, 'tai-sao', ''),
-(4, 'Tin nổi bật', 'Tin tức mới nhất từ trang của chúng tôi', 'tin-noi-bat', NULL),
-(5, 'Chuyên mục nhà đẹp', NULL, 'nha-dep', '8'),
-(6, 'Bài viết mới nhất', NULL, 'bai-viet-moi', '8'),
-(7, 'Hỗ trợ trực tuyến', NULL, 'ho-tro-truc-tuyen', NULL),
-(8, 'Trực tuyến', NULL, 'truc-tuyen', '8'),
-(9, 'Hỗ trợ', NULL, 'ho-tro', '8');
+(1, 'services', 'Dịch Vụ Vệ Sinh Công Nghiệp', '1', '1,2'),
+(2, 'chương trình khuyến mãi', 'nhân dịp 30-4 và 1-5', '2', '7'),
+(3, 'Dịch vụ chính của chúng tôi', 'Chúng tôi cung cấp các dịch vụ chuyên nghiệp về nghành hàng đầu hiện nay', '1', '16'),
+(4, 'Sản phẩm tiêu biểu', NULL, '2', '16'),
+(5, 'Tại sao chọn chúng tôi', NULL, '3', '16'),
+(6, '', NULL, '4', '16'),
+(7, 'Tin nổi bật', 'Tin tức mới nhất từ trang của chúng tôi', '5', '16'),
+(8, '', NULL, '6', '25'),
+(9, 'Chuyên mục nhà đẹp', NULL, '7', '19,20,21,22,23,24'),
+(10, 'Bài viết mới nhất', NULL, '8', '19,20,21,22,23,24'),
+(11, 'Hỗ trợ trực tuyến', NULL, '9', '19,20,21,22,23,24'),
+(12, 'Trực tuyến', NULL, '10', '19,20,21,22,23,24'),
+(13, 'Hỗ trợ', NULL, '11', '19,20,21,22,23,24');
 
 -- --------------------------------------------------------
 
@@ -1183,16 +1200,16 @@ CREATE TABLE `produce` (
 --
 
 INSERT INTO `produce` (`produce_id`, `produce_name`, `produce_description`, `produce_image_path`, `produce_price`, `produce_currency`, `produce_active`) VALUES
-(1, 'Sân vườn trên mái ', 'SP001', '../Green_website/resource/images/rooftop-garden2.jpg', 0, '', b'1'),
-(2, 'Hòn non bộ', 'SP002', '../Green_website/resource/images/hon-non-bo1.jpg', 0, '', b'1'),
-(3, 'Hồ cá Koi', 'SP003', '../Green_website/resource/images/slideshow/koi-pond5.jpeg', 0, '', b'1'),
-(4, 'Cá Koi', 'SP004', '../Green_website/resource/images/slideshow/koi-pond6.jpg', 0, '', b'1'),
-(5, 'Tiểu cảnh', 'SP005', '../Green_website/resource/images/tieu-canh2.jpg', 0, '', b'1'),
-(6, 'Sân vườn hiện đại', 'SP006', '../Green_website/resource/images/modern-garden2.jpg', 0, '', b'1'),
-(7, 'Sân vườn Nhật Bản', 'SP007', '../Green_website/resource/images/japan-garden1.jpg', 0, '', b'1'),
-(8, 'Cây cối & Tường cây', 'SP008', '../Green_website/resource/images/slideshow/plant1.png', 0, '', b'1'),
-(9, 'Test 1', 'SP009', '../Green_website/resource/images/slideshow/plant1.png', 0, '', b'1'),
-(10, 'Test 2', 'SP010', '../Green_website/resource/images/slideshow/plant1.png', 0, '', b'1');
+(1, 'Sân vườn trên mái ', 'SP001', 'rooftop-garden2.jpg', 0, '', b'1'),
+(2, 'Hòn non bộ', 'SP002', 'hon-non-bo1.jpg', 0, '', b'1'),
+(3, 'Hồ cá Koi', 'SP003', 'slideshow/koi-pond5.jpeg', 0, '', b'1'),
+(4, 'Cá Koi', 'SP004', 'slideshow/koi-pond6.jpg', 0, '', b'1'),
+(5, 'Tiểu cảnh', 'SP005', 'tieu-canh2.jpg', 0, '', b'1'),
+(6, 'Sân vườn hiện đại', 'SP006', 'modern-garden2.jpg', 0, '', b'1'),
+(7, 'Sân vườn Nhật Bản', 'SP007', 'japan-garden1.jpg', 0, '', b'1'),
+(8, 'Cây cối & Tường cây', 'SP008', 'slideshow/plant1.png', 0, '', b'1'),
+(9, 'Test 1', 'SP009', 'slideshow/plant1.png', 0, '', b'1'),
+(10, 'Test 2', 'SP010', 'slideshow/plant1.png', 0, '', b'1');
 
 -- --------------------------------------------------------
 
@@ -1334,7 +1351,7 @@ ALTER TABLE `admin_user_right`
 -- AUTO_INCREMENT cho bảng `categories_multi_parent`
 --
 ALTER TABLE `categories_multi_parent`
-  MODIFY `cmp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `cmp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT cho bảng `configuration`
@@ -1346,25 +1363,25 @@ ALTER TABLE `configuration`
 -- AUTO_INCREMENT cho bảng `modules`
 --
 ALTER TABLE `modules`
-  MODIFY `mod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `mod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `post_detail`
 --
 ALTER TABLE `post_detail`
-  MODIFY `ptd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ptd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `post_type`
 --
 ALTER TABLE `post_type`
-  MODIFY `post_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `post_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `produce`
