@@ -33,7 +33,7 @@ $handle_post_type_id = implode("','", $arr_post_type_id);
 
 $url_slide = explode(",", $category['cmp_background']);
 if (empty($category) || $category['cmp_active'] == 0) {
-    header('location: http://localhost:8091/home/Green_website/');
+    header('location: ./index.php');
 }
 
 $post_type = get_data_rows("SELECT * FROM post_type WHERE post_type_id IN ('".$handle_post_type_id."') AND allow_show_homepage = 1 AND web_id = $web_id");
