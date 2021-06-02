@@ -1000,6 +1000,7 @@
     padding: 10px 0;
     font-weight: bold;
     color: white;
+    text-align: center;
 }
 
 .carousel-item .carousel-img .carousel-content .carousel-text {
@@ -1008,6 +1009,7 @@
     color: white;
     max-height: 50px;
     overflow-y: hidden;
+    text-align: center;
 }
 
 .carousel-item .carousel-img .carousel-content img {
