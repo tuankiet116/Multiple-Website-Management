@@ -1,18 +1,20 @@
 <?php
 require_once("./helper/function.php");
 $web_id = 2;
-$url = 'trang-chu';
 
-if (isset($_GET['url'])) {
-    $url = $_GET['url'];
+$get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
+foreach ($get_url as $key => $g_url) {
+    $url = $g_url;
 }
 
-if (isset($_GET['page'])) {
-    echo '<h1>' . $_GET['page'] . '</h1>';
+if (isset($_GET['url'])) {
+    $url_rough = $_GET['url'];
+    $url = preg_replace('/[^A-Za-z0-9\-]/', '', $url_rough);
 }
 
 if (strpos($url, "/") != false) {
-    header('location: ./');
+    $url = $g_url;
+    header('location: ../');
 }
 
 if (isset($_GET['name'])) {
@@ -23,14 +25,11 @@ if (isset($_GET['name'])) {
     $postNews = $_GET['postNews'];
 }
 
-$post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FROM post_detail, post WHERE post.ptd_id = post_detail.ptd_id AND post.post_rewrite_name = '$name'");
 $post_content = get_data_rows("SELECT * FROM post_detail");
 
-$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id, post_type_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
-$arr_post_type_id = explode(',', $category['post_type_id']);
-$handle_post_type_id = implode("','", $arr_post_type_id);
+$category = get_data_row("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
 
-$post_type = get_data_rows("SELECT * FROM post_type WHERE post_type_id IN ('" . $handle_post_type_id . "') AND allow_show_homepage = 0 AND web_id = $web_id");
+$post_type = get_data_rows("SELECT * FROM post_type WHERE allow_show_homepage = 0 AND web_id = $web_id");
 
 /********** LEFT TITLE  **********/
 
@@ -63,35 +62,29 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
             <div class="col-lg-3 order-lg-1 order-md-2 order-sm-2 order-2">
                 <div class="news-left">
                     <?php
-                        foreach ($arr_left_title as $key => $lt) { 
-                            if ($lt['post_type_show'] == 'column' && $lt['post_type_active'] == 1) {
-                                echo'
+                    foreach ($arr_left_title as $key => $lt) {
+                        if ($lt['post_type_show'] == 'column' && $lt['post_type_active'] == 1) {
+                            echo '
                                     <div class="news-left-title">
                                         <a href="#" target="_self">
                                             ' . $lt['post_type_title'] . '
                                         </a>
                                     </div>';
-                            }
-                        }   
+                        }
+                    }
                     ?>
-
-                    <!-- <div class="news-left-title">
-                        <a href="#" target="_self">
-                           Hello
-                        </a>
-                    </div> -->
 
                     <div class="news-left-content">
                         <ul class="list-news">
                             <?php
-                                $arr_news_post = get_data_rows("SELECT * FROM post WHERE post_meta_description = 'bvmn' ORDER BY post_datetime_create DESC LIMIT 6");
-                                foreach ($arr_news_post as $key => $news_post) {
-                                    if ($news_post['post_image_background'] != '') {
+                            $arr_news_post = get_data_rows("SELECT * FROM post WHERE post_meta_description = 'bvmn' ORDER BY post_datetime_create DESC LIMIT 6");
+                            foreach ($arr_news_post as $key => $news_post) {
+                                if ($news_post['post_image_background'] != '') {
 
-                                        $date = $news_post['post_datetime_create'];
-                                        $myDate = date("d-m-Y", strtotime($date));
+                                    $date = $news_post['post_datetime_create'];
+                                    $myDate = date("d-m-Y", strtotime($date));
 
-                                        echo '
+                                    echo '
                                     <li>
                                         <div class="list-news-container">
                                             <div class="list-news-image">
@@ -111,13 +104,13 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                             </div>
                                         </div>
                                     </li>';
-                                    }
                                 }
-                                ?>
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
-                        
+
                 <div class="news-left">
                     <div class="news-left-title">
                         <a href="#" target="_self">
@@ -125,16 +118,16 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         </a>
                     </div>
 
-                    <div class="news-left-content">        
+                    <div class="news-left-content">
                         <div class="hotline-title">Trực tuyến</div>
-                           
+
                         <div class="hotline-logo">
                             <img src="../Green_website/resource/images/hotline3.png" alt="hotline">
                         </div>
 
                         <?php
-                            foreach ($arr_contact as $key => $contact) {
-                                echo'
+                        foreach ($arr_contact as $key => $contact) {
+                            echo '
                                     <div class="hotline-contact">
                                         <a href="tel:' . $contact['con_hotline'] . '" target="_self">
                                             <i class="fas fa-phone-alt"></i>
@@ -148,7 +141,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                             ' . $contact['con_admin_email'] . '
                                         </a>
                                     </div>';
-                            }
+                        }
                         ?>
 
                         <div class="hotline-social-media">
@@ -178,12 +171,12 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                             </table>
                         </div>
 
-                        <div class="hotline-support">              
+                        <div class="hotline-support">
                             <div class="hotline-title"> Hỗ trợ </div>
 
                             <?php
-                                foreach ($arr_contact as $key => $contact) {
-                                    echo'
+                            foreach ($arr_contact as $key => $contact) {
+                                echo '
                                         <div class="hotline-contact">
                                             <a href="tel:' . $contact['con_hotline_hotro_kythuat'] . '" target="_self" style="font-size: 22px">
                                                 <i class="fas fa-mobile-alt"></i>
@@ -197,32 +190,41 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                 ' . $contact['con_admin_email'] . '
                                             </a>
                                         </div>';
-                                }
+                            }
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
+            <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id ") ?>
             <div class="news-right col-lg-9 order-lg-2 order-md-1 order-sm-1 order-1">
                 <div class="news-right-container">
                     <div class="breadcrumb">
+                        <a href="index.php" target="_self"> Trang chủ </a>
+
+                        <span class="navigation-pipe">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+
                         <?php
                         foreach ($bread_topic as $key => $bread) {
-                            if ($bread['cmp_rewrite_name'] == 'trang-chu') {
-                                echo '
-                                    <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>';
-                            }
-
-                            if ($bread['cmp_rewrite_name'] == 'dich-vu') {
-                                echo '
-                                    <span class="navigation-pipe">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                    <a href="' . $bread['cmp_rewrite_name'] . '" target="_self">' . $bread['cmp_name'] . '</a>';
+                            if ($bread['cmp_rewrite_name'] == $breadcrumbs) {
+                                $bread_parents = $bread['cmp_parent_id'];           
+                                if($bread_parents == null){
+                                    echo '
+                                        <a href="" target="_self">' . $bread['cmp_name'] . '</a>';
+                                }
+                                else{
+                                    $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
+                                    foreach ($bread_name as $key => $b_name) {
+                                        echo '
+                                        <a href="" target="_self">' . $b_name['cmp_name'] . '</a>';
+                                    }
+                                }    
                             }
                         } ?>
+                        
 
                         <span class="navigation-pipe">
                             <i class="fas fa-chevron-right"></i>
@@ -232,11 +234,20 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                     </div>
                     <div class="news-right-content">
                         <?php
-                        foreach ($post_content as $p_content) {
-                            if ($p_content['ptd_id'] == $postNews) {
-                                echo $p_content['ptd_text'];
+                            $check_post = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
+                            foreach ($check_post as $key => $c_post) {
+                                if ($c_post['cmp_meta_description'] == 'post') {
+                                    foreach ($post_content as $p_content) {
+                                        if ($p_content['ptd_id'] == $postNews) {
+                                            echo $p_content['ptd_text'];
+                                        }
+                                    }
+                                } 
+                                else {
+                                    echo 'Hello';
+                                }
                             }
-                        }
+                       
                         ?>
                     </div>
 

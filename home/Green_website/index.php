@@ -18,28 +18,22 @@ if (isset($_GET['page'])) {
 $start_from = ($page - 1) * $per_page_record;
 
 if (isset($_GET['url'])) {
-    $url = $_GET['url'];
-}
-
-
-if (isset($_GET['page'])) {
-    echo '<h1>' . $_GET['page'] . '</h1>';
+    $url_rough = $_GET['url'];
+    $url = preg_replace('/[^A-Za-z0-9\-]/', '', $url_rough);
 }
 
 if (strpos($url, "/") != false) {
-    header('location: ./');
+    $url = $g_url;
+    header('location: ../');
 }
 
-$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id, post_type_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
-$arr_post_type_id = explode(',', $category['post_type_id']);
-$handle_post_type_id = implode("','", $arr_post_type_id);
+$category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
+// $category_parent = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
 
-$url_slide = explode(",", $category['cmp_background']);
-if (empty($category) || $category['cmp_active'] == 0) {
-    header('location: ./');
-}
+$get_slide = get_data_row("SELECT con_background_homepage FROM configuration WHERE web_id = $web_id");
+$url_slide = explode(",", $get_slide['con_background_homepage']);
 
-$post_type = get_data_rows("SELECT * FROM post_type WHERE post_type_id IN ('".$handle_post_type_id."') AND allow_show_homepage = 1 AND web_id = $web_id");
+$post_type = get_data_rows("SELECT * FROM post_type WHERE allow_show_homepage = 1 AND web_id = $web_id");
 
 $sql = "SELECT COUNT(*) FROM product";
 $result = new db_query($sql);
@@ -56,15 +50,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title>
-        <?php
-        if ($category['cmp_name'] == 'Trang chủ') {
-            echo 'Thiết kế thi công sân vườn';
-        } else {
-            echo $category['cmp_name'];
-        }
-        ?>
-    </title>
+    <title> Thiết kế thi công sân vườn </title>
     <? include("./includes/inc_head.php"); ?>
 </head>
 
@@ -79,19 +65,10 @@ $pageLink = "";
         <div class="container-fluid">
             <div class="owl-carousel owl-1">
                 <?php
-                if ($category['bgt_type'] == 'slide') {
                     foreach ($url_slide as $key => $url) { ?>
                         <div>
                             <img src="../../../data/image/images/Web-2/slideshow/<?php echo $url ?>" alt="Carousel background" class="img-fluid">
                         </div>
-                <?php }
-                } ?>
-
-                <?php
-                if ($category['bgt_type'] == 'static') { ?>
-                    <div>
-                        <img src="../../../data/image/images/Web-2/slideshow/<?php echo $url_slide[0] ?>" alt="Carousel background" class="img-fluid">
-                    </div>
                 <?php } ?>
             </div>
         </div>
@@ -107,7 +84,6 @@ $pageLink = "";
                 $post = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id"); ?>
                 <div class="container">
                     <?php 
-
                     if ($pt['post_type_show'] == 'grid' && $pt['post_type_active'] == 1) {
                         echo'
                             <div class="title">
@@ -119,27 +95,30 @@ $pageLink = "";
                             </div>';
 
                         echo'<div class="row">';
-                        foreach ($post as $key => $p) {        
-                            echo'
-                            <div class="col-lg-6">
-                                <div class="services">
-                                    <a href="news.php?name=' . $p['post_rewrite_name'] . '&title=' . $p['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
-                                        <div class="sv-img">
-                                            <img src="../../data/image/images/Web-2/' . $p['post_image_background'] . '" alt="garden">
-                                        </div>
-                                        <div class="sv-title">
-                                            <p> ' . $p['post_title'] . ' </p>
-                                        </div>
-                                        <div class="sv-text">
-                                            <p>
-                                                ' . $p['post_description'] . '
-                                            </p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>';
-                        
-                        }
+                            foreach ($post as $key => $p) {
+                                foreach ($category as $key => $cate) {
+                                    if ($p['cmp_id'] == $cate['cmp_id']) {
+                                        echo'
+                                            <div class="col-lg-6">
+                                                <div class="services">
+                                                    <a href="news.php?name=' . $p['post_rewrite_name'] . '&title=' . $p['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
+                                                        <div class="sv-img">
+                                                            <img src="../../data/image/images/Web-2/' . $p['post_image_background'] . '" alt="garden">
+                                                        </div>
+                                                        <div class="sv-title">
+                                                            <p> ' . $p['post_title'] . ' </p>
+                                                        </div>
+                                                        <div class="sv-text">
+                                                            <p>
+                                                                ' . $p['post_description'] . '
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>';
+                                    }
+                                }                     
+                            }
                         echo'</div>'; 
                     } 
                     else if ($pt['post_type_show'] == 'slide' && $pt['post_type_active'] == 1) {
@@ -156,20 +135,24 @@ $pageLink = "";
                             <div id="myCarousel" class="myCarousel-<?php echo $pt['post_type_id']; ?> carousel slide w-100" data-ride="carousel">
                                 <div class="carousel-inner w-100" role="listbox">    
                                     <?php foreach ($post as $key => $p) {
-                                        echo'
-                                            <div class="carousel-item">
-                                                <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">       
-                                                    <div class="carousel-content">
-                                                        <a href="news.php?name=' . $p['post_rewrite_name'] . '&title=' . $p['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
-                                                            <img class="img-fluid" src="../../data/image/images/Web-2/' . $p['post_image_background'] . '" alt="carousel image">
-                                                            <div class="carousel-title">
-                                                                ' . $p['post_title'] . '
-                                                                <div class="carousel-text">' . $p['post_description'] . '</div>
+                                        foreach ($category as $key => $cate) {
+                                            if ($p['cmp_id'] == $cate['cmp_id']) {
+                                                echo '
+                                                    <div class="carousel-item">
+                                                        <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">       
+                                                            <div class="carousel-content">
+                                                                <a href="news.php?name=' . $p['post_rewrite_name'] . '&title=' . $p['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
+                                                                    <img class="img-fluid" src="../../data/image/images/Web-2/' . $p['post_image_background'] . '" alt="carousel image">
+                                                                    <div class="carousel-title">
+                                                                        ' . $p['post_title'] . '
+                                                                        <div class="carousel-text">' . $p['post_description'] . '</div>
+                                                                    </div>
+                                                                </a>
                                                             </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>';
+                                                        </div>
+                                                    </div>';
+                                            }
+                                        }
                                     } ?>
                                     <a class="carousel-control-prev bg-dark " href=".myCarousel-<?php echo $pt['post_type_id']; ?>" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -197,19 +180,23 @@ $pageLink = "";
                             <?php
                             $post_left = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id LIMIT 1");
                             foreach ($post_left as $key => $p_left) {
-                                echo'
-                                    <div class="choose-container col-lg-6">
-                                        <a class="choose-left" href="news.php?name=' . $p_left['post_rewrite_name'] . '&title=' . $p_left['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $p_left['ptd_id'] . '" target="_self">
-                                            <img src="../../data/image/images/Web-2/' . $p_left['post_image_background'] . '" alt="choose image left">
-                                            <div class="choose-content">
-                                                <div class="choose-text">
-                                                    <p class="choose-title">' . $p_left['post_title'] . '</p>
-                                                    <div class="choose-line"></div>
-                                                    <p class="choose-word">' . $p_left['post_description'] . '</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>';
+                                foreach ($category as $key => $cate) {
+                                    if ($p['cmp_id'] == $cate['cmp_id']) {
+                                        echo'
+                                            <div class="choose-container col-lg-6">
+                                                <a class="choose-left" href="news.php?name=' . $p_left['post_rewrite_name'] . '&title=' . $p_left['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_left['ptd_id'] . '" target="_self">
+                                                    <img src="../../data/image/images/Web-2/' . $p_left['post_image_background'] . '" alt="choose image left">
+                                                    <div class="choose-content">
+                                                        <div class="choose-text">
+                                                            <p class="choose-title">' . $p_left['post_title'] . '</p>
+                                                            <div class="choose-line"></div>
+                                                            <p class="choose-word">' . $p_left['post_description'] . '</p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>';
+                                    }
+                                }
                             }
                             ?>
 
@@ -218,19 +205,23 @@ $pageLink = "";
                                     <?php
                                     $post_right = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id LIMIT 4 OFFSET 1");
                                     foreach ($post_right as $key => $p_right) {
-                                        echo '
-                                            <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                                                <a class="choose-right" href="news.php?name=' . $p_right['post_rewrite_name'] . '&title=' . $p_right['post_title'] . '&breadcrumbs=' . $category['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $category['cmp_name'] . '&postNews=' . $p_right['ptd_id'] . '" target="_self">
-                                                    <img src="../../data/image/images/Web-2/' . $p_right['post_image_background'] . '" alt="choose right image">
-                                                    <div class="choose-right-content">
-                                                        <div class="choose-right-text">
-                                                            <p class="choose-right-title">' . $p_right['post_title'] . '</p>
-                                                            <div class="choose-right-line"></div>
-                                                            <p class="choose-right-word">' . $p_right['post_description'] . '</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>';
+                                        foreach ($category as $key => $cate) {
+                                            if ($p['cmp_id'] == $cate['cmp_id']) {
+                                                echo'
+                                                    <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
+                                                        <a class="choose-right" href="news.php?name=' . $p_right['post_rewrite_name'] . '&title=' . $p_right['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_right['ptd_id'] . '" target="_self">
+                                                            <img src="../../data/image/images/Web-2/' . $p_right['post_image_background'] . '" alt="choose right image">
+                                                            <div class="choose-right-content">
+                                                                <div class="choose-right-text">
+                                                                    <p class="choose-right-title">' . $p_right['post_title'] . '</p>
+                                                                    <div class="choose-right-line"></div>
+                                                                    <p class="choose-right-word">' . $p_right['post_description'] . '</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>';
+                                            }
+                                        }
                                     }
                                     ?>
                                 </div>
