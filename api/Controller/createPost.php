@@ -20,7 +20,7 @@ $post = new Post($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-$post_image_background = array($data->post_image_background);
+$post_image_background = array(htmlspecialchars(trim($data->post_image_background)));
 
 $UploadBase64 = new upload_image();
 
@@ -28,16 +28,16 @@ $url_save = '../../data/image/post';
 $post_image_background = saveBase64($UploadBase64, $post_image_background, $url_save, 'jpg, png, jpeg', 5000, 'Post', '');
 
 // set Term property of record to create
-$post->post_title            = $data->post_title; 
-$post->post_description      = $data->post_description;
-$post->post_image_background = $post_image_background;
-$post->post_color_background = $data->post_color_background;
-$post->post_meta_description = $data->post_meta_description;
-$post->post_rewrite_name     = $data->post_rewrite_name;
-$post->cmp_id                = $data->cmp_id;
-$post->post_type_id          = $data->post_type_id;
-$post->produce_id            = $data->product_id;
-$post->content               = $data->content;
+$post->post_title            = htmlspecialchars(trim($data->post_title)); 
+$post->post_description      = htmlspecialchars(trim($data->post_description));
+$post->post_image_background = htmlspecialchars(trim($post_image_background);
+$post->post_color_background = htmlspecialchars(trim($data->post_color_background));
+$post->post_meta_description = htmlspecialchars(trim($data->post_meta_description));
+$post->post_rewrite_name     = htmlspecialchars(trim($data->post_rewrite_name));
+$post->cmp_id                = intVal($data->cmp_id);
+$post->post_type_id          = intVal($data->post_type_id);
+$post->produce_id            = intVal($data->product_id);
+$post->content               = htmlspecialchars(trim($data->content));
 
 if($post_image_background === false){
     http_response_code(200);

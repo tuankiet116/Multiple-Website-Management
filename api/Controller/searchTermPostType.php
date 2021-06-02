@@ -20,8 +20,8 @@ $post_type = new PostType($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$post_type->term   = $data->term; 
-$post_type->cmp_id = $data->cmp_id;
+$post_type->term   = htmlspecialchars(trim($data->term)); 
+$post_type->cmp_id = intVal($data->cmp_id);
 
 $stmt_search = $post_type->searchTerm();
 $num = $stmt_search->rowCount();

@@ -1,0 +1,137 @@
+.title{
+    margin: 2% auto auto 2%;
+}
+
+.box{
+    margin: auto auto auto 5% ;
+}
+
+.box .select2-container{
+    width: 100% !important;
+}
+
+.select-container{
+    width: 100%;
+}
+
+.select-container .selection img{
+    margin-top: -1%;
+}
+
+.select2-container img{
+    width: 30px;
+    padding-right: 10px;
+}
+
+.editor-form{
+    margin: 50px auto;
+}
+
+.editor-form textarea{
+    display: none !important;
+}
+
+.editor-form-title{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.button-container{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container input{
+    width: 100px;
+    margin: 0 50px 100px 0;
+}
+.container_post_infor .post_info_title h3{
+    margin: 0 0 2% 0;
+    text-align: center;
+}
+
+.post-info row{
+    display: flex;
+}
+
+.form-post label{
+    font-size: 15px;
+}
+
+.form-post-image {
+    text-align: center;
+}
+
+.form-image-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.input-image{
+    border: dashed 1px blue;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    z-index: 10;
+}
+
+.input-image-container{
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+}
+
+.input-image-container p{
+    text-align: center;
+}
+
+.input-image-container i{
+    color: green;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 80px;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+.form-input-image{
+    display: none !important;
+}
+
+.input-image:hover{
+    opacity: 0.3;
+}
+
+.input-image-container p{
+    text-align: center;
+}
+
+.input-image img{
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+textarea{
+    min-height: 110px;
+}
+
+hr{
+    border: 1px solid ;
+    margin: 100px 50px;
+}
+
+/* CSS Alert Bootstrap */
+.alert-message{
+    position: fixed;
+    right: 50px;
+    width: 30%;
+    z-index: 10000;
+}

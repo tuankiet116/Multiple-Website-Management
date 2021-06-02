@@ -20,7 +20,7 @@ $lang = new LanguageConfig($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$lang->lang_id = $data->lang_id; 
+$lang->lang_id = intVal($data->lang_id); 
 $lang->getLangByID();
 
 if(isset($lang->lang_name)){

@@ -20,8 +20,8 @@ $cate = new Categories($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$cate->term   = $data->term; 
-$cate->web_id = $data->web_id;
+$cate->term   = htmlspecialchars(trim($data->term)); 
+$cate->web_id = intVal($data->web_id);
 
 $stmt_search = $cate->searchTermActive();
 if($stmt_search ->execute()){

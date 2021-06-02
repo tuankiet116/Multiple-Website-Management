@@ -16,7 +16,7 @@ $categories = new Categories($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data)){
-   $web_id = $data->web_id;
+   $web_id = intVal($data->web_id);
    $resultCategories = $categories->getCategories($web_id);
 
     if($resultCategories->rowCount()>0){
