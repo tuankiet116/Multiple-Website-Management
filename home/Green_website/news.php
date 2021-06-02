@@ -234,20 +234,11 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                     </div>
                     <div class="news-right-content">
                         <?php
-                            $check_post = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
-                            foreach ($check_post as $key => $c_post) {
-                                if ($c_post['cmp_meta_description'] == 'post') {
-                                    foreach ($post_content as $p_content) {
-                                        if ($p_content['ptd_id'] == $postNews) {
-                                            echo $p_content['ptd_text'];
-                                        }
-                                    }
-                                } 
-                                else {
-                                    echo 'Hello';
-                                }
+                        foreach ($post_content as $p_content) {
+                            if ($p_content['ptd_id'] == $postNews) {
+                                echo $p_content['ptd_text'];
                             }
-                       
+                        }
                         ?>
                     </div>
 
