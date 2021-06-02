@@ -1,8 +1,11 @@
 <?php
 require_once('./helper/function.php');
-
 $web_id = 2;
-$url = 'trang-chu';
+
+$get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
+foreach ($get_url as $key => $g_url) {
+    $url = $g_url;
+}
 
 $per_page_record = 9;
 
@@ -33,7 +36,7 @@ $handle_post_type_id = implode("','", $arr_post_type_id);
 
 $url_slide = explode(",", $category['cmp_background']);
 if (empty($category) || $category['cmp_active'] == 0) {
-    header('location: http://localhost:8091/home/Green_website/');
+    header('location: ./');
 }
 
 $post_type = get_data_rows("SELECT * FROM post_type WHERE post_type_id IN ('".$handle_post_type_id."') AND allow_show_homepage = 1 AND web_id = $web_id");
