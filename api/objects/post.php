@@ -17,6 +17,8 @@
         public $post_date_time_create;
         public $post_date_time_update;
         public $content;
+        public $term;
+        public $web_id;
 
         public function __construct($db){
             $this->conn = $db;
@@ -56,5 +58,26 @@
                 return $stmt;
             }
         }
+
+        public function getAll(){
+            $query_website = "";
+            if($this->web_id != "" || $this ->web_id != null){
+                $query_website = " AND website_config.web_id = ".$this->web_id;
+            }
+            $query = "SELECT post.post_id , post.post_title , post.post_description, post_type.post_type_title, 
+                             product.product_name, website_config.web_name, post.post_active
+                      FROM post
+                      LEFT JOIN post_type       ON post.post_type_id     = post_type.post_type_id  
+                      LEFT JOIN product         ON post.product_id       = product.product_id  
+                      INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
+                      " WHERE product.product_name        LIKE '%" .$this->term. "%' 
+                            OR post_type.post_type_title  LIKE '%" .$this->term. "%' 
+                            OR post.post_title            LIKE '%" .$this->term. "%'";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt;
+        }
+
     }
 ?>

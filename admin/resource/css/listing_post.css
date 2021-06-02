@@ -1,0 +1,77 @@
+table {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+thead {
+    flex: 0 0 auto;
+}
+
+tbody {
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+hr{
+    border: 1px solid ;
+    margin: 100px 50px;
+}
+
+.search-container{
+    display: flex;
+}
+
+.title-searching{
+    text-align: center;
+    padding: 50px;
+}
+
+.title{
+    margin: 2% auto auto 5%;
+}
+
+.title h4{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.box{
+    margin: auto auto auto 5% ;
+}
+
+.box .select2-container{
+    width: 100% !important;
+}
+
+.select-container{
+    width: 100%;
+}
+
+.select-container .selection img{
+    margin-top: -1%;
+}
+
+.select2-result-website {
+    display: flex;
+}
+
+.select2-container img{
+    width: 30px;
+    padding-right: 10px;
+}
+
+.button-search button{
+    position: relative;
+    top: 24px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

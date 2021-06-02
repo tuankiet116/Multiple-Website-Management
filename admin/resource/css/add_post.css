@@ -152,4 +152,5 @@ hr{
     position: fixed;
     right: 50px;
     width: 30%;
+    z-index: 10000;
 }
