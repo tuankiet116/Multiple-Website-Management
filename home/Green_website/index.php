@@ -30,16 +30,17 @@ if (strpos($url, "/") != false) {
     header('location: ./');
 }
 
-$category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id, post_type_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
-$arr_post_type_id = explode(',', $category['post_type_id']);
-$handle_post_type_id = implode("','", $arr_post_type_id);
+// $category = get_data_row("SELECT cmp_background, bgt_type, cmp_active, cmp_name, cmp_rewrite_name, cmp_id, post_type_id FROM categories_multi_parent WHERE cmp_rewrite_name = '$url' AND web_id = $web_id");
+// if(empty($category) || $category['cmp_active']==0){
+//     header('location: 404.php');
+// }
 
-$url_slide = explode(",", $category['cmp_background']);
-if (empty($category) || $category['cmp_active'] == 0) {
-    header('location: ./');
-}
+// $arr_post_type_id = explode(',', $category['post_type_id']);
+// $handle_post_type_id = implode("','", $arr_post_type_id);
 
-$post_type = get_data_rows("SELECT * FROM post_type WHERE post_type_id IN ('".$handle_post_type_id."') AND allow_show_homepage = 1 AND web_id = $web_id");
+// $url_slide = explode(",", $category['cmp_background']);
+
+$post_type = get_data_rows("SELECT * FROM post_type WHERE allow_show_homepage = 1 AND web_id = $web_id");
 
 $sql = "SELECT COUNT(*) FROM product";
 $result = new db_query($sql);
