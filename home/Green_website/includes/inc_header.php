@@ -59,6 +59,11 @@ $arr_buy = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
             }
         }
         ?>
+        <li>
+            <a href="shop.php" target="_self">
+                <span>Báo giá sản phẩm</span>
+            </a>
+        </li>
     </ul>
 
     <div id="sub-icon">
@@ -139,7 +144,7 @@ $arr_buy = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
 <div id="func_btn">
     <div id="buy">
         <div id="buy-container">
-            <?php foreach($arr_buy as $key => $buy) { ?>
+            <?php foreach ($arr_buy as $key => $buy) { ?>
                 <a href="tel: <?php echo $buy['con_hotline_banhang'] ?> " target="_self">
                     <div class="func_icon">
                         <i class="fas fa-shopping-cart"></i>
