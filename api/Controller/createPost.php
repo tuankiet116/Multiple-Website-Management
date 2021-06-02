@@ -39,7 +39,7 @@ $post->post_type_id          = $data->post_type_id;
 $post->produce_id            = $data->product_id;
 $post->content               = $data->content;
 
-if($post_image_background ==  false){
+if($post_image_background === false){
     http_response_code(200);
     echo json_encode(array("message" => $UploadBase64->common_error,
                             "code"    => 500));
