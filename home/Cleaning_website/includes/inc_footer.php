@@ -1,5 +1,5 @@
 <?php 
-    $info_footer = get_data_row("SELECT con_admin_email, con_hotline, con_hotline_banhang, con_info_company, con_site_title
+    $info_footer = get_data_row("SELECT con_admin_email, con_hotline, con_hotline_banhang, con_address, con_site_title
                                  FROM configuration WHERE web_id = $web_id");
 
 ?>
@@ -11,7 +11,7 @@
                 <table>
                     <tr>
                         <td><i class="fas fa-map-marker-alt"></i></td>
-                        <td><?php echo $info_footer['con_info_company']?></td>
+                        <td><?php echo $info_footer['con_address']?></td>
                     </tr>
                     <tr>
                         <td><i class="fas fa-phone-alt"></i></td>

@@ -40,8 +40,14 @@ $post_detail = get_data_row("SELECT post_detail.ptd_id, post_detail.ptd_text FRO
                 </ul>
 
                 <div class="service-container">
-                    <?php echo $post_detail['ptd_text'] ?>
-                    
+                    <?php 
+                        if($post_detail==''){
+                            echo '<h1>chưa có gì</h1>';
+                        } 
+                        else{
+                            echo $post_detail['pdt_text'];
+                        }
+                    ?>
                 </div>
             </div>
         </div>
