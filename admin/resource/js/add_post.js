@@ -4,7 +4,7 @@ $(document).ready(function(){
 
   $('b[role="presentation"]').hide();
   $('.select2-arrow').append('<i class="fa fa-angle-down"></i>');
-
+  
   $(".pick_website_select").select2({
       ajax: { 
         url: "../../../api/Controller/searchTerm.php",
@@ -14,7 +14,7 @@ $(document).ready(function(){
         data: function (params) {
           if(params.term == null){
             var obj = {
-              "term": params.term
+              "term": ""
             } 
           }else{
             var obj = {
@@ -89,7 +89,7 @@ $(document).ready(function(){
           data: function (params) {
             if(params.term == null){
               var obj = {
-                "term": params.term,
+                "term": "",
                 "web_id": web_id
               } 
             }else{
