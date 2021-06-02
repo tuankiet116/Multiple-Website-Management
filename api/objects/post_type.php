@@ -15,17 +15,23 @@
             $this->conn = $db;
         }
 
-        function getPostType ($web_id){
-            $query = "SELECT * FROM".$this->table_name."WHERE web_id=?";
-
+        function searchTerm(){
+            $query = "SELECT * FROM categories_multi_parent WHERE cmp_id = :cmp_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(1, $web_id);
-
+            $stmt->bindParam(':cmp_id', $this->cmp_id);
             $stmt->execute();
 
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $post_type_id = $row['post_type_id'];
+
+            $query = "SELECT * FROM ".$this->table_name." WHERE post_type_title LIKE '%".$this->term."%' AND post_type_active = 1 
+                        AND post_type_id IN (".$post_type_id.")";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            
             return $stmt;
         }
 
-        
+
     }
 ?>
