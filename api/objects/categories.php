@@ -25,37 +25,42 @@ class Categories{
         $this->conn = $db;
     }
 
-    // read products
-    function searchTermActive(){
-        $count = 0;
-        // query to read single record
-        $query = "SELECT * FROM " .$this->table_name. " WHERE cmp_name LIKE '%".$this->term."%' AND web_id = :web_id AND cmp_active = 1";
+    function getCategories($web_id){
         
+        $query = "SELECT * FROM " .$this->table_name. " WHERE web_id = ?";
         //prepare query statement
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':web_id', $this->web_id);
+        $stmt->bindParam(1, $web_id);
         
-        //excute query
         $stmt->execute();
-
         return $stmt;
     }
 
-    // function getLangByID(){
-    //     $query = "SELECT * FROM " .$this->table_name. " WHERE lang_id = ?";
-        
-    //     $stmt = $this->conn->prepare($query);
+    function creatCategories(){
+        $query = "INSERT INSERT INTO categories_multi_parent(cmp_id, cmp_name, cmp_rewrite_name, cmp_icon, cmp_has_child, 
+                  cmp_background, bgt_type, cmp_meta_description, cmp_active, cmp_parent_id, web_id, post_type_id)
+                  Values(?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    //     $stmt->bindParam(1, $this->lang_id);
+        $stmt = $this->con->prepare($query);
 
-    //     $stmt->execute();
+        $stmt->bindParam(1,  $this->cmp_id, PDO::PARAM_INT);
+        $stmt->bindParam(2,  $this->cmp_name);
+        $stmt->bindParam(3,  $this->cmp_rewrite_name);
+        $stmt->bindParam(4,  $this->cmp_icon);
+        $stmt->bindParam(5,  $this->cmp_has_child, PDO::PARAM_INT);
+        $stmt->bindParam(6,  $this->cmp_background);
+        $stmt->bindParam(7,  $this->bgt_type);
+        $stmt->bindParam(8,  $this->cmp_meta_description);
+        $stmt->bindParam(9,  $this->cmp_active, PDO::PARAM_INT);
+        $stmt->bindParam(10, $this->cmp_parent_id, PDO::PARAM_INT);
+        $stmt->bindParam(11, $this->web_id, PDO::PARAM_INT);
+        $stmt->bindParam(12, $this->post_type_id);
 
-    //     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    //     $this->lang_name   = $row['lang_name'];
-    //     $this->lang_path   = $row['lang_path'];
-    //     $this->lang_image  = $row['lang_image'];
-    //     $this->lang_domain = $row['lang_domain'];
-    // }
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+         
+    }
 }
 ?>
