@@ -62,5 +62,14 @@ class Categories{
         return false;
          
     }
+
+    function searchTermActive(){
+        $query = "SELECT * FROM categories_multi_parent WHERE web_id = :web_id AND cmp_name LIKE '%" .$this->term. "%'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':web_id',  $this->web_id, PDO::PARAM_INT);
+        
+        return $stmt;
+    }
 }
 ?>
