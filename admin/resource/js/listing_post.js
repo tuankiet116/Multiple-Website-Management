@@ -158,7 +158,7 @@ function postSuccess(data){
         }
 
         action += '<button style = "margin-left: 10px; width: 60px;" id = "info_post_'+ value.post_id +'" type="button" class="btn btn-info">'+
-                    '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+' ">Chi Tiết</a></button>';
+                    '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">Chi Tiết</a></button>';
 
         stt ++;
         html += `<tr>

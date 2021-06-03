@@ -20,12 +20,12 @@ $post = new POST($db);
 $data = json_decode(file_get_contents("php://input"));
 if($data != null){
     if($data -> web_id != null || $data -> web_id != ""){
-        $post->web_id = $data->web_id;
+        $post->web_id = intVal($data->web_id);
     }
     
     if($data -> term != null || $data -> term != ""){
-        $term = $data->term;
-        $post->term = trim($term);
+        $term = htmlspecialchars(trim($data->term));
+        $post->term = $term;
     }
 }
 
@@ -44,6 +44,7 @@ if($count>0){
             "product_name"     => $row['product_name'],
             "web_name"         => $row['web_name'],
             "post_active"      => $row['post_active'],
+            "web_id"           => $row['web_id'],
             "code"             => 200
         );
 

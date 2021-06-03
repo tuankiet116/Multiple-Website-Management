@@ -15,29 +15,37 @@ include_once '../../classes/upload.php';
 $database = new ConfigAPI();
 $db = $database->getConnection();
 
-// prepare website object
+// prepare post object
 $post = new Post($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
 $post_image_background = array(htmlspecialchars(trim($data->post_image_background)));
 
+//upload image
+
+$post_id = $data->post_id;
 $UploadBase64 = new upload_image();
 
+//Save post image
 $url_save = '../../data/image/post';
-$post_image_background = saveBase64($UploadBase64, $post_image_background, $url_save, 'jpg, png, jpeg', 5000, 'Post', '');
+$image_post = saveBase64($UploadBase64, $post_image_background, $url_save, 'jpg, png, jpeg', 5000, 'Post', '');
 
-// set Term property of record to create
+
+// set Term property of record to update
+
+$post->post_id               = $data->post_id;
 $post->post_title            = htmlspecialchars(trim($data->post_title)); 
 $post->post_description      = htmlspecialchars(trim($data->post_description));
-$post->post_image_background = htmlspecialchars(trim($post_image_background));
+$post->post_image_background = $image_post;
 $post->post_color_background = htmlspecialchars(trim($data->post_color_background));
 $post->post_meta_description = htmlspecialchars(trim($data->post_meta_description));
 $post->post_rewrite_name     = htmlspecialchars(trim($data->post_rewrite_name));
-$post->cmp_id                = intVal($data->cmp_id);
-$post->post_type_id          = intVal($data->post_type_id);
-$post->produce_id            = intVal($data->product_id);
-$post->content               = htmlspecialchars(trim($data->content));
+$post->product_id            = intVal($data->product_id);
+$post->content               = $data->content;
+
+
+$count = $post -> getPostByID(false);
 
 if($post_image_background === false){
     http_response_code(200);
@@ -45,17 +53,33 @@ if($post_image_background === false){
                             "code"    => 500));
 }
 else{
-    if($post->create()){
-        http_response_code(200);
-        echo json_encode(array("message" => "Create Success", "code" => 200));
-        
+    if($count>0){
+        if(isset($post->post_id)){
+            $stmt = $post -> update();
+            if($stmt === true){
+                http_response_code(200);
+                echo json_encode(array("message" => "Update Success ", "code" => 200));
+            }
+            else{
+                http_response_code(200);
+                echo json_encode(array('message' => "Something has wrong while updating", 
+                                       'code'    => 500,
+                                       'query'   => $stmt->debugDumpParams() ));
+            }
+        }
+        else{
+            http_response_code(200);
+            echo json_encode(array("message" => "Post Doesn't Exist Or Something Has Broken, Contact To Admin",
+                                   "code"    => 500));
+        }
     }
     else{
+        
         http_response_code(200);
-        echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+        echo json_encode(array("message" => "Post Doesn't Exists",
+                               "code"    => 500));
     }
 }
-
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();
@@ -79,7 +103,6 @@ function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_siz
         }
     }
     $result = implode(",", $image_url);
-    return $result ;
+    return $result;
 }
-
 ?>

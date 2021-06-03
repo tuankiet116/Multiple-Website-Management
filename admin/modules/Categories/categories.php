@@ -23,6 +23,14 @@
 </head>
 
 <body>
+    <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">  
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="main-content container">
         <div class="pick_website_container">
             <div class="title_pick_website title">
@@ -40,30 +48,29 @@
                     <h4><?= translate_text('Danh Mục')?>:</h4>
                 </div>
 
-                <div class="categories-content">
-                    
+                <div class="categories-content">  
                 </div>
             </div>
             <div class="categories-container-form col-lg-6">
                 <div class="categories-container-form-title">
                     <p class="title"><?= translate_text('Thêm danh mục')?></p>
                 </div>
-                <form method="POST" action="#">
+                <form id="formCategory">
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_name"><?= translate_text('Tên danh mục')?> <span class="req-form">(*)</span></label>
-                        <input type="text" class="form-control disabled" id="cmp_name"  placeholder="...." autocomplete="off" name="cmp_name" disabled>
+                        <input type="text" class="form-control disable" id="cmp_name"  placeholder="...." autocomplete="off" name="cmp_name" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_rewrite_name"><?= translate_text('Tên đường link danh mục')?> <span class="req-form">(*)</span></label>
-                        <input type="text" class="form-control disabled" id="cmp_rewrite_name" placeholder="...." autocomplete="off" name="cmp_rewrite_name" disabled>
+                        <input type="text" class="form-control disable" id="cmp_rewrite_name" placeholder="...." autocomplete="off" name="cmp_rewrite_name" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_icon"><?= translate_text('icon')?></label>
-                        <input type="text" class="form-control disabled" id="cmp_icon" placeholder="...." autocomplete="off" name="cmp_icon" disabled>
+                        <input type="text" class="form-control disable" id="cmp_icon" placeholder="...." autocomplete="off" name="cmp_icon" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_has_child"><?= translate_text('danh mục con')?> <span class="req-form">(*)</span></label>
-                        <select class="custom-select disabled" id="cmp_has_child" name="cmp_has_child" disabled>
+                        <select class="custom-select disable" id="cmp_has_child" name="cmp_has_child" disabled>
                             <option value="0">không</option>
                             <option value="1">có</option>
                         </select>
@@ -74,46 +81,46 @@
                         <div class="customs-file">
                             <div class="input-image-container">
                                 <i class="fas fa-trash-alt"></i>
-                                <div class="input-image" id="input_image_background_homepage_1">
+                                <div class="input-image" id="input_image_background_category_1">
                                     <img id="image_background_homepage_1" src="#"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                    <input name="input_background_category_1" type="file" class="form-input-image disabled" id="input_background_homepage_1" disabled>
+                                    <input name="input_background_category_1" type="file" class="form-input-image disable" id="input_background_category_1" disabled>
                                 </div>
                                 <p><?= translate_text('Hình 1')?></p>
                             </div>
                             <div class="input-image-container">
                                 <i class="fas fa-trash-alt"></i>
-                                <div class="input-image" id="input_image_background_homepage_2">
+                                <div class="input-image" id="input_image_background_category_2">
                                     <img id="image_background_homepage_2" src="#"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                    <input name="input_background_category_2" type="file" class="form-input-image disabled" id="input_background_homepage_2" disabled>
+                                    <input name="input_background_category_2" type="file" class="form-input-image disable" id="input_background_category_2" disabled>
                                 </div>
                                 <p><?= translate_text('Hình 2')?></p>
                             </div>
                             <div class="input-image-container">
                                 <i class="fas fa-trash-alt"></i>
-                                <div class="input-image" id="input_image_background_homepage_3">
+                                <div class="input-image" id="input_image_background_category_3">
                                     <img id="image_background_homepage_3" src="#"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                    <input name="input_background_category_3" type="file" class="form-input-image disabled" id="input_background_homepage_3" disabled>
+                                    <input name="input_background_category_3" type="file" class="form-input-image disable" id="input_background_category_3" disabled>
                                 </div>
                                 <p><?= translate_text('Hình 3')?></p>
                             </div>
                             <div class="input-image-container">
                                 <i class="fas fa-trash-alt"></i>
-                                <div class="input-image" id="input_image_background_homepage_4">
+                                <div class="input-image" id="input_image_background_category_4">
                                     <img id="image_background_homepage_4" src="#"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                    <input name="input_background_category_4" type="file" class="form-input-image disabled" id="input_background_homepage_4" disabled>
+                                    <input name="input_background_category_4" type="file" class="form-input-image disable" id="input_background_category_4" disabled>
                                 </div>
                                 <p><?= translate_text('Hình 4')?></p>
                             </div>
                             <div class="input-image-container">
                                 <i class="fas fa-trash-alt"></i>
-                                <div class="input-image" id="input_image_background_homepage_5">
+                                <div class="input-image" id="input_image_background_category_5">
                                     <img id="image_background_homepage_5" src="#"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                    <input name="input_background_category_5" type="file" class="form-input-image disabled" id="input_background_homepage_5" disabled>
+                                    <input name="input_background_category_5" type="file" class="form-input-image disable" id="input_background_category_5" disabled>
                                 </div>
                                 <p><?= translate_text('Hình 5')?></p>
                             </div>
@@ -122,49 +129,43 @@
 
                     <div class="form-group">
                         <label class="form-check-label" for="bgt_type"><?= translate_text('loại banner')?></label>
-                        <select class="custom-select disabled" id="bgt_type" name="bgt_type" disabled>
+                        <select class="custom-select disable" id="bgt_type" name="bgt_type" disabled>
                             <option value="static">tĩnh</option>
                             <option value="slide">chuyển động slide</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_meta_description"><?= translate_text('thẻ meta')?></label>
-                        <input type="text" class="form-control disabled" id="cmp_meta_description" placeholder="...." autocomplete="off" name="cmp_meta_description" disabled>
+                        <input type="text" class="form-control disable" id="cmp_meta_description" placeholder="...." autocomplete="off" name="cmp_meta_description" disabled>
                     </div>
                     <div class="form-group">
                         <span class="form-check-label"><?= translate_text('kích hoạt danh mục')?></span>
                         <label class="switch" for="cmp_active">
-                            <input type="checkbox" id="cmp_active" name="cmp_active" disabled class="disabled"/>
+                            <input type="checkbox" id="cmp_active" name="cmp_active" disabled class="disable"/>
                             <div class="slider round"></div>
                         </label>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_parent_id"><?= translate_text('danh mục này thuộc danh mục')?></label>
-                        <select class="custom-select disabled" id="cmp_parent_id" name="cmp_parent_id" disabled>
-                            <option value="">----</option>
+                        <select class="custom-select disable" id="cmp_parent_id" name="cmp_parent_id" disabled>
+                            
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label"><?= translate_text('thêm nhóm bài viết vào danh mục:')?></label>
                         <div class="wrapper-post">
-                            <div class="post-item">
-                                <label for="1">khuyến mãi</label>
-                                <input type="checkbox" class="disabled" value="1" disabled>
-                            </div>
-                            <div class="post-item">
-                                <label for="2">dịch vụ</label>
-                                <input type="checkbox" class="disabled" value="2" disabled>
-                            </div>
-                            
+                           
                         </div>
                     </div>
                     <div class="form-group button-center" >
-                        <input type="submit" class="btn btn-primary center disabled" value="<?= translate_text('nhập')?>" disabled> 
+                        <input id="submit" type="submit" class="btn btn-primary center disable" value="<?= translate_text('Thêm Mới')?>" disabled> 
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>

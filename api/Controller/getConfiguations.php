@@ -20,7 +20,7 @@ $config = new Configuations($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$web_id = $data->web_id; 
+$web_id = intVal($data->web_id); 
 
 // read the details of product to be edited
 $result = $config->getByWebID($web_id, true);

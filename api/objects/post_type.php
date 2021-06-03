@@ -7,8 +7,9 @@
         public $post_type_title;
         public $post_type_description;
         public $post_type_show;
-        public $cmp_id;
         public $post_type_active;
+        public $allow_show_homepage;
+        public $web_id;
         public $term;
 
         public function __construct($db){
@@ -29,6 +30,16 @@
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             
+            return $stmt;
+        }
+
+        function getPostType($web_id){
+            $query = "SELECT * FROM ".$this->table_name." WHERE web_id = ? AND post_type_active = 1";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(1, $web_id);
+            $stmt->execute();
+
             return $stmt;
         }
 

@@ -20,13 +20,17 @@ $config = new Configuations($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-$image_homepage_background = array($data->image_background_homepage_1, $data->image_background_homepage_2,
-                                   $data->image_background_homepage_3, $data->image_background_homepage_4, $data->image_background_homepage_5,
-                                   $data->image_background_homepage_6, $data->image_background_homepage_7);
+$image_homepage_background = array(htmlspecialchars(trim($data->image_background_homepage_1)), 
+                                    htmlspecialchars(trim($data->image_background_homepage_2)),
+                                    htmlspecialchars(trim($data->image_background_homepage_3)), 
+                                    htmlspecialchars(trim($data->image_background_homepage_4)), 
+                                    htmlspecialchars(trim($data->image_background_homepage_5)),
+                                    htmlspecialchars(trim($data->image_background_homepage_6)), 
+                                    htmlspecialchars(trim($data->image_background_homepage_7)));
 
-$logo_top_data     = array($data->image_logo_top);
-$logo_bottom_data  = array($data->image_logo_bottom);
-$image_banner_data = array($data->image_banner);
+$logo_top_data     = array(htmlspecialchars(trim($data->image_logo_top)));
+$logo_bottom_data  = array(htmlspecialchars(trim($data->image_logo_bottom)));
+$image_banner_data = array(htmlspecialchars(trim($data->image_banner)));
 
 //upload image
 
@@ -51,38 +55,38 @@ $image_banner = saveBase64($UploadBase64, $image_banner_data, $url_save, 'jpg, p
 
 
 // set Term property of record to update
-$config->web_id                    = $data->web_id; 
-$config->con_admin_email           = $data->con_admin_email;
-$config->con_site_title            = $data->con_site_title;
-$config->con_meta_description      = $data->con_meta_description;
-$config->con_meta_keyword          = $data->con_meta_keyword;
-$config->con_mod_rewrite           = $data->con_mod_rewrite;
-$config->con_extenstion            = $data->con_extenstion;
-$config->lang_id                   = $data->lang_id;
-$config->con_active_contact        = $data->con_active_contact;
-$config->con_hotline               = $data->con_hotline;
-$config->con_hotline_banhang       = $data->con_hotline_banhang;
-$config->con_hotline_hotro_kythuat = $data->con_hotline_hotro_kythuat;
-$config->con_address               = $data->con_address;
+$config->web_id                    = intVal($data->web_id); 
+$config->con_admin_email           = htmlspecialchars(trim($data->con_admin_email));
+$config->con_site_title            = htmlspecialchars(trim($data->con_site_title));
+$config->con_meta_description      = htmlspecialchars(trim($data->con_meta_description));
+$config->con_meta_keyword          = htmlspecialchars(trim($data->con_meta_keyword));
+$config->con_mod_rewrite           = htmlspecialchars(trim($data->con_mod_rewrite));
+$config->con_extenstion            = htmlspecialchars(trim($data->con_extenstion));
+$config->lang_id                   = htmlspecialchars(trim($data->lang_id));
+$config->con_active_contact        = htmlspecialchars(trim($data->con_active_contact));
+$config->con_hotline               = htmlspecialchars(trim($data->con_hotline));
+$config->con_hotline_banhang       = htmlspecialchars(trim($data->con_hotline_banhang));
+$config->con_hotline_hotro_kythuat = htmlspecialchars(trim($data->con_hotline_hotro_kythuat));
+$config->con_address               = htmlspecialchars(trim($data->con_address));
 $config->con_background_homepage   = $image_background;
-$config->con_info_payment          = $data->con_info_payment;
-$config->con_fee_transport         = $data->con_fee_transport;
-$config->con_contact_sale          = $data->con_contact_sale;
-$config->con_info_company          = $data->con_info_company;
+$config->con_info_payment          = htmlspecialchars(trim($data->con_info_payment));
+$config->con_fee_transport         = htmlspecialchars(trim($data->con_fee_transport));
+$config->con_contact_sale          = htmlspecialchars(trim($data->con_contact_sale));
+$config->con_info_company          = htmlspecialchars(trim($data->con_info_company));
 $config->con_logo_top              = $logo_top;
 $config->con_logo_bottom           = $logo_bottom;
-$config->con_page_fb               = $data->con_page_fb;
-$config->con_link_fb               = $data->con_link_fb;
-$config->con_link_twitter          = $data->con_link_twitter;
-$config->con_link_insta            = $data->con_link_insta;
-$config->con_map                   = $data->con_map;
+$config->con_page_fb               = htmlspecialchars(trim($data->con_page_fb));
+$config->con_link_fb               = htmlspecialchars(trim($data->con_link_fb));
+$config->con_link_twitter          = htmlspecialchars(trim($data->con_link_twitter));
+$config->con_link_insta            = htmlspecialchars(trim($data->con_link_insta));
+$config->con_map                   = htmlspecialchars(trim($data->con_map));
 $config->con_banner_image          = $image_banner;
-$config->con_banner_title          = $data->con_banner_title;
-$config->con_banner_description    = $data->con_banner_description;
-$config->con_banner_active         = $data->con_banner_active;
+$config->con_banner_title          = htmlspecialchars(trim($data->con_banner_title));
+$config->con_banner_description    = htmlspecialchars(trim($data->con_banner_description));
+$config->con_banner_active         = htmlspecialchars(trim($data->con_banner_active));
 
 
-$count = $config -> getByWebID($data->web_id, false);
+$count = $config -> getByWebID(intVal($data->web_id), false);
 if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
     http_response_code(200);
     echo json_encode(array("message" => $UploadBase64->common_error,

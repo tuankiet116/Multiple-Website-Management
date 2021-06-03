@@ -62,7 +62,7 @@
             </div>
             <hr>
             <div class="container-fluid container_post_infor">
-                <form class="needs-validation" novalidate action="" >
+                <form class="needs-validation" action="" >
                     <div class="post_info_title">
                         <h3><?=translate_text('Thông Tin Bài Viết')?></h3>
                     </div>
