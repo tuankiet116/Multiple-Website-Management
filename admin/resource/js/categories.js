@@ -1,4 +1,6 @@
 var base_url = '../../../';
+var post_type_id = [];
+var web_id_create = '';
 $(document).ready(function () {
   //Select2 For Pick Website
   $(".pick_website_select").select2({
@@ -84,12 +86,14 @@ $(document).ready(function () {
 
   $('.pick_website_select').on('change', function(){
     let web_id = $('.pick_website_select').select2('data')[0].id;
+    web_id_create = web_id;
     var data = {
       "web_id": web_id
     }
     $.ajax({
       url: base_url + 'api/Controller/getCategories.php',
       method: 'POST',
+      async: false,
       data: JSON.stringify(data),
       success: function(data){
         if(data.code == 404){
@@ -132,16 +136,16 @@ $(document).ready(function () {
           })
 
           var cateHasChild = data.map((e)=>{
-              if(e.cmp_has_child==1){
+              if(e.cmp_parent_id==null){
                 return`
                   <option value="${e.cmp_id}">${e.cmp_name}</option>
                 `;
               }
           })
         }
-
-        $('#cmp_parent_id').html(cateHasChild);
+        
         $('.categories-content').html(allCate ?? err);
+        $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
 
         $('.categories-parent-item').on('click', function(){
           $(this).siblings('.wapper-categories-child').toggle();
@@ -152,22 +156,115 @@ $(document).ready(function () {
             $(this).siblings('.categories-child-item > div > div').slideToggle();
         });
 
-        var toggleDisabled = $('.disabled').removeAttr('disabled');
+        $('.disable').removeAttr('disabled');
       }
     });
+    getPostType(web_id);
+    var select = document.querySelectorAll('.post_type_id');
+    select.forEach((e)=>{
+      e.onchange = function(){
+        if(e.checked){
+          post_type_id.push(e.value);
+        }
+      }
+    })
   });
 
-
-  // console.log($("input[name='test']:checked"));
-  // var arr =[];
-  // $("input[name='test']:checked").each(function(){
-  //   arr.push($(this).val());
-  // });
-  // console.log(arr.join(","));
-  
+  $('#submit').click(function(){
+      var cmp_name = $('#cmp_name').val();
+      var cmp_rewrite_name = $('#cmp_rewrite_name').val();
+      if(cmp_name=="" || cmp_rewrite_name==""){
+        showAlert('warning', '<p>vui những trường có dấu sao <span style="color: red">(*)</span></p>');
+      }
+      else{
+        var data = dataCategory();
+        $.ajax({
+          url: base_url+'api/Controller/createCategories.php',
+          method: 'POST',
+          data: JSON.stringify(data),
+          success: function(data){
+            if(data.code == 200){
+              showAlert('success', `<p>${data.message}</p>`);
+            }
+            else{
+              showAlert('error', `<p>${data.message}</p>`);
+            }
+          },
+        });
+        $('#formCategory')[0].reset();
+        $('#image_background_homepage_1').attr('src', "#");
+        $('#image_background_homepage_2').attr('src', "#");
+        $('#image_background_homepage_3').attr('src', "#");
+        $('#image_background_homepage_4').attr('src', "#");
+        $('#image_background_homepage_5').attr('src', "#");
+      }
+    
+    return false;
+  })
 });
 
+function getPostType(web_id){
+  var data ={
+    "web_id": web_id
+  }
+  $.ajax({
+      url: base_url + 'api/Controller/getPostType.php',
+      method: "POST",
+      data: JSON.stringify(data),
+      async: false,
+      success: function(data){
+        if(data.code == 404){
+          var err = `<p>${data.message}</p>`;
+        }
+        else{
+          var pt = data.map((e)=>{
+            return`
+              <div class="post-item">
+                <label for="2">${e.post_type_title}</label>
+                <input type="checkbox" class="disable post_type_id" value="${e.post_type_id}">
+              </div>
+            `;
+          });
+        }
+        $('.wrapper-post').html(pt ?? err);
+      }
+  });
+}
 
+function dataCategory(){
+  var cmp_name                    = $('#cmp_name').val();
+  var cmp_rewrite_name            = $('#cmp_rewrite_name').val();
+  var cmp_icon                    = $('#cmp_icon').val();
+  var cmp_has_child               = $('#cmp_has_child').val();
+  var input_background_category_1 = $('#image_background_homepage_1').attr('src');
+  var input_background_category_2 = $('#image_background_homepage_2').attr('src');
+  var input_background_category_3 = $('#image_background_homepage_3').attr('src');
+  var input_background_category_4 = $('#image_background_homepage_4').attr('src');
+  var input_background_category_5 = $('#image_background_homepage_5').attr('src');
+  var bgt_type                    = $('#bgt_type').val();
+  var cmp_meta_description        = $('#cmp_meta_description').val();
+  var cmp_active                  = $('#cmp_active').is(":checked") ? 1:0;
+  var cmp_parent_id               = $('#cmp_parent_id').val()==""? null: $('#cmp_parent_id').val();
+  
+  var data={
+    "cmp_name":                    cmp_name,
+    "cmp_rewrite_name":            cmp_rewrite_name,
+    "cmp_icon":                    cmp_icon,
+    "cmp_has_child":               cmp_has_child,
+    "image_background_category_1": input_background_category_1,
+    "image_background_category_2": input_background_category_2,
+    "image_background_category_3": input_background_category_3,
+    "image_background_category_4": input_background_category_4,
+    "image_background_category_5": input_background_category_5,
+    "bgt_type":                    bgt_type,
+    "cmp_meta_description":        cmp_meta_description,
+    "cmp_active":                  cmp_active,
+    "cmp_parent_id":               cmp_parent_id,
+    "web_id":                      web_id_create,
+    "post_type_id":                post_type_id.join(",")
+  }
+   return data;
+}
 
 //Make Information Image Get The FUCK Out Of Chrome Security And Change Data To Base64
 var exGetImg = function(extag, element) {
@@ -228,3 +325,32 @@ function checkdefault(default_value, check_parameter){
   
     return $state;
   } //End Of Function Website Select2
+
+function showAlert(type, message){
+  $('.alert').removeClass("alert-success");
+  $('.alert').removeClass("alert-warning");
+  $('.alert').removeClass("alert-danger");
+
+  switch(String(type)){
+    case "success":
+      $('.alert').addClass('alert-success');
+      $('.alert-heading').html('<i class="fas fa-check-circle"></i> Success!');
+      break;
+    case "error":
+      $('.alert').addClass('alert-danger');
+      $('.alert-heading').html('<i class="fas fa-exclamation-circle"></i> Error!');
+      break;
+    case "warning":
+      $('.alert').addClass('alert-warning');
+      $('.alert-heading').html('<i class="fa fa-warning"></i> Warning!');
+      break;
+  }
+
+  $('.alert .message').html(message);
+  $('.alert').addClass('d-block');
+  setTimeout(function(){ $('.alert').removeClass('d-block'); }, 3000);
+
+  $('.alert button.close').on('click', function(){
+    $('.alert').removeClass('d-block');
+  });
+}
