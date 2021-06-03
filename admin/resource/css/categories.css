@@ -264,3 +264,9 @@ border-radius: 50%;
     margin: 0;
     margin-right: 3px;
 }
+.alert-message{
+    position: fixed;
+    right: 50px;
+    width: 30%;
+    z-index: 9999
+}
