@@ -5,7 +5,7 @@ $(document).ready(function(){
     post_id = url_split.split("&web_id=")[0];
     web_id = url_split.split("&web_id=")[1];
     
-    
+    $('.loader-container').css('display', 'flex');
     //Pick Product Select2
     $('.pick_product').select2({
         ajax: { 
@@ -223,6 +223,7 @@ function showInformation(data){
       $('.button-container').html(html);
       submitButton();
     }
+    $('.loader-container').css('display', 'none');
 }
 
 function getProductData(product_id){
@@ -340,9 +341,11 @@ function setImageData(data, element, max=0){
             url: url,
             success: function(data){
                 updatePostSuccess(data);
+                reload();
             },
             error: function (request, status, error) {
                 updatePostError(request.responseText);
+                
             }
         });
         //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
@@ -350,5 +353,19 @@ function setImageData(data, element, max=0){
   }
 
   function reload(){
-    
+    $('.loader-container').css('display', 'flex');
+    //Call Ajax Set Information
+    $.ajax({
+        dataType: 'JSON',
+        data: JSON.stringify(data_getInfo),
+        type: 'POST',
+        async: false,
+        url: "../../../api/Controller/getPostByID.php",
+        success: function(data){
+            showInformation(data);
+        },
+        error: function (request, status, error){
+            showAlert('error', error + request.responseText);
+        }
+    })
   }
