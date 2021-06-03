@@ -23,7 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
 $product->term   = htmlspecialchars(trim($data->term)); 
 $product->web_id = intVal($data->web_id);
 
-$stmt_search = $product->searchTerm();
+$stmt_search = $product->searchTermActive();
 $num = $stmt_search->rowCount();
 
 if($num>0){

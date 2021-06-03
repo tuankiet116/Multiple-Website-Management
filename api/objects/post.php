@@ -16,6 +16,7 @@
         public $product_id;
         public $post_date_time_create;
         public $post_date_time_update;
+        public $post_active;
         public $content;
         public $term;
         public $web_id;
@@ -59,6 +60,54 @@
             }
         }
 
+        public function update(){
+            $query_ptd ="SELECT ptd_id FROM post WHERE post_id = :post_id";
+            $stmt_ptd = $this->conn->prepare($query_ptd);
+            $stmt_ptd->bindParam(':post_id', $this->post_id);
+            if($stmt_ptd->execute() === true){
+                $row = $stmt_ptd->fetch(PDO::FETCH_ASSOC);
+                $ptd_id = $row['ptd_id'];
+
+                $query = "UPDATE post_detail SET ptd_text = :ptd_text  WHERE ptd_id = :ptd_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':ptd_id', $ptd_id);
+                $stmt->bindParam(':ptd_text', $this->content);
+
+                if($stmt->execute() === true){
+                    $query_post = "UPDATE post
+                            SET post_title            =:post_title, 
+                                post_description      =:post_description,
+                                post_image_background =:post_image_background, 
+                                post_color_background =:post_color_background,
+                                post_meta_description =:post_meta_description, 
+                                post_rewrite_name     =:post_rewrite_name,
+                                product_id            =:product_id
+                            WHERE post_id = :post_id ";
+                    $stmt_post = $this->conn->prepare($query_post);
+
+                    $stmt_post->bindParam(':post_title'           , $this->post_title);
+                    $stmt_post->bindParam(':post_description'     , $this->post_description);
+                    $stmt_post->bindParam(':post_image_background', $this->post_image_background);
+                    $stmt_post->bindParam(':post_color_background', $this->post_color_background);
+                    $stmt_post->bindParam(':post_meta_description', $this->post_meta_description);
+                    $stmt_post->bindParam(':post_rewrite_name'    , $this->post_rewrite_name);
+                    $stmt_post->bindParam(':product_id'           , $this->product_id);
+                    $stmt_post->bindParam(':post_id'              , $this->post_id);
+
+                    if($stmt_post->execute() === true){
+                        return true;
+                    }
+                    return $stmt_post;
+                }
+                else{
+                    return $stmt;
+                }
+            }
+            else{
+                return $stmt_ptd;
+            }
+        }
+
         public function getAll(){
             $query_website = "";
             if($this->web_id != "" || $this ->web_id != null){
@@ -79,33 +128,38 @@
             return $stmt;
         }
 
-        public function getPostByID(){
+        public function getPostByID($getData = true){
             $query = 'SELECT * FROM post WHERE post_id = :post_id';
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':post_id', $this->post_id);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($getData === true){
+                $this->post_id               = $row['post_id'];
+                $this->post_title            = $row['post_title'];
+                $this->post_description      = $row['post_description'];
+                $this->post_image_background = $row['post_image_background'];
+                $this->post_color_background = $row['post_color_background'];
+                $this->post_meta_description = $row['post_meta_description'];
+                $this->post_rewrite_name     = $row['post_rewrite_name'];
+                $this->cmp_id                = $row['cmp_id'];
+                $this->ptd_id                = $row['ptd_id'];
+                $this->post_type_id          = $row['post_type_id'];
+                $this->product_id            = $row['product_id'];
+                $this->post_datetime_create  = $row['post_datetime_create'];
+                $this->post_datetime_update  = $row['post_datetime_update'];
+                $this->post_active           = $row['post_active'];
 
-            $this->post_id               = $row['post_id'];
-            $this->post_title            = $row['post_title'];
-            $this->post_description      = $row['post_description'];
-            $this->post_image_background = $row['post_image_background'];
-            $this->post_color_background = $row['post_color_background'];
-            $this->post_meta_description = $row['post_meta_description'];
-            $this->post_rewrite_name     = $row['post_rewrite_name'];
-            $this->cmp_id                = $row['cmp_id'];
-            $this->ptd_id                = $row['ptd_id'];
-            $this->post_type_id          = $row['post_type_id'];
-            $this->product_id            = $row['product_id'];
-            $this->post_datetime_create  = $row['post_datetime_create'];
-            $this->post_datetime_update  = $row['post_datetime_update'];
-
-            $query = 'SELECT * FROM post_detail WHERE ptd_id = :ptd_id';
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':ptd_id', $this->ptd_id);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->content = $row['ptd_text'];
+                $query = 'SELECT * FROM post_detail WHERE ptd_id = :ptd_id';
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':ptd_id', $this->ptd_id);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->content = $row['ptd_text'];
+            }
+            else{
+                return $stmt->rowCount();
+            }
         }
     }
 ?>

@@ -21,6 +21,14 @@
 
 </head>
 <body>
+    <div class="alert alert-warning alert-dismissible fade alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">   
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container-fluid container_post_infor">
         <form class="needs-validation" action="" >
             <div class="post_info_title">
@@ -94,8 +102,7 @@
                     <textarea name = 'post_editor' id = 'post_editor' class="form-control"></textarea>
                 </div>
                 <div class='button-container'>
-                    <input  id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="<?= translate_text('Thêm Bài Viết')?>">
-                    <input id="clear_button" class="btn btn-danger  btn-lg " type="button" value="<?= translate_text('Xóa')?>">
+                    
                 </div>
             </div>
         </form>
