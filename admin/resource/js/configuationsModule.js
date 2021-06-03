@@ -481,7 +481,7 @@ function ResetForm(){
   $('.input-image img').attr('src', '#');
   $('.input-image img').css('display', 'none');
   $('.input-image svg').css('display', 'block');
-  var select_option = "<option selected value = '"+data_language_default.lang_id+"' title = '"+data_language_default.lang_image+"' >"+data_language_default.lang_name+"</option>";
+  var select_option = "<option selected value = '"+data_language_default.id+"' title = '"+data_language_default.lang_image+"' >"+data_language_default.lang_name+"</option>";
   setSelect2DataLanguage('.pick_language', select_option, data_language_default);
 }
 

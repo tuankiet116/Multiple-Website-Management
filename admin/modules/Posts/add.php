@@ -27,14 +27,6 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="alert alert-warning alert-dismissible fade alert-message" role="alert">
-            <h4 class="alert-heading"></h4>
-            <div class="message">   
-            </div>
-            <button type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
         <div class="main_container">
             <div class="choose-container container-fluid"> 
                 <div class="select-container pick_website_container col-3">
@@ -70,7 +62,7 @@
             </div>
             <hr>
             <div class="container-fluid container_post_infor">
-                <form class="needs-validation" novalidate action="" >
+                <form class="needs-validation" action="" >
                     <div class="post_info_title">
                         <h3><?=translate_text('Thông Tin Bài Viết')?></h3>
                     </div>

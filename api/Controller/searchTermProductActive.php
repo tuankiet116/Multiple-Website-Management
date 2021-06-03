@@ -20,10 +20,10 @@ $product = new Product($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$product->term   = $data->term; 
-$product->web_id = $data->web_id;
+$product->term   = htmlspecialchars(trim($data->term)); 
+$product->web_id = intVal($data->web_id);
 
-$stmt_search = $product->searchTerm();
+$stmt_search = $product->searchTermActive();
 $num = $stmt_search->rowCount();
 
 if($num>0){

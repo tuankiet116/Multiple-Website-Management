@@ -10,20 +10,12 @@
     width: 100% !important;
 }
 
-.choose-container{
-    display: flex;
-}
-
 .select-container{
     width: 100%;
 }
 
 .select-container .selection img{
     margin-top: -1%;
-}
-
-.select2-result-website {
-    display: flex;
 }
 
 .select2-container img{
@@ -55,17 +47,6 @@
     width: 100px;
     margin: 0 50px 100px 0;
 }
-
-.image-loading{
-    width: 40px;
-    display: none;
-}
-
-.image-loading-post-type{
-    width: 40px;
-    display: none;
-}
-
 .container_post_infor .post_info_title h3{
     margin: 0 0 2% 0;
     text-align: center;

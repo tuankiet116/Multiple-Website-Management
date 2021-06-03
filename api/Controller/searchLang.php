@@ -23,7 +23,7 @@ $lang = new LanguageConfig($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$lang->term = $data->term; 
+$lang->term = htmlspecialchars(trim($data->term)); 
 
 if(!isset($data)){
     $stmt_search = $lang->searchTerm("SELECT * FROM languages");

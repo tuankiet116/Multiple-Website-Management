@@ -20,7 +20,7 @@ $webconfig = new Website_Config($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
-$webconfig->term = $data->term; 
+$webconfig->term = htmlspecialchars(trim($data->term)); 
 
 if(!isset($data)){
     $stmt_search = $webconfig->searchTerm("SELECT * FROM website_config");
