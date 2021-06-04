@@ -225,7 +225,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                             if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
                                 $bread_parents = $bread['cmp_parent_id'];
                                 if ($bread_parents == null) {
-                                    echo'
+                                    echo '
                                         <a href="" target="_self">' . $bread['cmp_name'] . '</a>
 
                                         <span class="navigation-pipe">
@@ -234,7 +234,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 } else {
                                     $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
                                     foreach ($bread_name as $key => $b_name) {
-                                        echo'
+                                        echo '
                                         <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
 
                                         <span class="navigation-pipe">
@@ -243,17 +243,16 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                     }
                                 }
                             }
+                        }
+                        if ($post_name != '') {
+                            echo'
+                                <a href="" target="_self">' . $post_name . '</a>
 
-                            if ($post_name != '') {
-                                echo'
-                                    <a href="" target="_self">' . $post_name . '</a>
-
-                                    <span class="navigation-pipe">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </span>
-                                ';
-                            }
-                        } ?>
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                            ';
+                        }?>
 
                         <a href="#" target="_self"><?php echo $title1 ?> </a>
                     </div>
@@ -261,12 +260,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         <p class="news-right-content-title"><?php echo $title1; ?></p>
 
                         <?php
-                        // foreach ($post_content as $p_content) {
-                        //     if ($p_content['ptd_id'] == $postNews) {
-                        //         echo $p_content['ptd_text'];
-                        //     }
-                        // }
-
                         foreach ($post_type as $key => $p_type) {
                             if ($p_type['post_type_show'] != '') {
                                 $p_type_id = $p_type['post_type_id'];
@@ -289,7 +282,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
 
                                                     $date = $g_post['post_datetime_create'];
                                                     $myDate = date("d-m-Y", strtotime($date));
-
                                                     echo'
                                                         <div class="container post-list">
                                                             <div class="row">
@@ -301,7 +293,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
 
                                                                 <div class="post-list-container col-lg-8 col-md-8 col-sm-6 col-6">                                                                                
                                                                     <div class="post-list-title">
-                                                                        <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . $changeUrlBread . '&postNews=' . $g_post['ptd_id'] . '" target="_self">
+                                                                        <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . $changeUrlBread . '&postNews=' . $g_post['ptd_id'] . '&postName=' . $pt_name['post_type_title'] . '" target="_self">
                                                                             <p>' . $g_post['post_title'] . '</p>
                                                                         </a>
                                                                     </div>
@@ -312,7 +304,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                                         <p>' . $g_post['post_description'] . '</p>
                                                                     </div>
                                                                     
-                                                                    <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . $changeUrlBread . '&postNews=' . $g_post['ptd_id'] . '" class="post-list-button" target="_self">Xem tiếp</a>
+                                                                    <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . '&breadcrumbs=' . $cate['cmp_rewrite_name'] . $changeUrlBread . '&postNews=' . $g_post['ptd_id'] . '&postName=' . $pt_name['post_type_title'] . '" class="post-list-button" target="_self">Xem tiếp</a>
                                                                 </div>
                                                             </div>                 
                                                         </div>';
