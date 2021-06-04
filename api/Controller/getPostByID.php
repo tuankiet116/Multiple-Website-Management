@@ -21,7 +21,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
 $post->post_id = intVal($data->post_id); 
-$post->getPostByID();
+$post->getPostByID(true);
 
 if(isset($post->post_id)){
     //post array
@@ -36,11 +36,11 @@ if(isset($post->post_id)){
         "cmp_id"                => $post->cmp_id,
         "ptd_id"                => $post->ptd_id,
         "post_type_id"          => $post->post_type_id,
-        "post_datetime_create"  => $post->post_date_time_create,
-        "post_datetime_update"  => $post->post_date_time_update,
+        "post_datetime_create"  => $post->post_datetime_create,
+        "post_datetime_update"  => $post->post_datetime_update,
         "product_id"            => $post->product_id,
         "content"               => $post->content,
-        "post_active"           => $post->post_active              
+        "post_active"           => $post->post_active,           
     );
   
     // set response code - 200 OK

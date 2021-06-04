@@ -38,7 +38,6 @@ if($num>0){
             "post_type_description" => $row['post_type_description'],
             "post_type_show"        => $row['post_type_show'],
             "post_type_active"      => $row['post_type_active'],    
-            // "cmp_id"                => $row['cmp_id'],
             "post_type_term"        => $data->term
             
         );
