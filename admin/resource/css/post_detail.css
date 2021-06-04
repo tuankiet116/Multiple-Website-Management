@@ -155,6 +155,12 @@ hr{
     margin: 100px 50px;
 }
 
+#clear-product{
+    position: relative;
+    top: 28px;
+    right: 20px;
+}
+
 /* CSS Alert Bootstrap */
 .alert-message{
     position: fixed;

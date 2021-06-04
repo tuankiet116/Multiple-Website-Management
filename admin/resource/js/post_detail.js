@@ -6,55 +6,8 @@ $(document).ready(function(){
     web_id = url_split.split("&web_id=")[1];
     
     $('.loader-container').css('display', 'flex');
-    //Pick Product Select2
-    $('.pick_product').select2({
-        ajax: { 
-        url: "../../../api/Controller/searchTermProductActive.php",
-        type: "POST",
-        dataType: 'json',
-        delay: 250,
-        allowClear: true,
-        data: function (params) {
-            if(params.term == null){
-            var obj = {
-                "term": "",
-                "web_id": web_id
-            } 
-            }else{
-            var obj = {
-            "term": params.term.trim(),
-            "web_id": web_id
-            } 
-            }
-            
-            return JSON.stringify(obj);
-        },
-        processResults: function (data, params) {
-            if(data.code == 404){
-            return null;
-            }
-            return {
-                results: $.map(data, function (item) {
-                    if(item == 404){
-                    return null;
-                    }
-                    return {
-                        text: item.product_name,
-                        id: item.product_id,
-                        image: checkdefault("data/product_icon/default/product.png",item.product_image_path),
-                        data: item
-                    };
-                })
-            };
-        },
-        cache: false
-        },
-        
-        placeholder: 'Search For Product',
-        minimumInputLength: 0,
-        templateResult: formatRepoProduct,
-        templateSelection: formatRepoSelectionProduct
-    });
+    
+    createSelect2Product();
 
     // Input Image Processing When Image Is NULL
     $(".input-image").on("click", function(e){
@@ -108,9 +61,66 @@ $(document).ready(function(){
         }
 
     })
+
+    $('#clear-product').on('click', function(){
+      $('.pick_product').empty();
+    });
 });
 
 var base_url = "../../../";
+
+function createSelect2Product(){
+  //Pick Product Select2
+  $('.pick_product').select2({
+      ajax: { 
+      url: "../../../api/Controller/searchTermProductActive.php",
+      type: "POST",
+      dataType: 'json',
+      delay: 250,
+      allowClear: true,
+      data: function (params) {
+          if(params.term == null){
+          var obj = {
+              "term": "",
+              "web_id": web_id
+          } 
+          }else{
+          var obj = {
+          "term": params.term.trim(),
+          "web_id": web_id
+          } 
+          }
+          
+          return JSON.stringify(obj);
+      },
+      processResults: function (data, params) {
+          if(data.code == 404){
+            return null;
+          }
+
+          return {
+              results: $.map(data, function (item) {
+                  if(item == 404){
+                    return null;
+                  }
+                  return {
+                      text: item.product_name,
+                      id: item.product_id,
+                      image: checkdefault("data/product_icon/default/product.png",item.product_image_path),
+                      data: item
+                  };
+              }),
+          };
+      },
+      cache: false
+      },
+    
+      placeholder: 'Search For Product',
+      minimumInputLength: 0,
+      templateResult: formatRepoProduct,
+      templateSelection: formatRepoSelectionProduct
+  });
+}
 
 function checkdefault(default_value, check_parameter){
     if(check_parameter == null || check_parameter == "undefined"){
@@ -348,6 +358,7 @@ function setImageData(data, element, max=0){
             success: function(data){
                 updatePostSuccess(data);
                 reload();
+                showAlert('success', data.message);
             },
             error: function (request, status, error) {
                 updatePostError(request.responseText);

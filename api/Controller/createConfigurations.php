@@ -84,6 +84,7 @@ $config->con_banner_image          = $image_banner;
 $config->con_banner_title          = htmlspecialchars(trim($data->con_banner_title));
 $config->con_banner_description    = htmlspecialchars(trim($data->con_banner_description));
 $config->con_banner_active         = htmlspecialchars(trim($data->con_banner_active));
+$config->con_rewrite_name_homepage = htmlspecialchars(trim($data->con_rewrite_name_homepage));
 
 
 $count = $config -> getByWebID(intVal($data->web_id), false);

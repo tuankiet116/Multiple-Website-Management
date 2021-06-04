@@ -58,6 +58,7 @@ if($config->con_id != null){
         "con_banner_title"          => $config->con_banner_title,
         "con_banner_description"    => $config->con_banner_description,
         "con_banner_active"         => $config->con_banner_active,
+        "con_rewrite_name_homepage" => $config->con_rewrite_name_homepage,
         "code"                      => 200
     );
 
