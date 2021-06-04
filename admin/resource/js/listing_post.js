@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+    $('.loader-container').css('display', 'flex');
     var web_id =  null;
   
     $('b[role="presentation"]').hide();
@@ -63,6 +64,11 @@ $(document).ready(function(){
 
         ajaxSearchingPost(data);
     });
+
+    $('#clear_button').on('click', function(){
+      $('#searching').val('');
+      $('.pick_website_select').empty();
+    });
 });
 
 
@@ -119,13 +125,16 @@ function ajaxSearchingPost(data){
         dataType: 'JSON',
         url: '../../../api/Controller/getAllPost.php',
         data: JSON.stringify(data),
+        async: false,
         success: function(data){
             postSuccess(data);
+            
         },
         error: function(data){
             postError(data);
         }
     });
+    $('.loader-container').css('display', 'none');
 }
 
 function postSuccess(data){
@@ -151,12 +160,10 @@ function postSuccess(data){
         }
 
         if(value.post_active == 1){
-          status = '<button style = "width: 100px;" id="post_'+ value.post_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
-          IActiveButton(0, '#post_'+ value.post_id);
+          status = '<button style = "width: 100px;" id="post_show_'+ value.post_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
         }
         else{
-          status = '<button style = "width: 100px;" id="post_'+ value.post_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
-          IActiveButton(1, '#post_'+ value.post_id);
+          status = '<button style = "width: 100px;" id="post_hide_'+ value.post_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
         }
 
         action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">'+
@@ -173,7 +180,9 @@ function postSuccess(data){
                     <td>`+ action +` </td>
                 </tr>`
     });
-    $('tbody').html(html);
+    $('tbody').html(html).ready(function(){
+      IActiveButton();
+    });
 }
 
 function postError(data){
@@ -190,12 +199,17 @@ function postError(data){
     }
 }
 
-function IActiveButton(post_active, element){
-  $(element).on('click', function(){
+function IActiveButton(){
+  
+  $('.status_button').on('click', function(){
+    element = $(this).attr('id');
+    id = element.split("_")[2];
+    type = element.split("_")[1] == 'show'? 0:1;
+
     $('.loader-container').css('display', 'flex');
     data = {
-      "post_id": post_id,
-      "post_active": post_active
+      "post_id": id,
+      "post_active": type
     }
     $.ajax({
       type: 'POST',
@@ -206,7 +220,7 @@ function IActiveButton(post_active, element){
       success: function(data){
         if(data.code == 200){
           showAlert('success', data.message);
-          ajaxSearchingPost(null);
+          
         }
         else{
           showAlert('error',data.code+": " +data.message);
@@ -216,5 +230,36 @@ function IActiveButton(post_active, element){
         showAlert('error', request.responseText);
       }
     });
+
+    ajaxSearchingPost(null);
+  });
+}
+
+function showAlert(type, message){
+  $('.alert').removeClass("alert-success");
+  $('.alert').removeClass("alert-warning");
+  $('.alert').removeClass("alert-danger");
+
+  switch(String(type)){
+    case "success":
+      $('.alert').addClass('alert-success');
+      $('.alert-heading').html('<i class="fas fa-check-circle"></i> Success!');
+      break;
+    case "error":
+      $('.alert').addClass('alert-danger');
+      $('.alert-heading').html('<i class="fas fa-exclamation-circle"></i> Error!');
+      break;
+    case "warning":
+      $('.alert').addClass('alert-warning');
+      $('.alert-heading').html('<i class="fa fa-warning"></i> Warning!');
+      break;
+  }
+
+  $('.alert .message').html(message);
+  $('.alert').addClass('show');
+  setTimeout(function(){ $('.alert').removeClass('show'); }, 3000);
+
+  $('.alert button.close').on('click', function(){
+    $('.alert').removeClass('show');
   });
 }

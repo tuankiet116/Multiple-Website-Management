@@ -45,14 +45,15 @@ if($post_image_background === false){
                             "code"    => 500));
 }
 else{
-    if($post->create()){
+    $message = $post->create();
+    if($message === true){
         http_response_code(200);
         echo json_encode(array("message" => "Create Success", "code" => 200));
         
     }
     else{
         http_response_code(200);
-        echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+        echo json_encode(array('message' => $message, 'code' => 403));
     }
 }
 

@@ -86,11 +86,12 @@
                         <label><?=translate_text('Chọn Sản Phẩm Liên Kết')?></label>    
                         <div class="box" style="margin: 0;">
                             <select class="pick_product">
-                                <option>
-                                    <?=translate_text('Không Chọn')?>
-                                </option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class=" form-group form-post col-3">
+                        <button id="clear-product" type="button" class="btn btn-info"><?=translate_text('Xóa Sản Phẩm')?></button>
                     </div>
                 </row>
                 <div class="datetime-container container">
