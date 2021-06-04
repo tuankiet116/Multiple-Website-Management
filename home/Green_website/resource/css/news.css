@@ -253,6 +253,7 @@ body {
     height: auto;
     padding: 0 15px;
     margin-bottom: 40px;
+    border: 1px solid red;
 }
 
 .container .row .news-right .news-right-container .news-right-content p {
