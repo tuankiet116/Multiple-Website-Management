@@ -37,7 +37,7 @@ $post->post_rewrite_name     = htmlspecialchars(trim($data->post_rewrite_name));
 $post->cmp_id                = intVal($data->cmp_id);
 $post->post_type_id          = intVal($data->post_type_id);
 $post->produce_id            = intVal($data->product_id);
-$post->content               = htmlspecialchars(trim($data->content));
+$post->content               = $data->content;
 
 if($post_image_background === false){
     http_response_code(200);

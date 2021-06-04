@@ -13,6 +13,7 @@ $(document).ready(function(){
         type: "POST",
         dataType: 'json',
         delay: 250,
+        allowClear: true,
         data: function (params) {
             if(params.term == null){
             var obj = {
@@ -197,6 +198,8 @@ function showInformation(data){
     $('#metaDescription').val(checkdefault("", data.meta_description));
     $('#postColorBackground').val(checkdefault("#ffffff", data.post_color_background));
     $('#rewriteName').val(checkdefault("", data.post_rewrite_name));
+    $('.datetime-container').html(`<div><p> Thời Gian Tạo: `+ data.post_datetime_create +`</p></div> 
+     <div><p>Cập Nhật Lần Cuối: `+ data.post_datetime_update +` </p></div>`);
     product_data = getProductData(parseInt(data.product_id));
     if(product_data != 'NOT_FOUND'){
         option = "<option selected value = '"+product_data.product_id+"' title = '"+product_data.product_image+"' >"+product_data.product_name+"</option>";
@@ -216,13 +219,16 @@ function showInformation(data){
               <input id="hide_button" class="btn btn-danger  btn-lg " type="button" value="Ẩn Bài Viết">`;
       $('.button-container').html(html);
       submitButton();
+      IActiveButton(0, '#hide_button');
     }
     else{
       html = `<input  id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
               <input id="show_button" class="btn btn-success  btn-lg " type="button" value="Hiển Thị">`;
       $('.button-container').html(html);
       submitButton();
+      IActiveButton(1, '#show_button');
     }
+
     $('.loader-container').css('display', 'none');
 }
 
@@ -283,7 +289,7 @@ function setImageData(data, element, max=0){
   }
   
   function updatePostError(data){
-    showAlert('error', '<strong>ERROR: </strong>' + data.message||data.statusText );
+    showAlert('error', '<strong>ERROR: </strong>' + data);
   }
   
   function showAlert(type, message){
@@ -349,6 +355,35 @@ function setImageData(data, element, max=0){
             }
         });
         //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
+    });
+  }
+
+  function IActiveButton(post_active, element){
+    $(element).on('click', function(){
+      $('.loader-container').css('display', 'flex');
+      data = {
+        "post_id": post_id,
+        "post_active": post_active
+      }
+      $.ajax({
+        type: 'POST',
+        dataType: 'JSON',
+        data: JSON.stringify(data),
+        async: false,
+        url: "../../../api/Controller/ActiveInactivePost.php",
+        success: function(data){
+          if(data.code == 200){
+            showAlert('success', data.message);
+            reload();
+          }
+          else{
+            showAlert('error',data.code+": " +data.message);
+          }
+        },
+        error: function(request, status, error){
+          showAlert('error', request.responseText);
+        }
+      });
     });
   }
 

@@ -86,11 +86,16 @@
                         <label><?=translate_text('Chọn Sản Phẩm Liên Kết')?></label>    
                         <div class="box" style="margin: 0;">
                             <select class="pick_product">
+                                <option>
+                                    <?=translate_text('Không Chọn')?>
+                                </option>
                             </select>
                         </div>
                     </div>
                 </row>
-
+                <div class="datetime-container container">
+                    
+                </div>
             </div>
             <hr>
             <div class="container-editor container">

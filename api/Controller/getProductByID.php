@@ -28,7 +28,7 @@ if($product->getByID() && isset($product->product_id)){
     $product_array = array(
         "product_id"          => $product->product_id,
         "product_name"        => $product->product_name,
-        "product_description" => $product->prodcut_description,
+        "product_description" => $product->product_description,
         "product_image_path"  => $product->product_image_path,
         "product_price"       => $product->product_price,
         "product_currency"    => $product->product_currency,

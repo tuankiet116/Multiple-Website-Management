@@ -14,8 +14,8 @@
         public $ptd_id; //post detail ID
         public $post_type_id;
         public $product_id;
-        public $post_date_time_create;
-        public $post_date_time_update;
+        public $post_datetime_create;
+        public $post_datetime_update;
         public $post_active;
         public $content;
         public $term;
@@ -81,7 +81,8 @@
                                 post_color_background =:post_color_background,
                                 post_meta_description =:post_meta_description, 
                                 post_rewrite_name     =:post_rewrite_name,
-                                product_id            =:product_id
+                                product_id            =:product_id,
+                                post_datetime_update  = CURRENT_TIMESTAMP() 
                             WHERE post_id = :post_id ";
                     $stmt_post = $this->conn->prepare($query_post);
 
@@ -108,6 +109,17 @@
             }
         }
 
+        public function ActiveInactivePost(){
+            $query = "UPDATE ".$this->table." SET post_active =:post_active WHERE post_id =:post_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':post_id', $this->post_id);
+            $stmt->bindParam(':post_active', $this->post_active, PDO::PARAM_INT);
+            if($stmt->execute() === true){
+                return true;
+            }
+            return false;
+        }
+
         public function getAll(){
             $query_website = "";
             if($this->web_id != "" || $this ->web_id != null){
@@ -121,7 +133,8 @@
                       INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
                       " WHERE product.product_name        LIKE '%" .$this->term. "%' 
                             OR post_type.post_type_title  LIKE '%" .$this->term. "%' 
-                            OR post.post_title            LIKE '%" .$this->term. "%'";
+                            OR post.post_title            LIKE '%" .$this->term. "%'
+                        ORDER BY post.post_datetime_update DESC";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();

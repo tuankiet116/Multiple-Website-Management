@@ -151,14 +151,16 @@ function postSuccess(data){
         }
 
         if(value.post_active == 1){
-            action = '<button style = "width: 40px;" id="post_'+ value.post_id +'" type="button" class="btn btn-danger">Ẩn</button>';
+          status = '<button style = "width: 100px;" id="post_'+ value.post_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
+          IActiveButton(0, '#post_'+ value.post_id);
         }
         else{
-            action = '<button style = "width: 40px;" id="post_'+ value.post_id +'" type="button" class="btn btn-success">Hiện</button>';
+          status = '<button style = "width: 100px;" id="post_'+ value.post_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
+          IActiveButton(1, '#post_'+ value.post_id);
         }
 
-        action += '<button style = "margin-left: 10px; width: 60px;" id = "info_post_'+ value.post_id +'" type="button" class="btn btn-info">'+
-                    '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">Chi Tiết</a></button>';
+        action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">'+
+                    '<button style = "margin-left: 10px; width: 60px;" id = "info_post_'+ value.post_id +'" type="button" class="btn btn-info">Chi Tiết</button></a>';
 
         stt ++;
         html += `<tr>
@@ -167,6 +169,7 @@ function postSuccess(data){
                     <td>`+ value.description +`</td>
                     <td>`+ value.post_type_title +`</td>
                     <td>`+ value.web_name +`</td>
+                    <td>`+ status +`</td>
                     <td>`+ action +` </td>
                 </tr>`
     });
@@ -185,4 +188,33 @@ function postError(data){
                 </tr>`;
         $('tbody').html(html);
     }
+}
+
+function IActiveButton(post_active, element){
+  $(element).on('click', function(){
+    $('.loader-container').css('display', 'flex');
+    data = {
+      "post_id": post_id,
+      "post_active": post_active
+    }
+    $.ajax({
+      type: 'POST',
+      dataType: 'JSON',
+      data: JSON.stringify(data),
+      async: false,
+      url: "../../../api/Controller/ActiveInactivePost.php",
+      success: function(data){
+        if(data.code == 200){
+          showAlert('success', data.message);
+          ajaxSearchingPost(null);
+        }
+        else{
+          showAlert('error',data.code+": " +data.message);
+        }
+      },
+      error: function(request, status, error){
+        showAlert('error', request.responseText);
+      }
+    });
+  });
 }
