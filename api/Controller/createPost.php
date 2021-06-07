@@ -37,7 +37,7 @@ $post->post_rewrite_name     = htmlspecialchars(trim($data->post_rewrite_name));
 $post->cmp_id                = intVal($data->cmp_id);
 $post->post_type_id          = intVal($data->post_type_id);
 $post->produce_id            = intVal($data->product_id);
-$post->content               = htmlspecialchars(trim($data->content));
+$post->content               = $data->content;
 
 if($post_image_background === false){
     http_response_code(200);
@@ -45,14 +45,15 @@ if($post_image_background === false){
                             "code"    => 500));
 }
 else{
-    if($post->create()){
+    $message = $post->create();
+    if($message === true){
         http_response_code(200);
         echo json_encode(array("message" => "Create Success", "code" => 200));
         
     }
     else{
         http_response_code(200);
-        echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+        echo json_encode(array('message' => $message, 'code' => 403));
     }
 }
 

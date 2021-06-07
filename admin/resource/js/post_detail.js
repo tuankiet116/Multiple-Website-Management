@@ -5,55 +5,9 @@ $(document).ready(function(){
     post_id = url_split.split("&web_id=")[0];
     web_id = url_split.split("&web_id=")[1];
     
+    $('.loader-container').css('display', 'flex');
     
-    //Pick Product Select2
-    $('.pick_product').select2({
-        ajax: { 
-        url: "../../../api/Controller/searchTermProductActive.php",
-        type: "POST",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            if(params.term == null){
-            var obj = {
-                "term": "",
-                "web_id": web_id
-            } 
-            }else{
-            var obj = {
-            "term": params.term.trim(),
-            "web_id": web_id
-            } 
-            }
-            
-            return JSON.stringify(obj);
-        },
-        processResults: function (data, params) {
-            if(data.code == 404){
-            return null;
-            }
-            return {
-                results: $.map(data, function (item) {
-                    if(item == 404){
-                    return null;
-                    }
-                    return {
-                        text: item.product_name,
-                        id: item.product_id,
-                        image: checkdefault("data/product_icon/default/product.png",item.product_image_path),
-                        data: item
-                    };
-                })
-            };
-        },
-        cache: false
-        },
-        
-        placeholder: 'Search For Product',
-        minimumInputLength: 0,
-        templateResult: formatRepoProduct,
-        templateSelection: formatRepoSelectionProduct
-    });
+    createSelect2Product();
 
     // Input Image Processing When Image Is NULL
     $(".input-image").on("click", function(e){
@@ -107,9 +61,66 @@ $(document).ready(function(){
         }
 
     })
+
+    $('#clear-product').on('click', function(){
+      $('.pick_product').empty();
+    });
 });
 
 var base_url = "../../../";
+
+function createSelect2Product(){
+  //Pick Product Select2
+  $('.pick_product').select2({
+      ajax: { 
+      url: "../../../api/Controller/searchTermProductActive.php",
+      type: "POST",
+      dataType: 'json',
+      delay: 250,
+      allowClear: true,
+      data: function (params) {
+          if(params.term == null){
+          var obj = {
+              "term": "",
+              "web_id": web_id
+          } 
+          }else{
+          var obj = {
+          "term": params.term.trim(),
+          "web_id": web_id
+          } 
+          }
+          
+          return JSON.stringify(obj);
+      },
+      processResults: function (data, params) {
+          if(data.code == 404){
+            return null;
+          }
+
+          return {
+              results: $.map(data, function (item) {
+                  if(item == 404){
+                    return null;
+                  }
+                  return {
+                      text: item.product_name,
+                      id: item.product_id,
+                      image: checkdefault("data/product_icon/default/product.png",item.product_image_path),
+                      data: item
+                  };
+              }),
+          };
+      },
+      cache: false
+      },
+    
+      placeholder: 'Search For Product',
+      minimumInputLength: 0,
+      templateResult: formatRepoProduct,
+      templateSelection: formatRepoSelectionProduct
+  });
+}
 
 function checkdefault(default_value, check_parameter){
     if(check_parameter == null || check_parameter == "undefined"){
@@ -197,6 +208,8 @@ function showInformation(data){
     $('#metaDescription').val(checkdefault("", data.meta_description));
     $('#postColorBackground').val(checkdefault("#ffffff", data.post_color_background));
     $('#rewriteName').val(checkdefault("", data.post_rewrite_name));
+    $('.datetime-container').html(`<div><p> Thời Gian Tạo: `+ data.post_datetime_create +`</p></div> 
+     <div><p>Cập Nhật Lần Cuối: `+ data.post_datetime_update +` </p></div>`);
     product_data = getProductData(parseInt(data.product_id));
     if(product_data != 'NOT_FOUND'){
         option = "<option selected value = '"+product_data.product_id+"' title = '"+product_data.product_image+"' >"+product_data.product_name+"</option>";
@@ -216,13 +229,17 @@ function showInformation(data){
               <input id="hide_button" class="btn btn-danger  btn-lg " type="button" value="Ẩn Bài Viết">`;
       $('.button-container').html(html);
       submitButton();
+      IActiveButton(0, '#hide_button');
     }
     else{
       html = `<input  id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
               <input id="show_button" class="btn btn-success  btn-lg " type="button" value="Hiển Thị">`;
       $('.button-container').html(html);
       submitButton();
+      IActiveButton(1, '#show_button');
     }
+
+    $('.loader-container').css('display', 'none');
 }
 
 function getProductData(product_id){
@@ -282,7 +299,7 @@ function setImageData(data, element, max=0){
   }
   
   function updatePostError(data){
-    showAlert('error', '<strong>ERROR: </strong>' + data.message||data.statusText );
+    showAlert('error', '<strong>ERROR: </strong>' + data);
   }
   
   function showAlert(type, message){
@@ -340,15 +357,61 @@ function setImageData(data, element, max=0){
             url: url,
             success: function(data){
                 updatePostSuccess(data);
+                reload();
+                showAlert('success', data.message);
             },
             error: function (request, status, error) {
                 updatePostError(request.responseText);
+                
             }
         });
         //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
     });
   }
 
+  function IActiveButton(post_active, element){
+    $(element).on('click', function(){
+      $('.loader-container').css('display', 'flex');
+      data = {
+        "post_id": post_id,
+        "post_active": post_active
+      }
+      $.ajax({
+        type: 'POST',
+        dataType: 'JSON',
+        data: JSON.stringify(data),
+        async: false,
+        url: "../../../api/Controller/ActiveInactivePost.php",
+        success: function(data){
+          if(data.code == 200){
+            showAlert('success', data.message);
+            reload();
+          }
+          else{
+            showAlert('error',data.code+": " +data.message);
+          }
+        },
+        error: function(request, status, error){
+          showAlert('error', request.responseText);
+        }
+      });
+    });
+  }
+
   function reload(){
-    
+    $('.loader-container').css('display', 'flex');
+    //Call Ajax Set Information
+    $.ajax({
+        dataType: 'JSON',
+        data: JSON.stringify(data_getInfo),
+        type: 'POST',
+        async: false,
+        url: "../../../api/Controller/getPostByID.php",
+        success: function(data){
+            showInformation(data);
+        },
+        error: function (request, status, error){
+            showAlert('error', error + request.responseText);
+        }
+    })
   }

@@ -69,6 +69,10 @@
                         </label>
                     </div>
                     <div class="form-group form-configuations">
+                        <label for="input-rewrite-name-homepage"><?=translate_text('Rewrite Name Trang Chủ')?></label>
+                        <input name="input-rewrite-name-homepage" type="text" class="form-control" id="input-rewrite-name-homepage" placeholder="<?=translate_text('Rewrite Name')?>">
+                    </div>
+                    <div class="form-group form-configuations">
                         <label for="input-extention"><?=translate_text('Đuôi Mở Rộng')?></label>
                         <input name="input-extention" type="text" class="form-control" id="input-extention" placeholder="<?=translate_text('Thêm Đuôi Mở Rộng')?>">
                     </div>

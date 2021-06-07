@@ -117,7 +117,7 @@ $(document).ready(function(){
       "web_id": web_id
     }
     url = '../../../api/Controller/getConfiguations.php';
-
+    ResetForm();
     ajax(JSON.stringify(data),url, loadSuccessConfiguration, errorLoadConfiguration);
   });
 
@@ -378,6 +378,7 @@ function getSuccessDataConfiguration(data){
   $('#input-site-title').val(data.con_site_title);
   $('#input-meta-description').val(data.con_meta_description);
   $('#input-meta-keyword').val(data.con_meta_keyword);
+  $('#input-rewrite-name-homepage').val(data.con_rewrite_name_homepage);
   
   //Set mode_rewrite
   if(parseInt(data.con_mod_rewrite) == 1){
@@ -459,7 +460,7 @@ function setImageData(data, element, max=0){
           value = value.trim();
           key = key+1;
           $(element + key).attr("src", base_url + value);
-          $(element).siblings('svg').css('display', 'none');
+          $(element + key).siblings('svg').css('display', 'none');
           $(element + key).css('display', 'block');
         });
       }
@@ -487,30 +488,31 @@ function ResetForm(){
 
 //Get Data From Input
 function GetAllData(){
-  input_email              = $('#input-admin-email').val().replace(/"/g, "'");
-  input_site_title         = $('#input-site-title').val().replace(/"/g, "'");
-  input_meta_description   = $('#input-meta-description').val().replace(/"/g, "'");
-  input_meta_keyword       = $('#input-meta-keyword').val().replace(/"/g, "'");
-  input_rewrite            = $('#input-rewrite').val() == 'on'? 1:0;
-  input_extention          = $('#input-extention').val().replace(/"/g, "'");
-  pick_language            = $('.pick_language').select2('val').replace(/"/g, "'");
-  input_hotline            = $('#input-hotline').val().replace(/"/g, "'");;
-  input_hotline_banhang    = $('#input-hotline-banhang').val().replace(/"/g, "'");
-  input_hotline_kythuat    = $('#input-hotline-kythuat').val().replace(/"/g, "'");
-  input_address            = $('#input-address').val().replace(/"/g, "'");
-  check_active_contact     = $('#check-active-contact').val() == 'on'? 1:0;
-  input_payment            = $('#input-payment').val().replace(/"/g, "'");
-  input_fee_transport      = $('#input-fee-transport').val().replace(/"/g, "'");
-  input_contact_sale       = $('#input-contact-sale').val().replace(/"/g, "'");
-  input_info_company       = $('#input-info-company').val().replace(/"/g, "'");
-  input_page_fb            = $('#input-page-fb').val().replace(/"/g, "'");
-  input_link_fb            = $('#input-link-fb').val().replace(/"/g, "'");
-  input_link_insta         = $('#input-link-insta').val().replace(/"/g, "'");
-  input_link_twitter       = $('#input-link-twitter').val().replace(/"/g, "'");
-  input_map                = $('#input-map').val().replace(/"/g, "'");
-  input_banner_title       = $('#input-banner-title').val().replace(/"/g, "'");
-  input_banner_description = $('#input-banner-description').val().replace(/"/g, "'");
-  check_active_banner      = $('#check-active-banner').val() == 'on'? 1:0;
+  input_email                 = $('#input-admin-email').val().replace(/"/g, "'");
+  input_site_title            = $('#input-site-title').val().replace(/"/g, "'");
+  input_meta_description      = $('#input-meta-description').val().replace(/"/g, "'");
+  input_meta_keyword          = $('#input-meta-keyword').val().replace(/"/g, "'");
+  input_rewrite               = $('#input-rewrite').val() == 'on'? 1:0;
+  input_extention             = $('#input-extention').val().replace(/"/g, "'");
+  pick_language               = $('.pick_language').select2('val').replace(/"/g, "'");
+  input_hotline               = $('#input-hotline').val().replace(/"/g, "'");;
+  input_hotline_banhang       = $('#input-hotline-banhang').val().replace(/"/g, "'");
+  input_hotline_kythuat       = $('#input-hotline-kythuat').val().replace(/"/g, "'");
+  input_address               = $('#input-address').val().replace(/"/g, "'");
+  check_active_contact        = $('#check-active-contact').val() == 'on'? 1:0;
+  input_payment               = $('#input-payment').val().replace(/"/g, "'");
+  input_fee_transport         = $('#input-fee-transport').val().replace(/"/g, "'");
+  input_contact_sale          = $('#input-contact-sale').val().replace(/"/g, "'");
+  input_info_company          = $('#input-info-company').val().replace(/"/g, "'");
+  input_page_fb               = $('#input-page-fb').val().replace(/"/g, "'");
+  input_link_fb               = $('#input-link-fb').val().replace(/"/g, "'");
+  input_link_insta            = $('#input-link-insta').val().replace(/"/g, "'");
+  input_link_twitter          = $('#input-link-twitter').val().replace(/"/g, "'");
+  input_map                   = $('#input-map').val().replace(/"/g, "'");
+  input_banner_title          = $('#input-banner-title').val().replace(/"/g, "'");
+  input_banner_description    = $('#input-banner-description').val().replace(/"/g, "'");
+  check_active_banner         = $('#check-active-banner').val() == 'on'? 1:0;
+  input_rewrite_name_homepage = $('#input-rewrite-name-homepage').val().replace(/"/g, "'");
 
   data = {
     con_admin_email           : input_email.trim(),
@@ -536,7 +538,8 @@ function GetAllData(){
     con_map                   : input_map.trim(),
     con_banner_title          : input_banner_title.trim(),
     con_banner_description    : input_banner_description.trim(),
-    con_banner_active         : check_active_banner
+    con_banner_active         : check_active_banner,
+    con_rewrite_name_homepage : input_rewrite_name_homepage.trim()
   }
   return data;
 }

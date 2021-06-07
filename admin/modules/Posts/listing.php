@@ -18,6 +18,7 @@
 
 </head>
 <body>
+    <div class="loader-container"><div class="loader"></div></div>
     <div class="alert alert-warning alert-dismissible fade alert-message" role="alert">
         <h4 class="alert-heading"></h4>
         <div class="message">   
@@ -51,6 +52,9 @@
     </div>
     <hr>
     <div class="show-post-container container-fluid">
+        <div class="container-fluid title-show-post">
+            <h3><?= translate_text('Danh Sách')?></h3>
+        </div>
         <table class = "table">
             <thead>
                 <tr>
@@ -59,6 +63,7 @@
                     <th scope="col"><?= translate_text('Mô Tả')?></th>
                     <th scope="col"><?= translate_text('Nhóm Bài Viết')?></th>
                     <th scope="col"><?= translate_text('Website')?></th>
+                    <th scope="col"><?= translate_text('Trạng Thái')?></th>
                     <th scope="col"><?= translate_text('Hành Động')?></th>
                 </tr>
             </thead>

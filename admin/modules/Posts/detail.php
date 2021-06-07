@@ -21,6 +21,7 @@
 
 </head>
 <body>
+    <div class="loader-container"><div class="loader"></div></div>
     <div class="alert alert-warning alert-dismissible fade alert-message" role="alert">
         <h4 class="alert-heading"></h4>
         <div class="message">   
@@ -88,8 +89,14 @@
                             </select>
                         </div>
                     </div>
-                </row>
 
+                    <div class=" form-group form-post col-3">
+                        <button id="clear-product" type="button" class="btn btn-info"><?=translate_text('Xóa Sản Phẩm')?></button>
+                    </div>
+                </row>
+                <div class="datetime-container container">
+                    
+                </div>
             </div>
             <hr>
             <div class="container-editor container">
