@@ -31,7 +31,7 @@ $(document).ready(function(){
       data: function (params) {
         if(params.term == null){
           var obj = {
-            "term": params.term
+            "term": ''
           } 
         }else{
           var obj = {
@@ -72,7 +72,7 @@ $(document).ready(function(){
       data: function (params) {
         if(params.term == null){
           var obj = {
-            "term": params.term
+            "term": ''
           } 
         }else{
           var obj = {

@@ -20,7 +20,7 @@ $config = new Configuations($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-$image_homepage_background = array(htmlspecialchars(trim($data->image_background_homepage_1)), 
+$image_homepage_background = array( htmlspecialchars(trim($data->image_background_homepage_1)), 
                                     htmlspecialchars(trim($data->image_background_homepage_2)),
                                     htmlspecialchars(trim($data->image_background_homepage_3)), 
                                     htmlspecialchars(trim($data->image_background_homepage_4)), 
