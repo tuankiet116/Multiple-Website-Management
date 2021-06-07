@@ -51,10 +51,6 @@ $(document).ready(function () {
   });
 
   //Categories Handle
-  $(".pick_categories").select2({
-    placeholder: "Search for categories",
-  });
-
   $(".pick_website_select").on("change", function () {
     $(".pick_categories").val("").trigger("change");
     $(".pick_categories").select2({
