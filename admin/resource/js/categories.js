@@ -1,6 +1,8 @@
 var base_url = '../../../';
 var post_type_id = [];
+var post_type_id_update =[];
 var web_id_create = '';
+var cmp_id = '';
 $(document).ready(function () {
   //Select2 For Pick Website
   $(".pick_website_select").select2({
@@ -116,15 +118,18 @@ $(document).ready(function () {
             rs +=`<div class="categories-item">`;
             rs +=` <div class="categories-parent-item">
                       <p>${p.cmp_name}</p>
-                      <i class="fas fa-chevron-down"></i>
-                  </div>`;
+                      <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                   </div>`;
                   cate_child.forEach((c)=>{
                     if(c.cmp_parent_id == p.cmp_id){
                       rs += `
                       <div class="wapper-categories-child">
                           <div class="categories-child-item">
                               <div>
-                                  <p>${c.cmp_name}</p>
+                                  <p>
+                                    ${c.cmp_name}
+                                    <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                                  </p>
                               </div>
                           </div>
                       </div>
@@ -144,19 +149,34 @@ $(document).ready(function () {
           })
         }
         
-        $('.categories-content').html(allCate ?? err);
-        $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
-
-        $('.categories-parent-item').on('click', function(){
-          $(this).siblings('.wapper-categories-child').toggle();
-          $(this).children('i').toggleClass('rotage');
-        });
-        
-        $('.categories-child-item > div > p').on('click', function(){
-            $(this).siblings('.categories-child-item > div > div').slideToggle();
-        });
-
-        $('.disable').removeAttr('disabled');
+        $('.categories-content').html(allCate ?? err).ready(function(){
+          $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
+          $('.disable').removeAttr('disabled');
+  
+          $('.categories-parent-item').hover(function(){
+            $(this).children('button').removeClass('d-none');
+          }, function(){
+            $(this).children('button').addClass('d-none');
+          })
+  
+          $('.categories-child-item > div > p').hover(function(){
+            $(this).children('button').removeClass('d-none');
+          }, function(){
+            $(this).children('button').addClass('d-none');
+          })
+  
+          $('.show-modal-update').click(function(){
+            $('.modal-update').css("display", "block");
+            $('body').css("overflow", "hidden");
+            cmp_id = parseInt($(this).attr('id_cate'));
+            var dataGetCateByID = {
+              'cmp_id': $(this).attr('id_cate'),
+              'web_id': web_id
+            }
+            getCateById(dataGetCateByID);
+          })
+          
+        })
       }
     });
     getPostType(web_id);
@@ -168,6 +188,7 @@ $(document).ready(function () {
         }
       }
     })
+    
   });
 
   $('#submit').click(function(){
@@ -197,11 +218,56 @@ $(document).ready(function () {
         $('#image_background_homepage_3').attr('src', "#");
         $('#image_background_homepage_4').attr('src', "#");
         $('#image_background_homepage_5').attr('src', "#");
+
+        $('#image_background_homepage_1').css('display', 'none');
+        $('#image_background_homepage_2').css('display', 'none');
+        $('#image_background_homepage_3').css('display', 'none');
+        $('#image_background_homepage_4').css('display', 'none');
+        $('#image_background_homepage_5').css('display', 'none');
       }
-    
     return false;
   })
+
+  $('.overlay').click(function(){
+    $('.modal-update').css("display", "none");
+    $('body').removeAttr('style');
+  });
+
+  $('#submit_update').click(function(){
+    var dataUpdate = updateDataCategory();
+    console.log(dataUpdate);
+    $.ajax({
+      url: base_url+'api/Controller/updateCategories.php',
+      method: "POST",
+      data: JSON.stringify(dataUpdate),
+      success: function(data){
+        if(data.code == 200){
+          showAlert('success', `<p>${data.message}</p>`);
+        }
+        else{
+          showAlert('success', `<p>${data.message}</p>`);
+        }
+        $('.modal-update').css("display", "none");
+        $('body').removeAttr('style');
+        // window.location.reload();
+      }
+    })
+    return false;
+  });
+
 });
+
+function getCateById(data){
+  $.ajax({
+    url: base_url+'api/Controller/getCategoriesByID.php',
+    method: 'POST',
+    data: JSON.stringify(data),
+    success: function(data){
+      renderFormUpdate(data);
+
+    }
+  })
+}
 
 function getPostType(web_id){
   var data ={
@@ -231,11 +297,94 @@ function getPostType(web_id){
   });
 }
 
+function renderFormUpdate(data){
+  $('#cmp_name_update').val(data.cmp_name);
+  $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
+  $('#cmp_icon_update').val(data.cmp_icon);
+  setImageData(data.cmp_background,'#image_background_homepage_', 1);
+  $('#bgt_type_update').val(data.bgt_type).change();
+  $('#cmp_meta_description_update').val(data.cmp_meta_description);
+  if(data.cmp_active == "1"){
+    $('#cmp_active_update').prop('checked', true);
+  }
+  else{
+    $('#cmp_active_update').prop('checked', false);
+  }
+  var dataWebId = {
+    "web_id": web_id_create
+  }
+  $.ajax({
+    url: base_url+'api/Controller/getPostType.php',
+    method: 'POST',
+    async: false,
+    data: JSON.stringify(dataWebId),
+    success: function(dataPostType){
+      if(dataPostType.code == 404){
+        var err = `<p>Không có bài viết nào</p>`;
+      }else{
+        var render = dataPostType.map((e)=>{
+          var a =``;
+          a +=`<div class="post-item">
+                  <label for="label_post_type_id">${e.post_type_title}</label>`;
+          if(data.post_type_id.includes(e.post_type_id)){
+                a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id" checked>`
+          }
+          else{
+            a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id">`
+          }
+          a+= `</div>`
+          return a;
+        })
+        $('.wrapper-post-update').html(render ?? err);
+
+        var select = document.querySelectorAll('.post_type_id');
+        select.forEach((e)=>{
+          e.onchange = function(){
+            if(e.checked){
+              post_type_id_update.push(e.value);
+            }
+          }
+        })
+      } 
+    }
+  })
+}
+
+function updateDataCategory(){
+  var cmp_name                    = $('#cmp_name_update').val();
+  var cmp_rewrite_name            = $('#cmp_rewrite_name_update').val();
+  var cmp_icon                    = $('#cmp_icon_update').val();
+  var input_background_category_1 = $('#image_background_homepage_1_update').attr('src');
+  var input_background_category_2 = $('#image_background_homepage_2_update').attr('src');
+  var input_background_category_3 = $('#image_background_homepage_3_update').attr('src');
+  var input_background_category_4 = $('#image_background_homepage_4_update').attr('src');
+  var input_background_category_5 = $('#image_background_homepage_5_update').attr('src');
+  var bgt_type                    = $('#bgt_type_update').val();
+  var cmp_meta_description        = $('#cmp_meta_description_update').val();
+  var cmp_active                  = $('#cmp_active_update').is(":checked") ? 1:0;
+  
+  data = {
+    "cmp_name":                    cmp_name,
+    "cmp_rewrite_name":            cmp_rewrite_name,
+    "cmp_icon":                    cmp_icon,
+    "image_background_category_1": input_background_category_1,
+    "image_background_category_2": input_background_category_2,
+    "image_background_category_3": input_background_category_3,
+    "image_background_category_4": input_background_category_4,
+    "image_background_category_5": input_background_category_5,
+    "bgt_type":                    bgt_type,
+    "cmp_meta_description":        cmp_meta_description,
+    "cmp_active":                  cmp_active,
+    "post_type_id":                post_type_id_update.join(","),
+    "cmp_id":                      cmp_id
+  }
+  return data;
+}
+
 function dataCategory(){
   var cmp_name                    = $('#cmp_name').val();
   var cmp_rewrite_name            = $('#cmp_rewrite_name').val();
   var cmp_icon                    = $('#cmp_icon').val();
-  var cmp_has_child               = $('#cmp_has_child').val();
   var input_background_category_1 = $('#image_background_homepage_1').attr('src');
   var input_background_category_2 = $('#image_background_homepage_2').attr('src');
   var input_background_category_3 = $('#image_background_homepage_3').attr('src');
@@ -250,7 +399,6 @@ function dataCategory(){
     "cmp_name":                    cmp_name,
     "cmp_rewrite_name":            cmp_rewrite_name,
     "cmp_icon":                    cmp_icon,
-    "cmp_has_child":               cmp_has_child,
     "image_background_category_1": input_background_category_1,
     "image_background_category_2": input_background_category_2,
     "image_background_category_3": input_background_category_3,
@@ -354,3 +502,27 @@ function showAlert(type, message){
     $('.alert').removeClass('d-block');
   });
 }
+
+function setImageData(data, element, max=0){
+  if(data && element){
+    if(max != 0){
+      var data_arr = data.split(",");
+      if(data_arr.length<=5){
+        var i = 1;
+        data_arr.forEach(function(value, key){
+          value = value.trim();
+          key = key+1;
+          $(element + key +'_update').attr("src", base_url + value);
+          $(element + key +'_update').siblings('svg').css('display', 'none');
+          $(element + key +'_update').css('display', 'block');
+        });
+      }
+    }
+    else{
+      $(element).attr("src", base_url + data);
+      $(element).siblings('svg').css('display', 'none');
+      $(element).css('display', 'block');
+    }
+  }
+}
+

@@ -55,5 +55,5 @@ else{
                            "code" => 402));
 }
 
-
+// unset($resultCategories);
 ?>

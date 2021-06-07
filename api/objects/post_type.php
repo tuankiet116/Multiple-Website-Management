@@ -83,6 +83,7 @@
             }
         }
 
+        
         // public function update()
         // {
         //     $query_up = "SELECT * FROM post_type WHERE post_type_title =:post_type_title";

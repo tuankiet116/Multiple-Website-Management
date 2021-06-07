@@ -65,7 +65,7 @@ class Configuations{
                 $this->con_admin_email           = $row["con_admin_email"];
                 $this->con_site_title            = $row["con_site_title"];
                 $this->con_meta_description      = $row["con_meta_description"];
-                $this->con_meta_keyword          = $row["con_meta_keyword"];
+                $this->con_meta_keyword          = $row["con_meta_keywords"];
                 $this->con_mod_rewrite           = $row["con_mod_rewrite"];
                 $this->con_extenstion            = $row["con_extenstion"];
                 $this->lang_id                   = $row["lang_id"];
