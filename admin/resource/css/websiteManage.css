@@ -1,0 +1,24 @@
+*{margin: 0; padding: 0;}
+.container{ max-width: 1200px;}
+.title-website-manage > h3{ text-align: center; margin-bottom: 30px; }
+.line{ margin: 50px 0px; height: 1px; background-color: #000000; width: 100%;}
+/* css custom file input */
+.customs-file{ display: flex; flex-wrap: wrap; margin-bottom: 15px;}
+.input-image-container{ width: 100px; height: 100px; margin: 10px 10px; position: relative;}
+.input-image-container p{ text-align: center; margin-bottom: 5px;}
+.input-image-container i{ color: green; position: absolute; top: 0; right: 0; display: inline-block;margin-top: 5px; margin-right: 5px; font-size: 20px; cursor: pointer; display: none; z-index: 1000;}
+.input-image{ border: dashed 1px blue; width: 100px; height: 100px; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10;}
+.input-image img{ width: 100px; height: 100px; display: none;}
+.input-image:hover{ opacity: 0.3;}
+.form-input-image{ display: none !important;}
+
+/* css form - modal*/
+.modal-header{ justify-content: center;}
+.form-control::placeholder{ font-size: 14px;}
+.btn-submit{display: flex; justify-content: center;}
+.form-group > textarea{height: 100px;}
+
+/* css-table */
+.list-website-title{ margin: 30px 0;}
+.list-website-title > p{ text-align: center; font-weight: 500; font-size: 18px;}
+.table > thead > tr > th { font-size: 16px;} 

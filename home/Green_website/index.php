@@ -1,5 +1,8 @@
 <?php
 require_once('./helper/function.php');
+require_once('./helper/url.php');
+
+// $get_web_id = get_data_rows("SELECT * FROM website_config WHERE web_url ")
 $web_id = 2;
 
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
@@ -261,7 +264,7 @@ $pageLink = "";
                 </div>
                 <?php
                 if ($pt['post_type_show'] == 'banner' && $pt['post_type_active'] == 1) {
-                    $banner = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
+                    $banner = get_data_rows("SELECT * FROM configuration WHERE con_banner_active = 1 AND web_id = $web_id");
                     foreach ($banner as $key => $b) {
                         echo '
                                 <div id="contact">
@@ -275,6 +278,62 @@ $pageLink = "";
             }
             ?>
 
+            <div class="container">
+                <div class="title">
+                    <p class="main-title"> Bài viết mới nhất </p>
+                    <p class="sub-title"></p>
+                    <div class="line-title"></div>
+                </div>
+
+                <div class="row">
+                    <?php
+                            $news = get_data_rows("SELECT * FROM post WHERE post_image_background IS NOT NULL AND 
+                                                   post_active = 1 ORDER BY post_datetime_create DESC LIMIT 8"); 
+                            foreach ($news as $key => $n) {
+                                foreach ($category as $key => $cate) {
+                                    $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                    if ($mod_rewrite == 1) {
+                                        $changeUrlName = 'name=' . $n['post_rewrite_name'];
+                                        $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
+                                    } else {
+                                        $changeUrlName = 'name=' . $n['post_id'];
+                                        $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
+                                    }
+                                    
+                                    if ($n['cmp_id'] == $cate['cmp_id']) {
+                                        $news_date = $n['post_datetime_create'];
+                                        $my_newsDate = date("d-m-Y", strtotime($news_date));
+
+                                        echo'
+                                            <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="row news-all">
+                                                    <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self">
+                                                            <img src="../../' . $n['post_image_background'] . '" alt="news image">
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
+                                                        <p class="news-date">' . $my_newsDate . '</p>
+
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self" class="news-title">' . $n['post_title'] . '</a>
+
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self" class="news-viewmore">
+                                                            <i class="fas fa-angle-right"></i>
+                                                            Xem tiếp
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="news-color-line"></div>
+                                                </div>
+                                            </div>';
+                                    }
+                                }
+                            }
+                        
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 

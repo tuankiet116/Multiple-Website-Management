@@ -84,53 +84,33 @@
         }
 
         
-        // public function update()
-        // {
-        //     $query_up = "SELECT * FROM post_type WHERE post_type_title =:post_type_title";
-        //     $stmt_up = $this->conn->prepare($query);
-        //     $stmt_up->bindParam(':post_type_title', $this->post_type_title);
-        //     if ($stmt_up->execute() === true) {
-        //         $row = $stmt_up->fetch(PDO::FETCH_ASSOC);
-        //         $ptd_id = $row['ptd_id'];
+        public function update()
+        {
+            $query_up = "SELECT * FROM post_type WHERE post_type_id = :post_type_id";
+            $stmt_up = $this->conn->prepare($query_up);
+            $stmt_up->bindParam(':post_type_id', $this->post_type_id);
+            if ($stmt_up->execute() === true) {
+                $query_pt = "UPDATE post_type
+                            SET post_type_title            =:post_type_title, 
+                                post_type_description      =:post_type_description,
+                                post_type_show             =:post_type_show
+                            WHERE post_type_id = :post_type_id ";
+                $stmt_pt = $this->conn->prepare($query_pt);
 
-        //         $query = "UPDATE post_detail SET ptd_text = :ptd_text  WHERE ptd_id = :ptd_id";
-        //         $stmt = $this->conn->prepare($query);
-        //         $stmt->bindParam(':ptd_id', $ptd_id);
-        //         $stmt->bindParam(':ptd_text', $this->content);
+                $stmt_pt->bindParam(':post_type_title'          , $this->post_type_title);
+                $stmt_pt->bindParam(':post_type_description'    , $this->post_type_description);
+                $stmt_pt->bindParam(':post_type_show'           , $this->post_type_show);
+                $stmt_pt->bindParam(':post_type_id'             , $this->post_type_id);
 
-        //         if ($stmt->execute() === true) {
-        //             $query_post = "UPDATE post
-        //                         SET post_title            =:post_title, 
-        //                             post_description      =:post_description,
-        //                             post_image_background =:post_image_background, 
-        //                             post_color_background =:post_color_background,
-        //                             post_meta_description =:post_meta_description, 
-        //                             post_rewrite_name     =:post_rewrite_name,
-        //                             product_id            =:product_id,
-        //                             post_datetime_update  = CURRENT_TIMESTAMP() 
-        //                         WHERE post_id = :post_id ";
-        //             $stmt_post = $this->conn->prepare($query_post);
+                if ($stmt_pt->execute() === true) {
+                    return true;
+                }
+                return $stmt_pt;
 
-        //             $stmt_post->bindParam(':post_title', $this->post_title);
-        //             $stmt_post->bindParam(':post_description', $this->post_description);
-        //             $stmt_post->bindParam(':post_image_background', $this->post_image_background);
-        //             $stmt_post->bindParam(':post_color_background', $this->post_color_background);
-        //             $stmt_post->bindParam(':post_meta_description', $this->post_meta_description);
-        //             $stmt_post->bindParam(':post_rewrite_name', $this->post_rewrite_name);
-        //             $stmt_post->bindParam(':product_id', $this->product_id);
-        //             $stmt_post->bindParam(':post_id', $this->post_id);
-
-        //             if ($stmt_post->execute() === true) {
-        //                 return true;
-        //             }
-        //             return $stmt_post;
-        //         } else {
-        //             return $stmt;
-        //         }
-        //     } else {
-        //         return $stmt_ptd;
-        //     }
-        // }
+            } else {
+                return $stmt_up;
+            }
+        }
 
         public function ActiveInactivePostType(){
             $query = "UPDATE ".$this->table_name." SET post_type_active =:post_type_active WHERE post_type_id =:post_type_id";

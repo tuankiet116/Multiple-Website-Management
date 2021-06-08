@@ -89,96 +89,8 @@ $(document).ready(function () {
   $('.pick_website_select').on('change', function(){
     let web_id = $('.pick_website_select').select2('data')[0].id;
     web_id_create = web_id;
-    var data = {
-      "web_id": web_id
-    }
-    $.ajax({
-      url: base_url + 'api/Controller/getCategories.php',
-      method: 'POST',
-      async: false,
-      data: JSON.stringify(data),
-      success: function(data){
-        if(data.code == 404){
-          var err = `<p class="mess-err">chưa có danh mục nào!!</p>`;
-        }
-        else{
-          var cate_child =[];
-          var cate_parent = [];
-          data.forEach((e)=>{
-            if(e.cmp_parent_id !=null){
-              cate_child.push(e);
-            }
-            else if(e.cmp_parent_id == null){
-              cate_parent.push(e);
-            }
-          })
-
-          var allCate = cate_parent.map((p)=>{
-            var rs =``;
-            rs +=`<div class="categories-item">`;
-            rs +=` <div class="categories-parent-item">
-                      <p>${p.cmp_name}</p>
-                      <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
-                   </div>`;
-                  cate_child.forEach((c)=>{
-                    if(c.cmp_parent_id == p.cmp_id){
-                      rs += `
-                      <div class="wapper-categories-child">
-                          <div class="categories-child-item">
-                              <div>
-                                  <p>
-                                    ${c.cmp_name}
-                                    <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
-                                  </p>
-                              </div>
-                          </div>
-                      </div>
-                      `;
-                    }
-                  })
-            rs +=`</div>`;
-            return rs;
-          })
-
-          var cateHasChild = data.map((e)=>{
-              if(e.cmp_parent_id==null){
-                return`
-                  <option value="${e.cmp_id}">${e.cmp_name}</option>
-                `;
-              }
-          })
-        }
-        
-        $('.categories-content').html(allCate ?? err).ready(function(){
-          $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
-          $('.disable').removeAttr('disabled');
-  
-          $('.categories-parent-item').hover(function(){
-            $(this).children('button').removeClass('d-none');
-          }, function(){
-            $(this).children('button').addClass('d-none');
-          })
-  
-          $('.categories-child-item > div > p').hover(function(){
-            $(this).children('button').removeClass('d-none');
-          }, function(){
-            $(this).children('button').addClass('d-none');
-          })
-  
-          $('.show-modal-update').click(function(){
-            $('.modal-update').css("display", "block");
-            $('body').css("overflow", "hidden");
-            cmp_id = parseInt($(this).attr('id_cate'));
-            var dataGetCateByID = {
-              'cmp_id': $(this).attr('id_cate'),
-              'web_id': web_id
-            }
-            getCateById(dataGetCateByID);
-          })
-          
-        })
-      }
-    });
+    getAllCate(web_id);
+    
     getPostType(web_id);
     var select = document.querySelectorAll('.post_type_id');
     select.forEach((e)=>{
@@ -194,6 +106,7 @@ $(document).ready(function () {
   $('#submit').click(function(){
       var cmp_name = $('#cmp_name').val();
       var cmp_rewrite_name = $('#cmp_rewrite_name').val();
+      $('.loader-container').css('display', 'flex');
       if(cmp_name=="" || cmp_rewrite_name==""){
         showAlert('warning', '<p>vui những trường có dấu sao <span style="color: red">(*)</span></p>');
       }
@@ -204,26 +117,29 @@ $(document).ready(function () {
           method: 'POST',
           data: JSON.stringify(data),
           success: function(data){
-            if(data.code == 200){
+            if(data?.code == 200){
+              $('.loader-container').css('display', 'none');
               showAlert('success', `<p>${data.message}</p>`);
+              $('#formCategory')[0].reset();
+              $('#image_background_homepage_1').attr('src', "#");
+              $('#image_background_homepage_2').attr('src', "#");
+              $('#image_background_homepage_3').attr('src', "#");
+              $('#image_background_homepage_4').attr('src', "#");
+              $('#image_background_homepage_5').attr('src', "#");
+
+              $('#image_background_homepage_1').css('display', 'none');
+              $('#image_background_homepage_2').css('display', 'none');
+              $('#image_background_homepage_3').css('display', 'none');
+              $('#image_background_homepage_4').css('display', 'none');
+              $('#image_background_homepage_5').css('display', 'none');
+              getAllCate(web_id_create);
             }
             else{
               showAlert('error', `<p>${data.message}</p>`);
             }
           },
         });
-        $('#formCategory')[0].reset();
-        $('#image_background_homepage_1').attr('src', "#");
-        $('#image_background_homepage_2').attr('src', "#");
-        $('#image_background_homepage_3').attr('src', "#");
-        $('#image_background_homepage_4').attr('src', "#");
-        $('#image_background_homepage_5').attr('src', "#");
-
-        $('#image_background_homepage_1').css('display', 'none');
-        $('#image_background_homepage_2').css('display', 'none');
-        $('#image_background_homepage_3').css('display', 'none');
-        $('#image_background_homepage_4').css('display', 'none');
-        $('#image_background_homepage_5').css('display', 'none');
+        
       }
     return false;
   })
@@ -235,22 +151,27 @@ $(document).ready(function () {
 
   $('#submit_update').click(function(){
     var dataUpdate = updateDataCategory();
-    console.log(dataUpdate);
+    $('.loader-container').css('display', 'flex');
     $.ajax({
       url: base_url+'api/Controller/updateCategories.php',
       method: "POST",
       data: JSON.stringify(dataUpdate),
       success: function(data){
         if(data.code == 200){
+          $('.loader-container').css('display', 'none');
           showAlert('success', `<p>${data.message}</p>`);
+          $('.modal-update').css("display", "none");
+          $('body').removeAttr('style');
+          getAllCate(web_id_create);
         }
         else{
-          showAlert('success', `<p>${data.message}</p>`);
+          showAlert('error', `<p>${data.message}</p>`);
         }
-        $('.modal-update').css("display", "none");
-        $('body').removeAttr('style');
-        // window.location.reload();
+      },
+      error: function(data){
+        console.log(data.responeText);
       }
+      
     })
     return false;
   });
@@ -376,7 +297,8 @@ function updateDataCategory(){
     "cmp_meta_description":        cmp_meta_description,
     "cmp_active":                  cmp_active,
     "post_type_id":                post_type_id_update.join(","),
-    "cmp_id":                      cmp_id
+    "cmp_id":                      cmp_id,
+    "web_id":                      web_id_create                      
   }
   return data;
 }
@@ -427,7 +349,7 @@ var exGetImg = function(extag, element) {
             $(element).siblings('svg').css('display', 'none');
             $(element).siblings('img').attr('src', imgsSrc);    
     }
-  }
+}
 
   //set default image which null value
 function checkdefault(default_value, check_parameter){
@@ -524,5 +446,98 @@ function setImageData(data, element, max=0){
       $(element).css('display', 'block');
     }
   }
+}
+
+function getAllCate(web_id){
+  var data = {
+    "web_id": web_id
+  }
+  $.ajax({
+    url: base_url + 'api/Controller/getCategories.php',
+    method: 'POST',
+    async: false,
+    data: JSON.stringify(data),
+    success: function(data){
+      if(data.code == 404){
+        var err = `<p class="mess-err">chưa có danh mục nào!!</p>`;
+      }
+      else{
+        var cate_child =[];
+        var cate_parent = [];
+        data.forEach((e)=>{
+          if(e.cmp_parent_id !=null){
+            cate_child.push(e);
+          }
+          else if(e.cmp_parent_id == null){
+            cate_parent.push(e);
+          }
+        })
+
+        var allCate = cate_parent.map((p)=>{
+          var rs =``;
+          rs +=`<div class="categories-item">`;
+          rs +=` <div class="categories-parent-item">
+                    <p>${p.cmp_name}</p>
+                    <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                 </div>`;
+                cate_child.forEach((c)=>{
+                  if(c.cmp_parent_id == p.cmp_id){
+                    rs += `
+                    <div class="wapper-categories-child">
+                        <div class="categories-child-item">
+                            <div>
+                                <p>
+                                  ${c.cmp_name}
+                                  <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                  }
+                })
+          rs +=`</div>`;
+          return rs;
+        })
+
+        var cateHasChild = data.map((e)=>{
+            if(e.cmp_parent_id==null){
+              return`
+                <option value="${e.cmp_id}">${e.cmp_name}</option>
+              `;
+            }
+        })
+      }
+      
+      $('.categories-content').html(allCate ?? err).ready(function(){
+        $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
+        $('.disable').removeAttr('disabled');
+
+        $('.categories-parent-item').hover(function(){
+          $(this).children('button').removeClass('d-none');
+        }, function(){
+          $(this).children('button').addClass('d-none');
+        })
+
+        $('.categories-child-item > div > p').hover(function(){
+          $(this).children('button').removeClass('d-none');
+        }, function(){
+          $(this).children('button').addClass('d-none');
+        })
+
+        $('.show-modal-update').click(function(){
+          $('.modal-update').css("display", "block");
+          $('body').css("overflow", "hidden");
+          cmp_id = parseInt($(this).attr('id_cate'));
+          var dataGetCateByID = {
+            'cmp_id': $(this).attr('id_cate'),
+            'web_id': web_id
+          }
+          getCateById(dataGetCateByID);
+        })
+        
+      })
+    }
+  });
 }
 
