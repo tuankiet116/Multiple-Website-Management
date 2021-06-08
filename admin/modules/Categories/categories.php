@@ -23,6 +23,7 @@
 </head>
 
 <body>
+    <div class="loader-container"><div class="loader"></div></div>
     <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
         <h4 class="alert-heading"></h4>
         <div class="message">  
