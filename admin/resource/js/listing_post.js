@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     $('.loader-container').css('display', 'flex');
     var web_id =  null;
