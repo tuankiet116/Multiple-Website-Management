@@ -21,9 +21,15 @@ $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
 $product->term   = htmlspecialchars(trim($data->term)); 
-$product->web_id = intVal($data->web_id);
+if($data->web_id != null || $data->web_id != ""){
+    $product->web_id = intVal($data->web_id);
+}
 
-$stmt_search = $product->searchTermActive();
+if($data->product_active !== null && $data->product_active !== ""){
+    $product->product_active = intVal($data->product_active);
+}
+
+$stmt_search = $product->getAll();
 $num = $stmt_search->rowCount();
 
 if($num>0){
@@ -40,7 +46,9 @@ if($num>0){
             "product_price"       => $row['product_price'],    
             "product_currency"    => $row['product_currency'],
             "web_id"              => $row['web_id'],  
-            "product_term"        => $data->term
+            "product_active"      => $row['product_active'],
+            "web_name"            => $row['web_name'],
+            "product_term"        => $data->term,
         );
         array_push($product_arr, $product_array);   
     }

@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../resource/css/listing_post.css">
+    <link rel="stylesheet" href="../../resource/select_nice/css/nice-select.css">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../../resource/ckeditor/ckeditor.js"></script>
     <!-- <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script> -->
+    <script src="../../resource/select_nice/js/jquery.js"></script>
+    <script src="../../resource/select_nice/js/jquery.nice-select.min.js" ></script>
     <script src="../../../plugins/select2/js/select2.min.js"></script>
     <script language="javascript" src="../../resource/js/listing_post.js"></script>
-
 </head>
 <body>
     <div class="loader-container"><div class="loader"></div></div>
@@ -28,11 +30,11 @@
         </button>
     </div>
     <div class="title-searching container-fluid">
-        <h3>Tìm Kiếm</h3>
+        <h3>Tìm Kiếm Bài Viết</h3>
     </div>
     
     <div class="search-container container-fluid">
-        <div class="select-container pick_website_container col-3">
+        <div class="select-container pick_website_container col-2">
             <div class="title_pick_website title">
                 <h4><?=translate_text('Chọn Trang Web')?>: </h4>
             </div>
@@ -41,10 +43,26 @@
                 </select>
             </div>
         </div>
-        <div class="form-group col-3">
+        <div class="form-group col-2">
             <label for="searching"><?= translate_text('Tìm Kiếm')?></label>
             <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm')?>">
         </div>
+        <div class=" col-2">
+            <label for="searching"><?= translate_text('Trạng Thái Bài Viết')?></label>
+            <select id="post-status" class=" form-group">
+                <option value="#">All</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <label for="searching"><?= translate_text('Trạng Thái Nhóm Bài Viết')?></label>
+            <select id="post-type-status" class=" form-group">
+                <option value="#">All</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div> 
         <div class="col-2 form-group button-search">
             <button id="search_button" class="btn btn-primary" type="button"><?= translate_text('Tìm')?></button>
             <button id="clear_button" class="btn btn-danger" type="button"><?= translate_text('Xóa')?></button>
@@ -53,7 +71,7 @@
     <hr>
     <div class="show-post-container container-fluid">
         <div class="container-fluid title-show-post">
-            <h3><?= translate_text('Danh Sách')?></h3>
+            <h3><?= translate_text('Danh Sách Bài Viết')?></h3>
         </div>
         <table class = "table">
             <thead>

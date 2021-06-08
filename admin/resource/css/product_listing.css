@@ -52,7 +52,7 @@ hr{
     margin: 100px 50px 0 50px;
 }
 
-.title-show-post{
+.title-show-product{
     text-align: center;
     padding: 30px 0 50px 0;
 }
@@ -83,10 +83,6 @@ hr{
     width: 100% !important;
 }
 
-.select-container{
-    width: 100%;
-}
-
 .select-container .selection img{
     margin-top: -1%;
 }
@@ -113,4 +109,85 @@ hr{
     right: 50px;
     width: 30%;
     z-index: 10000;
+    display: none;
+    opacity: 1;
+}
+
+/* CSS nice select */
+.nice-select{
+    float: none !important;
+    max-width: 200px !important;
+}
+
+/* Input Image Modal */
+.form-product-image {
+    text-align: center;
+}
+
+.form-image-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.input-image{
+    border: dashed 1px blue;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    z-index: 10;
+}
+
+.input-image-container{
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+}
+
+.input-image-container p{
+    text-align: center;
+}
+
+.input-image-container i{
+    color: green;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 80px;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+.form-input-image{
+    display: none !important;
+}
+
+.input-image:hover{
+    opacity: 0.3;
+}
+
+.input-image-container p{
+    text-align: center;
+}
+
+.input-image img{
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+
+/* Add new Button */
+#add-new{
+    font-size: 15px;
+    margin-left: 7%;
+
+}
+
+#add-new i{
+    margin-right: 10px;
+    font-size: 20px;
 }

@@ -12,6 +12,7 @@ class Website_Config{
     public $web_active;
     public $web_url;
     public $web_icon;
+    public $web_description;
     public $term;
     public $result;
   
@@ -35,6 +36,27 @@ class Website_Config{
         $stmt->execute();
 
         return $stmt;
+    }
+
+    function getWebsiteByID(){
+        $query = "SELECT * FROM " .$this->table_name. " WHERE web_id =:web_id ";
+        
+        //prepare query statement
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':web_id', $this->web_id);
+        
+        //excute query
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        if($count>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->web_name        = $row['web_name'];
+            $this->web_active      = $row['web_active'];
+            $this->web_icon        = $row['web_icon'];
+            $this->web_description = $row['web_description'];
+            return true;
+        }
+        return false;
     }
 }
 ?>

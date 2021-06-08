@@ -16,6 +16,7 @@ $db = $database->getConnection();
 $categories = new Categories($db);
 
 $data = json_decode(file_get_contents("php://input"));
+$web_id = $data->web_id;
 
 $images_background_category = array($data->image_background_category_1, $data->image_background_category_2,
                                     $data->image_background_category_3, $data->image_background_category_4, $data->image_background_category_5);
@@ -36,7 +37,7 @@ $categories->web_id                 = $data->web_id;
 $categories->post_type_id           = $data->post_type_id;
 
 
-$message = $categories->creatCategories();
+$message = $categories->creatCategories($web_id);
 if($message===true){
     echo json_encode(array(
         "message" => "thêm thành công danh mục!",
@@ -44,11 +45,8 @@ if($message===true){
     ));
 }
 else{
-    if(empty($message)){
-        $message = 'Something has wrong while creating category';
-    }
     echo json_encode(array(
-        "message" => $message,
+        "message" => print_r($message),
         "code"    => 500
     ));
 }
