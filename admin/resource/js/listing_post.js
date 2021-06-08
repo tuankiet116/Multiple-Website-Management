@@ -58,8 +58,10 @@ $(document).ready(function(){
 
     $('#search_button').on('click', function(){
         var data = {
-            "web_id": $('.pick_website_select').select2('val'),
-            "term"  : $('#searching').val().trim()
+            "web_id"          : $('.pick_website_select').select2('val'),
+            "term"            : $('#searching').val().trim(),
+            "post_active"     : $('#post-status').val() == '1' ||  $('#post-status').val() == '0'? $('#post-status').val():null,
+            "post_type_active": $('#post-type-status').val() == '1' ||  $('#post-type-status').val() == '0'? $('#post-type-status').val():null,
         }
 
         ajaxSearchingPost(data);
@@ -68,7 +70,13 @@ $(document).ready(function(){
     $('#clear_button').on('click', function(){
       $('#searching').val('');
       $('.pick_website_select').empty();
+      $('#post-status').val('#').niceSelect('update');
+      $('#post-type-status').val('#').niceSelect('update');
     });
+
+    //Nice Select 
+    $('#post-status').niceSelect();
+    $('#post-type-status').niceSelect();
 });
 
 
@@ -141,7 +149,9 @@ function postSuccess(data){
     html = "";
     stt = 0;
     data.forEach(function(value, key){
-        action = '';
+        var action = '';
+        var status = '';
+        var post_type_status = '';
 
         if(value.post_title == null){
             value.post_title = "<p style = 'color: red'>NULL</p>";
@@ -169,16 +179,21 @@ function postSuccess(data){
         action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">'+
                     '<button style = "margin-left: 10px; width: 60px;" id = "info_post_'+ value.post_id +'" type="button" class="btn btn-info">Chi Tiết</button></a>';
 
+        if(value.post_type_active == 0){
+          post_type_status = '<span class="badge badge-danger">Vô Hiệu Hóa</span>';
+        }
+
         stt ++;
         html += `<tr>
                     <th scope="row">`+stt+`</th>
-                    <td>`+ value.post_title  +`</td>
-                    <td>`+ value.description +`</td>
-                    <td>`+ value.post_type_title +`</td>
-                    <td>`+ value.web_name +`</td>
+                    <td><div><p style = 'word-wrap: break-word'>`+ value.post_title  +`</p></div></td>
+                    <td><div><p style = 'word-wrap: break-word'>`+ value.description +`</p></div></td>
+                    <td><div><p style = 'word-wrap: break-word'>`+ value.post_type_title + `</p></div>
+                        <div style = 'margin-top: -10px'>` + post_type_status +`</div></td>
+                    <td><div><p style = 'word-wrap: break-word'>`+ value.web_name +`</p></div></td>
                     <td>`+ status +`</td>
                     <td>`+ action +` </td>
-                </tr>`
+                </tr>`;
     });
     $('tbody').html(html).ready(function(){
       IActiveButton();

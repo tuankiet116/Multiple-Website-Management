@@ -152,6 +152,7 @@ $(document).ready(function(){
       activePickPostType(); 
     }, 2000)
     
+    debugger;
     function activePickPostType(){
       var cmp_id = $('.pick_categories').select2('data')[0].id;
 
@@ -195,7 +196,7 @@ $(document).ready(function(){
           },
           cache: false
           },
-          
+          //multiple: true,
           placeholder: 'Search For Type Of Post',
           minimumInputLength: 0,
       })
@@ -206,7 +207,7 @@ $(document).ready(function(){
   //Pick Product Select2
   $('.pick_product').select2({
     ajax: { 
-      url: "../../../api/Controller/searchTermProduct.php",
+      url: "../../../api/Controller/searchTermProductActive.php",
       type: "POST",
       dataType: 'json',
       delay: 250,
@@ -253,6 +254,7 @@ $(document).ready(function(){
   });
 
   $('.pick_post_type').on('select2:select', function(){
+    //console.log($('.pick_post_type').select2('val'));
     $('input').attr('disabled', false);
     $('textarea').attr('disabled', false);
     $('select').prop('disabled', false);

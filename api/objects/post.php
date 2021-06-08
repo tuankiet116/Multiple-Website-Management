@@ -20,6 +20,7 @@
         public $content;
         public $term;
         public $web_id;
+        public $post_type_active;
 
         public function __construct($db){
             $this->conn = $db;
@@ -139,15 +140,25 @@
 
         public function getAll(){
             $query_website = "";
-            if($this->web_id != "" || $this ->web_id != null){
+            $query_post_type = "";
+            if($this->web_id != null && $this ->web_id != 0){
                 $query_website = " AND website_config.web_id = ".$this->web_id;
             }
+
+            if($this->post_type_active !== null){
+                $query_post_type .= " AND post_type.post_type_active = ".$this->post_type_active;
+            }
+
+            if($this->post_active !== null){
+                $query_post_type .= " AND post.post_active = ".$this->post_active;
+            }
+
             $query = "SELECT post.post_id , post.post_title , post.post_description, post_type.post_type_title, 
-                             product.product_name, website_config.web_name, post.post_active, website_config.web_id 
+                             product.product_name, website_config.web_name, post.post_active, website_config.web_id, post_type.post_type_active
                       FROM post
-                      LEFT JOIN post_type       ON post.post_type_id     = post_type.post_type_id  
-                      LEFT JOIN product         ON post.product_id       = product.product_id  
-                      INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
+                      LEFT JOIN post_type  ON post.post_type_id = post_type.post_type_id ".$query_post_type.
+                      " LEFT JOIN product   ON post.product_id   = product.product_id  
+                        INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
                       " WHERE product.product_name        LIKE '%" .$this->term. "%' 
                             OR post_type.post_type_title  LIKE '%" .$this->term. "%' 
                             OR post.post_title            LIKE '%" .$this->term. "%'

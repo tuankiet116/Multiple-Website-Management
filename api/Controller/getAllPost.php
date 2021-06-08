@@ -15,17 +15,25 @@ $database = new ConfigAPI();
 $db = $database->getConnection();
 
 // prepare website object
-$post = new POST($db);
+$post = new Post($db);
 
 $data = json_decode(file_get_contents("php://input"));
 if($data != null){
-    if($data -> web_id != null || $data -> web_id != ""){
+    if($data -> web_id != null && $data -> web_id != ""){
         $post->web_id = intVal($data->web_id);
     }
     
-    if($data -> term != null || $data -> term != ""){
+    if($data -> term != null && $data -> term != ""){
         $term = htmlspecialchars(trim($data->term));
         $post->term = $term;
+    }
+
+    if($data->post_type_active != null && $data->post_type_active != ""){
+        $post->post_type_active = intVal($data->post_type_active);
+    }
+
+    if($data->post_active != null && $data->post_active != ""){
+        $post->post_active = intVal($data->post_active);
     }
 }
 
@@ -33,7 +41,6 @@ $stmt = $post->getAll();
 $count = $stmt->rowCount();
 
 if($count>0){
-    //post array
     $post_arr = array();
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         $post_array = array(
@@ -45,7 +52,7 @@ if($count>0){
             "web_name"         => $row['web_name'],
             "post_active"      => $row['post_active'],
             "web_id"           => $row['web_id'],
-            "code"             => 200
+            "post_type_active" => $row['post_type_active']
         );
 
         array_push($post_arr, $post_array);

@@ -40,7 +40,7 @@ $(document).ready(function(){
 
     $(".input-image-container i").mouseout(function(e){
         $(this).css("display", "none");
-    });
+    }); //End 
 
     data_getInfo =  {
         "post_id": post_id
@@ -181,17 +181,17 @@ function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', asyn
 
 //Make Information Image Get The FUCK Out Of Chrome Security And Change Data To Base64
 var exGetImg = function(extag, element) {
-    var file = extag.files[0]; //The first file of the selected file (as a fixed format)
-    var readers = new FileReader(); //Create a new file reading object to change the path
-    var filename;
-    readers.readAsDataURL(file); //Convert the read file path to a url type    
-    readers.onload = function() {//Call onload() method after conversion
-            var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
-            $(element).siblings('img').css('display', 'block');
-            $(element).siblings('svg').css('display', 'none');
-            $(element).siblings('img').attr('src', imgsSrc);    
-    }
+  var file = extag.files[0]; //The first file of the selected file (as a fixed format)
+  var readers = new FileReader(); //Create a new file reading object to change the path
+  var filename;
+  readers.readAsDataURL(file); //Convert the read file path to a url type    
+  readers.onload = function() {//Call onload() method after conversion
+          var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
+          $(element).siblings('img').css('display', 'block');
+          $(element).siblings('svg').css('display', 'none');
+          $(element).siblings('img').attr('src', imgsSrc);    
   }
+}
 
   //Function Set Selected Data||Value For Select2 Language
 function setSelect2Data(id ,data_select = "", data){
@@ -252,7 +252,7 @@ function getProductData(product_id){
         type: 'POST',
         data: JSON.stringify(data),
         async: false,
-        url: "../../../api/Controller/getProductByID.php",
+        url: "../../../api/Controller/getProductByIDActive.php",
         success: function(data){
             result = data;
         },
@@ -267,27 +267,27 @@ function getProductData(product_id){
 
 //Set Image Data Within String If Max != 0 And Without String If Max = 0 --> Customize later
 function setImageData(data, element, max=0){
-    if(data && element){
-      if(max != 0){
-        var data_arr = data.split(",");
-        if(data_arr.length<=7){
-          var i = 1;
-          data_arr.forEach(function(value, key){
-            value = value.trim();
-            key = key+1;
-            $(element + key).attr("src", base_url + value);
-            $(element).siblings('svg').css('display', 'none');
-            $(element + key).css('display', 'block');
-          });
-        }
-      }
-      else{
-        $(element).attr("src", base_url + data);
-        $(element).siblings('svg').css('display', 'none');
-        $(element).css('display', 'block');
+  if(data && element){
+    if(max != 0){
+      var data_arr = data.split(",");
+      if(data_arr.length<=7){
+        var i = 1;
+        data_arr.forEach(function(value, key){
+          value = value.trim();
+          key = key+1;
+          $(element + key).attr("src", base_url + value);
+          $(element).siblings('svg').css('display', 'none');
+          $(element + key).css('display', 'block');
+        });
       }
     }
+    else{
+      $(element).attr("src", base_url + data);
+      $(element).siblings('svg').css('display', 'none');
+      $(element).css('display', 'block');
+    }
   }
+}
 
   function updatePostSuccess(data){
     if(data.code == 200){
