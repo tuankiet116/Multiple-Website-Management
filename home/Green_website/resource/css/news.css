@@ -253,7 +253,7 @@ body {
     height: auto;
     padding: 0 15px;
     margin-bottom: 40px;
-    border: 1px solid red;
+    overflow: hidden;
 }
 
 .container .row .news-right .news-right-container .news-right-content p {
@@ -273,6 +273,7 @@ body {
     width: 100%;
     height: auto;
     padding: 12px 14px 15px 14px;
+    border-top: 1px solid rgb(220, 220, 220);
 }
 
 .container .row .news-right .news-right-container .contact-footer h5 {

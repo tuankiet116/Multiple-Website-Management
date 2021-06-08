@@ -43,7 +43,7 @@
         </div>
 
         <div class="row">
-            <div class="categories-container col-lg-6">
+            <div class="categories-container col-lg-5">
                 <div class="categories-title title">
                     <h4><?= translate_text('Danh Mục')?>:</h4>
                 </div>
@@ -51,14 +51,14 @@
                 <div class="categories-content">  
                 </div>
             </div>
-            <div class="categories-container-form col-lg-6">
+            <div class="categories-container-form col-lg-7">
                 <div class="categories-container-form-title">
                     <p class="title"><?= translate_text('Thêm danh mục')?></p>
                 </div>
                 <form id="formCategory">
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_name"><?= translate_text('Tên danh mục')?> <span class="req-form">(*)</span></label>
-                        <input type="text" class="form-control disable" id="cmp_name"  placeholder="...." autocomplete="off" name="cmp_name" disabled>
+                        <input type="text" class="form-control disable" id="cmp_name" placeholder="...." autocomplete="off" name="cmp_name" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_rewrite_name"><?= translate_text('Tên đường link danh mục')?> <span class="req-form">(*)</span></label>
@@ -67,13 +67,6 @@
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_icon"><?= translate_text('icon')?></label>
                         <input type="text" class="form-control disable" id="cmp_icon" placeholder="...." autocomplete="off" name="cmp_icon" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-check-label" for="cmp_has_child"><?= translate_text('danh mục con')?> <span class="req-form">(*)</span></label>
-                        <select class="custom-select disable" id="cmp_has_child" name="cmp_has_child" disabled>
-                            <option value="0">không</option>
-                            <option value="1">có</option>
-                        </select>
                     </div>
                     
                     <div class="form-group">
@@ -164,7 +157,114 @@
             </div>
         </div>
     </div>
+    <!-- modal Update -->
+    <div class="modal-update">
+        <div class="overlay"></div>
+        <div class="modal-body">
+            <div class="form">
+                <div class="title-form-update">
+                    <p><?= translate_text('Sửa Danh Mục')?></p>
+                </div>
+                <form id="form-update">
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="cmp_name_update"><?= translate_text('Tên Danh Mục')?></label>
+                        <input type="text" class="form-control" id="cmp_name_update" placeholder="Sửa Tên Danh Mục" autocomplete="off" name="cmp_name_update">
+                    </div>
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="cmp_rewrite_name_update"><?= translate_text('Tên Đường Link Danh Mục')?></label>
+                        <input type="text" class="form-control" id="cmp_rewrite_name_update" placeholder="Sửa Tên Đường Link Danh Mục" autocomplete="off" name="cmp_rewrite_name_update">
+                    </div>
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="cmp_icon_update"><?= translate_text('Icon')?></label>
+                        <input type="text" class="form-control " id="cmp_icon_update" placeholder="Sửa Icon" autocomplete="off" name="cmp_icon_update">
+                    </div>
+                    
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="cmp_background"><?= translate_text('ảnh cho banner')?></label>
+                        <div class="customs-file">
+                            <div class="input-image-container">
+                                <i class="fas fa-trash-alt"></i>
+                                <div class="input-image" id="input_image_background_category_1_update">
+                                    <img id="image_background_homepage_1_update" src="#"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                    <input name="input_background_category_1_update" type="file" class="form-input-image" id="input_background_category_1_update">
+                                </div>
+                                <p><?= translate_text('Hình 1')?></p>
+                            </div>
+                            <div class="input-image-container">
+                                <i class="fas fa-trash-alt"></i>
+                                <div class="input-image" id="input_image_background_category_2_update">
+                                    <img id="image_background_homepage_2_update" src="#"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                    <input name="input_background_category_2_update" type="file" class="form-input-image " id="input_background_category_2_update">
+                                </div>
+                                <p><?= translate_text('Hình 2')?></p>
+                            </div>
+                            <div class="input-image-container">
+                                <i class="fas fa-trash-alt"></i>
+                                <div class="input-image" id="input_image_background_category_3_update">
+                                    <img id="image_background_homepage_3_update" src="#"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                    <input name="input_background_category_3_update" type="file" class="form-input-image " id="input_background_category_3_update">
+                                </div>
+                                <p><?= translate_text('Hình 3')?></p>
+                            </div>
+                            <div class="input-image-container">
+                                <i class="fas fa-trash-alt"></i>
+                                <div class="input-image" id="input_image_background_category_4_update">
+                                    <img id="image_background_homepage_4_update" src="#"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                    <input name="input_background_category_4_update" type="file" class="form-input-image " id="input_background_category_4_update">
+                                </div>
+                                <p><?= translate_text('Hình 4')?></p>
+                            </div>
+                            <div class="input-image-container">
+                                <i class="fas fa-trash-alt"></i>
+                                <div class="input-image" id="input_image_background_category_5_update">
+                                    <img id="image_background_homepage_5_update" src="#"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                    <input name="input_background_category_5_update" type="file" class="form-input-image " id="input_background_category_5_update">
+                                </div>
+                                <p><?= translate_text('Hình 5')?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="bgt_type_update"><?= translate_text('Loại banner')?></label>
+                        <select class="custom-select disable" id="bgt_type_update" name="bgt_type_update" >
+                            <option value="static">tĩnh</option>
+                            <option value="slide">chuyển động slide</option>
+                        </select>
+                    </div>
 
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update" for="cmp_meta_description_update"><?= translate_text('Thẻ Meta')?></label>
+                        <input type="text" class="form-control" id="cmp_meta_description_update" placeholder="Sửa Thẻ Meta" autocomplete="off" name="cmp_meta_description_update">
+                    </div>
+
+                    <div class="form-group form-group-update">
+                        <span class="form-check-label form-check-label-update"><?= translate_text('Tắt/Bật Danh mục')?></span>
+                        <label class="switch" for="cmp_active_update">
+                            <input type="checkbox" id="cmp_active_update" name="cmp_active_update"/>
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+
+                    <div class="form-group form-group-update">
+                        <label class="form-check-label form-check-label-update"><?= translate_text('Bỏ/Thêm Nhóm Bài Viết Vào danh mục:')?></label>
+                        <div class="wrapper-post-update">
+                           
+                        </div>
+                    </div>
+
+                    <div class="form-group button-center" >
+                        <input id="submit_update" type="submit" class="btn btn-primary center " value="<?= translate_text('Cập Nhật Danh Mục')?>"> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
