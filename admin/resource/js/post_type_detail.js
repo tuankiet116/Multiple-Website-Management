@@ -1,15 +1,17 @@
 $(document).ready(function () {
   url = window.location.href;
-  debugger;
   url_split = url.split("detail.php?record_id=")[1];
-  post_id = url_split.split("&web_id=")[0];
+  post_type_id = url_split.split("&web_id=")[0];
   web_id = url_split.split("&web_id=")[1];
+  debugger;
 
   $(".loader-container").css("display", "flex");
 
   data_getInfo = {
-    post_type_id: post_type_id,
+    "post_type_id": post_type_id,
   };
+
+  $(".pickPostTypeShow").select2();
 
   //Call Ajax Set Information
   $.ajax({
@@ -56,41 +58,36 @@ function ajax(
   });
 }
 
-//Function Set Selected Data||Value For Select2 Language
-function setSelect2Data(id, data_select = "", data) {
-  $(id).empty().append(data_select);
-
-  $(id).trigger("change");
-}
 
 function showInformation(data) {
-  $("#postTypeTitle").val(checkdefault("", data.post_title));
-  $("#postTypeDescription").val(checkdefault("", data.post_description));
-  $("#postTypeShow").val(checkdefault("", data.post_type_show));
-
-//   var content = data.content
-//     ? data.content
-//     : "<h2 style = 'color: red'>NOT FOUND</h2>";
-//   CKEDITOR.instances.post_editor.setData(content);
-
+  $("#postTypeTitle").val(checkdefault("", data.post_type_title));
+  $("#postTypeDescription").val(checkdefault("", data.post_type_description));
+  $(".pickPostTypeShow").val(data.post_type_show); 
+  $(".pickPostTypeShow").trigger("change"); 
   if (data.post_type_active == 1) {
-    html = `<input  id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
+    html = `<input id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
               <input id="hide_button" class="btn btn-danger  btn-lg " type="button" value="Ẩn Bài Viết">`;
     $(".button-container").html(html);
     submitButton();
-    IActiveStatusButton(0, "#pt_status_hide");
+    IActiveStatusButton(0, "#hide_button");
   } else {
-    html = `<input  id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
+    html = `<input id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="Xác Nhận">
               <input id="show_button" class="btn btn-success  btn-lg " type="button" value="Hiển Thị">`;
     $(".button-container").html(html);
     submitButton();
-    IActiveButton(1, "#pt_status_show");
+    IActiveStatusButton(1, "#show_button");
   }
 
   $(".loader-container").css("display", "none");
 }
 
-function updatePostSuccess(data) {
+function setSelect2Data(id, data_select = "") {
+  $(id).empty().append(data_select);
+  $(id).trigger("change");
+}
+
+
+function updatePostTypeSuccess(data) {
   if (data.code == 200) {
     showAlert("success", data.message);
   } else {
@@ -98,7 +95,7 @@ function updatePostSuccess(data) {
   }
 }
 
-function updatePostError(data) {
+function updatePostTypeError(data) {
   showAlert("error", "<strong>ERROR: </strong>" + data);
 }
 
@@ -138,15 +135,14 @@ function showAlert(type, message) {
 function submitButton() {
   $("#submit_button").on("click", function (e) {
     e.preventDefault();
-    var content = CKEDITOR.instances.post_editor.getData();
     var data = {
-      post_type_title: $("#postTypeTitle").val(),
-      post_type_description: $("#postTypeDescription").val(),
-      post_type_show: $("postTypeShow").val();
-      post_type_id: post_type_id,
+      'post_type_title': $("#postTypeTitle").val(),
+      'post_type_description': $("#postTypeDescription").val(),
+      'post_type_show': $(".pickPostTypeShow").select2("val"),
+      'post_type_id': post_type_id,
     };
 
-    var url = "../../../api/Controller/updatePost.php";
+    var url = "../../../api/Controller/updatePostType.php";
 
     $.ajax({
       type: "POST",
@@ -155,31 +151,31 @@ function submitButton() {
       dataType: "JSON",
       url: url,
       success: function (data) {
-        updatePostSuccess(data);
+        updatePostTypeSuccess(data);
         reload();
         showAlert("success", data.message);
       },
       error: function (request, status, error) {
-        updatePostError(request.responseText);
+        updatePostTypeError(request.responseText);
       },
     });
     //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
   });
 }
 
-function IActiveButton(post_active, element) {
+function IActiveStatusButton(post_type_active, element) {
   $(element).on("click", function () {
     $(".loader-container").css("display", "flex");
     data = {
-      post_id: post_id,
-      post_active: post_active,
+      "post_type_id": post_type_id,
+      "post_type_active": post_type_active,
     };
     $.ajax({
       type: "POST",
       dataType: "JSON",
       data: JSON.stringify(data),
       async: false,
-      url: "../../../api/Controller/ActiveInactivePost.php",
+      url: "../../../api/Controller/ActiveInactivePostType.php",
       success: function (data) {
         if (data.code == 200) {
           showAlert("success", data.message);
@@ -203,7 +199,7 @@ function reload() {
     data: JSON.stringify(data_getInfo),
     type: "POST",
     async: false,
-    url: "../../../api/Controller/getPostByID.php",
+    url: "../../../api/Controller/getPostTypeByID.php",
     success: function (data) {
       showInformation(data);
     },
