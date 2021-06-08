@@ -2,7 +2,7 @@
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST TYPE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   
@@ -28,12 +28,13 @@ $post_type->post_type_active      = intVal($data->post_type_active);
 $post_type->allow_show_homepage   = intVal($data->allow_show_homepage);
 $post_type->web_id                = intVal($data->web_id);
 
-if($post_type->create() === true){
+if($result = $post_type->create() === true){
     http_response_code(200);
     echo json_encode(array("message" => "Create Success", "code" => 200));
 }
 else{
     http_response_code(200);
-    echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+    echo json_encode(array('message' => "Something has wrong",
+                             'code' => 500 ));
 }
 
