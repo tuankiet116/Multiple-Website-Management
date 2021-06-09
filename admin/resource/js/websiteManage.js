@@ -40,7 +40,9 @@ $(document).ready(function(){
       $('.categories-container-form').show();
     });
 
-    
+    var a = $('.web_description').text();
+    console.log(a.length);
+
 })
 
 

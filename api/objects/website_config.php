@@ -58,5 +58,9 @@ class Website_Config{
         }
         return false;
     }
+
+    function getAllWebSite(){
+        
+    }
 }
 ?>
