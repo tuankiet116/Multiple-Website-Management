@@ -1,7 +1,6 @@
 <?php
 require_once("./helper/function.php");
 $web_id = 2;
-
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
     $url = $g_url;
@@ -19,9 +18,24 @@ if (strpos($url, "/") != false) {
 
 if (isset($_GET['name'])) {
     $name = $_GET['name'];
-    $title1 = $_GET['title'];
-    $breadcrumbs = $_GET['breadcrumbs'];
-    $name_breadcrumbs = $_GET['nameBreadcrumbs'];
+    if (isset($_GET['title'])) {
+        $title1 = $_GET['title'];
+    } else {
+        $title1 = '';
+    }
+
+    if (isset($_GET['breadcrumbs'])) {
+        $breadcrumbs = $_GET['breadcrumbs'];
+    } else {
+        $breadcrumbs = '';
+    }
+
+    if (isset($_GET['nameBreadcrumbs'])) {
+        $name_breadcrumbs = $_GET['nameBreadcrumbs'];
+    } else {
+        $name_breadcrumbs = '';
+    }
+
     if (isset($_GET['postTypeId'])) {
         $postType = $_GET['postTypeId'];
     } else {
@@ -39,6 +53,48 @@ if (isset($_GET['name'])) {
     } else {
         $post_name = '';
     }
+
+    if (isset($_GET['countPt'])) {
+        $countPt = $_GET['countPt'];
+    } else {
+        $countPt = '';
+    }
+}
+
+if (isset($_GET['breadcrumbs'])) {
+    $breadcrumbs = $_GET['breadcrumbs'];
+} else {
+    $breadcrumbs = '';
+}
+
+if (isset($_GET['nameBreadcrumbs'])) {
+    $name_breadcrumbs = $_GET['nameBreadcrumbs'];
+} else {
+    $name_breadcrumbs = '';
+}
+
+if (isset($_GET['postTypeId'])) {
+    $postType = $_GET['postTypeId'];
+} else {
+    $postType = '';
+}
+
+if (isset($_GET['postName'])) {
+    $post_name = $_GET['postName'];
+} else {
+    $post_name = '';
+}
+
+if (isset($_GET['postNews'])) {
+    $postNews = $_GET['postNews'];
+} else {
+    $postNews = '';
+}
+
+if (isset($_GET['countPt'])) {
+    $countPt = $_GET['countPt'];
+} else {
+    $countPt = '';
 }
 
 $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
@@ -61,7 +117,16 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
 <html>
 
 <head>
-    <title> <?php echo $title1 ?> </title>
+    <title> 
+        <?php 
+            if (isset($_GET['title'])) {
+                echo $title1;
+            }
+            else {
+                echo $name_breadcrumbs;
+            }
+        ?> 
+    </title>
     <? include("./includes/inc_head.php"); ?>
     <link rel="stylesheet" href="../Green_website/resource/css/news.css">
 </head>
@@ -77,19 +142,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
         <div class="row">
             <div class="col-lg-3 order-lg-1 order-md-2 order-sm-2 order-2">
                 <div class="news-left">
-                    <?php
-                    // foreach ($arr_left_title as $key => $lt) {
-                    //     if ($lt['post_type_id'] == 10 && $lt['post_type_show'] == 'column' && $lt['post_type_active'] == 1) {
-                    //         echo '
-                    //                 <div class="news-left-title">
-                    //                     <a href="#" target="_self">
-                    //                         ' . $lt['post_type_title'] . '
-                    //                     </a>
-                    //                 </div>';
-                    //     }
-                    // }
-                    ?>
-
                     <div class="news-left-title">
                         <a href="" target="_self">
                             Chuyên mục khác
@@ -99,19 +151,63 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                     <div class="news-left-content">
                         <ul class="list-post">
                             <?php
-                            $other_cate = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND post_type_id IS NOT NULL");
+                            $other_cate = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND cmp_active = 1 AND web_id = $web_id");
                             foreach ($other_cate as $key => $oc) {
+                                // $oc_id = $oc['cmp_id'];
+                                // $other_cate_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id AND post_image_background IS NULL AND post_active = 1");
+                                // foreach ($other_cate_post as $key => $oc) {
+                                //     echo '
+                                //             <li>
+                                //                 <a href="news.php?name=' . $oc['post_rewrite_name'] . '&title=' . $oc['post_title'] . '&breadcrumbs=' . $oc['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $oc['cmp_name'] . '&postTypeId=' . $oc['post_type_id'] . '" target="_self">
+                                //                     <i class="fas fa-chevron-right"></i>
+                                //                     ' . $oc['post_title'] . '
+                                //                 </a>
+                                //             </li>
+                                //         ';
+                                // }
+
                                 $oc_id = $oc['cmp_id'];
-                                $other_cate_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id AND post_image_background IS NULL AND post_active = 1");
-                                foreach ($other_cate_post as $key => $ocp) {
-                                    echo '
+                                $oc_p = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id LIMIT 1");
+
+                                $oc_cmp_id = $oc['cmp_id'];
+                                $oc_pt_id = $oc['post_type_id'];
+                                $oc_pt = explode(",", $oc_pt_id);
+                                $count_oc_pt = count($oc_pt);
+                                if ($count_oc_pt == 1) {
+                                    foreach ($oc_p as $key => $op) {
+                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                        if ($mod_rewrite == 1) {
+                                            $changeUrlName = 'name=' . $op['post_rewrite_name'];
+                                            $changeUrlBread = '&breadcrumbs=' . $oc['cmp_rewrite_name'];
+                                        } else {
+                                            $changeUrlName = 'name=' . $op['post_id'];
+                                            $changeUrlBread = '&breadcrumbs=' . $oc['cmp_id'];
+                                        }
+                                        echo '
                                             <li>
-                                                <a href="news.php?name=' . $ocp['post_rewrite_name'] . '&title=' . $ocp['post_title'] . '&breadcrumbs=' . $oc['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $oc['cmp_name'] . '&postTypeId=' . $oc['post_type_id'] . '" target="_self">
+                                                <a href="news.php?' . $changeUrlName . '&title=' . $op['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $oc['cmp_name'] . '&postTypeId=' . $oc['post_type_id'] . '&postNews=' . $op['ptd_id'] . '" target="_self">
                                                     <i class="fas fa-chevron-right"></i>
-                                                    ' . $ocp['post_title'] . '
+                                                    ' . $oc['cmp_name'] . '
                                                 </a>
                                             </li>
-                                        ';
+                                ';
+                                    }
+                                } else {
+                                    $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_cmp_id AND post_active = 1 AND post_type_id IN ($oc_pt_id)");
+                                    $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                    if ($mod_rewrite == 1) {
+                                        $changeUrlBread = 'breadcrumbs=' . $oc['cmp_rewrite_name'];
+                                    } else {
+                                        $changeUrlBread = 'breadcrumbs=' . $oc['cmp_id'];
+                                    }
+                                    echo '
+                                        <li>
+                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $oc['cmp_name'] . '&postTypeId=' . $oc['post_type_id'] . '&countPt=' . $count_oc_pt . '" target="_self">
+                                                <i class="fas fa-chevron-right"></i>
+                                                ' . $oc['cmp_name'] . '
+                                            </a>
+                                        </li>
+                                    ';
                                 }
                             }
                             ?>
@@ -227,67 +323,132 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 if ($bread_parents == null) {
                                     echo '
                                         <a href="" target="_self">' . $bread['cmp_name'] . '</a>
-
-                                        <span class="navigation-pipe">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </span>';
+                                    ';
                                 } else {
                                     $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
                                     foreach ($bread_name as $key => $b_name) {
                                         echo '
-                                        <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
-
-                                        <span class="navigation-pipe">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </span>';
+                                            <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
+                                        ';
                                     }
                                 }
                             }
                         }
-                        if ($name_breadcrumbs != '') {
+                        if ($postType != '' && $post_name == '' && $countPt == '') {
+                            $get_pt_title = get_data_row("SELECT * FROM post_type WHERE post_type_id IN ($postType) AND post_type_active = 1");
+                            $get_pt_t = $get_pt_title['post_type_title'];
                             echo '
-                                <a href="" target="_self">' . $name_breadcrumbs . '</a>
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                                
+                                <a href="" target="_self">' . $get_pt_t . '</a>
+                            ';
+                        } 
+                        else if ($postType == '' && $post_name != '' && $countPt == '') {
+                            echo '
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
 
                                 <span class="navigation-pipe">
                                     <i class="fas fa-chevron-right"></i>
                                 </span>
-                            ';
-                        } ?>
 
-                        <a href="#" target="_self"><?php echo $title1 ?> </a>
+                                <a href="" target="_self">' . $post_name . '</a>
+
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $title1 . '</a>
+                            ';
+                        }
+                        else if ($postType != '' && $post_name != '' && $countPt == '') {
+                            echo '
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $post_name . '</a>
+                            ';
+                        }
+                        else if ($postType != '' && $countPt != '') {
+                            echo '
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+                            ';
+                        }
+                        else {
+                            echo '
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="" target="_self">' . $title1 . '</a>
+                            ';
+                        }
+                        ?>
+
+                        <!-- <a href="#" target="_self"><?php echo $title1 ?> </a> -->
                     </div>
                     <div class="news-right-content">
-                        <p class="news-right-content-title"><?php echo $title1; ?></p>
+                        
+                        <?php
+                            if ($postType != "" && $countPt == "") {
+                                $get_pt_title = get_data_row("SELECT * FROM post_type WHERE post_type_id IN ($postType) AND post_type_active = 1");
+                                $get_pt_t = $get_pt_title['post_type_title'];
+                                echo '<p class="news-right-content-title">' . $get_pt_t . '</p>';
+                            }
+                            else if ($postType != "" && $countPt != "") {
+                                echo '<p class="news-right-content-title">' . $name_breadcrumbs . '</p>';
+                            }
+                            else {
+                                echo '<p class="news-right-content-title">' . $title1 . '</p>';
+                            }
+                        ?>
 
                         <?php
-                        foreach ($post_type as $key => $p_type) {
-                            if ($p_type['post_type_show'] != '' && $p_type['post_type_id'] == $postType) {
-                                $p_type_id = $p_type['post_type_id'];
-                                $get_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $p_type_id AND post_active = 1 ORDER BY post_datetime_create DESC");                 
-                                foreach ($get_post as $key => $g_post) {
-                                    foreach ($category as $key => $cate) {
-                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                        if ($mod_rewrite == 1) {
-                                            $changeUrlName = 'name=' . $g_post['post_rewrite_name'];
-                                            $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
-                                        } else {
-                                            $changeUrlName = 'name=' . $g_post['post_id'];
-                                            $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
-                                        }
+                        if ($countPt == "") {
+                            foreach ($post_type as $key => $p_type) {
+                                if ($p_type['post_type_show'] != '' && $p_type['post_type_id'] == $postType) {
+                                    $p_type_id = $p_type['post_type_id'];
+                                    $get_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $p_type_id AND post_active = 1 ORDER BY post_datetime_create DESC");
+                                    foreach ($get_post as $key => $g_post) {
+                                        foreach ($category as $key => $cate) {
+                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                            if ($mod_rewrite == 1) {
+                                                $changeUrlName = 'name=' . $g_post['post_rewrite_name'];
+                                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
+                                            } else {
+                                                $changeUrlName = 'name=' . $g_post['post_id'];
+                                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
+                                            }
 
-                                        $get_pt_name = get_data_rows("SELECT * FROM post_type WHERE post_type_active = 1 AND web_id = $web_id AND post_type_id = $p_type_id");
-                                        foreach ($get_pt_name as $key => $pt_name) {
-                                            if ($g_post['cmp_id'] == $cate['cmp_id'] && $g_post['post_image_background'] != '') {
+                                            $get_pt_name = get_data_rows("SELECT * FROM post_type WHERE post_type_active = 1 AND web_id = $web_id AND post_type_id = $p_type_id");
+                                            foreach ($get_pt_name as $key => $pt_name) {
+                                                if ($g_post['cmp_id'] == $cate['cmp_id'] && $g_post['post_image_background'] != '') {
 
-                                                $date = $g_post['post_datetime_create'];
-                                                $myDate = date("d-m-Y", strtotime($date));
-                                                echo '
+                                                    $date = $g_post['post_datetime_create'];
+                                                    $myDate = date("d-m-Y", strtotime($date));
+                                                    echo '
                                                     <div class="container post-list">
                                                         <div class="row">
                                                             <div class="post-list-img col-lg-4 col-md-4 col-sm-6 col-6">
                                                                 <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $g_post['ptd_id'] . '&postName=' . $pt_name['post_type_title'] . '" target="_self">
                                                                     <img src="../../' . $g_post['post_image_background'] . '" alt="post list image">
-                                                                </a>
+                                                                </a>   
                                                             </div>
 
                                                             <div class="post-list-container col-lg-8 col-md-8 col-sm-6 col-6">                                                                                
@@ -307,27 +468,53 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                             </div>
                                                         </div>                 
                                                     </div>';
+                                                }
                                             }
                                         }
                                     }
-                                }                  
-                            } else {
-                                foreach ($post_content as $p_content) {
-                                    if ($p_content['ptd_id'] == $postNews) {
-                                        $post_check = get_data_rows("SELECT * FROM post WHERE ptd_id = $postNews");
-                                        foreach ($post_check as $key => $p_check) {
-                                            if ($p_check['post_image_background'] != "") {
-                                                $p_check_ptd = $p_check['post_type_id'];
-                                                if ($p_type['post_type_id'] == $p_check_ptd) {
-                                                    echo $p_content['ptd_text'];
-                                                }
-                                            } else {
-                                                echo "";
-                                            }
+                                } else if ($p_type['post_type_show'] == "") {
+                                    foreach ($post_content as $p_content) {
+                                        if ($p_content['ptd_id'] == $postNews) {
+                                            echo $p_content['ptd_text'];
                                         }
-                                    }                  
+                                    }
                                 }
                             }
+                        } else if ($countPt > 1) {
+                                $cate_by_pt = get_data_rows("SELECT * FROM categories_multi_parent WHERE post_type_id = '$postType' AND cmp_active = 1 AND web_id = $web_id");
+                                foreach ($cate_by_pt as $key => $cate_pt) {
+                                    $cate_pt_str = explode(",", $cate_pt['post_type_id']);
+                                    foreach ($cate_pt_str as $key => $cate_pt_str_item) {
+                                        $g_post_type = get_data_row("SELECT * FROM post_type WHERE post_type_id = $cate_pt_str_item");
+                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                        if ($mod_rewrite == 1) {
+                                            $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_rewrite_name'];
+                                        } else {
+                                            $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_id'];
+                                        }
+
+                                        echo'
+                                            <div class="container post-list">
+                                                <div class="row">
+                                                    <div class="post-list-img col-lg-4 col-md-4 col-sm-6 col-6">
+                                                        <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self"></a>
+                                                    </div>
+
+                                                    <div class="post-list-container col-lg-8 col-md-8 col-sm-6 col-6">                                                                                
+                                                        <div class="post-list-title">
+                                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self">
+                                                                <p>' . $g_post_type['post_type_title'] . '</p>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="post-list-content">
+                                                            <p>' . $g_post_type['post_type_description'] . '</p>
+                                                        </div>
+                                                    </div>
+                                                </div>                 
+                                            </div>';      
+                                    }     
+                                }
                         }
                         ?>
                     </div>

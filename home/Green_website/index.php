@@ -2,8 +2,8 @@
 require_once('./helper/function.php');
 require_once('./helper/url.php');
 
-// $get_web_id = get_data_rows("SELECT * FROM website_config WHERE web_url ")
-$web_id = 2;
+$get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_url' AND web_active = 1");
+$web_id = $get_web_id['web_id'];
 
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
