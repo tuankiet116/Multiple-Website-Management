@@ -32,7 +32,7 @@ $(document).ready(function () {
 var base_url = "../../../";
 
 function checkdefault(default_value, check_parameter) {
-  if (check_parameter == null || check_parameter == "undefined") {
+  if (check_parameter == null || check_parameter == "undefined" || check_parameter == "") {
     return default_value;
   }
   return check_parameter;

@@ -23,8 +23,6 @@ $data = json_decode(file_get_contents("php://input"));
 $product_image_path = array(htmlspecialchars(trim($data->product_image_path)));
 
 //upload image
-
-$product_id = $data->product_id;
 $UploadBase64 = new upload_image();
 
 //Save product image
@@ -34,7 +32,6 @@ $image_product = saveBase64($UploadBase64, $product_image_path, $url_save, 'jpg,
 
 // set Term property of record to update
 
-$product->product_id          = $data->product_id;
 $product->product_name        = htmlspecialchars(trim($data->product_name)); 
 $product->product_description = htmlspecialchars(trim($data->product_description));
 $product->product_image_path  = $image_product;
@@ -43,42 +40,30 @@ $product->product_currency    = htmlspecialchars(trim($data->product_currency));
 $product->web_id              = intVal($data->web_id);
 
 
-$count = $product -> getByIDAll(false);
-
-if($product->product_id == "" || $product->product_id == null || $product->product_name == "" || $product->product_name == null || $product->web_id === null || $product->web_id == 0 ){
+if($image_product === false){
     http_response_code(200);
-    echo json_encode(array("message" => "Data Invalid",
-                                "code"    => 500));
+    echo json_encode(array("message" => $UploadBase64->common_error,
+                            "code"    => 500));
 }
 else{
-    if($image_product === false){
+    if($data->product_name == "" || $data->product_name == null || $data->web_id == "" || $data->web_id == null){
         http_response_code(200);
-        echo json_encode(array("message" => $UploadBase64->common_error,
-                                "code"    => 500));
+            echo json_encode(array("message" => "Data Invalid", "code" => 500));
     }
     else{
-        if($count>0){
-            $stmt = $product -> update();
-            if($stmt === true){
-                http_response_code(200);
-                echo json_encode(array("message" => "Update Success ", "code" => 200));
-            }
-            else{
-                http_response_code(200);
-                echo json_encode(array('message' => $stmt, 
-                                        'code'    => 500,
-            /*'query'   => $stmt->debugDumpParams()*/ ));
-            }
+        $stmt = $product -> create();
+        if($stmt === true){
+            http_response_code(200);
+            echo json_encode(array("message" => "Create Success ", "code" => 200));
         }
         else{
-            
             http_response_code(200);
-            echo json_encode(array("message" => "Product Doesn't Exists",
-                                   "code"    => 500));
+            echo json_encode(array('message' => $stmt, 
+                                    'code'    => 500,
+        /*'query'   => $stmt->debugDumpParams()*/ ));
         }
     }
 }
-
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();

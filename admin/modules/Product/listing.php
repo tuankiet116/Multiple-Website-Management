@@ -41,12 +41,12 @@
                         <div style="display: flex;">   
                             <div class="form-group col-3">
                                 <label for="update-title"><?=translate_text('Tên Sản Phẩm')?></label>
-                                <input type="text" class="form-control" id="update-title" placeholder="<?=translate_text('Tên Sản Phẩm')?>">
+                                <input type="text" class="form-control title" id="update-title" placeholder="<?=translate_text('Tên Sản Phẩm')?>">
                             </div>
                             <div class="form-group col-9">
-                                <label for="update-description"><?=translate_text('Mô Tả Sản Phẩm')?></label>
+                                <label for="update-description "><?=translate_text('Mô Tả Sản Phẩm')?></label>
                                 <textarea style="min-height: 150px; max-height: 150px;" 
-                                type="text" class="form-control" id="update-description" 
+                                type="text" class="form-control description" id="update-description" 
                                 placeholder="<?=translate_text('Mô Tả Sản Phẩm')?>"></textarea>
                             </div>
                         </div>
@@ -54,11 +54,11 @@
                         <div style="display: flex;">
                             <div class="form-group col-3">
                                 <label for="exampleFormControlInput1"><?=translate_text('Giá')?></label>
-                                <input type="number" class="form-control" id="update-price" placeholder="100.000">
+                                <input type="number" class="form-control price" id="update-price" placeholder="100.000">
                             </div>
                             <div class="form-group col-3">
                                 <label><?=translate_text('Tiền Tệ ')?></label>
-                                <select id="currency-select" >
+                                <select class="currency-select" >
                                     <option value="VND">
                                         VND
                                     </option>
@@ -135,7 +135,7 @@
                             </div>
                             <div class="form-group col-3">
                                 <label><?=translate_text('Tiền Tệ ')?></label>
-                                <select id="currency-select" >
+                                <select class="currency-select" >
                                     <option value="VND">
                                         VND
                                     </option>
@@ -152,7 +152,7 @@
                                         <div class="input-image" id="input_image_product_container">
                                             <img id="image_product_add" src="#"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
-                                            <input  type="file" class="form-input-image" id="input_image_product">
+                                            <input  type="file" class="form-input-image" id="input_image_product_add">
                                         </div>
                                     </div>
                                 </div>

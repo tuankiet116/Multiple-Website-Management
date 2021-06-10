@@ -181,8 +181,38 @@
                 $message = "Error While Updating";
                 return $message;
             }
+        }
 
-            
+        public function create(){
+            $message = '';
+            $query = "SELECT * FROM ".$this->table." WHERE product_name =:product_name AND web_id =:web_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':product_name', $this->product_name);
+            $stmt->bindParam(':web_id', $this->web_id);
+
+            $stmt->execute();
+            $count = $stmt->rowCount();
+            if($count === 0){
+                $query = "INSERT INTO ".$this->table."(product_name, product_description, product_image_path, product_price, product_currency, web_id) 
+                            VALUES (:product_name,:product_description,:product_image_path,:product_price,:product_currency,:web_id )";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':product_name'       , $this->product_name);
+                $stmt->bindParam(':product_description', $this->product_description);
+                $stmt->bindParam(':product_image_path' , $this->product_image_path);
+                $stmt->bindParam(':product_price'      , $this->product_price);
+                $stmt->bindParam(':product_currency'   , $this->product_currency);
+                $stmt->bindParam(':web_id'             , $this->web_id);
+                if($stmt->execute() === true){
+                    return true;
+                }
+                $message = "Error While Creating";
+                return  $stmt;
+                
+            }
+            else{
+                $message = "Product Name Duplicate In This Website";
+                return $message;
+            }
         }
     }
 ?>

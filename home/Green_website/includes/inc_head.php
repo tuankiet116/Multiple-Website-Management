@@ -11,20 +11,20 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link href="//fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <!-- Carousel -->
-    <link rel="stylesheet" href="../resource/Fonts/slideshow/icomoon/style.css">
-    <link rel="stylesheet" href="../resource/css/slideshow/owl.carousel.min.css">
+    <link rel="stylesheet" href="./resource/Fonts/slideshow/icomoon/style.css">
+    <link rel="stylesheet" href="./resource/css/slideshow/owl.carousel.min.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../resource/css/slideshow/bootstrap.min.css">
+    <link rel="stylesheet" href="./resource/css/slideshow/bootstrap.min.css">
     <!-- Style -->
-    <link rel="stylesheet" href="../resource/css/slideshow/slideshow.css">
-    <link rel="stylesheet" href="../resource/css/style.css">
-    <link rel="stylesheet" href="../resource/css/shop.css">
-    <link rel="stylesheet" href="../resource/css/news.css">
+    <link rel="stylesheet" href="./resource/css/slideshow/slideshow.css">
+    <link rel="stylesheet" href="./resource/css/style.css">
+    <link rel="stylesheet" href="./resource/css/shop.css">
+    <link rel="stylesheet" href="./resource/css/news.css">
 
-    <script src="../resource/js/slideshow/jquery-3.3.1.min.js"></script>
-    <script src="../resource/js/slideshow/popper.min.js"></script>
-    <script src="../resource/js/slideshow/bootstrap.min.js"></script>
-    <script src="../resource/js/slideshow/owl.carousel.min.js"></script>
+    <script src="./resource/js/slideshow/jquery-3.3.1.min.js"></script>
+    <script src="./resource/js/slideshow/popper.min.js"></script>
+    <script src="./resource/js/slideshow/bootstrap.min.js"></script>
+    <script src="./resource/js/slideshow/owl.carousel.min.js"></script>
     <script src="https://kit.fontawesome.com/17bbaf365c.js" crossorigin="anonymous"></script>
-    <script src="../resource/js/slideshow/main.js"></script>
-    <script src="../resource/js/myjs.js"></script>
+    <script src="./resource/js/slideshow/main.js"></script>
+    <script src="./resource/js/myjs.js"></script>
