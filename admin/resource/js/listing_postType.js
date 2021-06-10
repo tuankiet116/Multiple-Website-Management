@@ -153,6 +153,10 @@ function postTypeSuccess(data){
             value.web_name = "<p style = 'color: red'>NULL</p>";
         }
 
+        if(value.cmp_name == null){
+            value.cmp_name = "<p style = 'color: red'>NULL</p>";
+        }
+
         if(value.post_type_active == 1){
           status_pt = '<button style = "width: 100px;" id="pt_status_show_'+ value.post_type_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
         }
@@ -177,6 +181,7 @@ function postTypeSuccess(data){
                     <td>`+ value.post_type_description +`</td>
                     <td>`+ value.post_type_show +`</td>
                     <td>`+ value.web_name +`</td>
+                    <td>`+ value.cmp_name +`</td>
                     <td>`+ status_pt +`</td>
                     <td>`+ status_home +`</td>
                     <td>`+ action +` </td>
