@@ -10,6 +10,7 @@
         public $post_type_active;
         public $allow_show_homepage;
         public $web_id;
+        public $cmp_id; //categories_multi_parent ID
         public $term;
 
         public function __construct($db){
@@ -47,9 +48,10 @@
         public function create()
         {
             $message = "";
-            $query = "SELECT * FROM post_type WHERE post_type_title =:post_type_title";
+            $query = "SELECT * FROM post_type WHERE post_type_title = :post_type_title AND web_id = :web_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':post_type_title', $this->post_type_title);
+            $stmt->bindParam(':post_type_title',    $this->post_type_title);
+            $stmt->bindParam(':web_id',             $this->web_id);
             if($stmt->execute() === true) {
                 $count = $stmt->rowCount();
                 if($count === 0) {
@@ -57,7 +59,7 @@
                             allow_show_homepage, web_id) 
                             Values(:post_type_title, :post_type_description, :post_type_show, :post_type_active, :allow_show_homepage, :web_id)";
                     $stmt = $this->conn->prepare($query);
-
+                
                     $stmt->bindParam(':post_type_title',            $this->post_type_title);
                     $stmt->bindParam(':post_type_description',      $this->post_type_description);
                     $stmt->bindParam(':post_type_show',             $this->post_type_show);
@@ -65,12 +67,52 @@
                     $stmt->bindParam(':allow_show_homepage',        $this->allow_show_homepage, PDO::PARAM_INT);
                     $stmt->bindParam(':web_id',                     $this->web_id);
 
-                    if ($stmt->execute()) {
-                        return true;
-                    } else {
-                        $message = "Cannot Create";
-                        return $message;
+                    $stmt->execute();
+                    $this->post_type_id = $this->conn->lastInsertId();   
+
+                    $query = "SELECT * FROM categories_multi_parent WHERE cmp_id = :cmp_id";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(':cmp_id', $this->cmp_id);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($this->post_type_id != "" || $this->post_type_id != null) {
+                        $post_type_id_string = $row['post_type_id'];
+                        if ($post_type_id_string == "" || $post_type_id_string == null) {
+                            $query = "UPDATE categories_multi_parent SET post_type_id = :post_type_id WHERE cmp_id = :cmp_id";
+                            $stmt = $this->conn->prepare($query);
+                            $stmt->bindParam(':post_type_id', $this->post_type_id);
+                            $stmt->bindParam(':cmp_id', $this->cmp_id);
+                            if ($stmt->execute() === true) {
+                                return true;
+                            } else {
+                                $message = "Error While Updating Categories";
+                                return $message;
+                            }
+                        } else {
+                            $query = "SELECT * FROM categories_multi_parent WHERE cmp_id = :cmp_id";
+                            $stmt = $this->conn->prepare($query);
+                            $stmt->bindParam(':cmp_id', $this->cmp_id);
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                            $old_post_type = $post_type_id_string;
+                            $new_post_type = $old_post_type . "," . $this->post_type_id;
+                            $query = "UPDATE categories_multi_parent SET post_type_id = :post_type_id WHERE cmp_id = :cmp_id";
+                            $stmt = $this->conn->prepare($query);
+                            $stmt->bindParam(':post_type_id', $new_post_type);
+                            $stmt->bindParam(':cmp_id', $this->cmp_id);
+                            if ($stmt->execute() === true) {
+                                return true;
+                            } else {
+                                $message = "Error While Updating Categories";
+                                return $message;
+                            }
+                        }
                     }
+                    else {
+                        $message = "Cannot create post type";
+                        return $message;
+                    } 
                 }
                 else {
                     $message = "Duplicate Title Post Type";
@@ -140,11 +182,13 @@
                 $query_website = " AND website_config.web_id = ".$this->web_id;
             }
             $query = "SELECT post_type.post_type_id , post_type.post_type_title , post_type.post_type_description, 
-                             post_type.post_type_show, website_config.web_name, post_type.post_type_active, 
+                             post_type.post_type_show, website_config.web_name, categories_multi_parent.cmp_name ,post_type.post_type_active, 
                              post_type.allow_show_homepage, post_type.web_id 
                       FROM post_type 
                       INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
-                      " WHERE post_type.post_type_title   LIKE '%" .$this->term. "%'";
+                      " WHERE post_type.post_type_title   LIKE '%" .$this->term. "%'
+                      INNER JOIN categories_multi_parent ON categories_multi_parent.post_type_id = post_type.post_type_id
+                      AND categories_multi_parent";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();

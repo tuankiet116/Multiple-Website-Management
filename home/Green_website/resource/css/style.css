@@ -25,6 +25,19 @@
     left: 0;
 }
 
+#menu #logo #logo-top {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#menu #logo #logo-top img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+}
+
 #menu ul#navbar {
     width: 68%;
     height: 80px;
@@ -910,6 +923,19 @@
     transition: .3s;
 }
 
+#footer #footer-container #footer-content div #logo-bottom{
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    float: right;
+}
+
+#footer #footer-container #footer-content div #logo-bottom img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
 
 
 /********** Product Carousel **********/
@@ -1162,6 +1188,12 @@
 }
 
 /***** Footer *****/
+
+@media screen and (max-width: 991px) {
+    #footer #footer-container #footer-content div #logo-bottom{
+        float: left;
+    }
+}
 
 @media screen and (max-width: 766px) {
     #footer-photos #photos {

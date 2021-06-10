@@ -1,5 +1,3 @@
-<!---------- MENU ---------->
-
 <?php
 $web_id = 2;
 
@@ -15,7 +13,9 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 
 <div id="menu">
     <div id="logo">
-
+        <div id="logo-top">
+            <img src="../../<?php echo $arr_con['con_logo_top'] ?>" alt="logo top">
+        </div>
     </div>
 
     <ul id="navbar">
