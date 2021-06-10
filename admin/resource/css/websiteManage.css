@@ -13,7 +13,7 @@
 .form-input-image{ display: none !important;}
 
 /* css form - modal*/
-.modal-header{ justify-content: center;}
+.modal-header >button.close{ outline: none;}
 .form-control::placeholder{ font-size: 14px;}
 .btn-submit{display: flex; justify-content: center;}
 .form-group > textarea{height: 100px;}
@@ -25,5 +25,18 @@
 /* css-table */
 .list-website-title{ margin: 30px 0;}
 .list-website-title > p{ text-align: center; font-weight: 500; font-size: 18px;}
-.table > thead > tr > th { font-size: 14px;} 
+.table > thead > tr > th { font-size: 14px; text-align: center;}
+.table > tbody > tr > td { text-align: center;}
 img.icon-website { width: 30px; height: 30px;}
+.btn-show-hide{ padding-bottom: 2px; padding-top: 2px; font-size: 11px; font-weight: 300; width: 100px; border-radius: 3px;}
+.btn-edit{ padding-bottom: 2px; padding-top: 1px; font-size: 11px; color: #ffffff; font-weight: 300; width: 50px; border-radius: 3px;}
+.web_description{ cursor: pointer;}
+
+/* css show-alert */
+.alert-message{ position: fixed; right: 50px; width: 30%; z-index: 9999}
+
+/* css loading */
+.loader-container{position: fixed; width: 100%; height: 100%; z-index: 100000; background-color: rgba(0, 0, 0, 0.3); display: none; justify-content: center; align-items: center;}
+.loader { border: 16px solid #f3f3f3; border-top: 16px solid hsl(204, 70%, 53%); border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite; z-index: 200000;}
+@keyframes spin { 0%   { transform: rotate(0deg); } 
+                  100% { transform: rotate(360deg);} }

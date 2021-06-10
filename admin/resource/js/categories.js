@@ -144,8 +144,12 @@ $(document).ready(function () {
             else{
               $('.loader-container').css('display', 'none');
               showAlert('error', `<p>${data.message}</p>`);
+              
             }
           },
+          error: function(data){
+            console.log(data);
+          }
         });
         
       }
@@ -194,11 +198,12 @@ $(document).ready(function () {
           getAllCate(web_id_create);
         }
         else{
+          $('.loader-container').css('display', 'none');
           showAlert('error', `<p>${data.message}</p>`);
         }
       },
       error: function(data){
-        console.log(data.responeText);
+        console.log(data);
       }
       
     })
@@ -506,8 +511,14 @@ function getAllCate(web_id){
           var rs =``;
           rs +=`<div class="categories-item">`;
           rs +=` <div class="categories-parent-item">
-                    <p>${p.cmp_name}</p>
-                    <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                    <p>${p.cmp_name}</p>`
+                     if(p.cmp_active==1){
+                       rs += `<p>đang hiện thị</p>`
+                     }
+                     else {
+                       rs += `<p>đã bị ẩn</p>`
+                     }         
+          rs +=`    <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
                  </div>`;
                 cate_child.forEach((c)=>{
                   if(c.cmp_parent_id == p.cmp_id){

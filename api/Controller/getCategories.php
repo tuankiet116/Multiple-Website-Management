@@ -46,13 +46,13 @@ if(isset($data)){
         http_response_code(200);
 
         echo json_encode(array("message" => "chưa có danh mục nào!!!",
-                               "code"  => 404));
+                               "code"    => 404));
     }
 }
 else{
     http_response_code(200);
     echo json_encode(array("message" => "Không Nhận được dữ liệu!",
-                           "code" => 402));
+                           "code"    => 402));
 }
 
 // unset($resultCategories);
