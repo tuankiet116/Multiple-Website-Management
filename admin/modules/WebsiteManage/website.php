@@ -19,17 +19,29 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="loader-container"><div class="loader"></div></div>
+    <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">  
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container">
         <div class="btn-show-modal">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#show-modal-form">
                 <i class="fas fa-plus"></i> Thêm mới 
             </button>
         </div>
-        <div class="modal fade" id="show-modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="show-modal-form" >
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cài Đặt Website</h5>
+                        <h5 class="modal-title">Cài Đặt Website</h5>
+                        <button type="button" class="close close-form-create" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-container">
@@ -86,22 +98,58 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><p class="web_name">Dịch vụ vệ sinh</p></td>
-                        <td><p class="web_url">dichvuvesinh.com.vn</p></td>
-                        <td><img src="https://cdn.chanhtuoi.com/uploads/2020/10/w400/logo-zalo-png-vertor-jpeg.jpg.webp" alt="icon" class="icon-website"></td>
-                        <td><p class="web_description">Lorem ipsum dolor sit amet consectetur?</p></td>
-                        <td><button class="btn btn-success">Hiển Thị</button></td>
-                        <td><button class="btn btn-warning">Sửa</button></td>
-                    </tr>
+                   
                 </tbody>
             </table>
         </div>
+
+        <div class="modal fade" id="show-modal-form-update">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >Cập Nhật Website</h5>
+                        <button type="button" class="close close-form-update" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-container">
+                            <form action="#" id="form-update">
+                                <div class="form-group">
+                                    <label for="web_name_update"><?= translate_text('Tên Website')?>:</label>
+                                    <input type="text" class="form-control" id="web_name_update" placeholder="Nhập Tên Website" name="web_name_update" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="web_url_update"><?= translate_text('Tên Miền Website')?>:</label>
+                                    <input type="text" class="form-control" id="web_url_update" placeholder="Nhập Tên Miền Website" name="web_url_update" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for=""><?= translate_text('icon website')?>:</label>
+                                    <div class="customs-file">
+                                        <div class="input-image-container">
+                                            <i class="fas fa-trash-alt"></i>
+                                            <div class="input-image" id="input_image_icon_1_update">
+                                                <img id="image_icon_1_update" src="#"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
+                                                <input name="input_icon_1_update" type="file" class="form-input-image" id="input_icon_1_update">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="web_description_update"><?= translate_text('Mô Tả')?>:</label>
+                                    <textarea class="form-control" id="web_description_update" name="web_description_update"></textarea>
+                                </div>
+                                <div class="form-group btn-submit">
+                                    <input id="submit-update" class="btn btn-primary" type="submit" value="Cập Nhật">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
