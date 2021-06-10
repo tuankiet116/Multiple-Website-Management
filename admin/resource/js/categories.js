@@ -108,6 +108,7 @@ $(document).ready(function () {
       var cmp_rewrite_name = $('#cmp_rewrite_name').val();
       $('.loader-container').css('display', 'flex');
       if(cmp_name=="" || cmp_rewrite_name==""){
+        $('.loader-container').css('display', 'none');
         showAlert('warning', '<p>vui những trường có dấu sao <span style="color: red">(*)</span></p>');
       }
       else{
@@ -117,7 +118,7 @@ $(document).ready(function () {
           method: 'POST',
           data: JSON.stringify(data),
           success: function(data){
-            if(data?.code == 200){
+            if(data.code == 200){
               $('.loader-container').css('display', 'none');
               showAlert('success', `<p>${data.message}</p>`);
               $('#formCategory')[0].reset();
@@ -135,6 +136,7 @@ $(document).ready(function () {
               getAllCate(web_id_create);
             }
             else{
+              $('.loader-container').css('display', 'none');
               showAlert('error', `<p>${data.message}</p>`);
             }
           },

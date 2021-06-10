@@ -76,13 +76,13 @@ $(document).ready(function(){
       $('.pick_categories').siblings('.select2-container').css('display', 'block');
       $('.pick_categories').prop('disabled', false);
       activePickCategories(); 
-    }, 2000)
+    }, 1000)
     
     function activePickCategories(){
       web_id = $('.pick_website_select').select2('data')[0].id;
       $('.pick_categories').select2({
         ajax: { 
-          url: "../../../api/Controller/searchTermCategories.php",
+          url: "../../../api/Controller/searchTermCategoriesOptionGroup.php",
           type: "POST",
           dataType: 'json',
           delay: 250,
@@ -105,29 +105,22 @@ $(document).ready(function(){
             if(data.code == 404){
               return null;
             }
-            return {
-                results: $.map(data, function (item) {
-                    if(item == 404){
-                      return null;
-                    }
-                    return {
-                        text: item.cmp_name,
-                        id: item.cmp_id,
-                        image: checkdefault("data/categories_icon/default/tag-2.png",item.cmp_icon),
-                        data: item
-                    };
-                })
-            };
+            result = {"results":$.map(data, function (item) {
+                          return optgroupSelect2(item);
+                        })
+                      };
+            console.log(result?.results);
+            return result;
           },
           cache: false
           },
           
           placeholder: 'Search for categories',
           minimumInputLength: 0,
-          templateResult: formatRepoCategories,
-          templateSelection: formatRepoSelectionCategories
       })
     }
+
+    //$(".pick_categories").select2ToTree({treeData: {dataArr:mydata}, maximumSelectionLength: 3});
   });
 
 
@@ -150,7 +143,7 @@ $(document).ready(function(){
       $('.pick_post_type').siblings('.select2-container').css('display', 'block');
       $('.pick_post_type').prop('disabled', false);
       activePickPostType(); 
-    }, 2000)
+    }, 1000)
     
     debugger;
     function activePickPostType(){
@@ -340,7 +333,7 @@ $(document).ready(function(){
 var base_url = "../../../";
 
 function checkdefault(default_value, check_parameter){
-    if(check_parameter == null){
+    if(check_parameter == null || check_parameter == ""){
       return default_value;
     }
     return check_parameter;
@@ -386,21 +379,35 @@ function formatRepoSelectionWebsite (state) {
 
 
 //Select Categories select2 function
-function formatRepoCategories (repo) {
+function formatRepoCategories (repo, space = '') {
   if (repo.loading) {
     return repo.text;
   }
 
-  var $container = $(
-    "<div class='select2-result-website clearfix' id='result_categories_"+repo.id+"'>" +
-      "<div class='select2-result-categories__icon'><img src='" + base_url + repo.image + "' /></div>" +
-      "<div class='select2-result-categories__meta'>" +
-        "<div class='select2-result-categories__title'></div>" +
-      "</div>" +
-    "</div>"
-  );
+  if(repo.hasOwnProperty('childrent')){
+    var $container = $(
+      "<div class='select2-result-categories__parent clearfix' id='result_categories_"+repo.id+"'>" +
+        "<div class='select2-result-categories__icon'><i class='fas fa-chevron-right'></i></div>" +
+        "<div class='select2-result-categories__meta'>" +
+          "<div class='select2-result-categories__title'></div>" +
+        "</div>" +
+      "</div>"
+    );
 
-  $container.find(".select2-result-categories__title").text(repo.text);
+    $container + formatRepoCategories(repo.childrent, space + " ");
+  }
+  else{
+    var $container = $(
+      "<div class='select2-result-categories clearfix' id='result_categories_"+repo.id+"'>" +
+        "<div class='select2-result-categories__icon'><img src='" + base_url + repo.image + "' /></div>" +
+        "<div class='select2-result-categories__meta'>" +
+          "<div class='select2-result-categories__title'></div>" +
+        "</div>" +
+      "</div>"
+    );
+  }
+  
+  $container.find(".select2-result-categories__title").text(space + repo.text);
 
   return $container;
 }
@@ -558,4 +565,39 @@ function showAlert(type, message){
   $('.alert button.close').on('click', function(){
     $('.alert').removeClass('show');
   });
+}
+
+ function optgroupSelect2(data){
+  if(data == 404){
+    return null;
+  }
+  var result = new Array();
+  if(data.cmp_has_child === '1'){
+    result = {
+      text: data.cmp_name,
+      //id: data.cmp_id,
+    }
+    child = data.cate_child;
+    result.children = new Array();
+    child.forEach(function(item, key){
+      if(item.cmp_has_child === '1'){
+        result.children.push(optgroupSelect2(item));
+      }
+      else{
+        arr = {
+          text: item.cmp_name,
+          id: item.cmp_id,
+        }
+        result.children.push(arr)
+      }
+    });
+    
+  }
+  else{
+    result = {
+      text: data.cmp_name,
+      id: data.cmp_id
+    }
+  }
+  return result;
 }

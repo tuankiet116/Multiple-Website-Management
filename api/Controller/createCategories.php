@@ -46,7 +46,7 @@ if($message===true){
 }
 else{
     echo json_encode(array(
-        "message" => print_r($message),
+        "message" => $message,
         "code"    => 500
     ));
 }
