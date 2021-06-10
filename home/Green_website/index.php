@@ -2,8 +2,8 @@
 require_once('./helper/function.php');
 require_once('./helper/url.php');
 
-// $get_web_id = get_data_rows("SELECT * FROM website_config WHERE web_url ")
-$web_id = 2;
+$get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_url' AND web_active = 1");
+$web_id = $get_web_id['web_id'];
 
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
@@ -53,7 +53,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title> Thiết kế thi công sân vườn </title>
+    <title><?php echo $arr_con['con_site_title'] ?></title>
     <? include("./includes/inc_head.php"); ?>
 </head>
 
@@ -288,7 +288,7 @@ $pageLink = "";
                 <div class="row">
                     <?php
                             $news = get_data_rows("SELECT * FROM post WHERE post_image_background IS NOT NULL AND 
-                                                   post_active = 1 ORDER BY post_datetime_create DESC LIMIT 8"); 
+                                                   post_active = 1 ORDER BY post_datetime_create DESC LIMIT 6"); 
                             foreach ($news as $key => $n) {
                                 foreach ($category as $key => $cate) {
                                     $mod_rewrite = $arr_con['con_mod_rewrite'];

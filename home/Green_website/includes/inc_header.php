@@ -1,5 +1,3 @@
-<!---------- MENU ---------->
-
 <?php
 $web_id = 2;
 
@@ -15,7 +13,9 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 
 <div id="menu">
     <div id="logo">
-
+        <div id="logo-top">
+            <img src="../../<?php echo $arr_con['con_logo_top'] ?>" alt="logo top">
+        </div>
     </div>
 
     <ul id="navbar">
@@ -42,20 +42,44 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active'] == 1) {
                         $topic_child_id = $topic_child['cmp_id'];
                         $arr_p = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_id LIMIT 1");
-                        foreach ($arr_p as $key => $ap) {
+
+                        $topic_child_cmp_id = $topic_child['cmp_id'];
+                        $topic_child_pt_id = $topic_child['post_type_id'];
+                        $topic_child_pt = explode(",", $topic_child_pt_id);
+                        $count_pt_child = count($topic_child_pt);
+                        if ($count_pt_child == 1) {
+                            foreach ($arr_p as $key => $ap) {
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlName = 'name=' . $ap['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlName = 'name=' . $ap['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_id'];
+                                }
+                                echo '
+                                    <tr>
+                                        <td>
+                                            <a href="news.php?' . $changeUrlName . '&title=' . $ap['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&postNews=' . $ap['ptd_id'] . '" target="_self">
+                                                <div> ' . $topic_child['cmp_name'] . ' </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ';
+                            }
+                        }
+                        else {
+                            $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
                             $mod_rewrite = $arr_con['con_mod_rewrite'];
-                            if($mod_rewrite == 1){
-                                $changeUrlName ='name='.$ap['post_rewrite_name'];
-                                $changeUrlBread = '&breadcrumbs='.$topic_child['cmp_rewrite_name'];
+                            if ($mod_rewrite == 1) {
+                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                            } else {
+                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
                             }
-                            else{
-                                $changeUrlName ='name='.$ap['post_id'];
-                                $changeUrlBread = '&breadcrumbs='.$topic_child['cmp_id'];
-                            }
-                            echo'
+                            echo '
                                 <tr>
                                     <td>
-                                        <a href="news.php?'. $changeUrlName . '&title=' . $ap['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&postNews=' . $ap['ptd_id'] . '" target="_self">
+                                        <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
                                             <div> ' . $topic_child['cmp_name'] . ' </div>
                                         </a>
                                     </td>
@@ -71,25 +95,92 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     ';
             } 
             else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
-                $post_menu = get_data_rows("SELECT * FROM post WHERE post_active = 1");
-                foreach ($post_menu as $key => $pm) {
-                    $mod_rewrite = $arr_con['con_mod_rewrite'];
-                    if ($mod_rewrite == 1) {
-                        $changeUrlName = 'name=' . $pm['post_rewrite_name'];
-                        $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
-                    } else {
-                        $changeUrlName = 'name=' . $pm['post_id'];
-                        $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                $topic_cmp_id = $topic_parents['cmp_id'];
+                $topic_pt_id = $topic_parents['post_type_id'];
+                $topic_parents_pt = explode("," , $topic_pt_id);
+                $count_pt = count($topic_parents_pt);
+                if ($count_pt == 1) {
+                    $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
+                    $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
+                    $count_post = $topic_post_count[0]['COUNT(*)'];
+                    if ($count_post == 1){
+                        foreach ($topic_post as $tp) {
+                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                            if ($mod_rewrite == 1) {
+                                $changeUrlName = 'name=' . $tp['post_rewrite_name'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                            } else {
+                                $changeUrlName = 'name=' . $tp['post_id'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                            }
+                            echo'
+                                <li>
+                                    <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
+                        }
                     }
-                    if ($topic_parents['cmp_id'] == $pm['cmp_id']) {
+                    else {
+                        $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
+                        foreach ($topic_posts as $tps) {
+                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                            if ($mod_rewrite == 1) {
+                                $changeUrlName = 'name=' . $tps['post_rewrite_name'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                            } else {
+                                $changeUrlName = 'name=' . $tps['post_id'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                            }
+                            echo '
+                                <li>
+                                    <a href="news.php?' . $changeUrlName . '&title=' . $tps['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tps['ptd_id'] . '&postName=' . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
+                        }
+                    }
+                }
+                else {
+                    $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                    $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                    $count_post = $topic_post_count[0]['COUNT(*)'];
+                    if ($count_post == 1) {
+                        foreach ($topic_post as $tp) {
+                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                            if ($mod_rewrite == 1) {
+                                $changeUrlName = 'name=' . $tp['post_rewrite_name'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                            } else {
+                                $changeUrlName = 'name=' . $tp['post_id'];
+                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                            }
+                            echo '
+                                <li>
+                                    <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
+                        }
+                    }         
+                    else {
+                        $mod_rewrite = $arr_con['con_mod_rewrite'];
+                        if ($mod_rewrite == 1) {
+                            $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                        } else {
+                            $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_id'];
+                        }
                         echo '
                             <li>
-                                <a href="news.php?' . $changeUrlName . '&title=' . $pm['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $pm['ptd_id'] . '" target="_self">
+                                <a href="news.php?'. $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '" target="_self">
                                     <span>' . $topic_parents['cmp_name'] . '</span>
                                 </a>
                             </li>
                         ';
-                    }
+                    }    
                 }
             }
         }
@@ -132,23 +223,48 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 if ($topic_child['cmp_parent_id'] == $topic_parents['cmp_id'] && $topic_child['cmp_active'] == 1) {
                                     $topic_child_id = $topic_child['cmp_id'];
                                     $arr_p = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_id LIMIT 1");
-                                    foreach ($arr_p as $key => $ap) {
+
+                                    $topic_child_cmp_id = $topic_child['cmp_id'];
+                                    $topic_child_pt_id = $topic_child['post_type_id'];
+                                    $topic_child_pt = explode(",", $topic_child_pt_id);
+                                    $count_pt_child = count($topic_child_pt);
+                                    if ($count_pt_child == 1) {
+                                        foreach ($arr_p as $key => $ap) {
+                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                            if ($mod_rewrite == 1) {
+                                                $changeUrlName = 'name=' . $ap['post_rewrite_name'];
+                                                $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                                            } else {
+                                                $changeUrlName = 'name=' . $ap['post_id'];
+                                                $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_id'];
+                                            }
+                                            echo '
+                                                <tr>
+                                                    <td>
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $ap['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&postNews=' . $ap['ptd_id'] . '" target="_self">
+                                                            <div> ' . $topic_child['cmp_name'] . ' </div>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ';
+                                        }
+                                    } else {
+                                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
                                         $mod_rewrite = $arr_con['con_mod_rewrite'];
                                         if ($mod_rewrite == 1) {
-                                            $changeUrlName = 'name=' . $ap['post_rewrite_name'];
-                                            $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                                            $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
                                         } else {
-                                            $changeUrlName = 'name=' . $ap['post_id'];
-                                            $changeUrlBread = '&breadcrumbs=' . $topic_child['cmp_id'];
+                                            $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
                                         }
                                         echo '
-                                            <a href="news.php?' . $changeUrlName . '&title=' . $ap['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&postNews=' . $ap['ptd_id'] . '" target="_self">
+                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
                                                 <div>' . $topic_child['cmp_name'] . '</div>
-                                            </a>';
+                                            </a>
+                                        ';
                                     }
                                 }
                             }
-                echo'
+                echo '
                         </div>';
                 echo'
                         <script src="../Green_website/resource/js/slideshow/jquery-3.3.1.min.js"></script>
@@ -177,28 +293,122 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                         </script>
                     ';
             } else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
-                    $post_menu = get_data_rows("SELECT * FROM post WHERE post_active = 1");
-                    foreach ($post_menu as $key => $pm) {
-                        $mod_rewrite = $arr_con['con_mod_rewrite'];
-                        if ($mod_rewrite == 1) {
-                            $changeUrlName = 'name=' . $pm['post_rewrite_name'];
-                            $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                    $topic_cmp_id = $topic_parents['cmp_id'];
+                    $topic_pt_id = $topic_parents['post_type_id'];
+                    $topic_parents_pt = explode(",", $topic_pt_id);
+                    $count_pt = count($topic_parents_pt);
+                    if ($count_pt == 1) {
+                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
+                        $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
+                        $count_post = $topic_post_count[0]['COUNT(*)'];
+                        if ($count_post == 1) {
+                            foreach ($topic_post as $tp) {
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlName = 'name=' . $tp['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlName = 'name=' . $tp['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                                }
+                                echo '
+                                    <div id="sub-menu-container">
+                                        <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                            <div>
+                                                ' . $topic_parents['cmp_name'] . '
+                                            </div>
+                                        </a>
+                                    </div>
+                                ';
+                            }
                         } else {
-                            $changeUrlName = 'name=' . $pm['post_id'];
-                            $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                            $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
+                            foreach ($topic_posts as $tps) {
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlName = 'name=' . $tps['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlName = 'name=' . $tps['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                                }
+                                echo '
+                                    <div id="sub-menu-container">
+                                        <a href="news.php?' . $changeUrlName . '&title=' . $tps['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tps['ptd_id'] . '&postName=' . '" target="_self">
+                                            <div>
+                                                ' . $topic_parents['cmp_name'] . '
+                                            </div>
+                                        </a>
+                                    </div>
+                                ';
+                            }
                         }
-
-                        if ($topic_parents['cmp_id'] == $pm['cmp_id']) {
+                    } else {
+                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                        $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                        $count_post = $topic_post_count[0]['COUNT(*)'];
+                        if ($count_post == 1) {
+                            foreach ($topic_post as $tp) {
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlName = 'name=' . $tp['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlName = 'name=' . $tp['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                                }
+                                echo '
+                                    <div id="sub-menu-container">
+                                        <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                            <div>
+                                                ' . $topic_parents['cmp_name'] . '
+                                            </div>
+                                        </a>
+                                    </div>
+                                ';
+                            }
+                        } else {
+                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                            if ($mod_rewrite == 1) {
+                                $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                            } else {
+                                $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_id'];
+                            }
                             echo '
                                 <div id="sub-menu-container">
-                                    <a href="news.php?' . $changeUrlName . '&title=' . $pm['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $pm['ptd_id'] . '" target="_self">
+                                    <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '" target="_self">
                                         <div>
                                             ' . $topic_parents['cmp_name'] . '
                                         </div>
                                     </a>
-                                </div>';
+                                </div>
+                            ';
                         }
                     }
+
+
+                    // $post_menu = get_data_rows("SELECT * FROM post WHERE post_active = 1");
+                    // foreach ($post_menu as $key => $pm) {
+                    //     $mod_rewrite = $arr_con['con_mod_rewrite'];
+                    //     if ($mod_rewrite == 1) {
+                    //         $changeUrlName = 'name=' . $pm['post_rewrite_name'];
+                    //         $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                    //     } else {
+                    //         $changeUrlName = 'name=' . $pm['post_id'];
+                    //         $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                    //     }
+
+                    //     if ($topic_parents['cmp_id'] == $pm['cmp_id']) {
+                    //         echo '
+                    //             <div id="sub-menu-container">
+                    //                 <a href="news.php?' . $changeUrlName . '&title=' . $pm['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $pm['ptd_id'] . '" target="_self">
+                    //                     <div>
+                    //                         ' . $topic_parents['cmp_name'] . '
+                    //                     </div>
+                    //                 </a>
+                    //             </div>';
+                    //     }
+                    // }
             }
         }
         ?>

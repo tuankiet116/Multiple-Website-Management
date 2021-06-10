@@ -118,7 +118,7 @@ $(document).ready(function () {
           method: 'POST',
           data: JSON.stringify(data),
           success: function(data){
-            if(data?.code == 200){
+            if(data.code == 200){
               $('.loader-container').css('display', 'none');
               showAlert('success', `<p>${data.message}</p>`);
               $('#formCategory')[0].reset();

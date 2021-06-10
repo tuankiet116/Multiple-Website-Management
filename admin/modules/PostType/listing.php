@@ -67,6 +67,7 @@
                     <th scope="col"><?= translate_text('Mô Tả') ?></th>
                     <th scope="col"><?= translate_text('Kiểu Bài Viết') ?></th>
                     <th scope="col"><?= translate_text('Website') ?></th>
+                    <th scope="col"><?= translate_text('Danh mục') ?></th>
                     <th scope="col"><?= translate_text('Trạng Thái') ?></th>
                     <th scope="col"><?= translate_text('Hiển Thị Trang Chủ') ?></th>
                     <th scope="col"><?= translate_text('Hành Động') ?></th>

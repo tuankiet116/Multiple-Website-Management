@@ -1,5 +1,6 @@
 <?php
 require_once('../../classes/database.php');
+
 $web_id = 2;
 
 ?>
@@ -8,7 +9,7 @@ $web_id = 2;
     <div id="footer-container">
         <div class="container-fluid">
             <div id="footer-content" class="row">
-                <div class="col-lg-4 col-md-12">
+                <div class="col-lg-6 col-md-12">
                     <p>Thông tin liên hệ</p>
                     <ul class="footer-contact">
                         <?php
@@ -42,6 +43,7 @@ $web_id = 2;
                         ?>
                     </ul>
                 </div>
+
                 <div class="col-lg-4 col-md-12">
                     <p>Danh mục</p>
                     <ul class="footer-link">
@@ -52,17 +54,95 @@ $web_id = 2;
                         </li>
 
                         <?php
-                        $arr_footer_menu = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
-                        foreach ($arr_footer_menu as $key => $footer_menu) {
-                            if ($footer_menu['cmp_active'] == 1 && $footer_menu['cmp_has_child'] == 0) {
-                                echo '
-                                    <li>
-                                        <a href="' . $footer_menu['cmp_rewrite_name'] . '" target="_self">
-                                            ' . $footer_menu['cmp_name'] . '
-                                        </a>
-                                    </li>';
+                            $arr_footer_menu = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
+                            foreach ($arr_footer_menu as $key => $footer_menu) {
+                                if ($footer_menu['cmp_active'] == 1 && $footer_menu['cmp_has_child'] == 0) {
+                                    $footer_cmp_id = $footer_menu['cmp_id'];
+                                    $footer_pt_id = $footer_menu['post_type_id'];
+                                    $footer_menu_pt = explode(",", $footer_pt_id);
+                                    $count_pt_footer = count($footer_menu_pt);
+                                    if ($count_pt_footer == 1) {
+                                        $footer_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $footer_cmp_id AND post_active = 1 AND post_type_id = $footer_pt_id");
+                                        $footer_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $footer_cmp_id AND post_active = 1 AND post_type_id = $footer_pt_id");
+                                        $footer_post_footer = $footer_post_count[0]['COUNT(*)'];
+                                        if ($footer_post_footer == 1) {
+                                            foreach ($footer_post as $fp) {
+                                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                                if ($mod_rewrite == 1) {
+                                                    $changeUrlName = 'name=' . $fp['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_rewrite_name'];
+                                                } else {
+                                                    $changeUrlName = 'name=' . $fp['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_id'];
+                                                }
+                                                echo '
+                                                    <li>
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $fp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $footer_menu['cmp_name'] . '&postNews=' . $fp['ptd_id'] . '" target="_self">
+                                                            <span>' . $footer_menu['cmp_name'] . '</span>
+                                                        </a>
+                                                    </li>
+                                                ';
+                                            }
+                                        } else {
+                                            $footer_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $footer_cmp_id AND post_active = 1 AND post_type_id = $footer_pt_id LIMIT 1");
+                                            foreach ($footer_posts as $fps) {
+                                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                                if ($mod_rewrite == 1) {
+                                                    $changeUrlName = 'name=' . $fps['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_rewrite_name'];
+                                                } else {
+                                                    $changeUrlName = 'name=' . $fps['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_id'];
+                                                }
+                                                echo '
+                                                    <li>
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $fps['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $footer_menu['cmp_name'] . '&postTypeId=' . $footer_menu['post_type_id'] . '&postNews=' . $fps['ptd_id'] . '&postName=' . '" target="_self">
+                                                            <span>' . $footer_menu['cmp_name'] . '</span>
+                                                        </a>
+                                                    </li>
+                                                ';
+                                            }
+                                        }
+                                    } else {
+                                        $footer_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $footer_cmp_id AND post_active = 1 AND post_type_id IN ($footer_pt_id)");
+                                        $footer_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $footer_cmp_id AND post_active = 1 AND post_type_id IN ($footer_pt_id)");
+                                        $footer_post_footer = $footer_post_count[0]['COUNT(*)'];
+                                        if ($footer_post_footer == 1) {
+                                            foreach ($footer_post as $fp) {
+                                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                                if ($mod_rewrite == 1) {
+                                                    $changeUrlName = 'name=' . $fp['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_rewrite_name'];
+                                                } else {
+                                                    $changeUrlName = 'name=' . $fp['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $footer_menu['cmp_id'];
+                                                }
+                                                echo '
+                                                    <li>
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $fp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $footer_menu['cmp_name'] . '&postTypeId=' . $footer_menu['post_type_id'] . '&postNews=' . $fp['ptd_id'] . '" target="_self">
+                                                            <span>' . $footer_menu['cmp_name'] . '</span>
+                                                        </a>
+                                                    </li>
+                                                ';
+                                            }
+                                        } else {
+                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                            if ($mod_rewrite == 1) {
+                                                $changeUrlBread = 'breadcrumbs=' . $footer_menu['cmp_rewrite_name'];
+                                            } else {
+                                                $changeUrlBread = 'breadcrumbs=' . $footer_menu['cmp_id'];
+                                            }
+                                            echo '
+                                                <li>
+                                                    <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $footer_menu['cmp_name'] . '&postTypeId=' . $footer_menu['post_type_id'] . '&countPt=' . $count_pt_footer . '" target="_self">
+                                                        <span>' . $footer_menu['cmp_name'] . '</span>
+                                                    </a>
+                                                </li>
+                                            ';
+                                        }
+                                    }
+                                }
                             }
-                        }
                         ?>
 
                         <li>
@@ -73,28 +153,11 @@ $web_id = 2;
                     </ul>
                 </div>
 
-                <div class="col-lg-4 col-md-12">
-                    <p>Dịch vụ cung cấp</p>
-                    <ul class="footer-link">
-                        <?php
-                        $arr_footer_services = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
-                        foreach ($arr_footer_services as $key => $footer_services) {
-                            if ($footer_services['cmp_active'] == 1 && $footer_services['cmp_parent_id'] == 10) {
-                                $footer_services_id = $footer_services['cmp_id'];
-                                $arr_p = get_data_rows("SELECT * FROM post WHERE FIND_IN_SET($footer_services_id, cmp_id)");
-                                foreach ($arr_p as $key => $ar) {
-                                    echo '
-                                    <li>
-                                        <a href="news.php?name=' . $ar['post_rewrite_name'] . '&title=' . $ar['post_title'] . '&breadcrumbs=' . $footer_services['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $footer_services['cmp_name'] . '&postNews=' . $ar['ptd_id'] . '" target="_self">
-                                            ' . $footer_services['cmp_name'] . '
-                                        </a>
-                                    </li>';
-                                }
-                            }
-                        }
-                        ?>
-
-                    </ul>
+                <div class="col-lg-2 col-md-12">
+                    <div id="logo-bottom">
+                        <?php $logo_bottom = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id"); ?>
+                        <img src="../../<?php echo $logo_bottom['con_logo_bottom'] ?>" alt="logo bottom">
+                    </div>
                 </div>
             </div>
         </div>

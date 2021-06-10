@@ -84,11 +84,11 @@ class Categories{
                     $stmt->bindParam(9,  $this->web_id, PDO::PARAM_INT);
                     $stmt->bindParam(10, $this->post_type_id);
         
-                    if($stmt->execute()){
+                    if($stmt->execute()===true){
                         return $message = true;
                     }
                     else{
-                        $message = 'Cannot Create Category!';
+                        $message = $stmt->debugDumpParams($stmt);//'Cannot Create Category!';
                         return $message;
                     }
                 }
@@ -184,5 +184,64 @@ class Categories{
 
     //     return $stmt;
     // }
+
+    public function getCategoriesActive($cmp_parent_id = 0, $user_tree_array = ''){
+        if (!is_array($user_tree_array))
+            $user_tree_array = array();
+        
+        $query_where = "";
+        if($cmp_parent_id == 0){
+            $query_where = " AND cmp_parent_id IS NULL ";
+        }
+        else{
+            $query_where = " AND cmp_parent_id = ".$cmp_parent_id;
+        }
+
+        $query = "SELECT * FROM categories_multi_parent 
+                WHERE web_id = :web_id AND cmp_name LIKE '%" .$this->term. "%' ".$query_where." 
+                ORDER BY cmp_id ASC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':web_id',  $this->web_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+
+        $cate_array = array();
+        if ($count > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if($row['cmp_has_child'] == 1){
+                    $parent = $row['cmp_id'];
+                    $user_tree_array = array(
+                        "cmp_id"               => $row['cmp_id'],
+                        "cmp_name"             => $row['cmp_name'],
+                        "cmp_rewrite_name"     => $row['cmp_rewrite_name'],
+                        "cmp_icon"             => $row['cmp_icon'],
+                        "cmp_has_child"        => $row['cmp_has_child'],
+                        "cmp_background"       => $row['cmp_background'],
+                        "bgt_type"             => $row['bgt_type'],
+                        "cmp_meta_description" => $row['cmp_meta_description'],
+                        "cmp_parent_id"        => $row['cmp_parent_id'],
+                        "cate_child"           => $this->getCategoriesActive($parent)
+                    );
+                    
+                }
+                else{
+                    $user_tree_array = array(
+                        "cmp_id"               => $row['cmp_id'],
+                        "cmp_name"             => $row['cmp_name'],
+                        "cmp_rewrite_name"     => $row['cmp_rewrite_name'],
+                        "cmp_icon"             => $row['cmp_icon'],
+                        "cmp_has_child"        => $row['cmp_has_child'],
+                        "cmp_background"       => $row['cmp_background'],
+                        "bgt_type"             => $row['bgt_type'],
+                        "cmp_meta_description" => $row['cmp_meta_description'],
+                        "cmp_parent_id"        => $row['cmp_parent_id']
+                    );
+                }
+
+                array_push($cate_array, $user_tree_array);
+            }
+        }
+        return $cate_array;
+    }
 }
 ?>
