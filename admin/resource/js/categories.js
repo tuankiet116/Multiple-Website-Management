@@ -133,6 +133,12 @@ $(document).ready(function () {
               $('#image_background_homepage_3').css('display', 'none');
               $('#image_background_homepage_4').css('display', 'none');
               $('#image_background_homepage_5').css('display', 'none');
+
+              $('#input_image_background_category_1').children('svg').css('display', 'inherit');
+              $('#input_image_background_category_2').children('svg').css('display', 'inherit');
+              $('#input_image_background_category_3').children('svg').css('display', 'inherit');
+              $('#input_image_background_category_4').children('svg').css('display', 'inherit');
+              $('#input_image_background_category_5').children('svg').css('display', 'inherit');
               getAllCate(web_id_create);
             }
             else{
@@ -149,6 +155,27 @@ $(document).ready(function () {
   $('.overlay').click(function(){
     $('.modal-update').css("display", "none");
     $('body').removeAttr('style');
+
+    $('#form-update')[0].reset();
+    $('.wrapper-post-update').empty();
+    $('#image_background_homepage_1_update').attr('src', "#");
+    $('#image_background_homepage_2_update').attr('src', "#");
+    $('#image_background_homepage_3_update').attr('src', "#");
+    $('#image_background_homepage_4_update').attr('src', "#");
+    $('#image_background_homepage_5_update').attr('src', "#");
+
+    $('#image_background_homepage_1_update').css('display', 'none');
+    $('#image_background_homepage_2_update').css('display', 'none');
+    $('#image_background_homepage_3_update').css('display', 'none');
+    $('#image_background_homepage_4_update').css('display', 'none');
+    $('#image_background_homepage_5_update').css('display', 'none');
+
+    $('#input_image_background_category_1_update').children('svg').css('display', 'inherit');
+    $('#input_image_background_category_2_update').children('svg').css('display', 'inherit');
+    $('#input_image_background_category_3_update').children('svg').css('display', 'inherit');
+    $('#input_image_background_category_4_update').children('svg').css('display', 'inherit');
+    $('#input_image_background_category_5_update').children('svg').css('display', 'inherit');
+
   });
 
   $('#submit_update').click(function(){

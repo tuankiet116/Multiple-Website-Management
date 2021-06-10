@@ -66,14 +66,14 @@ $pageLink = "";
                     <?php
                     foreach ($arr_shop as $key => $shop) {
                         if ($shop['product_active'] == 1) {
-                            echo '
+                            echo'
                             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="shop-content">
                                     <div class="shop-image">
                                         <a href="#" target="_self">
                                             <img src="../../' . $shop['product_image_path'] . '" alt="shop image">
 
-                                            <div class="shop-detail">
+                                            <div class="shop-detail" data-toggle="modal" data-target="#detailContainer>
                                                 <div> Chi tiết </div>
                                             </div>
                                         </a>

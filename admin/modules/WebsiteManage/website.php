@@ -20,11 +20,11 @@
 </head>
 <body>
     <div class="container">
-        <!-- <div class="btn-show-modal">
+        <div class="btn-show-modal">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#show-modal-form">
-                Thêm mới 
+                <i class="fas fa-plus"></i> Thêm mới 
             </button>
-        </div> -->
+        </div>
         <div class="modal fade" id="show-modal-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -88,21 +88,12 @@
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td><p class="web_name">Dịch vụ vệ sinh</p></td>
+                        <td><p class="web_url">dichvuvesinh.com.vn</p></td>
+                        <td><img src="https://cdn.chanhtuoi.com/uploads/2020/10/w400/logo-zalo-png-vertor-jpeg.jpg.webp" alt="icon" class="icon-website"></td>
+                        <td><p class="web_description">Lorem ipsum dolor sit amet consectetur?</p></td>
+                        <td><button class="btn btn-success">Hiển Thị</button></td>
+                        <td><button class="btn btn-warning">Sửa</button></td>
                     </tr>
                 </tbody>
             </table>

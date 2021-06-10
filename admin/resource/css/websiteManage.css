@@ -17,8 +17,13 @@
 .form-control::placeholder{ font-size: 14px;}
 .btn-submit{display: flex; justify-content: center;}
 .form-group > textarea{height: 100px;}
+.btn-show-modal{ margin: 30px 0;}
+.btn-show-modal > button{ font-size: 14px; padding-top: 2px; padding-bottom: 2px;}
+.btn-show-modal > button > i{ font-size: 12px; color: #ffffff;}
+
 
 /* css-table */
 .list-website-title{ margin: 30px 0;}
 .list-website-title > p{ text-align: center; font-weight: 500; font-size: 18px;}
-.table > thead > tr > th { font-size: 16px;} 
+.table > thead > tr > th { font-size: 14px;} 
+img.icon-website { width: 30px; height: 30px;}
