@@ -136,12 +136,15 @@ function ajaxSearchingPostType(data) {
 }
 
 function postTypeSuccess(data){
+    debugger;
     html = "";
     stt = 0;
     data.forEach(function(value, key){
         action = '';
 
-        if(value.post_type_title == null){
+        next_value = data[parseInt(key) + 1];
+
+        if(value.post_type_title == null || value.post_type_title == ""){
             value.post_type_title = "<p style = 'color: red'>NULL</p>";
         }
 
@@ -153,9 +156,14 @@ function postTypeSuccess(data){
             value.web_name = "<p style = 'color: red'>NULL</p>";
         }
 
-        if(value.cmp_name == null){
-            value.cmp_name = "<p style = 'color: red'>NULL</p>";
+        if (next_value != null || next_value != "") {
+          if (next_value.post_type_id === value.post_type_id) {
+            if (value.cmp_name == null) {
+              value.cmp_name = "<p style = 'color: red'>NULL</p>";
+            }
+          }
         }
+        
 
         if(value.post_type_active == 1){
           status_pt = '<button style = "width: 100px;" id="pt_status_show_'+ value.post_type_id +'" type="button" class="btn btn-basic status_button">Đã Hiển Thị</button>';

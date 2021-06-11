@@ -46,6 +46,9 @@ if($count>0){
             "web_name"              => $row['web_name'],
             "cmp_name"              => $row['cmp_name'],
             "web_id"                => $row['web_id'],
+            "cmp_id"                => $row['cmp_id'],
+            "cmp_has_child"         => $row['cmp_has_child'],
+            "cmp_active"            => $row['cmp_active'],
             "code"                  => 200
         );
 
