@@ -235,21 +235,36 @@ function formatRepoCategories(repo) {
     return repo.text;
   }
 
-  var $container = $(
-    "<div class='select2-result-website clearfix' id='result_categories_" +
-      repo.id +
-      "'>" +
-      "<div class='select2-result-categories__icon'><img src='" +
-      base_url +
-      repo.image +
-      "' /></div>" +
-      "<div class='select2-result-categories__meta'>" +
-      "<div class='select2-result-categories__title'></div>" +
-      "</div>" +
-      "</div>"
-  );
+  if (repo.hasOwnProperty("childrent")) {
+    var $container = $(
+      "<div class='select2-result-categories__parent clearfix' id='result_categories_" +
+        repo.id +
+        "'>" +
+        "<div class='select2-result-categories__icon'><i class='fas fa-chevron-right'></i></div>" +
+        "<div class='select2-result-categories__meta'>" +
+        "<div class='select2-result-categories__title'></div>" +
+        "</div>" +
+        "</div>"
+    );
 
-  $container.find(".select2-result-categories__title").text(repo.text);
+    $container + formatRepoCategories(repo.childrent, space + " ");
+  } else {
+    var $container = $(
+      "<div class='select2-result-categories clearfix' id='result_categories_" +
+        repo.id +
+        "'>" +
+        "<div class='select2-result-categories__icon'><img src='" +
+        base_url +
+        repo.image +
+        "' /></div>" +
+        "<div class='select2-result-categories__meta'>" +
+        "<div class='select2-result-categories__title'></div>" +
+        "</div>" +
+        "</div>"
+    );
+  }
+
+  $container.find(".select2-result-categories__title").text(space + repo.text);
 
   return $container;
 }

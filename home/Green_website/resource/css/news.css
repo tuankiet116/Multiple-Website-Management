@@ -366,6 +366,54 @@ body {
     transition: .3s;
 }
 
+.container .row .news-right .news-right-container .news-right-content .post-type-list {
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+    padding-top: 5px;
+    padding-bottom: 35px;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos{
+    height: auto;
+    padding: 0;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(odd) {
+    padding-right: 7px;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(even) {
+    padding-left: 7px;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container {
+    border: 3px solid #4ca246;
+    height: 120px;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-title {
+    height: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-title p{
+    text-align: center;
+    padding-top: 30px;
+    color: rgb(30, 30, 30);
+    font-weight: bold;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-des {
+    height: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-des p {
+    text-align: center;
+    color: rgb(60, 60, 60);
+}
+
+
 
 
 /********** Responsive **********/

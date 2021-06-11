@@ -1,9 +1,4 @@
-<?php
-require_once('../../classes/database.php');
-
-$web_id = 2;
-
-?>
+<?php $base_url = "http://localhost:8093/"; ?>
 
 <div id="footer">
     <div id="footer-container">
@@ -155,8 +150,7 @@ $web_id = 2;
 
                 <div class="col-lg-2 col-md-12">
                     <div id="logo-bottom">
-                        <?php $logo_bottom = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id"); ?>
-                        <img src="../../<?php echo $logo_bottom['con_logo_bottom'] ?>" alt="logo bottom">
+                        <img src="<?php echo $base_url . $web_icon ?>" alt="logo bottom">
                     </div>
                 </div>
             </div>
