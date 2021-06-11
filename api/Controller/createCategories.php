@@ -32,7 +32,7 @@ $categories->cmp_background         = $images_background_category_64;
 $categories->bgt_type               = $data->bgt_type;
 $categories->cmp_meta_description   = $data->cmp_meta_description;
 $categories->cmp_active             = $data->cmp_active;
-$categories->cmp_parent_id          = $data->cmp_parent_id;
+$categories->cmp_parent_id          = $data->cmp_parent_id =="" || $data->cmp_parent_id ==null ?null : htmlspecialchars($data->cmp_parent_id);
 $categories->web_id                 = $data->web_id;
 $categories->post_type_id           = $data->post_type_id;
 
