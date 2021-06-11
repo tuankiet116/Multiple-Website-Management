@@ -316,6 +316,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     $topic_parents_pt = explode(",", $topic_pt_id);
                     $count_pt = count($topic_parents_pt);
                     if ($count_pt == 1) {
+                        
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
