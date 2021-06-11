@@ -50,7 +50,7 @@ $pageLink = "";
 
     <!--------------- CONTENT --------------->
 
-    <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
+    <?php  $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
     <div id="shop">
         <div id="shop-container">
             <div class="container-fluid">

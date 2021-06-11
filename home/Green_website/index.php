@@ -82,7 +82,7 @@ $pageLink = "";
 
     <div id="main-container">
         <div class="container-fluid">
-            <?php
+            <?php 
             foreach ($post_type as $key => $pt) {
                 $pt_id = $pt['post_type_id'];
                 $post = get_data_rows("SELECT * FROM post WHERE post_type_id = $pt_id AND post_image_background IS NOT NULL AND post_active = 1"); ?>
