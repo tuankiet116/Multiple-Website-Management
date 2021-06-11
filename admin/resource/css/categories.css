@@ -56,33 +56,18 @@ div.categories-parent-item p{
 .dl-none{
     display: none;
 }
-.categories-child-item > div > p{
+.categories-child-item > div{
     cursor: pointer;
     border: 1px solid #000000;
     color: #f35c21;
     border-radius: 5px;
     padding: 3px 10px;
-    margin-bottom: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 18px;
 }
 
-.categories-child-item > div > p > a{
-    color: #ffffff;
-}
-
-.categories-child-item > div > div{
-    margin-left: 20px;
-    display: none;
-}
-.categories-child-2 > p{
-    cursor: pointer;
-    background-color: rgba(62, 103, 214, 0.6);
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 3px 10px;
+.categories-child-item{
     margin-bottom: 5px;
 }
 .categories-container-form-title > p{
@@ -338,4 +323,10 @@ border-radius: 50%;
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+.btn-show-hide{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 10px;
+    color: #ffffff;
 }

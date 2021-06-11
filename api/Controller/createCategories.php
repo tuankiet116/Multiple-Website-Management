@@ -18,8 +18,8 @@ $categories = new Categories($db);
 $data = json_decode(file_get_contents("php://input"));
 $web_id = $data->web_id;
 
-$images_background_category = array($data->image_background_category_1, $data->image_background_category_2,
-                                    $data->image_background_category_3, $data->image_background_category_4, $data->image_background_category_5);
+$images_background_category = array(htmlspecialchars(trim($data->image_background_category_1)), htmlspecialchars(trim($data->image_background_category_2)),
+                                    htmlspecialchars(trim($data->image_background_category_3)), htmlspecialchars(trim($data->image_background_category_4)), htmlspecialchars(trim($data->image_background_category_5)));
 
 $UploadBase64 = new upload_image();
 $url_save = '../../data/image/image_categories';

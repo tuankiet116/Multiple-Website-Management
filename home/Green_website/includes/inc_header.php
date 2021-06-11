@@ -1,20 +1,14 @@
 <?php
-$web_id = 2;
-
 $arr_topic_parents = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NULL AND web_id = $web_id");
 $arr_topic_child = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND web_id = $web_id");
 $arr_buy = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
 $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
-
 ?>
-
-
-
 
 <div id="menu">
     <div id="logo">
         <div id="logo-top">
-            <img src="../../<?php echo $arr_con['con_logo_top'] ?>" alt="logo top">
+            <img src="<?php echo $base_url . $arr_con['con_logo_top'] ?>" alt="logo top">
         </div>
     </div>
 

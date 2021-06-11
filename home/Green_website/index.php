@@ -4,6 +4,7 @@ require_once('./helper/url.php');
 
 $get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_url' AND web_active = 1");
 $web_id = $get_web_id['web_id'];
+$web_icon = $get_web_id['web_icon'];
 
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
@@ -70,7 +71,7 @@ $pageLink = "";
                 <?php
                 foreach ($url_slide as $key => $url) { ?>
                     <div>
-                        <img src="../../<?php echo $url ?>" alt="Carousel background" class="img-fluid">
+                        <img src="<?php echo $base_url.$url ?>" alt="Carousel background" class="img-fluid">
                     </div>
                 <?php } ?>
             </div>
@@ -114,7 +115,7 @@ $pageLink = "";
                                                 <div class="services">
                                                     <a href="news.php?' . $changeUrlName . '&title=' . $p['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
                                                         <div class="sv-img">
-                                                            <img src="../../' . $p['post_image_background'] . '" alt="garden">
+                                                            <img src="' . $base_url . $p['post_image_background'] . '" alt="garden">
                                                         </div>
                                                         <div class="sv-title">
                                                             <p> ' . $p['post_title'] . ' </p>
@@ -160,7 +161,7 @@ $pageLink = "";
                                                         <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">       
                                                             <div class="carousel-content">
                                                                 <a href="news.php?' . $changeUrlName . '&title=' . $p['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
-                                                                    <img class="img-fluid" src="../../' . $p['post_image_background'] . '" alt="carousel image">
+                                                                    <img class="img-fluid" src="'.$base_url . $p['post_image_background'] . '" alt="carousel image">
                                                                     <div class="carousel-title">
                                                                         ' . $p['post_title'] . '
                                                                         <div class="carousel-text">' . $p['post_description'] . '</div>
@@ -210,7 +211,7 @@ $pageLink = "";
                                         echo '
                                             <div class="choose-container col-lg-6">
                                                 <a class="choose-left" href="news.php?' . $changeUrlName . '&title=' . $p_left['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_left['ptd_id'] . '" target="_self">
-                                                    <img src="../../' . $p_left['post_image_background'] . '" alt="choose image left">
+                                                    <img src="' . $base_url . $p_left['post_image_background'] . '" alt="choose image left">
                                                     <div class="choose-content">
                                                         <div class="choose-text">
                                                             <p class="choose-title">' . $p_left['post_title'] . '</p>
@@ -243,7 +244,7 @@ $pageLink = "";
                                                 echo '
                                                     <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
                                                         <a class="choose-right" href="news.php?' . $changeUrlName . '&title=' . $p_right['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_right['ptd_id'] . '" target="_self">
-                                                            <img src="../../' . $p_right['post_image_background'] . '" alt="choose right image">
+                                                            <img src="' .$base_url . $p_right['post_image_background'] . '" alt="choose right image">
                                                             <div class="choose-right-content">
                                                                 <div class="choose-right-text">
                                                                     <p class="choose-right-title">' . $p_right['post_title'] . '</p>
@@ -268,7 +269,7 @@ $pageLink = "";
                     foreach ($banner as $key => $b) {
                         echo '
                                 <div id="contact">
-                                    <img src="../../' . $b['con_banner_image'] . '" alt="contact image">
+                                    <img src="' .$base_url . $b['con_banner_image'] . '" alt="contact image">
                                 </div>';
                     }
                 }
@@ -309,7 +310,7 @@ $pageLink = "";
                                                 <div class="row news-all">
                                                     <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
                                                         <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self">
-                                                            <img src="../../' . $n['post_image_background'] . '" alt="news image">
+                                                            <img src="'. $base_url . $n['post_image_background'] . '" alt="news image">
                                                         </a>
                                                     </div>
 
