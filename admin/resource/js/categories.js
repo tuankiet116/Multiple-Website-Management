@@ -218,8 +218,8 @@ function getCateById(data){
     url: base_url+'api/Controller/getCategoriesByID.php',
     method: 'POST',
     data: JSON.stringify(data),
-    success: function(data){
-      renderFormUpdate(data);
+    success: function(res){
+      renderFormUpdate(res);
     }
   })
 }
@@ -253,11 +253,87 @@ function getPostType(web_id){
 }
 
 function renderFormUpdate(data){
+  var dataWebId = {
+    "web_id": web_id_create
+  } 
   $('#cmp_name_update').val(data.cmp_name);
-  $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
+  if(data.cmp_has_child == 1){
+    $('#cmp_rewrite_name_update').prop( "disabled", true );
+    $('.form-group-update > span.badge').remove();
+    $('#cmp_rewrite_name_update').parent('.form-group-update').append('<span class="badge badge-danger">Không Được Sửa</span>');
+    $('#input_background_category_1_update').prop( "disabled", true );
+    $('#input_background_category_2_update').prop( "disabled", true );
+    $('#input_background_category_3_update').prop( "disabled", true );
+    $('#input_background_category_4_update').prop( "disabled", true );
+    $('#input_background_category_5_update').prop( "disabled", true );
+    $('#bgt_type_update').prop( "disabled", true );
+    $('.input-image-container > i').off('click');
+    setImageData(data.cmp_background,'#image_background_homepage_', 1);
+    $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
+    $('#bgt_type_update').val(data.bgt_type);
+    $('.wrapper-post-update').html('<span class="badge badge-danger">Không Thể Chọn Nhóm Bài Viết</span>');
+  }
+  else {
+    $('#cmp_rewrite_name_update').prop( "disabled", false );
+    $('.form-group-update > span.badge').remove();
+    $('.wrapper-post-update >span.badge').remove();
+    $('#input_background_category_1_update').prop( "disabled", false );
+    $('#input_background_category_2_update').prop( "disabled", false );
+    $('#input_background_category_3_update').prop( "disabled", false );
+    $('#input_background_category_4_update').prop( "disabled", false );
+    $('#input_background_category_5_update').prop( "disabled", false );
+    $('#bgt_type_update').prop( "disabled", false );
+
+    $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
+    setImageData(data.cmp_background,'#image_background_homepage_', 1);
+    $('#bgt_type_update').val(data.bgt_type);
+
+    $('.input-image-container > i').on('click', function(){
+      var image_element = $(this).siblings('.input-image').find('img');
+      var id_image = "#" + image_element.attr('id');
+      $(id_image).attr('src', '#');
+      $(id_image).css('display', 'none');
+      $(id_image).siblings('svg').css('display', 'block');
+    });
+    
+    $.ajax({
+      url: base_url+'api/Controller/getPostType.php',
+      method: 'POST',
+      async: false,
+      data: JSON.stringify(dataWebId),
+      success: function(dataPostType){
+        if(dataPostType.code == 404){
+          var err = `<p>Không có bài viết nào</p>`;
+        }else{
+          var render = dataPostType.map((e)=>{
+            var a =``;
+            a +=`<div class="post-item">
+                    <label for="label_post_type_id">${e.post_type_title}</label>`;
+            if(data.post_type_id.includes(e.post_type_id)){
+                  a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id" checked>`
+            }
+            else{
+              a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id">`
+            }
+            a+= `</div>`
+            return a;
+          })
+          $('.wrapper-post-update').html(render ?? err);
+  
+          var select = document.querySelectorAll('.post_type_id');
+          select.forEach((e)=>{
+            e.onchange = function(){
+              if(e.checked){
+                post_type_id_update.push(e.value);
+              }
+            }
+          })
+        } 
+      }
+    })
+  }
+
   $('#cmp_icon_update').val(data.cmp_icon);
-  setImageData(data.cmp_background,'#image_background_homepage_', 1);
-  $('#bgt_type_update').val(data.bgt_type).change();
   $('#cmp_meta_description_update').val(data.cmp_meta_description);
   if(data.cmp_active == "1"){
     $('#cmp_active_update').prop('checked', true);
@@ -265,44 +341,7 @@ function renderFormUpdate(data){
   else{
     $('#cmp_active_update').prop('checked', false);
   }
-  var dataWebId = {
-    "web_id": web_id_create
-  }
-  $.ajax({
-    url: base_url+'api/Controller/getPostType.php',
-    method: 'POST',
-    async: false,
-    data: JSON.stringify(dataWebId),
-    success: function(dataPostType){
-      if(dataPostType.code == 404){
-        var err = `<p>Không có bài viết nào</p>`;
-      }else{
-        var render = dataPostType.map((e)=>{
-          var a =``;
-          a +=`<div class="post-item">
-                  <label for="label_post_type_id">${e.post_type_title}</label>`;
-          if(data.post_type_id.includes(e.post_type_id)){
-                a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id" checked>`
-          }
-          else{
-            a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id">`
-          }
-          a+= `</div>`
-          return a;
-        })
-        $('.wrapper-post-update').html(render ?? err);
-
-        var select = document.querySelectorAll('.post_type_id');
-        select.forEach((e)=>{
-          e.onchange = function(){
-            if(e.checked){
-              post_type_id_update.push(e.value);
-            }
-          }
-        })
-      } 
-    }
-  })
+  
 }
 
 function updateDataCategory(){
@@ -387,7 +426,7 @@ var exGetImg = function(extag, element) {
 
   //set default image which null value
 function checkdefault(default_value, check_parameter){
-  if(check_parameter == null){
+  if(check_parameter == null || check_parameter==""){
     return default_value;
   }
   return check_parameter;
@@ -510,26 +549,25 @@ function getAllCate(web_id){
         })
         
         var allCate = cate_parent.map((p)=>{
-          checkShowParent = p.cmp_active == 0 ? `<div class="btn btn-secondary btn-show-hide">Ẩn</div>`: "";
+          checkShowParent = p.cmp_active == 0 ? `<span class="badge badge-secondary btn-show-hide">Đang Ẩn</span>`: "";
           var rs =``;
           rs +=`<div class="categories-item">`;
           rs +=` <div class="categories-parent-item">
-                    <p>${p.cmp_name}</p>       
+                    <p>${p.cmp_name} ${checkShowParent}</p>       
                     <div class="action-user">
-                      ${checkShowParent}
                       <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update  show-modal-update">sửa</button>
                     </div>
                  </div>`;
                 cate_child.forEach((c)=>{
-                  checkShowChild = c.cmp_active == 0? `<div class="btn btn-secondary btn-show-hide">Ẩn</div>`: "";
+                  checkShowChild = c.cmp_active == 0? `<span class="badge badge-secondary btn-show-hide">Đang Ẩn</span>`: "";
                   if(c.cmp_parent_id == p.cmp_id){
                     rs += `
                     <div class="wapper-categories-child">
                         <div class="categories-child-item">
                             <div>
-                                <p>${c.cmp_name}</p>
+                                <p>${c.cmp_name} ${checkShowChild}</p>
                                 <div class=action-user>
-                                  ${checkShowChild}
+                                  
                                   <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update  show-modal-update">sửa</button>
                                 </div>
                             </div>
@@ -549,7 +587,7 @@ function getAllCate(web_id){
                 <option value="${e.cmp_id}">${e.cmp_name}</option>
               `;
             }
-        })
+        }).join("");
       }
       
       $('.categories-content').html(allCate ?? err).ready(function(){

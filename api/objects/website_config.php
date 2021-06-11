@@ -128,7 +128,7 @@ class Website_Config{
             }
         }
         else{
-            $message = "Cannot Update Website Cause Duplicate Web Name Or Domain!!";
+            $message = "Web Name Or Domain Duplicate";
             return $message;
         }
     }
@@ -161,7 +161,7 @@ class Website_Config{
                 }
             }
             else{
-                $message = "Cannot Create Website Cause It Already Exists!";
+                $message = "Web Name Or Domain Duplicate!";
                 return $message;
             }
         }

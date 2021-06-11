@@ -47,6 +47,14 @@ $(document).ready(function(){
     
     //create
     create();
+
+    // reset form
+    $('#show-modal-form-update').on('hidden.bs.modal', function(){
+        $('#form-update')[0].reset();
+        $('#image_icon_1_update').attr('src', "#");
+        $('#image_icon_1_update').css('display', 'none');
+        $('#input_image_icon_1_update').children('svg').css('display', 'inherit');
+    })
 })
 
 // api get Data of table
@@ -57,17 +65,18 @@ function getDataTable(){
     async: false,
     success: function (res){
       var view = res.map((e)=>{
+        var checkIcon = checkdefault("data/web_icon/icon_default/default.png", e.web_icon);
         rs =``;
         rs += `<tr>`;
         rs += `
                 <td>${e.web_id}</td>
                 <td><p class="web_name">${e.web_name}</p></td>
                 <td><p class="web_url">${e.web_url}</p></td>
-                <td><img src="${base_url}${e.web_icon}" alt="icon" class="icon-website"></td>
+                <td><img src="${base_url}${checkIcon}" alt="icon" class="icon-website"></td>
                 <td><p class="web_description">${e.web_description}</p></td>
               `
               if(e.web_active ==1){
-                rs += `<td><button class="btn btn-success btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
+                rs += `<td><button class="btn btn-basic btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
               }
               else{
                 rs += `<td><button class="btn btn-danger btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đã Ẩn</button></td>`
@@ -248,7 +257,7 @@ var exGetImg = function(extag, element) {
 
   //set default image which null value
 function checkdefault(default_value, check_parameter){
-    if(check_parameter == null){
+    if(check_parameter == null || check_parameter==""){
         return default_value;
     }
     return check_parameter;
