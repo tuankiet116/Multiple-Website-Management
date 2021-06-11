@@ -91,7 +91,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                         </li>
                     ';
             } 
-            else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
+            else if ($topic_parents['cmp_has_child'] == 0 && $topic_parents['cmp_active'] == 1) {
                 $topic_cmp_id = $topic_parents['cmp_id'];
                 $topic_pt_id = $topic_parents['post_type_id'];
                 $topic_parents_pt = explode("," , $topic_pt_id);
@@ -120,13 +120,9 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
-                            // echo'
-                            //     <li>
-                            //         <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
-                            //             <span>' . $topic_parents['cmp_name'] . '</span>
-                            //         </a>
-                            //     </li>
-                            // ';
+                            
+
+
                         }
                         else {
                             $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
@@ -315,8 +311,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     $topic_pt_id = $topic_parents['post_type_id'];
                     $topic_parents_pt = explode(",", $topic_pt_id);
                     $count_pt = count($topic_parents_pt);
-                    if ($count_pt == 1) {
-                        
+                    if ($count_pt == 1 && ($topic_pt_id != "" || $topic_pt_id != null)) {
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
@@ -362,7 +357,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 ';
                             }
                         }
-                    } else {
+                    } else if ($count_pt > 1 && ($topic_pt_id != "" || $topic_pt_id != null)) {
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
@@ -403,7 +398,17 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 </div>
                             ';
                         }
-                    echo '2';
+                    }
+                    else if ($topic_pt_id == "" || $topic_pt_id == null) {
+                        echo '
+                            <div id="sub-menu-container">
+                                <a href="" target="_self">
+                                    <div>
+                                        ' . $topic_parents['cmp_name'] . '
+                                    </div>
+                                </a>
+                            </div>
+                        ';
                     }
 
 
