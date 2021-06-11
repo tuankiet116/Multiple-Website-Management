@@ -30,9 +30,9 @@ $categories->cmp_rewrite_name       = htmlspecialchars($data->cmp_rewrite_name);
 $categories->cmp_icon               = htmlspecialchars($data->cmp_icon);
 $categories->cmp_background         = $images_background_category_64;
 $categories->bgt_type               = htmlspecialchars($data->bgt_type);
-$categories->cmp_meta_description   = htmlspecialchars($data->cmp_meta_description);
+$categories->cmp_meta_description   = $data->cmp_meta_description;
 $categories->cmp_active             = htmlspecialchars(intVal($data->cmp_active));
-$categories->cmp_parent_id          = htmlspecialchars($data->cmp_parent_id)==""?null : htmlspecialchars($data->cmp_parent_id);
+$categories->cmp_parent_id          = $data->cmp_parent_id =="" || $data->cmp_parent_id ==null ?null : htmlspecialchars($data->cmp_parent_id);
 $categories->web_id                 = htmlspecialchars($data->web_id);
 $categories->post_type_id           = htmlspecialchars($data->post_type_id);
 
