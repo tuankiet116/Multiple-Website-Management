@@ -125,6 +125,7 @@ $(document).ready(function () {
           url: base_url+'api/Controller/createCategories.php',
           method: 'POST',
           data: JSON.stringify(data),
+          async: false,
           success: function(data){
             if(data.code == 200){
               $('.loader-container').css('display', 'none');
@@ -154,6 +155,7 @@ $(document).ready(function () {
               $('.loader-container').css('display', 'none');
               showAlert('error', `<p>${data.message}</p>`);
             }
+
           },
           error: function(data){
             // console.log(data);
@@ -322,7 +324,8 @@ function renderFormUpdate(data){
               var a =``;
               a +=`<div class="post-item">
                       <label for="label_post_type_id">${e.post_type_title}</label>`;
-              if(data.post_type_id.includes(e.post_type_id)){
+              var data_post_type_id = data.post_type_id.split(',');
+              if(data_post_type_id.includes(e.post_type_id)){
                 post_type_id_update.push(e.post_type_id);
                 a+= `<input id="post_type_${e.post_type_id}" type="checkbox" class=" post_type_id_update" value="${e.post_type_id}" name="label_post_type_id" checked>`
               }
