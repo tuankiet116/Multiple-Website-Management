@@ -112,7 +112,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     $changeUrlName = 'name=' . $tp['post_id'];
                                     $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
                                 }
-                                echo'
+                                echo '
                                     <li>
                                         <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
                                             <span>' . $topic_parents['cmp_name'] . '</span>
@@ -120,13 +120,13 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
-                            echo'
-                                <li>
-                                    <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
-                                        <span>' . $topic_parents['cmp_name'] . '</span>
-                                    </a>
-                                </li>
-                            ';
+                            // echo'
+                            //     <li>
+                            //         <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
+                            //             <span>' . $topic_parents['cmp_name'] . '</span>
+                            //         </a>
+                            //     </li>
+                            // ';
                         }
                         else {
                             $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
@@ -147,14 +147,16 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
-                            echo '
-                                <li>
-                                    <a href="news.php?' . $changeUrlName . '&title=' . $tps['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tps['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
-                                        <span>' . $topic_parents['cmp_name'] . '</span>
-                                    </a>
-                                </li>
-                            ';
                         }
+                    }
+                    else {
+                        echo '
+                            <li>
+                                <a href="" target="_self">
+                                    <span>' . $topic_parents['cmp_name'] . '</span>
+                                </a>
+                            </li>
+                        ';
                     }
 
                 }
@@ -307,7 +309,8 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                             });
                         </script>
                     ';
-            } else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {
+            } else if ($topic_parents['cmp_has_child'] == 0 &&  $topic_parents['cmp_active'] == 1) {    
+                    
                     $topic_cmp_id = $topic_parents['cmp_id'];
                     $topic_pt_id = $topic_parents['post_type_id'];
                     $topic_parents_pt = explode(",", $topic_pt_id);
@@ -399,6 +402,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 </div>
                             ';
                         }
+                    echo '2';
                     }
 
 
