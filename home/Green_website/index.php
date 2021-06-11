@@ -39,11 +39,13 @@ $url_slide = explode(",", $get_slide['con_background_homepage']);
 
 $post_type = get_data_rows("SELECT * FROM post_type WHERE allow_show_homepage = 1 AND web_id = $web_id");
 
-$sql = "SELECT COUNT(*) FROM product";
-$result = new db_query($sql);
-$row = mysqli_fetch_row($result->result);
-$total_record = $row[0];
-unset($result, $sql);
+$sql = "SELECT * FROM product";
+$result = get_data_rows($sql);
+$total_record = sizeof($result);
+// $result = new db_query($sql);
+// $row = mysqli_fetch_row($result->result);
+// $total_record = $row[0];
+// unset($result, $sql);
 
 $total_pages = ceil($total_record / $per_page_record);
 $pageLink = "";
