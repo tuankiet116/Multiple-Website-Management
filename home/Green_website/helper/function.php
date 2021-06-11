@@ -1,10 +1,16 @@
 <?php 
-    require_once('../../classes/database.php');
+    require_once('./config.php');
+
+    $database = new Database();
+    $conn = $database->getConnection();
+
     function get_data_rows($query){
         $arr = array();
-        $result = new db_query($query);
-        if(mysqli_num_rows($result->result)>0){
-            while($row = mysqli_fetch_assoc($result->result)){
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        
+        if($stmt->rowCount()>0){
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 array_push($arr, $row);
             }
         }
@@ -12,9 +18,11 @@
     }
 
     function get_data_row($query){
-        $result = new db_query($query);
-        if(mysqli_num_rows($result->result)>0){
-            $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return $data ?? '';
     }

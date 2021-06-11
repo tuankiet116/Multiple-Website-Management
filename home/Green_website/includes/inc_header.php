@@ -16,7 +16,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
     <ul id="navbar">
         <li>
             <a href="index.php" target="_self">
-                <span>Trang chủ</span>
+                <span>Trang chủ </span>
             </a>
         </li>
 
@@ -435,7 +435,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 
         <a href="shop.php" target="_self">
             <div>
-                Báo giá sản phẩm
+                Báo giá sản phẩm 
             </div>
         </a>
     </div>
