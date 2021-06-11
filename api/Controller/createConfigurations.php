@@ -86,39 +86,46 @@ $config->con_banner_description    = htmlspecialchars(trim($data->con_banner_des
 $config->con_banner_active         = htmlspecialchars(trim($data->con_banner_active));
 $config->con_rewrite_name_homepage = htmlspecialchars(trim($data->con_rewrite_name_homepage));
 
-
-$count = $config -> getByWebID(intVal($data->web_id), false);
-if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
+if($data->web_id == null || $data->web_id == "" || $data->lang_id == "" || $data->lang_id == null){
     http_response_code(200);
-    echo json_encode(array("message" => $UploadBase64->common_error,
-                            "code"    => 500));
+    echo json_encode(array("message" => "Data Invalid",
+                                    "code"    => 500));
 }
 else{
-    if($count>0){
+    $count = $config -> getByWebID(intVal($data->web_id), false);
+    if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
         http_response_code(200);
-        echo json_encode(array("message" => "This Website Have Exists Configuration",
-                               "code"    => 500));
+        echo json_encode(array("message" => $UploadBase64->common_error,
+                                "code"    => 500));
     }
     else{
-        if(isset($config->web_id)){
-            if($config -> create()){
-                http_response_code(200);
-                echo json_encode(array("message" => "Create Success", "code" => 200));
+        if($count>0){
+            http_response_code(200);
+            echo json_encode(array("message" => "This Website Have Exists Configuration",
+                                "code"    => 500));
+        }
+        else{
+            if(isset($config->web_id)){
+                if($config -> create()){
+                    http_response_code(200);
+                    echo json_encode(array("message" => "Create Success", "code" => 200));
+                }
+                else{
+                    http_response_code(200);
+                    echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+                }
             }
             else{
                 http_response_code(200);
-                echo json_encode(array('message' => "Something has wrong", 'code' => 500));
+                echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
+                                    "code"    => 500));
             }
         }
-        else{
-            http_response_code(200);
-            echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
-                                   "code"    => 500));
-        }
-        
     }
 }
-
+unset($db);
+unset($cate);
+unset($UploadBase64);
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();

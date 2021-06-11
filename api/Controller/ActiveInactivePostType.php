@@ -21,13 +21,13 @@ $post_type = new PostType($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->post_type_id) && isset($data->post_type_active)){
-    $post_type->post_type_id = $data->post_type_id;
-    $post_type->post_type_active = $data->post_type_active;
+    $post_type->post_type_id = intVal($data->post_type_id);
+    $post_type->post_type_active = intVal($data->post_type_active);
     $count = $post_type->getPostTypeByID(false);
     if($count > 0){
         if($post_type->ActiveInactivePostType()===true){
             http_response_code(200);
-            echo json_encode(array("message" => "Update Success ", "code" => 200));
+            echo json_encode(array("message" => "Update Status Success ", "code" => 200));
         }
         else{
             http_response_code(200);

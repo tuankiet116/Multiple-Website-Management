@@ -21,7 +21,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to read
 $product->term   = htmlspecialchars(trim($data->term)); 
-if($data->web_id != null || $data->web_id != ""){
+if($data->web_id != null && $data->web_id != ""){
     $product->web_id = intVal($data->web_id);
 }
 
