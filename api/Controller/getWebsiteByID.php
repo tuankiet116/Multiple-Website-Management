@@ -28,6 +28,7 @@ $website->web_id = intVal($data->web_id);
         $website_array = array(
             "web_id"          => $website->web_id,
             "web_name"        => $website->web_name,
+            "web_url"         => $website->web_url,
             "web_icon"        => $website->web_icon,
             "web_description" => $website->web_description
         );

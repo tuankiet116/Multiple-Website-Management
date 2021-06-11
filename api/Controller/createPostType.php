@@ -20,21 +20,32 @@ $post_type = new PostType($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-// set Term property of record to create
-$post_type->post_type_title       = htmlspecialchars(trim($data->post_type_title));
-$post_type->post_type_description = htmlspecialchars(trim($data->post_type_description));
-$post_type->post_type_show        = htmlspecialchars(trim($data->post_type_show));
-$post_type->post_type_active      = intVal($data->post_type_active);
-$post_type->allow_show_homepage   = intVal($data->allow_show_homepage);
-$post_type->web_id                = intVal($data->web_id);
+if($data->post_type_title == "" || $data->post_type_title == null || $data->web_id == null ) {
+    http_response_code(200);
+    echo json_encode(array(
+        'message' => "Data Invalid",
+        'code' => 500
+    ));
+}   
+else{
+    // set Term property of record to create
+    $post_type->post_type_title       = htmlspecialchars(trim($data->post_type_title));
+    $post_type->post_type_description = htmlspecialchars(trim($data->post_type_description));
+    $post_type->post_type_show        = htmlspecialchars(trim($data->post_type_show));
+    $post_type->post_type_active      = intVal($data->post_type_active);
+    $post_type->allow_show_homepage   = intVal($data->allow_show_homepage);
+    $post_type->web_id                = intVal($data->web_id);
+    $post_type->cmp_id                = intVal($data->cmp_id);
+}
 
-if($result = $post_type->create() === true){
+$result = $post_type->create();
+if($result === true){
     http_response_code(200);
     echo json_encode(array("message" => "Create Success", "code" => 200));
 }
 else{
     http_response_code(200);
-    echo json_encode(array('message' => "Something has wrong",
+    echo json_encode(array('message' => $result,
                              'code' => 500 ));
 }
 

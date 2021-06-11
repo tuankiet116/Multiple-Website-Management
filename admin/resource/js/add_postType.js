@@ -51,7 +51,17 @@ $(document).ready(function () {
   });
 
   //Categories Handle
+  $(".pick_categories").select2({
+    placeholder: "Search for categories",
+  });
+
   $(".pick_website_select").on("change", function () {
+    $(".pick_post_type").val("").trigger("change");
+    $(".pick_post_type").select2({
+      placeholder: "Search For Type Of Post",
+    });
+    $(".pick_post_type").prop("disabled", true);
+
     $(".pick_categories").val("").trigger("change");
     $(".pick_categories").select2({
       placeholder: "Search for categories",
@@ -142,7 +152,8 @@ $(document).ready(function () {
       'post_type_description': $("#postTypeDescription").val(),
       'post_type_show'       : $(".pick_show").select2("val"),
       'post_type_active'     : $(".pick_active").select2("val"),
-      'allow_show_homepage'  : $(".pick_allow_show").select2("val")
+      'allow_show_homepage'  : $(".pick_allow_show").select2("val"),
+      'cmp_id'               : $(".pick_categories").select2("val"),
     };
 
     var url = "../../../api/Controller/createPostType.php";

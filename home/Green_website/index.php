@@ -53,7 +53,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title> Thiết kế thi công sân vườn </title>
+    <title><?php echo $arr_con['con_site_title'] ?></title>
     <? include("./includes/inc_head.php"); ?>
 </head>
 
@@ -288,7 +288,7 @@ $pageLink = "";
                 <div class="row">
                     <?php
                             $news = get_data_rows("SELECT * FROM post WHERE post_image_background IS NOT NULL AND 
-                                                   post_active = 1 ORDER BY post_datetime_create DESC LIMIT 8"); 
+                                                   post_active = 1 ORDER BY post_datetime_create DESC LIMIT 6"); 
                             foreach ($news as $key => $n) {
                                 foreach ($category as $key => $cate) {
                                     $mod_rewrite = $arr_con['con_mod_rewrite'];
