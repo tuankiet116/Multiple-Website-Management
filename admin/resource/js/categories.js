@@ -161,7 +161,7 @@ $(document).ready(function () {
   $('.overlay').click(function(){
     $('.modal-update').css("display", "none");
     $('body').removeAttr('style');
-
+    post_type_id_update = [];
     $('#form-update')[0].reset();
     $('.wrapper-post-update').empty();
     $('#image_background_homepage_1_update').attr('src', "#");
@@ -199,14 +199,16 @@ $(document).ready(function () {
           $('.modal-update').css("display", "none");
           $('body').removeAttr('style');
           getAllCate(web_id_create);
+          post_type_id_update = [];
         }
         else{
           $('.loader-container').css('display', 'none');
           showAlert('error', `<p>${data.message}</p>`);
         }
+
       },
       error: function(data){
-        // console.log(data);
+        showAlert('error', data.responseText);
       }
       
     })
@@ -260,45 +262,97 @@ function renderFormUpdate(data){
   } 
   $('#cmp_name_update').val(data.cmp_name);
   $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
-  $('#bgt_type_update').val(data.bgt_type);
-  setImageData(data.cmp_background,'#image_background_homepage_', 1);
+  // $('#bgt_type_update').val(data.bgt_type);
+  // setImageData(data.cmp_background,'#image_background_homepage_', 1);
 
-  // if(data.cmp_has_child == 1){
-  //   $('#cmp_rewrite_name_update').prop( "disabled", true );
-  //   $('.form-group-update > span.badge').remove();
-  //   $('#cmp_rewrite_name_update').parent('.form-group-update').append('<span class="badge badge-danger">Không Được Sửa</span>');
-  //   $('#input_background_category_1_update').prop( "disabled", true );
-  //   $('#input_background_category_2_update').prop( "disabled", true );
-  //   $('#input_background_category_3_update').prop( "disabled", true );
-  //   $('#input_background_category_4_update').prop( "disabled", true );
-  //   $('#input_background_category_5_update').prop( "disabled", true );
-  //   $('#bgt_type_update').prop( "disabled", true );
-  //   $('.input-image-container > i').off('click');
-  //   $('.wrapper-post-update').html('<span class="badge badge-danger">Không Thể Chọn Nhóm Bài Viết</span>');
-  // }
-  // else {
-  //   $('#cmp_rewrite_name_update').prop( "disabled", false );
-  //   $('.form-group-update > span.badge').remove();
-  //   $('.wrapper-post-update >span.badge').remove();
-  //   $('#input_background_category_1_update').prop( "disabled", false );
-  //   $('#input_background_category_2_update').prop( "disabled", false );
-  //   $('#input_background_category_3_update').prop( "disabled", false );
-  //   $('#input_background_category_4_update').prop( "disabled", false );
-  //   $('#input_background_category_5_update').prop( "disabled", false );
-  //   $('#bgt_type_update').prop( "disabled", false );
+  if(data.cmp_has_child == 1){
+    $('#cmp_rewrite_name_update').prop( "disabled", true );
+    $('.form-group-update > span.badge').remove();
+    $('#cmp_rewrite_name_update').parent('.form-group-update').append('<span class="badge badge-danger">Không Được Sửa</span>');
+    $('#input_background_category_1_update').prop( "disabled", true );
+    $('#input_background_category_2_update').prop( "disabled", true );
+    $('#input_background_category_3_update').prop( "disabled", true );
+    $('#input_background_category_4_update').prop( "disabled", true );
+    $('#input_background_category_5_update').prop( "disabled", true );
+    $('#bgt_type_update').prop( "disabled", true );
+    $('.input-image-container > i').off('click');
+    $('.wrapper-post-update').html('<span class="badge badge-danger">Không Thể Chọn Nhóm Bài Viết</span>');
+       $('#bgt_type_update').val(data.bgt_type);
+       setImageData(data.cmp_background,'#image_background_homepage_', 1);
+  }
+  else {
+    $('#cmp_rewrite_name_update').prop( "disabled", false );
+    $('.form-group-update > span.badge').remove();
+    $('.wrapper-post-update >span.badge').remove();
+    $('#input_background_category_1_update').prop( "disabled", false );
+    $('#input_background_category_2_update').prop( "disabled", false );
+    $('#input_background_category_3_update').prop( "disabled", false );
+    $('#input_background_category_4_update').prop( "disabled", false );
+    $('#input_background_category_5_update').prop( "disabled", false );
+    $('#bgt_type_update').prop( "disabled", false );
 
-  //   $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
-  //   setImageData(data.cmp_background,'#image_background_homepage_', 1);
-  //   $('#bgt_type_update').val(data.bgt_type);
+    $('#cmp_rewrite_name_update').val(data.cmp_rewrite_name);
+    setImageData(data.cmp_background,'#image_background_homepage_', 1);
+    $('#bgt_type_update').val(data.bgt_type);
 
-  //   $('.input-image-container > i').on('click', function(){
-  //     var image_element = $(this).siblings('.input-image').find('img');
-  //     var id_image = "#" + image_element.attr('id');
-  //     $(id_image).attr('src', '#');
-  //     $(id_image).css('display', 'none');
-  //     $(id_image).siblings('svg').css('display', 'block');
-  //   });
-  // }
+    $('.input-image-container > i').on('click', function(){
+      var image_element = $(this).siblings('.input-image').find('img');
+      var id_image = "#" + image_element.attr('id');
+      $(id_image).attr('src', '#');
+      $(id_image).css('display', 'none');
+      $(id_image).siblings('svg').css('display', 'block');
+    });
+
+      $.ajax({
+        url: base_url+'api/Controller/getPostType.php',
+        method: 'POST',
+        async: false,
+        data: JSON.stringify(dataWebId),
+        success: function(dataPostType){
+          if(dataPostType.code == 404){
+            var err = `<p>Không có bài viết nào</p>`;
+          }else{
+            var render = dataPostType.map((e)=>{
+              var a =``;
+              a +=`<div class="post-item">
+                      <label for="label_post_type_id">${e.post_type_title}</label>`;
+              if(data.post_type_id.includes(e.post_type_id)){
+                post_type_id_update.push(e.post_type_id);
+                a+= `<input id="post_type_${e.post_type_id}" type="checkbox" class=" post_type_id_update" value="${e.post_type_id}" name="label_post_type_id" checked>`
+              }
+              else{
+                a+= `<input id="post_type_${e.post_type_id}" type="checkbox" class=" post_type_id_update" value="${e.post_type_id}" name="label_post_type_id">`
+              }
+              a+= `</div>`
+              return a;
+            })
+            $('.wrapper-post-update').html(render ?? err).ready(function(){
+
+              var select = $('.post_type_id_update');
+              console.log(select);
+              $('.post_type_id_update').on('change',function(){
+                id = $(this).attr('id');
+                //console.log(id);
+                if($('#' + id).prop('checked')){
+                  value = id.split('_')[2];
+                  post_type_id_update.push(value);
+                }
+                else{
+                  value = id.split('_')[2];
+                  removeElement(post_type_id_update, value);
+                }
+                // console.log(post_type_id_update);
+              });
+              
+            });
+
+          } 
+        },
+        error: function(dataWebId){
+          console.log(dataWebId);
+        }
+      })
+  }
   $('#cmp_icon_update').val(data.cmp_icon);
   $('#cmp_meta_description_update').val(data.cmp_meta_description);
   if(data.cmp_active == "1"){
@@ -308,44 +362,7 @@ function renderFormUpdate(data){
     $('#cmp_active_update').prop('checked', false);
   }
 
-  $.ajax({
-    url: base_url+'api/Controller/getPostType.php',
-    method: 'POST',
-    async: false,
-    data: JSON.stringify(dataWebId),
-    success: function(dataPostType){
-      if(dataPostType.code == 404){
-        var err = `<p>Không có bài viết nào</p>`;
-      }else{
-        var render = dataPostType.map((e)=>{
-          var a =``;
-          a +=`<div class="post-item">
-                  <label for="label_post_type_id">${e.post_type_title}</label>`;
-          if(data.post_type_id.includes(e.post_type_id)){
-                a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id" checked>`
-          }
-          else{
-            a+= `<input type="checkbox" class=" post_type_id" value="${e.post_type_id}" name="label_post_type_id">`
-          }
-          a+= `</div>`
-          return a;
-        })
-        $('.wrapper-post-update').html(render ?? err);
-
-        var select = document.querySelectorAll('.post_type_id');
-        select.forEach((e)=>{
-          e.onchange = function(){
-            if(e.checked){
-              post_type_id_update.push(e.value);
-            }
-          }
-        })
-      } 
-    },
-    error: function(dataWebId){
-      console.log(dataWebId);
-    }
-  })
+  
 }
 
 function updateDataCategory(){
@@ -611,5 +628,12 @@ function getAllCate(web_id){
       })
     }
   });
+}
+
+function removeElement(array, elem) {
+  var index = array.indexOf(elem);
+  if (index > -1) {
+      array.splice(index, 1);
+  }
 }
 
