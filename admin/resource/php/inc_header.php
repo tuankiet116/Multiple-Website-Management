@@ -1,4 +1,4 @@
-<div class="header" style="background: linear-gradient(to top right, #ffcc00 0%, #cc0000 100%);">
+<div class="header" style="background: #0000d8 ;">
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<!-- <td style="width: 200px">
@@ -9,7 +9,7 @@
 			<td>
 				<i id="sidenav-hide" class="fas fa-bars" onclick="hideNav()"></i>
 			</td>
-			<td style="text-transform: uppercase; font-size: 16px; text-align: left; padding-left: 80px; font-family: 'Roboto';">Hệ thống chấm công nhân viên</td>
+			<td style="text-transform: uppercase; font-size: 16px; text-align: left; padding-left: 80px; font-family: 'Roboto';">Website Multiple Manager</td>
 			<td style="width:46px">
 				<div class="userAvatar">
 					<img src="../../../images/user-icon3.png" alt="user avatar">

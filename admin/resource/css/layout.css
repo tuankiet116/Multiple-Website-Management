@@ -324,7 +324,7 @@ p.note, p.ended, p.order{
 }
 .abcde{
 	/* background: linear-gradient( 90deg ,rgb(0, 204, 153),rgb(153, 230, 0)); */
-	background-color: rgb(243, 92, 33);
+	background-color: #0000d8 ;
     color: white;
 	padding: 15px 10px 15px;
 	font-weight: bold;
