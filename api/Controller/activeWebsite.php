@@ -14,15 +14,15 @@ $db = $database->getConnection();
 $website = new Website_Config($db);
 $data = json_decode(file_get_contents("php://input"));
 
-if(isset($data)){
-    $website->web_active = $data->web_active;
-    $website->web_id     = $data->web_id;
+if(isset($data) && $data->web_active !='' && $data->web_id != ''){
+    $website->web_active = intVal($data->web_active);
+    $website->web_id     = intVal($data->web_id);
 
     $messageCheck = $website->activeStatus();
     if($messageCheck===true){
         http_response_code(200);
         echo json_encode(array(
-            "message" => "Thành công",
+            "message" => "Update Status Success",
             "code"    => 200
         ));
     }
@@ -37,10 +37,11 @@ if(isset($data)){
 else{
     http_response_code(200);
     echo json_encode(array(
-        "message" =>"Có Gì Đó Không Đúng!!",
+        "message" =>"Data Invalid",
         "code"    => 400
     ));
 }
-
+unset($db);
+unset($website);
 
 ?>

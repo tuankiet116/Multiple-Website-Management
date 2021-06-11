@@ -27,32 +27,40 @@ if(isset($data)){
     $website->web_url         = $data->web_url;
     $website->web_icon        = $web_icon_base_64;
     $website->web_description = $data->web_description;
+    if($data->web_name == null || $data->web_name == "" || $data->web_url == null || $data->web_url == ""){
+        http_response_code(200);
+        echo json_encode(array(
+            "message" => "Data Invalid",
+            "code"    => 500
+        ));
+    }
+    else{
+        $message = $website->createWebsite();
+        if($message === true){
+            http_response_code(200);
+            echo json_encode(array(
+                "message" => "Create Website Success.",
+                "code"    => 200
+            ));
+        }
+        else{
+            http_response_code(200);
+            echo json_encode(array(
+                "message" => $message,
+                "code"    => 500
+            ));
+        }
+    
+        if($web_icon_base_64 === false){
+            http_response_code(200);
+            echo json_encode(array(
+                "message" => $UploadBase64->common_error,
+                "code"    => 500
+            ));
+        }
+    }
 }
 
-$message = $website->createWebsite();
-
-if($message === true){
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => "Thêm Mới Website Thành Công",
-        "code"    => 200
-    ));
-}
-else{
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => $message,
-        "code"    => 500
-    ));
-}
-
-if($web_icon_base_64 === false){
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => $UploadBase64->common_error,
-        "code"    => 500
-    ));
-}
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();

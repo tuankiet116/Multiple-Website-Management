@@ -15,7 +15,7 @@ $categories = new Categories($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if(isset($data)){
+if(isset($data) && $data->web_id != null && $data->web_id != "" && $data->cmp_id != "" && $data->cmp_id != null){
     $web_id = $data->web_id;
     $cmp_id = $data->cmp_id;
 
@@ -30,7 +30,7 @@ if(isset($data)){
     else{
         http_response_code(200);
         echo json_encode(array(
-            "message" => "không Có Danh Mục Này!!",
+            "message" => "This Category Does Not Exist",
             "code"  => 404,
         ));
     }
@@ -38,7 +38,7 @@ if(isset($data)){
 else{
     http_response_code(200);
     echo json_encode(array(
-        "message" => "Không Nhận được dữ liệu",
+        "message" => "Data Invalid",
         "code"  => 402
     ));
 }

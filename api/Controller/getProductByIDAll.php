@@ -23,7 +23,7 @@ if(isset($data)){
     // set Term property of record to read
 $product->product_id = intVal($data->product_id); 
 
-if($product->getByIDAll() && isset($product->product_id)){
+if($product->getByIDAll()===true && isset($product->product_id)){
     //language array
     $product_array = array(
         "product_id"          => $product->product_id,

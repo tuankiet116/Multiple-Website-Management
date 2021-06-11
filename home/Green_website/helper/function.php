@@ -1,21 +1,43 @@
 <?php 
-    require_once('../../classes/database.php');
+    define("DATABASE_HOST", "localhost");
+    define("DATABASE_NAME", "cleaning_introduces_test");
+    define("DATABASE_USERNAME", "root");
+    define("DATABASE_PASSWORD", "");
+    define("SLAVE_DATABASE_HOST", ["localhost" => 2]);
+    define("SLAVE_DATABASE_USERNAME", "");
+    define("SLAVE_DATABASE_PASSWORD", "");
+
     function get_data_rows($query){
+        $conn = new PDO("mysql:host=" . DATABASE_HOST . ";dbname=" . DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->exec("set names utf8");
         $arr = array();
-        $result = new db_query($query);
-        if(mysqli_num_rows($result->result)>0){
-            while($row = mysqli_fetch_assoc($result->result)){
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        if($stmt->rowCount()>0){
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 array_push($arr, $row);
             }
         }
+        unset($stmt);
+        unset($conn);
         return $arr;
+        
     }
 
     function get_data_row($query){
-        $result = new db_query($query);
-        if(mysqli_num_rows($result->result)>0){
-            $data = mysqli_fetch_array($result->result, MYSQLI_ASSOC);
+        $conn = new PDO("mysql:host=" . DATABASE_HOST . ";dbname=" . DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->exec("set names utf8");
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
         }
+        unset($stmt);
+        unset($conn);
         return $data ?? '';
     }
 

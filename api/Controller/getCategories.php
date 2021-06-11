@@ -15,7 +15,7 @@ $categories = new Categories($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if(isset($data)){
+if(isset($data) && $data->web_id != null && $data->web_id != ""){
    $web_id = intVal($data->web_id);
    $resultCategories = $categories->getCategories($web_id);
 
@@ -45,13 +45,13 @@ if(isset($data)){
     else{
         http_response_code(200);
 
-        echo json_encode(array("message" => "chưa có danh mục nào!!!",
+        echo json_encode(array("message" => "Categories Does Not Exist",
                                "code"    => 404));
     }
 }
 else{
     http_response_code(200);
-    echo json_encode(array("message" => "Không Nhận được dữ liệu!",
+    echo json_encode(array("message" => "Data Invalid",
                            "code"    => 402));
 }
 

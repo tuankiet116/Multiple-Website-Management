@@ -22,7 +22,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to update
 
-$post_type->post_type_id               = $data->post_type_id;
+$post_type->post_type_id               = intVal($data->post_type_id);
 $post_type->post_type_title            = htmlspecialchars(trim($data->post_type_title));
 $post_type->post_type_description      = htmlspecialchars(trim($data->post_type_description));
 $post_type->post_type_show             = htmlspecialchars(trim($data->post_type_show));
@@ -30,7 +30,7 @@ $post_type->post_type_show             = htmlspecialchars(trim($data->post_type_
 $count = $post_type -> getPostTypeByID(false);
 
 if($count>0){
-    if(isset($post_type->post_type_id)){
+    if(isset($post_type->post_type_id) && $data->post_type_id != null && $data->post_type_id != ""){
         $stmt = $post_type -> update();
         if($stmt === true){
             http_response_code(200);

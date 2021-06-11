@@ -24,11 +24,14 @@ $arr_shop = get_data_rows("SELECT * FROM product WHERE web_id = $web_id LIMIT $s
 
 /********** PAGINATION **********/
 
-$sql = "SELECT COUNT(*) FROM product";
-$result = new db_query($sql);
-$row = mysqli_fetch_row($result->result);
-$total_record = $row[0];
-unset($result, $sql);
+$sql = "SELECT * FROM product";
+$result = get_data_rows($sql);
+$total_record = sizeof($result);
+// $sql = "SELECT COUNT(*) FROM product";
+// $result = new db_query($sql);
+// $row = mysqli_fetch_row($result->result);
+// $total_record = $row[0];
+// unset($result, $sql);
 
 $total_pages = ceil($total_record / $per_page_record);
 $pageLink = "";
@@ -50,7 +53,7 @@ $pageLink = "";
 
     <!--------------- CONTENT --------------->
 
-    <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
+    <?php  $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
     <div id="shop">
         <div id="shop-container">
             <div class="container-fluid">

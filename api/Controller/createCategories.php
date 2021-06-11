@@ -25,42 +25,52 @@ $UploadBase64 = new upload_image();
 $url_save = '../../data/image/image_categories';
 $images_background_category_64 =  saveBase64($UploadBase64, $images_background_category, $url_save, 'jpg, png, svg, jpeg', 2000, 'backgroundCategory', 'backgroundCategory');
 
-$categories->cmp_name               = $data->cmp_name;
-$categories->cmp_rewrite_name       = $data->cmp_rewrite_name;
-$categories->cmp_icon               = $data->cmp_icon;
+$categories->cmp_name               = htmlspecialchars($data->cmp_name);
+$categories->cmp_rewrite_name       = htmlspecialchars($data->cmp_rewrite_name);
+$categories->cmp_icon               = htmlspecialchars($data->cmp_icon);
 $categories->cmp_background         = $images_background_category_64;
-$categories->bgt_type               = $data->bgt_type;
-$categories->cmp_meta_description   = $data->cmp_meta_description;
-$categories->cmp_active             = $data->cmp_active;
-$categories->cmp_parent_id          = $data->cmp_parent_id =="" || $data->cmp_parent_id ==null ?null : htmlspecialchars($data->cmp_parent_id);
-$categories->web_id                 = $data->web_id;
-$categories->post_type_id           = $data->post_type_id;
+$categories->bgt_type               = htmlspecialchars($data->bgt_type);
+$categories->cmp_meta_description   = htmlspecialchars($data->cmp_meta_description);
+$categories->cmp_active             = htmlspecialchars(intVal($data->cmp_active));
+$categories->cmp_parent_id          = htmlspecialchars($data->cmp_parent_id)==""?null : htmlspecialchars($data->cmp_parent_id);
+$categories->web_id                 = htmlspecialchars($data->web_id);
+$categories->post_type_id           = htmlspecialchars($data->post_type_id);
 
-
-$message = $categories->creatCategories($web_id);
-if($message===true){
+// unset($message);
+if($data->cmp_name == "" || $data->cmp_name == null || $data->web_id == null || $data->web_id == ""){
     echo json_encode(array(
-        "message" => "thêm thành công danh mục!",
-        "code"    => 200
+        "message" => "Data Invalid",
+        "code"    => 500
     ));
 }
 else{
-    echo json_encode(array(
-        "message" => $message,
-        "code"    => 500
-    ));
+    if($images_background_category_64 === false){
+        http_response_code(200);
+        echo json_encode(array(
+            "message" => $UploadBase64->common_error,
+            "code"    => 500
+        ));
+    }
+    else{
+        $message = $categories->creatCategories($web_id);
+        if($message===true){
+            echo json_encode(array(
+                "message" => "Create Success Menu",
+                "code"    => 200
+            ));
+        }
+        else{
+            echo json_encode(array(
+                "message" => $message,
+                "code"    => 500
+            ));
+        }
+    }
 }
 
-// unset($message);
-
-if($images_background_category_64 === false){
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => $UploadBase64->common_error,
-        "code"    => 500
-    ));
-}
-
+unset($db);
+unset($categories);
+unset($UploadBase64);
 
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
