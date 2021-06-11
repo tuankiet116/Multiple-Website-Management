@@ -315,7 +315,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     $topic_pt_id = $topic_parents['post_type_id'];
                     $topic_parents_pt = explode(",", $topic_pt_id);
                     $count_pt = count($topic_parents_pt);
-                    if ($count_pt == 1) {
+                    if ($count_pt == 1 && ($topic_pt_id != "" || $topic_pt_id != null)) {
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
@@ -361,7 +361,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 ';
                             }
                         }
-                    } else {
+                    } else if ($count_pt > 1 && ($topic_pt_id != "" || $topic_pt_id != null)) {
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
@@ -402,7 +402,17 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 </div>
                             ';
                         }
-                    echo '2';
+                    }
+                    else if ($topic_pt_id == "" || $topic_pt_id == null) {
+                        echo '
+                            <div id="sub-menu-container">
+                                <a href="" target="_self">
+                                    <div>
+                                        ' . $topic_parents['cmp_name'] . '
+                                    </div>
+                                </a>
+                            </div>
+                        ';
                     }
 
 
