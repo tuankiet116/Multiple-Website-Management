@@ -154,6 +154,7 @@ class Categories{
             $stmt->bindParam(':cmp_id',               $cmp_id);
 
             if($stmt->execute()){
+                //$child_id = 
                 return $message = true;
             }
             else{
