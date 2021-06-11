@@ -345,7 +345,7 @@ function websiteSelect2(element){
       data: function (params) {
         if(params.term == null){
           var obj = {
-            "term": params.term
+            "term": ""
           } 
         }else{
           var obj = {
