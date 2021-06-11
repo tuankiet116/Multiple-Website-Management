@@ -162,7 +162,7 @@ class Categories{
             }
         }
         else{
-            $message = 'Cannot Update Category Cause It Exists';
+            $message = 'Category Name Or Rewrite Name Duplicate.';
             return $message;
         }
     }
