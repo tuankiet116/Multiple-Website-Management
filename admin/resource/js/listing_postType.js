@@ -142,8 +142,6 @@ function postTypeSuccess(data){
     data.forEach(function(value, key){
         action = '';
 
-        next_value = data[parseInt(key) + 1];
-
         if(value.post_type_title == null || value.post_type_title == ""){
             value.post_type_title = "<p style = 'color: red'>NULL</p>";
         }
