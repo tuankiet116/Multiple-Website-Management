@@ -106,6 +106,7 @@ $(document).ready(function () {
   $('#submit').click(function(){
       var cmp_name = $('#cmp_name').val();
       var cmp_rewrite_name = $('#cmp_rewrite_name').val();
+
       $('.loader-container').css('display', 'flex');
       if(cmp_name=="" || cmp_rewrite_name==""){
         $('.loader-container').css('display', 'none');
@@ -113,6 +114,7 @@ $(document).ready(function () {
       }
       else{
         var data = dataCategory();
+        console.log(data);
         $.ajax({
           url: base_url+'api/Controller/createCategories.php',
           method: 'POST',
@@ -147,7 +149,7 @@ $(document).ready(function () {
             }
           },
           error: function(data){
-            console.log(data);
+            // console.log(data);
           }
         });
         
@@ -202,7 +204,7 @@ $(document).ready(function () {
         }
       },
       error: function(data){
-        console.log(data);
+        // console.log(data);
       }
       
     })
@@ -376,7 +378,7 @@ var exGetImg = function(extag, element) {
     readers.readAsDataURL(file); //Convert the read file path to a url type    
     readers.onload = function() {//Call onload() method after conversion
             var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
-            console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
+            // console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
             $(element).siblings('img').css('display', 'block');
             $(element).siblings('svg').css('display', 'none');
             $(element).siblings('img').attr('src', imgsSrc);    
@@ -496,6 +498,8 @@ function getAllCate(web_id){
       else{
         var cate_child =[];
         var cate_parent = [];
+        var checkShowParent ='';
+        var checkShowChild  ='';
         data.forEach((e)=>{
           if(e.cmp_parent_id !=null){
             cate_child.push(e);
@@ -505,32 +509,29 @@ function getAllCate(web_id){
           }
         })
         
-        var allCate = cate_parent.map((p, i)=>{
+        var allCate = cate_parent.map((p)=>{
+          checkShowParent = p.cmp_active == 0 ? `<div class="btn btn-secondary btn-show-hide">Ẩn</div>`: "";
           var rs =``;
           rs +=`<div class="categories-item">`;
           rs +=` <div class="categories-parent-item">
-                    <p>${p.cmp_name}</p>`
-                     if(p.cmp_active==1){
-                       rs += `<p>đang hiện thị</p>`
-                     }
-                     else {
-                       rs += `<p>đã bị ẩn</p>`
-                     }         
-          rs +=`    <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
+                    <p>${p.cmp_name}</p>       
+                    <div class="action-user">
+                      ${checkShowParent}
+                      <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update  show-modal-update">sửa</button>
+                    </div>
                  </div>`;
                 cate_child.forEach((c)=>{
-                  var check = c.cmp_active == 1? `<p>đang hiện thị</p>`: `<p>đã bị ẩn</p>`
+                  checkShowChild = c.cmp_active == 0? `<div class="btn btn-secondary btn-show-hide">Ẩn</div>`: "";
                   if(c.cmp_parent_id == p.cmp_id){
                     rs += `
                     <div class="wapper-categories-child">
                         <div class="categories-child-item">
                             <div>
-                                  ${check}
-                                <p>`
-                    rs +=`
-                                    ${c.cmp_name}
-                                  <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
-                                </p>
+                                <p>${c.cmp_name}</p>
+                                <div class=action-user>
+                                  ${checkShowChild}
+                                  <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update  show-modal-update">sửa</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -554,18 +555,6 @@ function getAllCate(web_id){
       $('.categories-content').html(allCate ?? err).ready(function(){
         $('#cmp_parent_id').html("<option value=''>không thuộc danh mục nào cả</option>"+cateHasChild);
         $('.disable').removeAttr('disabled');
-
-        $('.categories-parent-item').hover(function(){
-          $(this).children('button').removeClass('d-none');
-        }, function(){
-          $(this).children('button').addClass('d-none');
-        })
-
-        $('.categories-child-item > div > p').hover(function(){
-          $(this).children('button').removeClass('d-none');
-        }, function(){
-          $(this).children('button').addClass('d-none');
-        })
 
         $('.show-modal-update').click(function(){
           $('.modal-update').css("display", "block");
