@@ -191,7 +191,9 @@
                             FROM post_type 
                             INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website."
                             INNER JOIN categories_multi_parent cmp  ON  FIND_IN_SET(post_type.post_type_id, cmp.post_type_id) AND post_type.web_id = cmp.web_id 
-                            WHERE post_type.post_type_title   LIKE '%".$this->term."%' ORDER BY post_type.post_type_id DESC) tb_list
+                            WHERE post_type.post_type_title   LIKE '%".$this->term."%' OR post_type.post_type_description LIKE '%".$this->term."%'
+                                    OR website_config.web_name LIKE '%".$this->term."%' OR cmp.cmp_name LIKE '%".$this->term."%'
+                            ORDER BY post_type.post_type_id DESC) tb_list
                             GROUP BY tb_list.post_type_id ";
 
             $stmt = $this->conn->prepare($query);
