@@ -62,15 +62,15 @@
         <table class="table">
             <thead class="table-primary">
                 <tr>
-                    <th scope="col">No</th>
+                    <th scope="col" style="width: 50px">No</th>
                     <th scope="col"><?= translate_text('Tiêu Đề') ?></th>
                     <th scope="col"><?= translate_text('Mô Tả') ?></th>
-                    <th scope="col"><?= translate_text('Kiểu Bài Viết') ?></th>
-                    <th scope="col"><?= translate_text('Website') ?></th>
+                    <th scope="col" style="width: 100px"><?= translate_text('Kiểu Bài Viết') ?></th>
+                    <th scope="col" style="width: 80px"><?= translate_text('Website') ?></th>
                     <th scope="col"><?= translate_text('Danh mục') ?></th>
                     <th scope="col"><?= translate_text('Trạng Thái') ?></th>
                     <th scope="col"><?= translate_text('Hiển Thị Trang Chủ') ?></th>
-                    <th scope="col"><?= translate_text('Hành Động') ?></th>
+                    <th scope="col" style="width: 100px"><?= translate_text('Hành Động') ?></th>
                 </tr>
             </thead>
             <tbody>

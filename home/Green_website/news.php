@@ -64,6 +64,12 @@ if (isset($_GET['name'])) {
     } else {
         $countPt = '';
     }
+
+    if (isset($_GET['hasChild'])) {
+        $hasChild = $_GET['hasChild'];
+    } else {
+        $hasChild = '';
+    }
 }
 
 if (isset($_GET['breadcrumbs'])) {
@@ -100,6 +106,12 @@ if (isset($_GET['countPt'])) {
     $countPt = $_GET['countPt'];
 } else {
     $countPt = '';
+}
+
+if (isset($_GET['hasChild'])) {
+    $hasChild = $_GET['hasChild'];
+} else {
+    $hasChild = '';
 }
 
 $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
@@ -297,24 +309,43 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         </span>
 
                         <?php
-                        foreach ($bread_topic as $key => $bread) {
-                            if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
-                                $bread_parents = $bread['cmp_parent_id'];
-                                if ($bread_parents == null) {
-                                    echo '
-                                        <a href="" target="_self">' . $bread['cmp_name'] . '</a>
-                                    ';
-                                } else {
-                                    $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
-                                    foreach ($bread_name as $key => $b_name) {
+                        // foreach ($bread_topic as $key => $bread) {
+                        //     if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
+                        //         $bread_parents = $bread['cmp_parent_id'];
+                        //         if ($bread_parents == null) {
+                        //             echo '
+                        //                 <a href="" target="_self">' . $bread['cmp_name'] . '</a>
+                        //             ';
+                        //         } else {
+                        //             $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
+                        //             foreach ($bread_name as $key => $b_name) {
+                        //                 echo '
+                        //                     <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
+                        //                 ';
+                        //             }
+                        //         }
+                        //     }
+                        // }
+                        if ($hasChild != '') {
+                            foreach ($bread_topic as $key => $bread) {
+                                if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
+                                    $bread_parents = $bread['cmp_parent_id'];
+                                    if ($bread_parents == null) {
                                         echo '
-                                            <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
+                                            <a href="" target="_self">' . $bread['cmp_name'] . '</a>
                                         ';
+                                    } else {
+                                        $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
+                                        foreach ($bread_name as $key => $b_name) {
+                                            echo '
+                                                <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
+                                            ';
+                                        }
                                     }
                                 }
                             }
                         }
-                        if ($postType != '' && $post_name == '' && $countPt == '') {
+                        else if ($postType != '' && $post_name == '' && $countPt == '') {
                             echo '
                                 <span class="navigation-pipe">
                                     <i class="fas fa-chevron-right"></i>
@@ -322,23 +353,25 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 
                                 <a href="" target="_self">' . $name_breadcrumbs . '</a>
                             ';
-                        } 
-                        else if ($postType == '' && $post_name != '' && $countPt == '') {
-                            echo '
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-
-                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
-                            ';
                         }
+                        // else if ($postType == '' && $post_name != '' && $countPt == '') {
+                        //     echo '
+                        //         <span class="navigation-pipe">
+                        //             <i class="fas fa-chevron-right"></i>
+                        //         </span>
+
+                        //         <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+                        //     ';
+                        // }
                         else if ($postType != '' && $post_name != '' && $countPt == '') {
                             echo '
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+
                                 <span class="navigation-pipe">
                                     <i class="fas fa-chevron-right"></i>
                                 </span>
 
-                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+                                <a href="#" target="_self">' . $post_name . '</a>
                             ';
                         }
                         else if ($postType != '' && $countPt != '') {
@@ -350,9 +383,19 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
                             ';
                         }
+                        else if ($post_name != '' && $postNews != '') {
+                            echo '
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+
+                                <span class="navigation-pipe">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                                <a href="#" target="_self">' . $post_name . '</a>
+                            ';
+                        }
                         ?>
 
-                        <!-- <a href="#" target="_self"><?php echo $title1 ?> </a> -->
                     </div>
                     <div class="news-right-content">
                         
@@ -424,7 +467,16 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 } else if ($p_type['post_type_show'] == "") {
                                     foreach ($post_content as $p_content) {
                                         if ($p_content['ptd_id'] == $postNews) {
-                                            echo $p_content['ptd_text'];
+                                            echo '<div class="news-right-main">
+                                                    ' . $p_content['ptd_text'] . '
+                                                  </div>';
+
+                                            echo '<script type="text/javascript">
+                                                    $(document).ready(function(){
+                                                        var srcImg = $(".news-right-main img").attr("src");
+                                                        $(".news-right-main img").attr("src", "' . $base_url . '" + srcImg);
+                                                     });
+                                                  </script>';
                                         }
                                     }
                                 }

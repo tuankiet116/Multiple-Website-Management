@@ -136,7 +136,6 @@ function ajaxSearchingPostType(data) {
 }
 
 function postTypeSuccess(data){
-    debugger;
     html = "";
     stt = 0;
     data.forEach(function(value, key){
@@ -154,20 +153,26 @@ function postTypeSuccess(data){
             value.web_name = "<p style = 'color: red'>NULL</p>";
         }
 
-        if (next_value != null || next_value != "") {
-          if (next_value.post_type_id === value.post_type_id) {
-            if (value.cmp_name == null) {
-              value.cmp_name = "<p style = 'color: red'>NULL</p>";
-            }
-          }
-        }
+        // if (next_value != null || next_value != "") {
+        //   if (next_value.post_type_id === value.post_type_id) {
+        //     if (value.cmp_name == null) {
+        //       value.cmp_name = "<p style = 'color: red'>NULL</p>";
+        //     }
+        //   }
+        // }
         
-
         if(value.post_type_active == 1){
           status_pt = '<button style = "width: 100px;" id="pt_status_show_'+ value.post_type_id +'" type="button" class="btn btn-basic status_button">Đã Hiển Thị</button>';
         }
         else{
           status_pt = '<button style = "width: 100px;" id="pt_status_hide_'+ value.post_type_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
+        }
+
+        if(value.cmp_active != 1) {
+          status_cmp = '<div class="badge badge-danger" style="width: auto; padding: 3px"> Vô Hiệu Hóa </div>';
+        }
+        else {
+          status_cmp = '';
         }
 
         if(value.allow_show_homepage == 1){
@@ -180,17 +185,52 @@ function postTypeSuccess(data){
         action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_type_id+'&web_id='+value.web_id+'">'+
                     '<button style = "margin-left: 10px; width: 60px;" id = "info_post_type_'+ value.post_type_id +'" type="button" class="btn btn-info">Chi Tiết</button></a>';
 
+        var cmp_name_str = value.cmp_name;
+        var cmp_name_res = cmp_name_str.split(",");
+        var count_name_res = cmp_name_res.length;
+        var cmp_active_str = value.cmp_active;
+        var cmp_active_res = cmp_active_str.split(",");
+        var count_active_res = cmp_active_res.length;
+        var c = 0;
+        var html_child = "";
+
+        if (count_name_res > 1) {
+          for (c = 0; c < count_name_res; c++) {
+              status_cmp_res = '';
+              if (cmp_active_res[c] != 1) {
+                status_cmp_res = '<div class="badge badge-danger" style="width: auto; padding: 3px"> Vô Hiệu Hóa </div>';
+              }
+
+              html_child += ` 
+                              <ul class="cmp_ul" style="list-style-type: none; padding-left: 0; padding-bottom: 5px">
+                                <li>`+ cmp_name_res[c] +`</li>
+                                <li>`+ status_cmp_res +`</li>
+                              </ul>
+                            `
+          }
+        }
+        else {
+          html_child += ` 
+                          <ul class="cmp_ul" style="list-style-type: none; padding-left: 0">
+                            <li>`+ cmp_name_str +`</li>
+                            <li>`+ status_cmp +`</li>
+                          </ul>
+                        `
+        }
+        
         stt ++;
         html += `<tr>
-                    <th scope="row">`+stt+`</th>
+                    <th scope="row" style="width: 50px">`+stt+`</th>
                     <td>`+ value.post_type_title  +`</td>
                     <td>`+ value.post_type_description +`</td>
-                    <td>`+ value.post_type_show +`</td>
-                    <td>`+ value.web_name +`</td>
-                    <td>`+ value.cmp_name +`</td>
+                    <td style="width: 100px">`+ value.post_type_show +`</td>
+                    <td style="width: 80px">`+ value.web_name +`</td>
+                    <td>
+                      ` + html_child + `
+                    </td>
                     <td>`+ status_pt +`</td>
                     <td>`+ status_home +`</td>
-                    <td>`+ action +` </td>
+                    <td style="width: 100px">`+ action +` </td>
                 </tr>`
     });
     $('tbody').html(html).ready(function(){

@@ -184,7 +184,7 @@
 
             $query = "SELECT post_type_id , post_type_title , post_type_description, 
                             post_type_show, web_name, post_type_active, 
-                            allow_show_homepage, web_id, GROUP_CONCAT(cmp_id) as cmp_list, GROUP_CONCAT(cmp_name) as cmp_name,
+                            allow_show_homepage, web_id, GROUP_CONCAT(cmp_id) as cmp_id, GROUP_CONCAT(cmp_name) as cmp_name,
                             GROUP_CONCAT(CAST(cmp_has_child AS int)) as cmp_has_child, GROUP_CONCAT(CAST(cmp_active AS int)) as cmp_active 
                         FROM (SELECT post_type.post_type_id , post_type.post_type_title , post_type.post_type_description, 
                                     post_type.post_type_show, website_config.web_name, post_type.post_type_active, 
