@@ -120,6 +120,13 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
+                            echo'
+                                <li>
+                                    <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postNews=' . $tp['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
                         }
                         else {
                             $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
@@ -140,6 +147,13 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
+                            echo '
+                                <li>
+                                    <a href="news.php?' . $changeUrlName . '&title=' . $tps['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tps['ptd_id'] . '&postName=' . $topic_parents['post_type_id'] . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
                         }
                     }
 
@@ -176,7 +190,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                         }
                         echo '
                             <li>
-                                <a href="news.php?'. $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '" target="_self">
+                                <a href="news.php?'. $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '&postName=' . $topic_parents['post_type_id'] . '&hasChild=' . $topic_parents['cmp_has_child'] . '" target="_self">
                                     <span>' . $topic_parents['cmp_name'] . '</span>
                                 </a>
                             </li>
