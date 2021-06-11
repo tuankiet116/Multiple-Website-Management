@@ -415,29 +415,31 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         ?>
 
                         <?php
-                        if ($countPt == "") {
-                            foreach ($post_type as $key => $p_type) {
-                                if ($p_type['post_type_show'] != '' && $p_type['post_type_id'] == $postType) {
-                                    $p_type_id = $p_type['post_type_id'];
-                                    $get_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $p_type_id AND post_active = 1 ORDER BY post_datetime_create DESC");
-                                    foreach ($get_post as $key => $g_post) {
-                                        foreach ($category as $key => $cate) {
-                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                            if ($mod_rewrite == 1) {
-                                                $changeUrlName = 'name=' . $g_post['post_rewrite_name'];
-                                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
-                                            } else {
-                                                $changeUrlName = 'name=' . $g_post['post_id'];
-                                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
-                                            }
+                        if ($countPt == "") {             
+                            if (isset($postType) && $postType != "" && $postType != null) {
+                                foreach ($post_type as $key => $p_type) {
+                                    if ($p_type['post_type_show'] != '' && $p_type['post_type_id'] == $postType) {
 
-                                            $get_pt_name = get_data_rows("SELECT * FROM post_type WHERE post_type_active = 1 AND web_id = $web_id AND post_type_id = $p_type_id");
-                                            foreach ($get_pt_name as $key => $pt_name) {
-                                                if ($g_post['cmp_id'] == $cate['cmp_id'] && $g_post['post_image_background'] != '') {
+                                        $p_type_id = $p_type['post_type_id'];
+                                        $get_post = get_data_rows("SELECT * FROM post WHERE post_type_id = $p_type_id AND post_active = 1 ORDER BY post_datetime_create DESC");
+                                        foreach ($get_post as $key => $g_post) {
+                                            foreach ($category as $key => $cate) {
+                                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                                if ($mod_rewrite == 1) {
+                                                    $changeUrlName = 'name=' . $g_post['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
+                                                } else {
+                                                    $changeUrlName = 'name=' . $g_post['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
+                                                }
 
-                                                    $date = $g_post['post_datetime_create'];
-                                                    $myDate = date("d-m-Y", strtotime($date));
-                                                    echo '
+                                                $get_pt_name = get_data_rows("SELECT * FROM post_type WHERE post_type_active = 1 AND web_id = $web_id AND post_type_id = $p_type_id");
+                                                foreach ($get_pt_name as $key => $pt_name) {
+                                                    if ($g_post['cmp_id'] == $cate['cmp_id'] && $g_post['post_image_background'] != '') {
+
+                                                        $date = $g_post['post_datetime_create'];
+                                                        $myDate = date("d-m-Y", strtotime($date));
+                                                        echo '
                                                     <div class="container post-list">
                                                         <div class="row">
                                                             <div class="post-list-img col-lg-4 col-md-4 col-sm-6 col-6">
@@ -463,27 +465,30 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                             </div>
                                                         </div>                 
                                                     </div>';
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                } else if ($p_type['post_type_show'] == "") {
-                                    foreach ($post_content as $p_content) {
-                                        if ($p_content['ptd_id'] == $postNews) {
-                                            echo '<div class="news-right-main">
-                                                    ' . $p_content['ptd_text'] . '
-                                                  </div>';
+                                }
+                            }   
+                            else {
+                                foreach ($post_content as $p_content) {
+                                    if ($p_content['ptd_id'] == $postNews) {
+                                        echo '<div class="news-right-main">
+                                                ' . $p_content['ptd_text'] . '
+                                                </div>';
 
-                                            echo '<script type="text/javascript">
-                                                    $(document).ready(function(){
-                                                        var srcImg = $(".news-right-main img").attr("src");
-                                                        $(".news-right-main img").attr("src", "' . $base_url . '" + srcImg);
-                                                     });
-                                                  </script>';
-                                        }
+                                        echo '<script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    var srcImg = $(".news-right-main img").attr("src");
+                                                    $(".news-right-main img").attr("src", "' . $base_url . '" + srcImg);
+                                                    });
+                                                </script>';
                                     }
                                 }
                             }
+                                          
                         } else if ($countPt > 1) { ?>
                             <div class="container post-type-list">
                                 <div class="row">
