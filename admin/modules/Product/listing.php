@@ -85,7 +85,7 @@
                                     <h4><?=translate_text('Chọn Trang Web')?>: </h4>
                                 </div>
                                 <div class="box">
-                                    <select class="website_select">
+                                    <select class="website_select_update">
                                     </select>
                                 </div>
                             </div>
@@ -162,7 +162,7 @@
                                     <h4><?=translate_text('Chọn Trang Web')?>: </h4>
                                 </div>
                                 <div class="box">
-                                    <select class="website_select">
+                                    <select class="website_select_add">
                                     </select>
                                 </div>
                             </div>

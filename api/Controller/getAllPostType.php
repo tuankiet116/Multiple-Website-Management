@@ -44,6 +44,7 @@ if($count>0){
             "post_type_active"      => $row['post_type_active'],
             "allow_show_homepage"   => $row['allow_show_homepage'],
             "web_name"              => $row['web_name'],
+            "cmp_name"              => $row['cmp_name'],
             "web_id"                => $row['web_id'],
             "code"                  => 200
         );

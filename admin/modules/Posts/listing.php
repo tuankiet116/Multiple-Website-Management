@@ -74,8 +74,8 @@
             <h3><?= translate_text('Danh Sách Bài Viết')?></h3>
         </div>
         <table class = "table">
-            <thead>
-                <tr>
+            <thead class="table-primary">
+                <tr >
                     <th scope="col">No</th>
                     <th scope="col"><?= translate_text('Tiêu Đề')?></th>
                     <th scope="col"><?= translate_text('Mô Tả')?></th>
