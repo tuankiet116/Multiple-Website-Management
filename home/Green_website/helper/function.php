@@ -3,7 +3,7 @@
 
     $database = new Database();
     $conn = $database->getConnection();
-
+    echo var_dump($conn);
     function get_data_rows($query){
         $arr = array();
         $stmt = $conn->prepare($query);
