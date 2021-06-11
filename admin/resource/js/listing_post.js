@@ -169,7 +169,7 @@ function postSuccess(data){
         }
 
         if(value.post_active == 1){
-          status = '<button style = "width: 100px;" id="post_show_'+ value.post_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
+          status = '<button style = "width: 100px;" id="post_show_'+ value.post_id +'" type="button" class="btn btn-basic status_button">Đã Hiển Thị</button>';
         }
         else{
           status = '<button style = "width: 100px;" id="post_hide_'+ value.post_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';

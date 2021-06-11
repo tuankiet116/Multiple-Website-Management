@@ -154,7 +154,7 @@ function postTypeSuccess(data){
         }
 
         if(value.post_type_active == 1){
-          status_pt = '<button style = "width: 100px;" id="pt_status_show_'+ value.post_type_id +'" type="button" class="btn btn-success status_button">Đã Hiển Thị</button>';
+          status_pt = '<button style = "width: 100px;" id="pt_status_show_'+ value.post_type_id +'" type="button" class="btn btn-basic status_button">Đã Hiển Thị</button>';
         }
         else{
           status_pt = '<button style = "width: 100px;" id="pt_status_hide_'+ value.post_type_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';

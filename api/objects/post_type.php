@@ -141,8 +141,9 @@
             }
             $query = "SELECT post_type.post_type_id , post_type.post_type_title , post_type.post_type_description, 
                              post_type.post_type_show, website_config.web_name, post_type.post_type_active, 
-                             post_type.allow_show_homepage, post_type.web_id 
+                             post_type.allow_show_homepage, post_type.web_id, cmp.cmp_id, cmp.cmp_name, cmp.cmp_has_child, cmp.cmp_active
                       FROM post_type 
+                      INNER JOIN categories_multi_parent cmp  ON  FIND_IN_SET(post_type.post_type_id, cmp.post_type_id) AND post_type.web_id = cmp.web_id 
                       INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
                       " WHERE post_type.post_type_title   LIKE '%" .$this->term. "%'";
 

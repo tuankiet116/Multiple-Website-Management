@@ -8,8 +8,9 @@ $(document).ready(function(){
     $('#product-status').niceSelect();
     $('.currency-select').niceSelect();
 
+    websiteSelect2('.website_select_update', '#Modal');
+    websiteSelect2('.website_select_add', '#Modal-add');
     websiteSelect2('.pick_website_select');
-    websiteSelect2('.website_select');
 
     //Show Product 
     debugger;
@@ -220,11 +221,11 @@ function productSuccess(data){
       $('.btn-info').unbind().click(function(){
         web_id = $(this).attr('web_id');
         product_id = $(this).attr('id').split('_')[2];
-        loadModal(product_id, web_id);
+        loadModal(product_id, web_id, '.website_select_update');
 
         $('#modal-update').unbind().click(function(){
           data = {
-            "web_id": $('.website_select').select2('val'),
+            "web_id": $('.website_select_update').select2('val'),
             "product_id": product_id,
             "product_name": $('#update-title').val(),
             "product_description": $('#update-description').val(),
@@ -335,52 +336,103 @@ function showAlert(type, message){
   });
 }
 
-function websiteSelect2(element){
-  $(element).select2({
-    ajax: { 
-      url: "../../../api/Controller/searchTerm.php",
-      type: "POST",
-      dataType: 'json',
-      delay: 250,
-      data: function (params) {
-        if(params.term == null){
-          var obj = {
-            "term": params.term
-          } 
-        }else{
-          var obj = {
-          "term": params.term.trim()
-          } 
-        }
-        
-        return JSON.stringify(obj);
+function websiteSelect2(element, parent = null){
+  if(parent != null){
+    $(element).select2({
+      ajax: { 
+        url: "../../../api/Controller/searchTerm.php",
+        type: "POST",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          if(params.term == null){
+            var obj = {
+              "term": ""
+            } 
+          }else{
+            var obj = {
+            "term": params.term.trim()
+            } 
+          }
+          
+          return JSON.stringify(obj);
+        },
+        processResults: function (data, params) {
+          if(data.code == 404){
+            return;
+          }
+          return {
+              results: $.map(data, function (item) {
+                  if(item == 404){
+                    return;
+                  }
+                  return {
+                      text: item.web_name,
+                      id: item.web_id,
+                      image: checkdefault("data/web_icon/icon_default/default.png",item.web_icon),
+                      description: item.web_description,
+                      data: item
+                  };
+              })
+          };
+        },
+        cache: false
       },
-      processResults: function (data, params) {
-        if(data.code == 404){
-          return;
-        }
-        return {
-            results: $.map(data, function (item) {
-                if(item == 404){
-                  return;
-                }
-                return {
-                    text: item.web_name,
-                    id: item.web_id,
-                    image: checkdefault("data/web_icon/icon_default/default.png",item.web_icon),
-                    description: item.web_description,
-                    data: item
-                };
-            })
-        };
+      placeholder: 'Search for a Website',
+      minimumInputLength: 0,
+      templateResult: formatRepoWebsite,
+      templateSelection: formatRepoSelectionWebsite,
+      dropdownParent: $(parent)
+    });
+  }
+  else{
+    $(element).select2({
+      ajax: { 
+        url: "../../../api/Controller/searchTerm.php",
+        type: "POST",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          if(params.term == null){
+            var obj = {
+              "term": ""
+            } 
+          }else{
+            var obj = {
+            "term": params.term.trim()
+            } 
+          }
+          
+          return JSON.stringify(obj);
+        },
+        processResults: function (data, params) {
+          if(data.code == 404){
+            return;
+          }
+          return {
+              results: $.map(data, function (item) {
+                  if(item == 404){
+                    return;
+                  }
+                  return {
+                      text: item.web_name,
+                      id: item.web_id,
+                      image: checkdefault("data/web_icon/icon_default/default.png",item.web_icon),
+                      description: item.web_description,
+                      data: item
+                  };
+              })
+          };
+        },
+        cache: false
       },
-      cache: false
-    },
-    placeholder: 'Search for a Website',
-    minimumInputLength: 0,
-    templateResult: formatRepoWebsite,
-    templateSelection: formatRepoSelectionWebsite
-  });
+      placeholder: 'Search for a Website',
+      minimumInputLength: 0,
+      templateResult: formatRepoWebsite,
+      templateSelection: formatRepoSelectionWebsite
+    });
+  }
+  
 }
 
 function clearModal(){
@@ -394,7 +446,7 @@ function clearModal(){
   $('.input-image img').siblings('svg').css('display', 'block');
 }
 
-function loadModal(product_id, web_id){
+function loadModal(product_id, web_id, element_select2){
   product_data = loadProductByID(product_id);
   web_data = loadWebsiteByID(web_id);
   if(product_data == '' || web_data == ''){
@@ -407,7 +459,7 @@ function loadModal(product_id, web_id){
     $('#update-price').val(product_data.product_price);
     $('#Modal select.currency-select').val(product_data.product_currency).niceSelect('update');
     option = "<option selected value = '"+web_data.web_id+"' title = '"+web_data.web_icon+"' >"+web_data.web_name+"</option>";
-    setSelect2Data('.website_select', option, product_data);
+    setSelect2Data(element_select2, option, product_data);
     setImageData(product_data.product_image_path, '#image_product_update');
   }
 }
