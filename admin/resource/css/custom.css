@@ -346,7 +346,7 @@ p.note, p.ended, p.order{
 	cursor: pointer;
 	font-weight: bold;
 	font-size: 10px;
-	color: #bba509;
+	color: #0000d8;
 }
 #title_tabs li .glyphicon-remove{
 	cursor: pointer;
@@ -363,7 +363,7 @@ p.note, p.ended, p.order{
 	background: #FFFFFF;
 }
 #title_tabs li.active .glyphicon-remove{
-	color: #da2c03;
+	color: #0000d8;
 }
 #title_tabs li.active .glyphicon-refresh{
 	display: inline-block;
