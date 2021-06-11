@@ -200,6 +200,9 @@
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
+
+            // $same = $stmt->fetch(PDO::FETCH_ASSOC);
+            // if ($same['post_type_title'] )
             return $stmt;
         }
 
