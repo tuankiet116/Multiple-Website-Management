@@ -347,9 +347,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         }
                         else if ($postType != '' && $post_name == '' && $countPt == '') {
                             echo '
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
+                        
                                 
                                 <a href="" target="_self">' . $name_breadcrumbs . '</a>
                             ';
@@ -363,7 +361,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         //         <a href="#" target="_self">' . $name_breadcrumbs . '</a>
                         //     ';
                         // }
-                        else if ($postType != '' && $post_name != '' && $countPt == '') {
+                        else if ($postType != '' && $post_name != '' && $countPt == '' && $postNews == '') {
                             echo '
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
 
@@ -374,7 +372,12 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 <a href="#" target="_self">' . $post_name . '</a>
                             ';
                         }
-                        else if ($postType != '' && $countPt != '') {
+                        else if ($postType != '' && $countPt != '' && $postNews == '') {
+                            echo '
+                                <a href="#" target="_self">' . $name_breadcrumbs . '</a>
+                            ';
+                        }
+                        else if ($postType != '' && $postNews != '') {
                             echo '
                                 <span class="navigation-pipe">
                                     <i class="fas fa-chevron-right"></i>
@@ -382,7 +385,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
 
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
                             ';
-                        }
+                        }   
                         else if ($post_name != '' && $postNews != '') {
                             echo '
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
