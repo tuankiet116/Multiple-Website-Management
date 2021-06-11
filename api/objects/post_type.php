@@ -182,20 +182,27 @@
                 $query_website = " AND website_config.web_id = ".$this->web_id;
             }
 
-            $query_id_pt = " AND categories_multi_parent.post_type_id = " . $this->post_type_id;
-
-            $query = "SELECT post_type.post_type_id , post_type.post_type_title , post_type.post_type_description, 
-                             post_type.post_type_show, website_config.web_name, post_type.post_type_active, 
-                             post_type.allow_show_homepage, post_type.web_id, cmp.cmp_id, cmp.cmp_name, cmp.cmp_has_child, cmp.cmp_active
-                      FROM post_type 
-                      INNER JOIN categories_multi_parent cmp  ON  FIND_IN_SET(post_type.post_type_id, cmp.post_type_id) AND post_type.web_id = cmp.web_id 
-                      INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website.
-                      " WHERE post_type.post_type_title LIKE '%" .$this->term. "%'
-                      INNER JOIN categories_multi_parent ON categories_multi_parent.post_type_id = post_type.post_type_id ".$query_id_pt.
-                      " WHERE post_type.post_type_id LIKE '%" .$this->term. "%'";
+            $query = "SELECT post_type_id , post_type_title , post_type_description, 
+                            post_type_show, web_name, post_type_active, 
+                            allow_show_homepage, web_id, GROUP_CONCAT(cmp_id) as cmp_list, GROUP_CONCAT(cmp_name) as cmp_name,
+                            GROUP_CONCAT(CAST(cmp_has_child AS int)) as cmp_has_child, GROUP_CONCAT(CAST(cmp_active AS int)) as cmp_active 
+                        FROM (SELECT post_type.post_type_id , post_type.post_type_title , post_type.post_type_description, 
+                                    post_type.post_type_show, website_config.web_name, post_type.post_type_active, 
+                                    post_type.allow_show_homepage, post_type.web_id, cmp.cmp_id, cmp.cmp_has_child, 
+                                    cmp.cmp_active, cmp.cmp_name
+                            FROM post_type 
+                            INNER JOIN website_config ON website_config.web_id = post_type.web_id ".$query_website."
+                            INNER JOIN categories_multi_parent cmp  ON  FIND_IN_SET(post_type.post_type_id, cmp.post_type_id) AND post_type.web_id = cmp.web_id 
+                            WHERE post_type.post_type_title   LIKE '%".$this->term."%' OR post_type.post_type_description LIKE '%".$this->term."%'
+                                    OR website_config.web_name LIKE '%".$this->term."%' OR cmp.cmp_name LIKE '%".$this->term."%'
+                            ORDER BY post_type.post_type_id DESC) tb_list
+                            GROUP BY tb_list.post_type_id ";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
+
+            // $same = $stmt->fetch(PDO::FETCH_ASSOC);
+            // if ($same['post_type_title'] )
             return $stmt;
         }
 

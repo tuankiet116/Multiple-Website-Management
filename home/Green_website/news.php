@@ -315,14 +315,12 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                             }
                         }
                         if ($postType != '' && $post_name == '' && $countPt == '') {
-                            $get_pt_title = get_data_row("SELECT * FROM post_type WHERE post_type_id IN ($postType) AND post_type_active = 1");
-                            $get_pt_t = $get_pt_title['post_type_title'];
                             echo '
                                 <span class="navigation-pipe">
                                     <i class="fas fa-chevron-right"></i>
                                 </span>
                                 
-                                <a href="" target="_self">' . $get_pt_t . '</a>
+                                <a href="" target="_self">' . $name_breadcrumbs . '</a>
                             ';
                         } 
                         else if ($postType == '' && $post_name != '' && $countPt == '') {
@@ -332,18 +330,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 </span>
 
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
-
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-
-                                <a href="" target="_self">' . $post_name . '</a>
-
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-
-                                <a href="#" target="_self">' . $title1 . '</a>
                             ';
                         }
                         else if ($postType != '' && $post_name != '' && $countPt == '') {
@@ -353,12 +339,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 </span>
 
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
-
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-
-                                <a href="#" target="_self">' . $post_name . '</a>
                             ';
                         }
                         else if ($postType != '' && $countPt != '') {
@@ -370,15 +350,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                 <a href="#" target="_self">' . $name_breadcrumbs . '</a>
                             ';
                         }
-                        else {
-                            echo '
-                                <span class="navigation-pipe">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-
-                                <a href="" target="_self">' . $title1 . '</a>
-                            ';
-                        }
                         ?>
 
                         <!-- <a href="#" target="_self"><?php echo $title1 ?> </a> -->
@@ -387,9 +358,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         
                         <?php
                             if ($postType != "" && $countPt == "") {
-                                $get_pt_title = get_data_row("SELECT * FROM post_type WHERE post_type_id IN ($postType) AND post_type_active = 1");
-                                $get_pt_t = $get_pt_title['post_type_title'];
-                                echo '<p class="news-right-content-title">' . $get_pt_t . '</p>';
+                                echo '<p class="news-right-content-title">' . $name_breadcrumbs . '</p>';
                             }
                             else if ($postType != "" && $countPt != "") {
                                 echo '<p class="news-right-content-title">' . $name_breadcrumbs . '</p>';

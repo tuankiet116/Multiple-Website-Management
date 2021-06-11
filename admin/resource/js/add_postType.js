@@ -83,7 +83,7 @@ $(document).ready(function () {
       web_id = $(".pick_website_select").select2("data")[0].id;
       $(".pick_categories").select2({
         ajax: {
-          url: "../../../api/Controller/searchTermCategories.php",
+          url: "../../../api/Controller/searchTermCategoriesOptionGroup.php",
           type: "POST",
           dataType: "json",
           delay: 250,
@@ -106,30 +106,19 @@ $(document).ready(function () {
             if (data.code == 404) {
               return null;
             }
-            return {
+            result = {
               results: $.map(data, function (item) {
-                if (item == 404) {
-                  return null;
-                }
-                return {
-                  text: item.cmp_name,
-                  id: item.cmp_id,
-                  image: checkdefault(
-                    "data/categories_icon/default/tag-2.png",
-                    item.cmp_icon
-                  ),
-                  data: item,
-                };
+                return optgroupSelect2(item);
               }),
             };
+            console.log(result?.results);
+            return result;
           },
           cache: false,
         },
 
         placeholder: "Search for categories",
         minimumInputLength: 0,
-        templateResult: formatRepoCategories,
-        templateSelection: formatRepoSelectionCategories,
       });
     }
   });
@@ -339,3 +328,35 @@ function showAlert(type, message){
     $('.alert').removeClass('show');
   });
 }
+
+ function optgroupSelect2(data) {
+   if (data == 404) {
+     return null;
+   }
+   var result = new Array();
+   if (data.cmp_has_child === "1") {
+     result = {
+       text: data.cmp_name,
+       //id: data.cmp_id,
+     };
+     child = data.cate_child;
+     result.children = new Array();
+     child.forEach(function (item, key) {
+       if (item.cmp_has_child === "1") {
+         result.children.push(optgroupSelect2(item));
+       } else {
+         arr = {
+           text: item.cmp_name,
+           id: item.cmp_id,
+         };
+         result.children.push(arr);
+       }
+     });
+   } else {
+     result = {
+       text: data.cmp_name,
+       id: data.cmp_id,
+     };
+   }
+   return result;
+ }
