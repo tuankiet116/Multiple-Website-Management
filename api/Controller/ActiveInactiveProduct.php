@@ -21,8 +21,8 @@ $product = new Product($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->product_id) && isset($data->product_active)){
-    $product->product_id = $data->product_id;
-    $product->product_active = $data->product_active;
+    $product->product_id = intVal($data->product_id);
+    $product->product_active = intVal($data->product_active);
     $count = $product->getByIDAll(false);
     if($count > 0){
         if($product->ActiveInactiveProduct()===true){

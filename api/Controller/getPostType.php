@@ -39,7 +39,7 @@ if(isset($data)){
     else{
         http_response_code(200);
         echo json_encode(array(
-            "message" => "chưa có bài viết nào!!",
+            "message" => "Không Tồn Tại Bài Viết",
             "code"    => 404,
             "row"     => $resultPostType->rowCount(),
         ));
@@ -48,7 +48,7 @@ if(isset($data)){
 else{
     http_response_code(200);
     echo json_encode(array(
-            "message" => "chưa nhận được dữ liệu",
+            "message" => "Data Invalid",
             "code"    => 404
         ));
 }

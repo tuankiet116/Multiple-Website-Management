@@ -1,5 +1,5 @@
 <?php
-// required headers
+require_once("../config/helper.php");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
@@ -21,13 +21,13 @@ $post = new Post($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->post_id) && isset($data->post_active)){
-    $post->post_id = $data->post_id;
-    $post->post_active = $data->post_active;
+    $post->post_id = intVal($data->post_id);
+    $post->post_active = intVal($data->post_active);
     $count = $post->getPostByID(false);
     if($count > 0){
         if($post->ActiveInactivePost()===true){
             http_response_code(200);
-            echo json_encode(array("message" => "Update Success ", "code" => 200));
+            echo json_encode(array("message" => "Update Status Success ", "code" => 200));
         }
         else{
             http_response_code(200);

@@ -25,7 +25,7 @@ $web_id = intVal($data->web_id);
 // read the details of product to be edited
 $result = $config->getByWebID($web_id, true);
 
-if($config->con_id != null){
+if($config->con_id != null && $data->web_id != "" && $data->web_id != null){
     //website array
     $config_arr = array(
         "con_id"                    => $config->con_id,

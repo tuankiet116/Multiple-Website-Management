@@ -23,7 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
 $post->post_id = intVal($data->post_id); 
 $post->getPostByID(true);
 
-if(isset($post->post_id)){
+if(isset($post->post_id) && $data->post_id != null && $data->post_id != ""){
     //post array
     $post_array = array(
         "post_id"               => $post->post_id,

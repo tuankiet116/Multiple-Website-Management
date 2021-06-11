@@ -145,7 +145,7 @@ $(document).ready(function(){
       activePickPostType(); 
     }, 1000)
     
-    debugger;
+    // debugger;
     function activePickPostType(){
       var cmp_id = $('.pick_categories').select2('data')[0].id;
 
@@ -308,22 +308,31 @@ $(document).ready(function(){
       'post_type_id': $('.pick_post_type').select2('val'),
       'content': content,
     }
-
-    var url = '../../../api/Controller/createPost.php';
-
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(data),
-      async: true,
-      dataType: 'JSON',
-      url: url,
-      success: function(data){
-        createPostSuccess(data);
-      },
-      error: function(data){
-        createPostError(data);
+    if(data.post_title == "" || data.post_type_id == ""){
+      showAlert('warning', '<p>Không Được Để Trống Tiêu Đề Hoặc Nhóm Bài Viết</p>');
+    }
+    else{
+      if(data.content ==""){
+        showAlert('warning', '<p>Nội Dung Bài Viết Đang bị Bỏ Trống</p>');
       }
-    });
+      else {
+        var url = '../../../api/Controller/createPost.php';
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(data),
+          async: true,
+          dataType: 'JSON',
+          url: url,
+          success: function(data){
+            createPostSuccess(data);
+          },
+          error: function(data){
+            createPostError(data);
+          }
+        });
+      }
+    }
+
     //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
   });
   

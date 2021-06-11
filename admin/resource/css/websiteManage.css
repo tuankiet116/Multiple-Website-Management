@@ -34,6 +34,10 @@ img.icon-website { width: 30px; height: 30px;}
 
 /* css show-alert */
 .alert-message{ position: fixed; right: 50px; width: 30%; z-index: 9999}
+.alert-message > button{ outline: none;}
+.alert-message > button > span{ font-size: 14px;}
+.alert-heading{ font-size: 16px; font-weight: 400; margin: 0 0 5px 0;}
+.message{ font-size: 14px; font-weight: 400;}
 
 /* css loading */
 .loader-container{position: fixed; width: 100%; height: 100%; z-index: 100000; background-color: rgba(0, 0, 0, 0.3); display: none; justify-content: center; align-items: center;}

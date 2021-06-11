@@ -21,13 +21,13 @@ $post_type = new PostType($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->post_type_id) && isset($data->allow_show_homepage)){
-    $post_type->post_type_id = $data->post_type_id;
-    $post_type->allow_show_homepage = $data->allow_show_homepage;
+    $post_type->post_type_id = intVal($data->post_type_id);
+    $post_type->allow_show_homepage = intVal($data->allow_show_homepage);
     $count = $post_type->getPostTypeByID(false);
     if($count > 0){
         if($post_type->ActiveInactivePostTypeHome()===true){
             http_response_code(200);
-            echo json_encode(array("message" => "Update Success ", "code" => 200));
+            echo json_encode(array("message" => "Update Status Success ", "code" => 200));
         }
         else{
             http_response_code(200);

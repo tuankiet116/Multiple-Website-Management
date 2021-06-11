@@ -22,40 +22,39 @@ $url_save = '../../data/web_icon/icon';
 $web_icon = array(htmlspecialchars(trim($data->web_icon)));
 $web_icon_base_64 = saveBase64($UploadBase64, $web_icon, $url_save, 'jpg, png, svg, jpeg', 2000, 'icon_web', 'icon_web');
 
-if(isset($data)){
+if(isset($data) && $data->web_id != "" && $data->web_id != null ){
     $website->web_id            = intval($data->web_id);
     $website->web_name          = $data->web_name;
     $website->web_url           = $data->web_url;
     $website->web_icon          = $web_icon_base_64;
     $website->web_description   = $data->web_description;
+    $message = $website->updateWebsite();
+    
+    if($message===true){
+        http_response_code(200);
+        echo json_encode(array(
+            "message" => "Cập nhật Website",
+            "code"    => 200
+        ));
+    }
+    else{
+        http_response_code(200);
+        echo json_encode(array(
+            "message" => $message,
+            "code"    => 500
+        ));
+    }
+    
+    if($web_icon_base_64 === false){
+        http_response_code(200);
+        echo json_encode(array(
+            "message" => $UploadBase64->common_error,
+            "code"    => 500
+        ));
+    }
 }
 
 
-$message = $website->updateWebsite();
-
-if($message===true){
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => "Cập nhật Website",
-        "code"    => 200
-    ));
-}
-else{
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => $message,
-        "code"    => 500
-    ));
-}
-
-
-if($web_icon_base_64 === false){
-    http_response_code(200);
-    echo json_encode(array(
-        "message" => $UploadBase64->common_error,
-        "code"    => 500
-    ));
-}
 
 function saveBase64($UploadBase64 ,$data, $url_save, $extension_list, $limit_size, $filename = "" ,$name_prefix = ""){
     $image_url = array();

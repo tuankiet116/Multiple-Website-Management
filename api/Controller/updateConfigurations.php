@@ -86,40 +86,46 @@ $config->con_banner_description    = htmlspecialchars(trim($data->con_banner_des
 $config->con_banner_active         = htmlspecialchars(trim($data->con_banner_active));
 $config->con_rewrite_name_homepage = htmlspecialchars(trim($data->con_rewrite_name_homepage));
 
-
-$count = $config -> getByWebID(intVal($data->web_id), false);
-
-if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
+if($data->web_id == "" || $data->web_id == null){
     http_response_code(200);
-    echo json_encode(array("message" => $UploadBase64->common_error,
-                            "code"    => 500));
+    echo json_encode(array("message" => "Data Invalid",
+                                "code"    => 500));
 }
 else{
-    if($count>0){
-        if(isset($config->web_id)){
-            $stmt = $config -> update();
-            if($stmt === true){
-                http_response_code(200);
-                echo json_encode(array("message" => "Update Success ", "code" => 200));
+    $count = $config -> getByWebID(intVal($data->web_id), false);
+    
+    if($image_background === false || $logo_top === false || $logo_bottom === false || $image_banner === false){
+        http_response_code(200);
+        echo json_encode(array("message" => $UploadBase64->common_error,
+                                "code"    => 500));
+    }
+    else{
+        if($count>0){
+            if(isset($config->web_id)){
+                $stmt = $config -> update();
+                if($stmt === true){
+                    http_response_code(200);
+                    echo json_encode(array("message" => "Update Success ", "code" => 200));
+                }
+                else{
+                    http_response_code(200);
+                    echo json_encode(array('message' => "Something has wrong while updating", 
+                                           'code'    => 500,
+                                           'query'   => $stmt->debugDumpParams() ));
+                }
             }
             else{
                 http_response_code(200);
-                echo json_encode(array('message' => "Something has wrong while updating", 
-                                       'code'    => 500,
-                                       'query'   => $stmt->debugDumpParams() ));
+                echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
+                                       "code"    => 500));
             }
         }
         else{
+            
             http_response_code(200);
-            echo json_encode(array("message" => "Web ID Doesn't Exist Or Something Has Broken, Contact To Admin",
+            echo json_encode(array("message" => "This Website Doesn't Exists Configuration",
                                    "code"    => 500));
         }
-    }
-    else{
-        
-        http_response_code(200);
-        echo json_encode(array("message" => "This Website Doesn't Exists Configuration",
-                               "code"    => 500));
     }
 }
 
