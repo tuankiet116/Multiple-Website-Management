@@ -1,4 +1,3 @@
-<?php $base_url = "http://localhost:8093/"; ?>
 
 <div id="footer">
     <div id="footer-container">
