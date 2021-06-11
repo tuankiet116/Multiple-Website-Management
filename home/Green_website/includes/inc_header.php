@@ -9,7 +9,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 <div id="menu">
     <div id="logo">
         <div id="logo-top">
-            <img src="<?php echo $base_url . $arr_con['con_logo_top'] ?>" alt="logo top">
+            <img src="<?php echo $base_url . $web_icon ?>" alt="logo top">
         </div>
     </div>
 
@@ -63,25 +63,47 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 ';
                             }
                         }
-                        else {
-                            $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
-                            $mod_rewrite = $arr_con['con_mod_rewrite'];
-                            if ($mod_rewrite == 1) {
-                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
-                            } else {
-                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
+                        else if ($count_pt_child > 1) {
+                            if ($topic_child_pt_id != "" || $topic_child_pt_id != null) {
+                                $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
+                                }
+                                echo '
+                                    <tr>
+                                        <td>
+                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
+                                                <div> ' . $topic_child['cmp_name'] . ' </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ';
                             }
+                            else if ($topic_child_pt_id == "" || $topic_child_pt_id == null) {
+                                echo '
+                                    <tr>
+                                        <td>
+                                            <a href="error.php" target="_self">
+                                                <div> ' . $topic_child['cmp_name'] . ' </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ';
+                            }
+                        }
+                        else if ($count_pt_child == 0) {
                             echo '
                                 <tr>
                                     <td>
-                                        <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
+                                        <a href="error.php" target="_self">
                                             <div> ' . $topic_child['cmp_name'] . ' </div>
                                         </a>
                                     </td>
                                 </tr>
                             ';
-
-                            
                         }
                     }
                 }
@@ -98,7 +120,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                 $count_pt = count($topic_parents_pt);
                 
                 if ($count_pt == 1) { 
-                    if($topic_pt_id != ""){
+                    if($topic_pt_id != "" || $topic_pt_id != null){
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id");
                         $count_post = $topic_post_count[0]['COUNT(*)'];
@@ -120,11 +142,8 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </li>
                                 ';
                             }
-                            
-
-
                         }
-                        else {
+                        else if ($count_post > 1) {
                             $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
                             foreach ($topic_posts as $tps) {
                                 $mod_rewrite = $arr_con['con_mod_rewrite'];
@@ -144,11 +163,20 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                 ';
                             }
                         }
+                        else if ($count_post == 0) {
+                            echo '
+                                <li>
+                                    <a href="error.php" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
+                        }
                     }
-                    else {
+                    else if ($topic_pt_id == "" || $topic_pt_id == null) {
                         echo '
                             <li>
-                                <a href="" target="_self">
+                                <a href="error.php" target="_self">
                                     <span>' . $topic_parents['cmp_name'] . '</span>
                                 </a>
                             </li>
@@ -156,44 +184,71 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     }
 
                 }
-                else {
-                    $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
-                    $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
-                    $count_post = $topic_post_count[0]['COUNT(*)'];
-                    if ($count_post == 1) {
-                        foreach ($topic_post as $tp) {
+                else if ($count_pt > 1) {
+                    if ($topic_pt_id != "" || $topic_pt_id != null) {
+                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                        $topic_post_count = get_data_rows("SELECT COUNT(*) FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
+                        $count_post = $topic_post_count[0]['COUNT(*)'];
+                        if ($count_post == 1) {
+                            foreach ($topic_post as $tp) {
+                                $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                if ($mod_rewrite == 1) {
+                                    $changeUrlName = 'name=' . $tp['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                                } else {
+                                    $changeUrlName = 'name=' . $tp['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                                }
+                                echo '
+                                    <li>
+                                        <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                            <span>' . $topic_parents['cmp_name'] . '</span>
+                                        </a>
+                                    </li>
+                                ';
+                            }
+                        } else if ($count_post > 1) {
                             $mod_rewrite = $arr_con['con_mod_rewrite'];
                             if ($mod_rewrite == 1) {
-                                $changeUrlName = 'name=' . $tp['post_rewrite_name'];
-                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
+                                $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
                             } else {
-                                $changeUrlName = 'name=' . $tp['post_id'];
-                                $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
+                                $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_id'];
                             }
                             echo '
                                 <li>
-                                    <a href="news.php?' . $changeUrlName . '&title=' . $tp['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $tp['ptd_id'] . '" target="_self">
+                                    <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '&postName=' . $topic_parents['post_type_id'] . '&hasChild=' . $topic_parents['cmp_has_child'] . '" target="_self">
+                                        <span>' . $topic_parents['cmp_name'] . '</span>
+                                    </a>
+                                </li>
+                            ';
+                        } else if ($count_post == 0) {
+                            echo '
+                                <li>
+                                    <a href="error.php" target="_self">
                                         <span>' . $topic_parents['cmp_name'] . '</span>
                                     </a>
                                 </li>
                             ';
                         }
-                    }         
-                    else {
-                        $mod_rewrite = $arr_con['con_mod_rewrite'];
-                        if ($mod_rewrite == 1) {
-                            $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
-                        } else {
-                            $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_id'];
-                        }
+                    }
+                    else if ($topic_pt_id == "" || $topic_pt_id == null) {
                         echo '
                             <li>
-                                <a href="news.php?'. $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&countPt=' . $count_pt . '&postName=' . $topic_parents['post_type_id'] . '&hasChild=' . $topic_parents['cmp_has_child'] . '" target="_self">
+                                <a href="error.php" target="_self">
                                     <span>' . $topic_parents['cmp_name'] . '</span>
                                 </a>
                             </li>
                         ';
-                    }    
+                    }
+                }
+                else if ($count_pt == 0) {
+                    echo '
+                        <li>
+                            <a href="error.php" target="_self">
+                                <span>' . $topic_parents['cmp_name'] . '</span>
+                            </a>
+                        </li>
+                    ';
                 }
             }
         }
@@ -261,16 +316,32 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                                 </tr>
                                             ';
                                         }
-                                    } else {
-                                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
-                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                        if ($mod_rewrite == 1) {
-                                            $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
-                                        } else {
-                                            $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
+                                    } else if ($count_pt_child > 1) {
+                                        if ($topic_child_pt_id != "" || $topic_child_pt_id != null) {
+                                            $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_child_cmp_id AND post_active = 1 AND post_type_id IN ($topic_child_pt_id)");
+                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                            if ($mod_rewrite == 1) {
+                                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_rewrite_name'];
+                                            } else {
+                                                $changeUrlBread = 'breadcrumbs=' . $topic_child['cmp_id'];
+                                            }
+                                            echo '
+                                                <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
+                                                    <div>' . $topic_child['cmp_name'] . '</div>
+                                                </a>
+                                            ';
                                         }
+                                        else if ($topic_child_pt_id == "" || $topic_child_pt_id == null) {
+                                            echo '
+                                                <a href="error.php" target="_self">
+                                                    <div>' . $topic_child['cmp_name'] . '</div>
+                                                </a>
+                                            ';
+                                        }
+                                        
+                                    } else if ($count_pt_child == 0) {
                                         echo '
-                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $topic_child['cmp_name'] . '&postTypeId=' . $topic_child['post_type_id'] . '&countPt=' . $count_pt_child . '" target="_self">
+                                            <a href="error.php" target="_self">
                                                 <div>' . $topic_child['cmp_name'] . '</div>
                                             </a>
                                         ';
@@ -335,7 +406,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </div>
                                 ';
                             }
-                        } else {
+                        } else if ($count_post > 1) {
                             $topic_posts = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id = $topic_pt_id LIMIT 1");
                             foreach ($topic_posts as $tps) {
                                 $mod_rewrite = $arr_con['con_mod_rewrite'];
@@ -356,6 +427,16 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </div>
                                 ';
                             }
+                        } else if ($count_post == 0) {
+                            echo '
+                                <div id="sub-menu-container">
+                                    <a href="error.php" target="_self">
+                                        <div>
+                                            ' . $topic_parents['cmp_name'] . '
+                                        </div>
+                                    </a>
+                                </div>
+                            ';
                         }
                     } else if ($count_pt > 1 && ($topic_pt_id != "" || $topic_pt_id != null)) {
                         $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $topic_cmp_id AND post_active = 1 AND post_type_id IN ($topic_pt_id)");
@@ -381,7 +462,7 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </div>
                                 ';
                             }
-                        } else {
+                        } else if ($count_post > 1) {
                             $mod_rewrite = $arr_con['con_mod_rewrite'];
                             if ($mod_rewrite == 1) {
                                 $changeUrlBread = 'breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
@@ -397,9 +478,19 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                                     </a>
                                 </div>
                             ';
+                        } else if ($count_post == 0) {
+                            echo '
+                                <div id="sub-menu-container">
+                                    <a href="error.php" target="_self">
+                                        <div>
+                                            ' . $topic_parents['cmp_name'] . '
+                                        </div>
+                                    </a>
+                                </div>
+                            ';
                         }
                     }
-                    else if ($topic_pt_id == "" || $topic_pt_id == null) {
+                    else if ($count_pt == 0 && ($topic_pt_id == "" || $topic_pt_id == null)) {
                         echo '
                             <div id="sub-menu-container">
                                 <a href="" target="_self">
@@ -410,30 +501,6 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                             </div>
                         ';
                     }
-
-
-                    // $post_menu = get_data_rows("SELECT * FROM post WHERE post_active = 1");
-                    // foreach ($post_menu as $key => $pm) {
-                    //     $mod_rewrite = $arr_con['con_mod_rewrite'];
-                    //     if ($mod_rewrite == 1) {
-                    //         $changeUrlName = 'name=' . $pm['post_rewrite_name'];
-                    //         $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_rewrite_name'];
-                    //     } else {
-                    //         $changeUrlName = 'name=' . $pm['post_id'];
-                    //         $changeUrlBread = '&breadcrumbs=' . $topic_parents['cmp_id'];
-                    //     }
-
-                    //     if ($topic_parents['cmp_id'] == $pm['cmp_id']) {
-                    //         echo '
-                    //             <div id="sub-menu-container">
-                    //                 <a href="news.php?' . $changeUrlName . '&title=' . $pm['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $topic_parents['cmp_name'] . '&postTypeId=' . $topic_parents['post_type_id'] . '&postNews=' . $pm['ptd_id'] . '" target="_self">
-                    //                     <div>
-                    //                         ' . $topic_parents['cmp_name'] . '
-                    //                     </div>
-                    //                 </a>
-                    //             </div>';
-                    //     }
-                    // }
             }
         }
         ?>
