@@ -430,7 +430,6 @@ $arr_con = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
                     // }
             }
         }
-        
         ?>
 
         <a href="shop.php" target="_self">
