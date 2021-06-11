@@ -7,14 +7,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="../../../plugins/select2/css/select2.min.css" rel="stylesheet" />
-        <link href="../../../plugins/select2-to-tree/src/select2totree.css"/>
         <link rel="stylesheet" href="../../resource/css/add_post.css">
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../../resource/ckeditor/ckeditor.js"></script>
         <script src="../../../plugins/select2/js/select2.min.js"></script>
-        <script src="../../../plugins/select2-to-tree/src/select2totree.js"></script>
         <script language="javascript" src="../../resource/js/add_post.js"></script>
 
     </head>
@@ -130,9 +128,9 @@
                             <h3><?=translate_text('Tạo Bài Viết')?></h3>
                         </div>
                         <!-- (2): textarea sẽ được thay thế bởi CKEditor -->
-                        <!-- <textarea name = 'post' id = 'post_editor' class="form-control ckeditor"></textarea> -->
+                        <!-- <textarea name = 'post' id = 'post_editor_add' class="form-control ckeditor"></textarea> -->
                         <div class="editor-form">
-                            <textarea name = 'post_editor' id = 'post_editor' class="form-control"></textarea>
+                            <textarea name = 'post_editor_add' id = 'post_editor_add' class="form-control"></textarea>
                         </div>
                         <div class='button-container'>
                             <input disabled id="submit_button" class="btn btn-primary  btn-lg " type="submit" value="<?= translate_text('Thêm Bài Viết')?>">
@@ -150,7 +148,7 @@
     </body>
 </html>
 <script>
-    CKEDITOR.replace('post_editor', {
+    CKEDITOR.replace('post_editor_add', {
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
 

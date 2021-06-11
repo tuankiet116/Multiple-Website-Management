@@ -144,7 +144,6 @@ $(document).ready(function () {
             else{
               $('.loader-container').css('display', 'none');
               showAlert('error', `<p>${data.message}</p>`);
-              
             }
           },
           error: function(data){
@@ -219,7 +218,6 @@ function getCateById(data){
     data: JSON.stringify(data),
     success: function(data){
       renderFormUpdate(data);
-
     }
   })
 }
@@ -506,8 +504,8 @@ function getAllCate(web_id){
             cate_parent.push(e);
           }
         })
-
-        var allCate = cate_parent.map((p)=>{
+        
+        var allCate = cate_parent.map((p, i)=>{
           var rs =``;
           rs +=`<div class="categories-item">`;
           rs +=` <div class="categories-parent-item">
@@ -521,13 +519,16 @@ function getAllCate(web_id){
           rs +=`    <button id_cate="${p.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
                  </div>`;
                 cate_child.forEach((c)=>{
+                  var check = c.cmp_active == 1? `<p>đang hiện thị</p>`: `<p>đã bị ẩn</p>`
                   if(c.cmp_parent_id == p.cmp_id){
                     rs += `
                     <div class="wapper-categories-child">
                         <div class="categories-child-item">
                             <div>
-                                <p>
-                                  ${c.cmp_name}
+                                  ${check}
+                                <p>`
+                    rs +=`
+                                    ${c.cmp_name}
                                   <button id_cate="${c.cmp_id}" class="btn btn-warning btn-update d-none show-modal-update">sửa</button>
                                 </p>
                             </div>
@@ -537,6 +538,7 @@ function getAllCate(web_id){
                   }
                 })
           rs +=`</div>`;
+          
           return rs;
         })
 
@@ -575,7 +577,6 @@ function getAllCate(web_id){
           }
           getCateById(dataGetCateByID);
         })
-        
       })
     }
   });

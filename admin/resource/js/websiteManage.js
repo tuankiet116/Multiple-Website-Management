@@ -119,12 +119,6 @@ function create(){
         else {
           $('.loader-container').css('display', 'none');
           showAlert('error', `<p>${res?.message}</p>`);
-          $('.close-form-create').click(function(){
-            $('#form')[0].reset();
-            $('#image_icon_1').attr('src', "#");
-            $('#image_icon_1').css('display', 'none');
-            $('#input_image_icon_1').children('svg').css('display', 'inherit');
-          });
         }
       },
       error: function(res){

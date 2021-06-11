@@ -255,7 +255,7 @@ $(document).ready(function(){
 
   $('#postTitle').on('keyup', function(){
     // if($(this).val() != null || $(this).val() != ""){
-    //   CKEDITOR.instances.post_editor.readOnly = false;
+    //   CKEDITOR.instances.post_editor_add.readOnly = false;
     // } -- Not Finished Yet
 
   });
@@ -295,7 +295,7 @@ $(document).ready(function(){
 
   $('#submit_button').on('click', function(e){
     e.preventDefault();
-    var content = CKEDITOR.instances.post_editor.getData();
+    var content = CKEDITOR.instances.post_editor_add.getData();
     var data = {
       'post_title' : $('#postTitle').val(),
       'post_description': $('#postDescription').val(),

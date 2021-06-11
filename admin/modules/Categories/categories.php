@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../resource/css/categories.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js" integrity="sha512-yGgPLFnBGQP4L4+2eTbGj0uLoq+CLXmP2+c/hXWdmLYB9jEBfVGjxIqtvFneLCKATOZhDf2YPYG4uSEksWXp+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../../plugins/select2/js/select2.min.js"></script>
+    <script src="../../resource/js/jsplump-tree/jsplumb-tree.js"></script>
     <script language="javascript" src="../../resource/js/categories.js"></script>
-
 
     <title>Document</title>
 </head>
@@ -49,7 +50,8 @@
                     <h4><?= translate_text('Danh Mục')?>:</h4>
                 </div>
 
-                <div class="categories-content">  
+                <div class="categories-content">
+                    
                 </div>
             </div>
             <div class="categories-container-form col-lg-7">
