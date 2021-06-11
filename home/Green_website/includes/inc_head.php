@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="./resource/css/style.css">
     <link rel="stylesheet" href="./resource/css/shop.css">
     <link rel="stylesheet" href="./resource/css/news.css">
-
+    <!-- JS/Jquery -->
     <script src="./resource/js/slideshow/jquery-3.3.1.min.js"></script>
     <script src="./resource/js/slideshow/popper.min.js"></script>
     <script src="./resource/js/slideshow/bootstrap.min.js"></script>
@@ -28,3 +28,7 @@
     <script src="https://kit.fontawesome.com/17bbaf365c.js" crossorigin="anonymous"></script>
     <script src="./resource/js/slideshow/main.js"></script>
     <script src="./resource/js/myjs.js"></script>
+    <!-- Base url -->
+    <?php $base_url = "http://localhost:8093/" ?>
+    <!-- Web icon -->
+    <link href="<?php echo $base_url . $web_icon ?>" rel="icon" type="image/gif">

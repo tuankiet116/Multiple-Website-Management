@@ -1,6 +1,11 @@
 <?php
 require_once("./helper/function.php");
-$web_id = 2;
+require_once('./helper/url.php');
+
+$get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_url' AND web_active = 1");
+$web_id = $get_web_id['web_id'];
+$web_icon = $get_web_id['web_icon'];
+
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
     $url = $g_url;
@@ -153,19 +158,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                             <?php
                             $other_cate = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND cmp_active = 1 AND web_id = $web_id");
                             foreach ($other_cate as $key => $oc) {
-                                // $oc_id = $oc['cmp_id'];
-                                // $other_cate_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id AND post_image_background IS NULL AND post_active = 1");
-                                // foreach ($other_cate_post as $key => $oc) {
-                                //     echo '
-                                //             <li>
-                                //                 <a href="news.php?name=' . $oc['post_rewrite_name'] . '&title=' . $oc['post_title'] . '&breadcrumbs=' . $oc['cmp_rewrite_name'] . '&nameBreadcrumbs=' . $oc['cmp_name'] . '&postTypeId=' . $oc['post_type_id'] . '" target="_self">
-                                //                     <i class="fas fa-chevron-right"></i>
-                                //                     ' . $oc['post_title'] . '
-                                //                 </a>
-                                //             </li>
-                                //         ';
-                                // }
-
                                 $oc_id = $oc['cmp_id'];
                                 $oc_p = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id LIMIT 1");
 
@@ -215,24 +207,24 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                     </div>
                 </div>
 
-                <div class="news-left">
-                    <div class="news-left-title">
-                        <a href="#" target="_self">
-                            Hỗ trợ trực tuyến
-                        </a>
-                    </div>
+                <?php
+                    foreach ($arr_contact as $key => $contact) {
+                        if ($contact['con_banner_active'] == 1) {
+                            echo'
+                                <div class="news-left">
+                                    <div class="news-left-title">
+                                        <a href="#" target="_self">
+                                            Hỗ trợ trực tuyến
+                                        </a>
+                                    </div>
 
-                    <div class="news-left-content">
-                        <div class="hotline-title">Trực tuyến</div>
+                                    <div class="news-left-content">
+                                        <div class="hotline-title">Trực tuyến</div>
 
-                        <div class="hotline-logo">
-                            <img src="../../data/image/post/hotline3.png" alt="hotline">
-                        </div>
-
-                        <?php
-                        foreach ($arr_contact as $key => $contact) {
-                            if ($contact['con_active_contact'] == 1) {
-                                echo '
+                                        <div class="hotline-logo">
+                                            <img src="' . $base_url . 'data/image/post/hotline3.png" alt="hotline">
+                                        </div>
+              
                                         <div class="hotline-contact">
                                             <a href="tel:' . $contact['con_hotline'] . '" target="_self">
                                                 <i class="fas fa-phone-alt"></i>
@@ -245,46 +237,33 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                 <i class="far fa-envelope"></i>
                                                 ' . $contact['con_admin_email'] . '
                                             </a>
-                                        </div>';
-                            }
-                        }
-                        ?>
+                                        </div>
+                                        
+                                        <div class="hotline-social-media">
+                                            <table>
+                                                <tr>      
+                                                    <td>
+                                                        <a href="' . $contact['con_link_fb'] . '" target="_self">
+                                                            <i class="fab fa-facebook-square fb"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="' . $contact['con_link_twitter'] . '" target="_self">
+                                                            <i class="fab fa-twitter-square tw"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="' . $contact['con_link_insta'] . '" target="_self">
+                                                            <i class="fab fa-instagram-square ins"></i>
+                                                        </a>
+                                                    </td>                                    
+                                                </tr>
+                                            </table>
+                                        </div>
 
-                        <div class="hotline-social-media">
-                            <table>
-                                <tr>
-                                    <?php
-                                    foreach ($arr_contact as $key => $contact) {
-                                        if ($contact['con_active_contact'] == 1) {
-                                            echo '
-                                                <td>
-                                                    <a href="' . $contact['con_link_fb'] . '" target="_self">
-                                                        <i class="fab fa-facebook-square fb"></i>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="' . $contact['con_link_twitter'] . '" target="_self">
-                                                        <i class="fab fa-twitter-square tw"></i>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="' . $contact['con_link_insta'] . '" target="_self">
-                                                        <i class="fab fa-instagram-square ins"></i>
-                                                    </a>
-                                                </td>';
-                                        }
-                                    }
-                                    ?>
-                                </tr>
-                            </table>
-                        </div>
+                                        <div class="hotline-support">
+                                            <div class="hotline-title"> Hỗ trợ </div>
 
-                        <div class="hotline-support">
-                            <div class="hotline-title"> Hỗ trợ </div>
-                            <?php
-                            foreach ($arr_contact as $key => $contact) {
-                                if ($contact['con_active_contact'] == 1) {
-                                    echo '
                                             <div class="hotline-contact">
                                                 <a href="tel:' . $contact['con_hotline_hotro_kythuat'] . '" target="_self" style="font-size: 22px">
                                                     <i class="fas fa-mobile-alt"></i>
@@ -297,13 +276,14 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                     <i class="far fa-envelope"></i>
                                                     ' . $contact['con_admin_email'] . '
                                                 </a>
-                                            </div>';
-                                }
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
+                                            </div>        
+                                        </div>
+                                    </div>
+                                </div>
+                            ';
+                        }
+                    } 
+                ?>
             </div>
 
             <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id ") ?>
@@ -447,7 +427,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                                         <div class="row">
                                                             <div class="post-list-img col-lg-4 col-md-4 col-sm-6 col-6">
                                                                 <a href="news.php?' . $changeUrlName . '&title=' . $g_post['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $g_post['ptd_id'] . '&postName=' . $pt_name['post_type_title'] . '" target="_self">
-                                                                    <img src="../../' . $g_post['post_image_background'] . '" alt="post list image">
+                                                                    <img src="' . $base_url . $g_post['post_image_background'] . '" alt="post list image">
                                                                 </a>   
                                                             </div>
 
@@ -480,43 +460,41 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                     }
                                 }
                             }
-                        } else if ($countPt > 1) {
-                                $cate_by_pt = get_data_rows("SELECT * FROM categories_multi_parent WHERE post_type_id = '$postType' AND cmp_active = 1 AND web_id = $web_id");
-                                foreach ($cate_by_pt as $key => $cate_pt) {
-                                    $cate_pt_str = explode(",", $cate_pt['post_type_id']);
-                                    foreach ($cate_pt_str as $key => $cate_pt_str_item) {
-                                        $g_post_type = get_data_row("SELECT * FROM post_type WHERE post_type_id = $cate_pt_str_item");
-                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                        if ($mod_rewrite == 1) {
-                                            $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_rewrite_name'];
-                                        } else {
-                                            $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_id'];
-                                        }
+                        } else if ($countPt > 1) { ?>
+                            <div class="container post-type-list">
+                                <div class="row">
+                                    <?php $cate_by_pt = get_data_rows("SELECT * FROM categories_multi_parent WHERE post_type_id = '$postType' AND cmp_active = 1 AND web_id = $web_id");
+                                    foreach ($cate_by_pt as $key => $cate_pt) {
+                                        $cate_pt_str = explode(",", $cate_pt['post_type_id']);
+                                        foreach ($cate_pt_str as $key => $cate_pt_str_item) {
+                                            $g_post_type = get_data_row("SELECT * FROM post_type WHERE post_type_id = $cate_pt_str_item");
+                                            $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                            if ($mod_rewrite == 1) {
+                                                $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_rewrite_name'];
+                                            } else {
+                                                $changeUrlBread = '&breadcrumbs=' . $cate_pt['cmp_id'];
+                                            } 
 
-                                        echo'
-                                            <div class="container post-list">
-                                                <div class="row">
-                                                    <div class="post-list-img col-lg-4 col-md-4 col-sm-6 col-6">
-                                                        <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self"></a>
-                                                    </div>
+                                            echo '
+                                                <div class="post-type-list-pos col-lg-6 col-md-6 col-sm-12 col-12">     
+                                                    <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self">
+                                                        <div class="post-type-list-container" style="background-image: url(' . $base_url . 'data/image/post/post-type-background1.jpg); background-size: cover; background-position: center center;">
+                                                            <div class="post-type-list-title">
+                                                                <p>' . $g_post_type['post_type_title'] . '</p>                        
+                                                            </div>
 
-                                                    <div class="post-list-container col-lg-8 col-md-8 col-sm-6 col-6">                                                                                
-                                                        <div class="post-list-title">
-                                                            <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self">
-                                                                <p>' . $g_post_type['post_type_title'] . '</p>
-                                                            </a>
+                                                            <div class="post-type-list-des">
+                                                                <p>' . $g_post_type['post_type_description'] . '</p>
+                                                            </div>
                                                         </div>
-
-                                                        <div class="post-list-content">
-                                                            <p>' . $g_post_type['post_type_description'] . '</p>
-                                                        </div>
-                                                    </div>
-                                                </div>                 
-                                            </div>';      
-                                    }     
-                                }
-                        }
-                        ?>
+                                                    </a>                                                                           
+                                                </div>
+                                            ';          
+                                        }     
+                                    } ?>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
 
                     <div class="contact-footer">

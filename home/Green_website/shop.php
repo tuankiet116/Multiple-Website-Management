@@ -1,7 +1,12 @@
 <?php
 require_once("./helper/function.php");
+require_once('./helper/url.php');
 
-$web_id = 2;
+$get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_url' AND web_active = 1");
+$web_id = $get_web_id['web_id'];
+$web_icon = $get_web_id['web_icon'];
+
+// $web_id = 2;
 
 $per_page_record = 9;
 
@@ -36,7 +41,6 @@ $pageLink = "";
 <head>
     <title> Báo giá sản phẩm </title>
     <? include("./includes/inc_head.php"); ?>
-    <link rel="stylesheet" href="../Green_website/resource/css/shop.css">
 </head>
 
 <body>
@@ -71,9 +75,9 @@ $pageLink = "";
                                 <div class="shop-content">
                                     <div class="shop-image">
                                         <a href="#" target="_self">
-                                            <img src="../../' . $shop['product_image_path'] . '" alt="shop image">
+                                            <img src="' . $base_url . $shop['product_image_path'] . '" alt="shop image">
 
-                                            <div class="shop-detail" data-toggle="modal" data-target="#detailContainer>
+                                            <div class="shop-detail">
                                                 <div> Chi tiết </div>
                                             </div>
                                         </a>
