@@ -358,9 +358,7 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         
                         <?php
                             if ($postType != "" && $countPt == "") {
-                                $get_pt_title = get_data_row("SELECT * FROM post_type WHERE post_type_id IN ($postType) AND post_type_active = 1");
-                                $get_pt_t = $get_pt_title['post_type_title'];
-                                echo '<p class="news-right-content-title">' . $get_pt_t . '</p>';
+                                echo '<p class="news-right-content-title">' . $name_breadcrumbs . '</p>';
                             }
                             else if ($postType != "" && $countPt != "") {
                                 echo '<p class="news-right-content-title">' . $name_breadcrumbs . '</p>';
