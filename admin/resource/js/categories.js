@@ -93,14 +93,19 @@ $(document).ready(function () {
     getAllCate(web_id);
     
     getPostType(web_id);
-    var select = document.querySelectorAll('.post_type_id');
-    select.forEach((e)=>{
-      e.onchange = function(){
-        if(e.checked){
-          post_type_id.push(e.value);
-        }
+    $('.post_type_id').on('change',function(){
+      id = $(this).attr('id');
+      // console.log(id.split('_')[3]);
+      if($('#' + id).prop('checked')){
+        value = id.split('_')[3];
+        post_type_id.push(value);
       }
-    })
+      else{
+        value = id.split('_')[3];
+        removeElement(post_type_id, value);
+      }
+      // console.log(post_type_id);
+    });
     
   });
 
@@ -144,6 +149,7 @@ $(document).ready(function () {
               $('#input_image_background_category_4').children('svg').css('display', 'inherit');
               $('#input_image_background_category_5').children('svg').css('display', 'inherit');
               getAllCate(web_id_create);
+              post_type_id=[];
             }
             else{
               $('.loader-container').css('display', 'none');
@@ -248,7 +254,7 @@ function getPostType(web_id){
             return`
               <div class="post-item">
                 <label for="2">${e.post_type_title}</label>
-                <input type="checkbox" class="disable post_type_id" value="${e.post_type_id}">
+                <input id="post_type_create_${e.post_type_id}" type="checkbox" class="disable post_type_id" value="${e.post_type_id}">
               </div>
             `;
           });
@@ -331,8 +337,7 @@ function renderFormUpdate(data){
             })
             $('.wrapper-post-update').html(render ?? err).ready(function(){
 
-              var select = $('.post_type_id_update');
-              console.log(select);
+              // var select = $('.post_type_id_update');
               $('.post_type_id_update').on('change',function(){
                 id = $(this).attr('id');
                 //console.log(id);

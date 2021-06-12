@@ -309,23 +309,6 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         </span>
 
                         <?php
-                        // foreach ($bread_topic as $key => $bread) {
-                        //     if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
-                        //         $bread_parents = $bread['cmp_parent_id'];
-                        //         if ($bread_parents == null) {
-                        //             echo '
-                        //                 <a href="" target="_self">' . $bread['cmp_name'] . '</a>
-                        //             ';
-                        //         } else {
-                        //             $bread_name = get_data_rows("SELECT cmp_name FROM categories_multi_parent WHERE cmp_id = $bread_parents");
-                        //             foreach ($bread_name as $key => $b_name) {
-                        //                 echo '
-                        //                     <a href="" target="_self">' . $b_name['cmp_name'] . '</a>
-                        //                 ';
-                        //             }
-                        //         }
-                        //     }
-                        // }
                         if ($hasChild != '') {
                             foreach ($bread_topic as $key => $bread) {
                                 if ($bread['cmp_rewrite_name'] == $breadcrumbs || $bread['cmp_id'] == $breadcrumbs) {
@@ -507,13 +490,15 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                                             echo '
                                                 <div class="post-type-list-pos col-lg-6 col-md-6 col-sm-12 col-12">     
                                                     <a href="news.php?' . $changeUrlBread . '&nameBreadcrumbs=' . $cate_pt['cmp_name'] . '&postName=' . $g_post_type['post_type_title'] . '&postTypeId=' . $cate_pt_str_item . '" target="_self">
-                                                        <div class="post-type-list-container" style="background-image: url(' . $base_url . 'data/image/post/post-type-background1.jpg); background-size: cover; background-position: center center;">
-                                                            <div class="post-type-list-title">
-                                                                <p>' . $g_post_type['post_type_title'] . '</p>                        
-                                                            </div>
+                                                        <div class="post-type-list-container" style="background-image: url(' . $base_url . 'data/image/post/post-type-background1.jpg); background-size: cover; background-position: center center">
+                                                            <div class="post-type-list-blur">
+                                                                <div class="post-type-list-title">
+                                                                    <p>' . $g_post_type['post_type_title'] . '</p>                        
+                                                                </div>
 
-                                                            <div class="post-type-list-des">
-                                                                <p>' . $g_post_type['post_type_description'] . '</p>
+                                                                <div class="post-type-list-des">
+                                                                    <p>' . $g_post_type['post_type_description'] . '</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </a>                                                                           

@@ -376,6 +376,7 @@ body {
 .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos{
     height: auto;
     padding: 0;
+    margin-bottom: 15px;
 }
 
 .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(odd) {
@@ -391,26 +392,30 @@ body {
     height: 120px;
 }
 
-.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-title {
-    height: 50%;
-    background-color: rgba(255, 255, 255, 0.7);
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-blur {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
-.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-title p{
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-blur .post-type-list-title {
+    height: 50%;
+}
+
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-blur .post-type-list-title p{
     text-align: center;
     padding-top: 30px;
     color: rgb(30, 30, 30);
     font-weight: bold;
 }
 
-.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-des {
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-blur .post-type-list-des {
     height: 50%;
-    background-color: rgba(255, 255, 255, 0.7);
 }
 
-.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-des p {
+.container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos .post-type-list-container .post-type-list-blur .post-type-list-des p {
     text-align: center;
-    color: rgb(60, 60, 60);
+    color: #4ca246;
 }
 
 
