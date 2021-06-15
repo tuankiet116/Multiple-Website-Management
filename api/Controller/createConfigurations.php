@@ -39,19 +39,19 @@ $UploadBase64 = new upload_image();
 
 //Save Image Hompage Background
 $url_save = '../../data/image/image_background_homepage';
-$image_background = saveBase64($UploadBase64,$image_homepage_background, $url_save, 'jpg, png', 2000, 'Background_HomePage', 'Background_HomePage');
+$image_background = saveBase64($UploadBase64,$image_homepage_background, $url_save, 'jpg, png, jpeg', 2000, 'Background_HomePage', 'Background_HomePage');
 
 //Save Logo Top
 $url_save = '../../data/image/logo_top';
-$logo_top = saveBase64($UploadBase64, $logo_top_data, $url_save, 'jpg, png, svg', 2000, 'LogoTop', 'LogoTop');
+$logo_top = saveBase64($UploadBase64, $logo_top_data, $url_save, 'jpg, png, jpeg', 2000, 'LogoTop', 'LogoTop');
 
 //Save Logo Top
 $url_save = '../../data/image/logo_bottom';
-$logo_bottom = saveBase64($UploadBase64, $logo_bottom_data, $url_save, 'jpg, png, svg', 2000, 'LogoBottom', 'LogoBottom');
+$logo_bottom = saveBase64($UploadBase64, $logo_bottom_data, $url_save, 'jpg, png, jpeg', 2000, 'LogoBottom', 'LogoBottom');
 
 //Save Logo Top
 $url_save = '../../data/image/image_banner';
-$image_banner = saveBase64($UploadBase64, $image_banner_data, $url_save, 'jpg, png', 5000, 'Banner', 'Banner');
+$image_banner = saveBase64($UploadBase64, $image_banner_data, $url_save, 'jpg, png, jpeg', 5000, 'Banner', 'Banner');
 
 
 // set Term property of record to update
