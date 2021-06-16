@@ -79,22 +79,25 @@ $pageLink = "";
                                     <div class="shop-image">
                                         <a href="#" target="_self">
                                             <img src="' . $base_url . $shop['product_image_path'] . '" alt="shop image">
-
+                       
                                             <div class="shop-detail">
-                                                <div> Chi tiết </div>
+                                                <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
+                                                    <div> Chi tiết </div>
+                                                </a>
                                             </div>
+                                            
                                         </a>
 
                                         <div class="new-sticker"> New </div>
                                     </div>
 
                                     <div class="shop-name">
-                                        <a href="#" target="_self">
+                                        <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
                                             ' . $shop['product_name'] . '
                                         </a>
                                     </div>
 
-                                    <div class="shop-code">' . $shop['product_description'] . '</div>
+                                    <div class="shop-des">' . $shop['product_price'] . ' ' . $shop['product_currency'] . '</div>
                                 </div>
                             </div>';
                         }

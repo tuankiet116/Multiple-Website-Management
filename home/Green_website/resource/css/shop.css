@@ -119,7 +119,7 @@ body {
     transition: .3s;
 }
 
-#shop #shop-container .container-fluid .shop-content .shop-code {
+#shop #shop-container .container-fluid .shop-content .shop-des {
     height: 35px;
     color: #ff9900;
     font-family: 'Montserrat', sans-serif;
@@ -246,25 +246,38 @@ body {
 /********** PRODUCT **********/
 
 #shop #shop-container .container-fluid .product-container {
-    border: 1px solid red;
     width: 100%;
     height: auto;
+    margin-bottom: 35px;
 }
 
 #shop #shop-container .container-fluid .product-container .product-image {
     border: 3px solid #4ca246;
     width: 100%;
     height: 400px;
+    overflow: hidden;
+}
+
+#shop #shop-container .container-fluid .product-container .product-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: .3s;
+}
+
+#shop #shop-container .container-fluid .product-container .product-image img:hover {
+    transform: scale(1.1);
+    transition: .3s;
 }
 
 #shop #shop-container .container-fluid .product-container .product-content {
     border: 1px solid rgb(220, 220, 220);
     background-color: white;
     width: 100%;
-    height: 400px;
+    height: auto;
     position: relative;
     margin-top: 22px;
-    padding-top: 40px;
+    padding: 40px 12px 12px 12px;
 }
 
 #shop #shop-container .container-fluid .product-container .product-content .product-name {
@@ -285,7 +298,6 @@ body {
 }
 
 #shop #shop-container .container-fluid .product-container .product-content .product-info {
-    border: 1px solid red;
     width: 100%;
     height: auto;
 }
@@ -296,9 +308,120 @@ body {
     font-size: 16px;
 }
 
+#shop #shop-container .container-fluid .product-container .product-content .product-info p.product-info-text {
+    color: rgb(30, 30, 30);
+    text-align: justify;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-price {
+    width: 100%;
+    height: auto;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-price p.product-price-title {
+    color: rgb(90, 90, 90);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-price p.product-price-cash {
+    color: #4ca246;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-contact {
+    text-align: right;
+    border-top: 1px solid rgb(220, 220, 220);
+    padding-top: 12px;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-contact .product-back {
+    border-radius: 5px;
+    background-color: rgb(180, 180, 180);
+    color: white;
+    padding: 10px 20px;
+    margin-right: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    vertical-align: bottom;
+    display: inline-block;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-contact .product-call {
+    border-radius: 5px;
+    background-color: #ff9900;
+    color: white;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-contact .product-call i, 
+#shop #shop-container .container-fluid .product-container .product-content .product-contact .product-back i{
+    margin-right: 5px;
+}
    
+#shop #shop-container .container-fluid .product-post {
+    width: 100%;
+    height: auto;
+    padding-bottom: 30px;
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container {
+    width: 100%;
+    height: 320px;
+    border: 1px solid rgb(220, 220, 220);
+    box-shadow: 10px 10px 0px 2px rgba(220, 220, 220, 0.6);
+    margin-bottom: 30px;
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container .product-post-image {
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container .product-post-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container .product-post-text {
+    position: relative;
+    padding: 35px 10px 10px 10px;
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container .product-post-text .product-post-title {
+    background-color: #4ca246;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: absolute;
+    top: -23px;
+    left: 0;
+    box-shadow: 7px 7px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+#shop #shop-container .container-fluid .product-post .product-post-container .product-post-text .product-post-word {
+    max-height: 65px;
+    overflow-y: hidden;
+    font-size: 14px;
+}
 
 
+/********** RESPONSIVE **********/
+
+@media screen and (max-width: 767px) {
+
+    #shop #shop-container .container-fluid .product-container .product-content {
+        margin-top: 36px;
+    }
+}
 
 
 
