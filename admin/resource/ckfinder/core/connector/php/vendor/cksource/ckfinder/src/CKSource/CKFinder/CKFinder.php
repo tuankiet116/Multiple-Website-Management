@@ -335,7 +335,7 @@ class CKFinder extends Container implements HttpKernelInterface
         $kernel->terminate($request, $response);
     }
 
-    /**
+    /** 
      * Returns the BackedFactory service.
      *
      * @return BackendFactory

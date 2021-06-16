@@ -14,7 +14,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../../resource/ckeditor/ckeditor.js"></script>
+    <script src="../../resource/ckeditor-full/ckeditor.js"></script>
     <!-- <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script> -->
     <script src="../../../plugins/select2/js/select2.min.js"></script>
     <script language="javascript" src="../../resource/js/post_detail.js"></script>
@@ -126,39 +126,39 @@
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
 
-        toolbar: [{
-                name: 'clipboard',
-                items: ['Undo', 'Redo']
-            },
-            {
-                name: 'styles',
-                items: ['Styles', 'Format']
-            },
-            {
-                name: 'basicstyles',
-                items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
-            },
-            {
-                name: 'paragraph',
-                items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-            },
-            {
-                name: 'links',
-                items: ['Link', 'Unlink']
-            },
-            {
-                name: 'insert',
-                items: ['Image', 'Table']
-            },
-            {
-                name: 'tools',
-                items: ['Maximize']
-            },
-            {
-                name: 'editing',
-                items: ['Scayt']
-            }
-        ],
+        // toolbar: [{
+        //         name: 'clipboard',
+        //         items: ['Undo', 'Redo']
+        //     },
+        //     {
+        //         name: 'styles',
+        //         items: ['Styles', 'Format']
+        //     },
+        //     {
+        //         name: 'basicstyles',
+        //         items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
+        //     },
+        //     {
+        //         name: 'paragraph',
+        //         items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+        //     },
+        //     {
+        //         name: 'links',
+        //         items: ['Link', 'Unlink']
+        //     },
+        //     {
+        //         name: 'insert',
+        //         items: ['Image', 'Table']
+        //     },   
+        //     {
+        //         name: 'tools',
+        //         items: ['Maximize']
+        //     },
+        //     {
+        //         name: 'editing',
+        //         items: ['Scayt']
+        //     }
+        // ],
         width: 900,
         height: 300,
 
