@@ -243,5 +243,62 @@ body {
 
 
 
+/********** PRODUCT **********/
+
+#shop #shop-container .container-fluid .product-container {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+}
+
+#shop #shop-container .container-fluid .product-container .product-image {
+    border: 3px solid #4ca246;
+    width: 100%;
+    height: 400px;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content {
+    border: 1px solid rgb(220, 220, 220);
+    background-color: white;
+    width: 100%;
+    height: 400px;
+    position: relative;
+    margin-top: 22px;
+    padding-top: 40px;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-name {
+    background-color: #4ca246;
+    padding: 10px 15px;
+    position: absolute;
+    top: -23px;
+    left: -23px;
+    box-shadow: 7px 7px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-name span {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-info {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+}
+
+#shop #shop-container .container-fluid .product-container .product-content .product-info p.product-info-title {
+    color: rgb(90, 90, 90);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+   
+
+
+
 
 
