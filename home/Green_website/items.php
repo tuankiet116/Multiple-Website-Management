@@ -13,6 +13,7 @@ if (isset($_GET['id'])) {
 }
 
 $items = get_data_row("SELECT * FROM product WHERE product_id = $id AND product_active = 1");
+$con_item = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 $post_item = get_data_rows("SELECT * FROM post WHERE product_id = $id AND post_active = 1");
 $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
 
@@ -86,7 +87,7 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                                         </div>
                                     </a>
 
-                                    <a href="#" target="_self">
+                                    <a href="tel:<?php echo $con_item['con_hotline_banhang'] ?>" target="_self">
                                         <div class="product-call">
                                             <i class="fas fa-phone-alt"></i>
                                             Liên hệ
