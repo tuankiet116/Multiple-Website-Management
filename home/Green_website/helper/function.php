@@ -1,6 +1,6 @@
 <?php 
     define("DATABASE_HOST", "localhost");
-    define("DATABASE_NAME", "cleaning_introduces");
+    define("DATABASE_NAME", "cleaning_introduces_test");
     define("DATABASE_USERNAME", "root");
     define("DATABASE_PASSWORD", "");
     define("SLAVE_DATABASE_HOST", ["localhost" => 2]);
@@ -34,7 +34,7 @@
         $stmt->execute();
 
         if($stmt->rowCount() > 0){
-            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $data = $stmt->fetch(PDO::FETCH_ASSOC); 
         }
         unset($stmt);
         unset($conn);

@@ -14,7 +14,12 @@ $(document).ready(function(){
 
     //Show Product 
     debugger;
-    ajaxSearchingProduct(null);
+    var data_init = {
+      web_id: null ,
+      term: "",
+      product_active: null,
+    };
+    ajaxSearchingProduct(data_init);
 
     // Input Image Processing When Image Is NULL -- Image Update
     $(".input-image").on("click", function(e){
@@ -233,6 +238,7 @@ function productSuccess(data){
             "product_currency": $('#Modal select.currency-select').val(),
             "product_image_path": $('#image_product_update').attr('src')
           }
+          
 
           if(data.product_name == ""  || data.product_name == null){
             showAlert('warning', "Tên Sản Phẩm Không Được Bỏ Trống");
@@ -240,6 +246,7 @@ function productSuccess(data){
           else{
             if(data.web_id == "" || data.web_id == null){
               showAlert('warning', "Website Không Được Trống");
+              //console.log(data);
             }
             else{
               $('.loader-container').css('display', 'flex');
@@ -300,7 +307,12 @@ function IActiveButton(){
       }
     });
 
-    ajaxSearchingProduct(null);
+    var data_init = {
+      web_id: null,
+      term: "",
+      product_active: null,
+    };
+    ajaxSearchingProduct(data_init);
   });
 }
 
@@ -574,7 +586,12 @@ function updateSuccess(data){
     showAlert('success', data.message);
     $('#modal-update-close').click();
     clearModal();
-    ajaxSearchingProduct(null);
+    var data_init = {
+      web_id: null,
+      term: "",
+      product_active: null,
+    };
+    ajaxSearchingProduct(data_init);
   }
   else{
     showAlert('error', data.message);
@@ -590,7 +607,12 @@ function createSuccess(data){
     showAlert('success', data.message);
     $('#modal-add-close').click();
     clearModal();
-    ajaxSearchingProduct(null);
+    var data_init = {
+      web_id: null,
+      term: "",
+      product_active: null,
+    };
+    ajaxSearchingProduct(data_init);
   }
   else{
     showAlert('error', data.message);
