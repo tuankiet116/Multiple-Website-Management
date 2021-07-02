@@ -67,8 +67,7 @@ class Configuations{
                 $this->con_meta_description      = $row["con_meta_description"];
                 $this->con_meta_keyword          = $row["con_meta_keywords"];
                 $this->con_mod_rewrite           = $row["con_mod_rewrite"];
-                $this->con_extenstion            = $row["con_extenstion"];
-                $this->lang_id                   = $row["lang_id"];
+                //$this->lang_id                   = $row["lang_id"];
                 $this->con_active_contact        = $row["con_active_contact"];
                 $this->con_hotline               = $row["con_hotline"];
                 $this->con_hotline_banhang       = $row["con_hotline_banhang"];
@@ -100,12 +99,12 @@ class Configuations{
 
     function create(){
         $query = "INSERT INTO configuration(web_id, con_admin_email, con_site_title, con_meta_description, 
-                  con_meta_keywords, con_mod_rewrite, con_extenstion, lang_id, con_active_contact, con_hotline, 
+                  con_meta_keywords, con_mod_rewrite, con_active_contact, con_hotline, 
                   con_hotline_banhang, con_hotline_hotro_kythuat, con_address, con_background_homepage, con_info_payment, 
                   con_fee_transport, con_contact_sale, con_info_company, con_logo_top, con_logo_bottom, con_page_fb, con_link_fb, 
                   con_link_twitter, con_link_insta, con_map, con_banner_image, con_banner_title, con_banner_description, 
                   con_banner_active, con_rewrite_name_homepage)
-                  Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                  Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt  = $this->conn->prepare($query);
 
         $stmt->bindParam(1,  $this->web_id,  PDO::PARAM_INT);
@@ -114,8 +113,7 @@ class Configuations{
         $stmt->bindParam(4,  $this->con_meta_description);
         $stmt->bindParam(5,  $this->con_meta_keyword);
         $stmt->bindParam(6,  $this->con_mod_rewrite, PDO::PARAM_INT);
-        $stmt->bindParam(7,  $this->con_extenstion);
-        $stmt->bindParam(8,  $this->lang_id, PDO::PARAM_INT);
+        //$stmt->bindParam(8,  $this->lang_id, PDO::PARAM_INT);
         $stmt->bindParam(9,  $this->con_active_contact, PDO::PARAM_INT);
         $stmt->bindParam(10, $this->con_hotline);
         $stmt->bindParam(11, $this->con_hotline_banhang);
@@ -152,8 +150,6 @@ class Configuations{
                   con_meta_description      = :con_meta_description, 
                   con_meta_keywords         = :con_meta_keyword, 
                   con_mod_rewrite           = :con_mod_rewrite, 
-                  con_extenstion            = :con_extenstion, 
-                  lang_id                   = :lang_id, 
                   con_active_contact        = :con_active_contact, 
                   con_hotline               = :con_hotline, 
                   con_hotline_banhang       = :con_hotline_banhang, 
@@ -185,8 +181,6 @@ class Configuations{
         $stmt->bindParam(':con_meta_description'     , $this->con_meta_description);
         $stmt->bindParam(':con_meta_keyword'         , $this->con_meta_keyword);
         $stmt->bindParam(':con_mod_rewrite'          , $this->con_mod_rewrite, PDO::PARAM_INT);
-        $stmt->bindParam(':con_extenstion'           , $this->con_extenstion);
-        $stmt->bindParam(':lang_id'                  , $this->lang_id, PDO::PARAM_INT);
         $stmt->bindParam(':con_active_contact'       , $this->con_active_contact, PDO::PARAM_INT);
         $stmt->bindParam(':con_hotline'              , $this->con_hotline);
         $stmt->bindParam(':con_hotline_banhang'      , $this->con_hotline_banhang);

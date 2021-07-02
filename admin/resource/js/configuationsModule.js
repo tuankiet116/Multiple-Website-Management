@@ -63,45 +63,45 @@ $(document).ready(function(){
   });
 
   //Select2 For Pick Language
-  $(".pick_language").select2({
-    ajax: { 
-      url: "../../../api/Controller/searchLang.php",
-      type: "POST",
-      dataType: 'json',
-      delay: 250,
-      data: function (params) {
-        if(params.term == null){
-          var obj = {
-            "term": ''
-          } 
-        }else{
-          var obj = {
-          "term": params.term.trim()
-          } 
-        }
+  // $(".pick_language").select2({
+  //   ajax: { 
+  //     url: "../../../api/Controller/searchLang.php",
+  //     type: "POST",
+  //     dataType: 'json',
+  //     delay: 250,
+  //     data: function (params) {
+  //       if(params.term == null){
+  //         var obj = {
+  //           "term": ''
+  //         } 
+  //       }else{
+  //         var obj = {
+  //         "term": params.term.trim()
+  //         } 
+  //       }
         
-        return JSON.stringify(obj);
-      },
-      processResults: function (data, params) {
-        return {
-            results: $.map(data, function (item) {
-                return {
-                    text: item.lang_name,
-                    id: item.lang_id,
-                    image: checkdefault("data/lang_icon/icon_default/default.png",item.lang_image),
-                    path: item.lang_path,
-                    data: item
-                };
-            })
-        };
-      },
-      cache: false
-    },
-    placeholder: 'Search for a Language',
-    minimumInputLength: 0,
-    templateResult: formatRepoLanguage,
-    templateSelection: formatRepoSelectionLanguage
-  });
+  //       return JSON.stringify(obj);
+  //     },
+  //     processResults: function (data, params) {
+  //       return {
+  //           results: $.map(data, function (item) {
+  //               return {
+  //                   text: item.lang_name,
+  //                   id: item.lang_id,
+  //                   image: checkdefault("data/lang_icon/icon_default/default.png",item.lang_image),
+  //                   path: item.lang_path,
+  //                   data: item
+  //               };
+  //           })
+  //       };
+  //     },
+  //     cache: false
+  //   },
+  //   placeholder: 'Search for a Language',
+  //   minimumInputLength: 0,
+  //   templateResult: formatRepoLanguage,
+  //   templateSelection: formatRepoSelectionLanguage
+  // });
 
   // Get Configuration Information From Database when Select website
   $(".pick_website_select").on("change", function(e){
@@ -209,13 +209,14 @@ $(document).ready(function(){
 
 
 var base_url = "../../../";
-var data_language_default = {
-  id: 1,
-  lang_name: 'Tiếng Việt',
-  lang_path: 'vn',
-  lang_image: 'data/lang_icon/icon/vietnam-512.png',
-  lang_domain: null
-}
+// Use For Setting Language
+// var data_language_default = {
+//   id: 1,
+//   lang_name: 'Tiếng Việt',
+//   lang_path: 'vn',
+//   lang_image: 'data/lang_icon/icon/vietnam-512.png',
+//   lang_domain: null
+// }
 
 //Make Information Image Get The FUCK Out Of Chrome Security And Change Data To Base64
 var exGetImg = function(extag, element) {
@@ -293,42 +294,42 @@ function formatRepoSelectionWebsite (state) {
 
 
 //Language Function Select2
-function formatRepoLanguage (repo) {
-  if (repo.loading) {
-    return repo.text;
-  }
+// function formatRepoLanguage (repo) {
+//   if (repo.loading) {
+//     return repo.text;
+//   }
 
-  var $container = $(
-    "<div class='select2-result-language clearfix'>" +
-      "<div class='select2-result-language__icon'><img src='" + base_url + repo.image + "' /></div>" +
-      "<div class='select2-result-language__meta'>" +
-        "<div class='select2-result-language__title'></div>" +
-        "<div class='select2-result-language__description'></div>" +
-      "</div>" +
-    "</div>"
-  );
+//   var $container = $(
+//     "<div class='select2-result-language clearfix'>" +
+//       "<div class='select2-result-language__icon'><img src='" + base_url + repo.image + "' /></div>" +
+//       "<div class='select2-result-language__meta'>" +
+//         "<div class='select2-result-language__title'></div>" +
+//         "<div class='select2-result-language__description'></div>" +
+//       "</div>" +
+//     "</div>"
+//   );
 
-  $container.find(".select2-result-language__title").text(repo.text);
-  $container.find(".select2-result-language__description").text(repo.path);
+//   $container.find(".select2-result-language__title").text(repo.text);
+//   $container.find(".select2-result-language__description").text(repo.path);
 
-  return $container;
-}
+//   return $container;
+// }
 
-function formatRepoSelectionLanguage (state) {
-  if (!state.id) {
-    return state.text;
-  }
-  var $state = $(
-    '<span class="language-picker" id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
-  );
+// function formatRepoSelectionLanguage (state) {
+//   if (!state.id) {
+//     return state.text;
+//   }
+//   var $state = $(
+//     '<span class="language-picker" id = "language_'+ state.id +'"><img class="img-flag" /> <span></span></span>'
+//   );
 
-  // Use .text() instead of HTML string concatenation to avoid script injection issues
-  $state.find("span").text(state.text);
-  var image = state.image||state.title; 
-  $state.find("img").attr("src", base_url + image);
+//   // Use .text() instead of HTML string concatenation to avoid script injection issues
+//   $state.find("span").text(state.text);
+//   var image = state.image||state.title; 
+//   $state.find("img").attr("src", base_url + image);
 
-  return $state;
-} //End Of Language Function Select2
+//   return $state;
+// } //End Of Language Function Select2
 
 
 //set default image which null value
@@ -340,28 +341,28 @@ function checkdefault(default_value, check_parameter){
 }
 
 //Call Ajax Language Table
-function getLanguage(data){
-  var result = "";
-  data = {
-    'lang_id': data
-  }
+// function getLanguage(data){
+//   var result = "";
+//   data = {
+//     'lang_id': data
+//   }
 
-  $.ajax({ 
-    url: "../../../api/Controller/getLangByID.php",
-    type: "POST",
-    async: false,
-    dataType: 'json',
-    data: JSON.stringify(data),
-    success: function(data){
-      result = data;
-    },
-    error: function(data){
-      showAlert('error','<strong>ERROR:</strong> Get Language')
-      result = "NOT_FOUND";
-    }
-  });
-  return result;
-}
+//   $.ajax({ 
+//     url: "../../../api/Controller/getLangByID.php",
+//     type: "POST",
+//     async: false,
+//     dataType: 'json',
+//     data: JSON.stringify(data),
+//     success: function(data){
+//       result = data;
+//     },
+//     error: function(data){
+//       showAlert('error','<strong>ERROR:</strong> Get Language')
+//       result = "NOT_FOUND";
+//     }
+//   });
+//   return result;
+// }
 
 //Function Set Selected Data||Value For Select2 Language
 function setSelect2DataLanguage(id ,data_select = "", data){
@@ -389,12 +390,12 @@ function getSuccessDataConfiguration(data){
     $('#input-rewrite').prop('checked', false);
     $('#input-rewrite').val('off');
   }
-  $('#input-extention').val(data.con_extenstion);
-  var lang_data     = getLanguage(data.lang_id);
+  // $('#input-extention').val(data.con_extenstion);
+  // var lang_data     = getLanguage(data.lang_id);
   
-  //Set select element language
-  var select_option = "<option selected value = '"+lang_data.lang_id+"' title = '"+lang_data.lang_image+"' >"+lang_data.lang_name+"</option>";
-  setSelect2DataLanguage('.pick_language', select_option, lang_data);
+  // //Set select element language
+  // var select_option = "<option selected value = '"+lang_data.lang_id+"' title = '"+lang_data.lang_image+"' >"+lang_data.lang_name+"</option>";
+  // setSelect2DataLanguage('.pick_language', select_option, lang_data);
 
   $('#input-hotline').val(data.con_hotline);
   $('#input-hotline-banhang').val(data.con_hotline_banhang);
@@ -482,8 +483,8 @@ function ResetForm(){
   $('.input-image img').attr('src', '#');
   $('.input-image img').css('display', 'none');
   $('.input-image svg').css('display', 'block');
-  var select_option = "<option selected value = '"+data_language_default.id+"' title = '"+data_language_default.lang_image+"' >"+data_language_default.lang_name+"</option>";
-  setSelect2DataLanguage('.pick_language', select_option, data_language_default);
+  //var select_option = "<option selected value = '"+data_language_default.id+"' title = '"+data_language_default.lang_image+"' >"+data_language_default.lang_name+"</option>";
+  // setSelect2DataLanguage('.pick_language', select_option, data_language_default);
 }
 
 //Get Data From Input
@@ -493,8 +494,8 @@ function GetAllData(){
   input_meta_description      = $('#input-meta-description').val().replace(/"/g, "'");
   input_meta_keyword          = $('#input-meta-keyword').val().replace(/"/g, "'");
   input_rewrite               = $('#input-rewrite').val() == 'on'? 1:0;
-  input_extention             = $('#input-extention').val().replace(/"/g, "'");
-  pick_language               = $('.pick_language').select2('val').replace(/"/g, "'");
+  // input_extention             = $('#input-extention').val().replace(/"/g, "'");
+  // pick_language               = $('.pick_language').select2('val').replace(/"/g, "'");
   input_hotline               = $('#input-hotline').val().replace(/"/g, "'");;
   input_hotline_banhang       = $('#input-hotline-banhang').val().replace(/"/g, "'");
   input_hotline_kythuat       = $('#input-hotline-kythuat').val().replace(/"/g, "'");
@@ -520,8 +521,8 @@ function GetAllData(){
     con_meta_description      : input_meta_description.trim(),
     con_meta_keyword          : input_meta_keyword.trim(),
     con_mod_rewrite           : input_rewrite,
-    con_extenstion            : input_extention.trim(),
-    lang_id                   : pick_language.trim(),
+    // con_extenstion            : input_extention.trim(),
+    // lang_id                   : pick_language.trim(),
     con_active_contact        : check_active_contact,
     con_hotline               : input_hotline.trim(),
     con_hotline_banhang       : input_hotline_banhang.trim(),

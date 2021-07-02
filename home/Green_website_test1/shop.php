@@ -6,9 +6,6 @@ $get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_
 $web_id = $get_web_id['web_id'];
 $web_icon = $get_web_id['web_icon'];
 
-$get_web_icon = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
-$web_bottom_icon = $get_web_icon['con_logo_bottom'];
-
 // $web_id = 2;
 
 $per_page_record = 9;
@@ -100,10 +97,7 @@ $pageLink = "";
                                         </a>
                                     </div>
 
-                                    <div class="shop-des">
-                                        <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $shop['product_price'] . ' </span>
-                                        <span> ' . $shop['product_currency'] . '</span>
-                                    </div>
+                                    <div class="shop-des">' . $shop['product_price'] . ' ' . $shop['product_currency'] . '</div>
                                 </div>
                             </div>';
                         }

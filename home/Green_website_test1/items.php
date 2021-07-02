@@ -6,9 +6,6 @@ $get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_
 $web_id = $get_web_id['web_id'];
 $web_icon = $get_web_id['web_icon'];
 
-$get_web_icon = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
-$web_bottom_icon = $get_web_icon['con_logo_bottom'];
-
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
@@ -16,7 +13,6 @@ if (isset($_GET['id'])) {
 }
 
 $items = get_data_row("SELECT * FROM product WHERE product_id = $id AND product_active = 1");
-$get_other_product = get_data_rows("SELECT * FROM product WHERE NOT (product_id = $id) AND product_active = 1");
 $con_item = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
 $post_item = get_data_rows("SELECT * FROM post WHERE product_id = $id AND post_active = 1");
 $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
@@ -69,13 +65,6 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                                 </div>
 
                                 <div class="product-info">
-                                    <p class="product-info-title"> Loại sản phẩm: </p>
-                                    <p class="product-info-text">
-
-                                    </p>
-                                </div>
-
-                                <div class="product-info">
                                     <p class="product-info-title"> Thông tin sản phẩm: </p>
                                     <p class="product-info-text">
                                         <?php echo $items['product_description'] ?>
@@ -85,23 +74,23 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                                 <div class="product-price">
                                     <p class="product-price-title"> Giá sản phẩm: </p>
                                     <p class="product-price-cash">
-                                        <span class="price-numbers"> <?php echo $items['product_price'] ?> </span>
+                                        <?php echo $items['product_price'] ?>
                                         <span style="font-size: 13px"> <?php echo $items['product_currency'] ?> </span>
                                     </p>
                                 </div>
 
                                 <div class="product-contact">
-                                    <a href="" target="_self">
-                                        <div class="product-add">
-                                            <i class="fas fa-cart-plus"></i>
-                                            Thêm giỏ hàng
+                                    <a href="#" target="_self">
+                                        <div class="product-back">
+                                            <i class="fas fa-redo-alt"></i>
+                                            Quay lại
                                         </div>
                                     </a>
 
                                     <a href="tel:<?php echo $con_item['con_hotline_banhang'] ?>" target="_self">
                                         <div class="product-call">
-                                            <i class="fas fa-shopping-cart"></i>
-                                            Mua ngay
+                                            <i class="fas fa-phone-alt"></i>
+                                            Liên hệ
                                         </div>
                                     </a>
                                 </div>
@@ -113,33 +102,31 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                 <div class="shop-title"> Bài viết liên quan </div>
 
                 <div class="product-post">
-                    <div class="row slide-product-post">
+                    <div class="row">
                         <?php
-                        foreach ($post_item as $key => $p_item) {
-                            foreach ($category as $key => $cate) {
-                                $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                if ($mod_rewrite == 1) {
-                                    if ($p_item['post_rewrite_name'] != "" || $p_item['post_rewrite_name'] != null) {
+                            foreach ($post_item as $key => $p_item) {
+                                foreach ($category as $key => $cate) {
+                                    $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                    if ($mod_rewrite == 1) {
                                         $changeUrlName = 'name=' . $p_item['post_rewrite_name'];
-                                    } else if ($p_item['post_rewrite_name'] == "" || $p_item['post_rewrite_name'] == null) {
-                                        $changeUrlName = 'pid=' . $p_item['post_id'];
+                                        $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
+                                    } else {
+                                        $changeUrlName = 'name=' . $p_item['post_id'];
+                                        $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                                     }
-                                } else {
-                                    $changeUrlName = 'pid=' . $p_item['post_id'];
-                                }
 
-                                if ($p_item['cmp_id'] == $cate['cmp_id']) {
-                                    echo '
+                                    if ($p_item['cmp_id'] == $cate['cmp_id']) {
+                                        echo '
                                             <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                                                 <div class="product-post-container">
-                                                    <a href="../news.php?' . $changeUrlName . '" target="_self">
+                                                    <a href="news.php?' . $changeUrlName . '&title=' . $p_item['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_item['ptd_id'] . '" target="_self">
                                                         <div class="product-post-image">
                                                             <img src="' . $base_url . $p_item['post_image_background'] . '" alt="product post image">
                                                         </div>
                                                     </a>
                                                     
                                                     <div class="product-post-text">
-                                                        <a href="../news.php?' . $changeUrlName . '" target="_self">
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $p_item['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_item['ptd_id'] . '" target="_self">
                                                             <div class="product-post-title">
                                                                 ' . $p_item['post_title'] . '
                                                             </div>
@@ -152,58 +139,16 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                                                 </div>
                                             </div>
                                         ';
+                                    }
                                 }
                             }
-                        }
                         ?>
-                    </div>
-                </div>
-
-                <div class="shop-title"> Sản phẩm khác </div>
-
-                <div class="other-product">
-                    <div class="row slide-other-product">
-                        <?php
-                        foreach ($get_other_product as $key => $g_op) {
-                            echo '
-                                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                    <div class="shop-content">
-                                        <div class="shop-image">
-                                            <a href="#" target="_self">
-                                                <img src="' . $base_url . $g_op['product_image_path'] . '" alt="shop image">
-                            
-                                                <div class="shop-detail">
-                                                    <a href="items.php?id=' . $g_op['product_id'] . '" target="_self">
-                                                        <div> Chi tiết </div>
-                                                    </a>
-                                                </div>
-                                                
-                                            </a>
-
-                                            <div class="new-sticker"> New </div>
-                                        </div>
-
-                                        <div class="shop-name">
-                                            <a href="items.php?id=' . $g_op['product_id'] . '" target="_self">
-                                                ' . $g_op['product_name'] . '
-                                            </a>
-                                        </div>
-
-                                        <div class="shop-des">
-                                            <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $g_op['product_price'] . ' </span>
-                                            <span> ' . $g_op['product_currency'] . '</span>
-                                        </div>
-                                    </div>
-                                </div>';
-                        }
-                        ?>
-                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--------------- FOOTER --------------->
+            <!--------------- FOOTER --------------->
 
     <? include('./includes/inc_footer.php') ?>
 

@@ -1,4 +1,14 @@
 $(document).ready(function() {
+  /********** Menu **********/
+
+  var getHeight = $("#navbar").height();
+  if (getHeight > 100) {
+    $("#menu").css("min-height", "130px");
+  }
+  else {
+    $("#menu").css("min-height", "80px");
+  }
+
   /********** Sub menu **********/
   var n = 0;
 
@@ -103,5 +113,103 @@ $(document).ready(function() {
   /********** Carousel  **********/
 
   $("#myCarousel .carousel-inner .carousel-item:first-child").addClass("active");
+
+  /********** Shop **********/
+
+  $.fn.digits = function() {
+    return this.each(function() {
+      $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+    })
+  }
+
+  $("span.price-numbers").digits();
+
+  /********** Slick **********/
+
+  $(".slide-product-post").slick({
+    autoplay: true,
+    autoplaySpeed: 4000,
+    infinite: true,
+    dots: true,
+    arrows: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    prevArrow: "<button type='button' class='mission-prev-arrow' style='outline: none'></button>",
+    nextArrow: "<button type='button' class='mission-next-arrow' style='outline: none'></button>",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+    ],
+  });
+
+  $(".slide-other-product").slick({
+    autoplay: true,
+    autoplaySpeed: 4000,
+    infinite: true,
+    dots: true,
+    arrows: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    prevArrow:
+      "<button type='button' class='mission-prev-arrow' style='outline: none'></button>",
+    nextArrow:
+      "<button type='button' class='mission-next-arrow' style='outline: none'></button>",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+    ],
+  });
+
+  $('.btn-plus, .btn-minus').on('click', function(e) {
+    const isNegative = $(e.target).closest('.btn-minus').is('.btn-minus');
+    const input = $(e.target).closest('.input-group').find('input');
+    if (input.is('input')) {
+      input[0][isNegative ? 'stepDown' : 'stepUp']()
+    }
+  })
 });
 

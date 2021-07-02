@@ -6,9 +6,6 @@ $get_web_id = get_data_row("SELECT * FROM website_config WHERE web_url = '$main_
 $web_id = $get_web_id['web_id'];
 $web_icon = $get_web_id['web_icon'];
 
-$get_web_icon = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
-$web_bottom_icon = $get_web_icon['con_logo_bottom'];
-
 $get_url = get_data_row("SELECT con_rewrite_name_homepage FROM configuration WHERE web_id = $web_id");
 foreach ($get_url as $key => $g_url) {
     $url = $g_url;
@@ -108,34 +105,31 @@ $pageLink = "";
                             foreach ($category as $key => $cate) {
                                 $mod_rewrite = $arr_con['con_mod_rewrite'];
                                 if ($mod_rewrite == 1) {
-                                    if ($p['post_rewrite_name'] != "" || $p['post_rewrite_name'] != null) {
-                                        $changeUrlName = 'name=' . $p['post_rewrite_name'];
-                                    } else if ($p['post_rewrite_name'] == "" || $p['post_rewrite_name'] == null) {
-                                        $changeUrlName = 'pid=' . $p['post_id'];
-                                    }
+                                    $changeUrlName = 'name=' . $p['post_rewrite_name'];
+                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
                                 } else {
-                                    $changeUrlName = 'pid=' . $p['post_id'];
+                                    $changeUrlName = 'name=' . $p['post_id'];
+                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                                 }
-
                                 if ($p['cmp_id'] == $cate['cmp_id']) {
                                     echo '
-                                        <div class="col-lg-6">
-                                            <div class="services">
-                                                <a href="../news.php?' . $changeUrlName . '" target="_self">
-                                                    <div class="sv-img">
-                                                        <img src="' . $base_url . $p['post_image_background'] . '" alt="garden">
-                                                    </div>
-                                                    <div class="sv-title">
-                                                        <p> ' . $p['post_title'] . ' </p>
-                                                    </div>
-                                                    <div class="sv-text">
-                                                        <p>
-                                                            ' . $p['post_description'] . '
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>';
+                                            <div class="col-lg-6">
+                                                <div class="services">
+                                                    <a href="news.php?' . $changeUrlName . '&title=' . $p['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
+                                                        <div class="sv-img">
+                                                            <img src="' . $base_url . $p['post_image_background'] . '" alt="garden">
+                                                        </div>
+                                                        <div class="sv-title">
+                                                            <p> ' . $p['post_title'] . ' </p>
+                                                        </div>
+                                                        <div class="sv-text">
+                                                            <p>
+                                                                ' . $p['post_description'] . '
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>';
                                 }
                             }
                         }
@@ -158,20 +152,17 @@ $pageLink = "";
                                             if ($p['cmp_id'] == $cate['cmp_id']) {
                                                 $mod_rewrite = $arr_con['con_mod_rewrite'];
                                                 if ($mod_rewrite == 1) {
-                                                    if ($p['post_rewrite_name'] != "" || $p['post_rewrite_name'] != null) {
-                                                        $changeUrlName = 'name=' . $p['post_rewrite_name'];
-                                                    } else if ($p['post_rewrite_name'] == "" || $p['post_rewrite_name'] == null) {
-                                                        $changeUrlName = 'pid=' . $p['post_id'];
-                                                    }
+                                                    $changeUrlName = 'name=' . $p['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
                                                 } else {
-                                                    $changeUrlName = 'pid=' . $p['post_id'];
+                                                    $changeUrlName = 'name=' . $p['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                                                 }
-
                                                 echo '
                                                     <div class="carousel-item">
                                                         <div class="carousel-img col-lg-4 col-md-6 col-sm-12 col-12">       
                                                             <div class="carousel-content">
-                                                                <a href="../news.php?' . $changeUrlName . '" target="_self">
+                                                                <a href="news.php?' . $changeUrlName . '&title=' . $p['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p['ptd_id'] . '" target="_self">
                                                                     <img class="img-fluid" src="' . $base_url . $p['post_image_background'] . '" alt="carousel image">
                                                                     <div class="carousel-title">
                                                                         ' . $p['post_title'] . '
@@ -213,18 +204,15 @@ $pageLink = "";
                                     if ($p['cmp_id'] == $cate['cmp_id']) {
                                         $mod_rewrite = $arr_con['con_mod_rewrite'];
                                         if ($mod_rewrite == 1) {
-                                            if ($p_left['post_rewrite_name'] != "" || $p_left['post_rewrite_name'] != null) {
-                                                $changeUrlName = 'name=' . $p_left['post_rewrite_name'];
-                                            } else if ($p_left['post_rewrite_name'] == "" || $p_left['post_rewrite_name'] == null) {
-                                                $changeUrlName = 'pid=' . $p_left['post_id'];
-                                            }
+                                            $changeUrlName = 'name=' . $p_left['post_rewrite_name'];
+                                            $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
                                         } else {
-                                            $changeUrlName = 'pid=' . $p_left['post_id'];
+                                            $changeUrlName = 'name=' . $p_left['post_id'];
+                                            $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                                         }
-
                                         echo '
                                             <div class="choose-container col-lg-6">
-                                                <a class="choose-left" href="../news.php?' . $changeUrlName . '" target="_self">
+                                                <a class="choose-left" href="news.php?' . $changeUrlName . '&title=' . $p_left['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_left['ptd_id'] . '" target="_self">
                                                     <img src="' . $base_url . $p_left['post_image_background'] . '" alt="choose image left">
                                                     <div class="choose-content">
                                                         <div class="choose-text">
@@ -249,18 +237,15 @@ $pageLink = "";
                                             if ($p['cmp_id'] == $cate['cmp_id']) {
                                                 $mod_rewrite = $arr_con['con_mod_rewrite'];
                                                 if ($mod_rewrite == 1) {
-                                                    if ($p_right['post_rewrite_name'] != "" || $p_right['post_rewrite_name'] != null) {
-                                                        $changeUrlName = 'name=' . $p_right['post_rewrite_name'];
-                                                    } else if ($p_right['post_rewrite_name'] == "" || $p_right['post_rewrite_name'] == null) {
-                                                        $changeUrlName = 'pid=' . $p_right['post_id'];
-                                                    }
+                                                    $changeUrlName = 'name=' . $p_right['post_rewrite_name'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
                                                 } else {
-                                                    $changeUrlName = 'pid=' . $p_right['post_id'];
+                                                    $changeUrlName = 'name=' . $p_right['post_id'];
+                                                    $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                                                 }
-
                                                 echo '
                                                     <div class="choose-right-container col-lg-6 col-md-6 col-sm-6 col-6">
-                                                        <a class="choose-right" href="../news.php?' . $changeUrlName . '" target="_self">
+                                                        <a class="choose-right" href="news.php?' . $changeUrlName . '&title=' . $p_right['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $p_right['ptd_id'] . '" target="_self">
                                                             <img src="' . $base_url . $p_right['post_image_background'] . '" alt="choose right image">
                                                             <div class="choose-right-content">
                                                                 <div class="choose-right-text">
@@ -305,13 +290,11 @@ $pageLink = "";
                         foreach ($category as $key => $cate) {
                             $mod_rewrite = $arr_con['con_mod_rewrite'];
                             if ($mod_rewrite == 1) {
-                                if ($n['post_rewrite_name'] != "" || $n['post_rewrite_name'] != null) {
-                                    $changeUrlName = 'name=' . $n['post_rewrite_name'];
-                                } else if ($n['post_rewrite_name'] == "" || $n['post_rewrite_name'] == null) {
-                                    $changeUrlName = 'pid=' . $n['post_id'];
-                                }
+                                $changeUrlName = 'name=' . $n['post_rewrite_name'];
+                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_rewrite_name'];
                             } else {
-                                $changeUrlName = 'pid=' . $n['post_id'];
+                                $changeUrlName = 'name=' . $n['post_id'];
+                                $changeUrlBread = '&breadcrumbs=' . $cate['cmp_id'];
                             }
 
                             if ($n['cmp_id'] == $cate['cmp_id']) {
@@ -322,14 +305,14 @@ $pageLink = "";
                                             <div class="news col-lg-6 col-md-6 col-sm-12 col-12">
                                                 <div class="row news-all">
                                                     <div class="news-img col-lg-6 col-md-12 col-sm-12 col-12">
-                                                        <a href="../news.php?' . $changeUrlName . '" target="_self">
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self">
                                                             <img src="' . $base_url . $n['post_image_background'] . '" alt="news image">
                                                         </a>
                                                     </div>
                                                     <div class="news-content col-lg-6 col-md-12 col-sm-12 col-12">
                                                         <p class="news-date">' . $my_newsDate . '</p>
-                                                        <a href="../news.php?' . $changeUrlName . '" target="_self" class="news-title">' . $n['post_title'] . '</a>
-                                                        <a href="../news.php?' . $changeUrlName . '" target="_self" class="news-viewmore">
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self" class="news-title">' . $n['post_title'] . '</a>
+                                                        <a href="news.php?' . $changeUrlName . '&title=' . $n['post_title'] . $changeUrlBread . '&nameBreadcrumbs=' . $cate['cmp_name'] . '&postNews=' . $n['ptd_id'] . '" target="_self" class="news-viewmore">
                                                             <i class="fas fa-angle-right"></i>
                                                             Xem tiếp
                                                         </a>

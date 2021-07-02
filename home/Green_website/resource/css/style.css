@@ -4,7 +4,7 @@
 #menu {
     position: relative;
     width: 100%;
-    height: 80px;
+    min-height: 80px;
     background-color: #4ca246;
     z-index: 30;
 }
@@ -18,7 +18,7 @@
 #menu #logo {
     border-bottom: 80px solid white;
     border-right: 40px solid transparent;
-    width: 28%;
+    width: 23%;
     height: 0;
     position: absolute;
     top: 0;
@@ -26,7 +26,7 @@
 }
 
 #menu #logo #logo-top {
-    width: 80px;
+    width: 60%;
     height: 80px;
     overflow: hidden;
     margin: 0 auto;
@@ -39,10 +39,11 @@
 }
 
 #menu ul#navbar {
-    width: 68%;
-    height: 80px;
+    width: 64%;
+    min-height: 80px;
     list-style-type: none;
     margin: 0 auto;
+    margin-right: 10%;
     padding: 0;
     float: right;
 }
@@ -129,6 +130,23 @@
 
 #menu ul#navbar li .sub-navbar table tr td a div:hover{
     color: #79a206;
+    transition: .3s;
+}
+
+#menu #cart {
+    position: absolute;
+    top: 30px;
+    right: 35px;
+}
+
+#menu #cart i {
+    color: white;
+    font-size: 22px;
+    transition: .3s;
+}
+
+#menu #cart i:hover {
+    color: rgb(255,102,51);
     transition: .3s;
 }
 
@@ -831,6 +849,65 @@
 
 
 
+/********** Slick **********/
+
+.mission-next-arrow {
+    position: absolute;
+    background: url(https://raw.githubusercontent.com/solodev/icon-box-slider/master/nextarrow2.png) no-repeat center;
+    background-size: contain;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -36px;
+    height: 17px;
+    width: 10px;
+    border:none;
+}
+.mission-next-arrow:hover {
+    cursor: pointer;	
+}
+.mission-prev-arrow {
+    background: url(https://raw.githubusercontent.com/solodev/icon-box-slider/master/prevarrow2.png) no-repeat center;
+    background-size: contain;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -36px;
+    height: 17px;
+    width: 10px;
+    border:none;
+} 
+.mission-prev-arrow:hover {
+    cursor: pointer;	
+}
+
+.slick-dots {
+    list-style-type: none;
+    text-align: center;
+}
+
+.slick-dots li {
+    display: inline-block;
+}
+
+.slick-dots li button {
+    border: none;
+    outline: none;
+    width: 20px;
+    height: 5px;
+    margin-right: 5px;
+    color: transparent;
+    font-size: 1px;
+    background-color: rgb(220, 220, 220);
+    transition: .3s;
+}
+
+li.slick-active button {
+    background-color: #4ca246;
+    transition: .3s;
+}
+
+
+
 /********** FOOTER **********/
 
 #footer {
@@ -845,6 +922,15 @@
     width: 100%;
     height: auto;
     padding: 10px 120px 100px 120px;
+}
+
+#footer #footer-container #footer-map {
+    margin-top: 40px;
+}
+
+#footer #footer-container #footer-map iframe {
+    width: 100% !important;
+    height: 500px !important;
 }
 
 #footer #footer-container #footer-content div {
@@ -927,7 +1013,7 @@
     width: 180px;
     height: 180px;
     overflow: hidden;
-    float: right;
+    float: left;
 }
 
 #footer #footer-container #footer-content div #logo-bottom img {
@@ -1107,6 +1193,22 @@
     #menu #logo {
         width: 28%;
     }
+
+    #menu #cart {
+        position: absolute;
+        top: 30px;
+        right: 90px;
+    }
+}
+
+@media screen and (max-width: 714px) {
+    #menu #logo {
+        width: 40%;
+    }
+
+    #menu ul#navbar {
+        width: 60%;
+    }
 }
 
 /***** Slideshow *****/
@@ -1195,9 +1297,137 @@
     }
 }
 
+@media screen and (max-width: 932px) {
+    #footer #footer-container #footer-map iframe {
+        width: 100% !important;
+        height: 350px !important;
+    }
+}
+
 @media screen and (max-width: 766px) {
     #footer-photos #photos {
         height: auto;
+    }
+}
+
+@media screen and (max-width: 630px) {
+
+    #footer #footer-container #footer-map iframe {
+        width: 100% !important;
+        height: 350px !important;
+        position: relative;
+    }
+
+    #footer #footer-container {
+        padding: 0 0 50px 0;
+    }
+
+    #footer #footer-container .container-fluid {
+        padding-left: 30px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+
+    .container .row .choose-container {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        padding: 0;
+        /* margin-bottom: 50px; */
+    }
+
+    .container .row .choose-container img{
+        width: 150%;
+        height: 400px;
+        margin-left: -180px;
+        z-index: 10;
+    }
+
+    .container .row .choose-container .choose-content .choose-text p.choose-title {
+        width: 200px;
+        font-size: 26px;
+        padding-top: 120px;
+    }
+
+    .container .row .choose-container .choose-right-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .container .row .choose-container .choose-right-container img {
+        width: 285px;
+        height: 200px;
+        margin: 0;
+        z-index: 10;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text p.choose-right-title {
+        width: 140px;
+        font-size: 18px;
+        padding-top: 80px;
+        margin-left: 13px;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text p.choose-right-word {
+        width: 250px;
+        font-size: 15px;
+        padding-top: 5px;
+        margin-left: -40px;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text .choose-right-line {
+        margin-left: 58px;
+    }
+}
+
+@media screen and (max-width: 376px) {
+
+    .fb-page {
+        width: 310px !important;
+    }
+}
+
+@media screen and (max-width: 321px) {
+
+    .fb-page {
+        width: 260px !important;
+    }
+
+    .container .row .choose-container img{
+        width: 157%;
+        height: 600px;
+        margin-left: -180px;
+        z-index: 10;
+    }
+
+    #main-container .title .main-title {
+        line-height: 28px;
+    }
+
+    #main-container .container-fluid .row .services .sv-title{
+        background-color: rgba(76, 162, 70, 0.8);
+        position: absolute;
+        width: 180px;
+        padding: 5px 10px;
+        top: 120px;
+        right: 110px;
+        z-index: 20;
+    }
+
+    #main-container .container-fluid .row .services .sv-title p{
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        width: 160px;
+        height: 42px;
+        overflow: hidden;
+        text-transform: uppercase;
+        text-align: center;
+        z-index: 20;
+        margin: 0 auto;
     }
 }
 

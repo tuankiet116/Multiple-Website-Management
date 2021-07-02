@@ -1,3 +1,15 @@
+body{
+    background-color: rgb(240, 240, 240) !important;
+}
+
+.card{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px 5px rgba(194, 169, 169, 0.2);
+    margin-bottom: 50px;
+}
+
 .configuations_container{
     padding-bottom: 20%;
 }
@@ -14,6 +26,10 @@
     width: 5%;
     margin-top: -1%;
 }
+
+/* .select2{
+    width: 30% !important;
+} */
 
 .select2-result-website {
     display: flex;
@@ -33,6 +49,14 @@
     padding-right: 10px;
 }
 
+.select2-selection:focus{
+    
+}
+
+.select2-selection{
+    border:rgb(16, 12, 226) 1px;
+}
+
 .language-picker img{
     width: 6%;
     margin-top: -1%;
@@ -46,10 +70,13 @@
 .configuations form div input{
     font-size: 14px;
     padding-left: 15px;
+    font-weight: 500;
 }
 
 .configuations form div input::placeholder {
     font-size: 14px;
+    font-weight: 100;
+    color :rgba(0, 0, 0, 0.2);
 }
 
 .form-configuations{
@@ -61,13 +88,13 @@
 }
 
 .form-control{
-    border-radius: 10px;
+    border-radius: .25rem;
 }
 
 .form-control:focus{
-    border-radius: 10px;
-    border: 2px solid rgb(0, 0, 55);
-    box-shadow: rgb(0 0 55 / 25%) 0px 0px 0px 0.2rem;
+    border-color: rgb(16, 12, 226);
+    border-radius: .25rem;
+    box-shadow: rgb(16 12 226 / 100%) 0px 0px 0px 0.1rem;
 }
 
 .form-check{
@@ -133,7 +160,7 @@ textarea::placeholder{
 }
 
 textarea{
-    min-height: 200px !important;
+    min-height: 100px !important;
     max-height: 500px;
     font-size: 15px !important;
 }
@@ -227,6 +254,7 @@ input:checked + .slider:before {
     position: fixed;
     right: 50px;
     width: 30%;
+    z-index: 100000;
 }
 
 /* .fade{
