@@ -26,35 +26,95 @@
 <body>
     <div class="container">
 
-        <div class="add-product-group">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-                <i class="fas fa-plus"></i>Thêm mới
-            </button>
+        <div class="wrapper-header">
 
-            <!-- Modal -->
-            <div class="modal fade" id="addModal">
+            <div class="pick_website_container">
+                <div class="title_pick_website title-pick">
+                    <i class="fas fa-caret-right"></i>
+                    <h4><?= translate_text('Chọn Trang Web')?>: </h4>
+                </div>
+                <div class="box">
+                    <select class="pick_website_select">
+                    </select>
+                </div>
+            </div>
+    
+            <div class="add-product-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" disabled id="btn-add">
+                    <i class="fas fa-plus"></i>Thêm mới
+                </button>
+    
+                <div class="modal fade" id="addModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm Nhóm Sản Phẩm</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-container">
+                                    <form id="form" action="#">
+                                        <div class="form-group">
+                                            <label for="name-product-group"><?= translate_text('Tên Nhóm Sản Phẩm')?>:</label>
+                                            <input type="text" class="form-control" id="name-product-group" placeholder="Nhập Tên Nhóm Sản Phẩm" name="name-product-group" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description-product-group"><?= translate_text('Mô Tả')?>:</label>
+                                            <input type="text" class="form-control" id="description-product-group" placeholder="Nhập Mô tả" name="description-product-group" autocomplete="off">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" name="submit-add">Thêm Mới</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="title">
+            <h3>danh sách nhóm sản phẩm</h3>
+        </div>
+
+        <div class="list-product-group">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Tên</th>
+                        <th scope="col">Mô tả</th>
+                        <th scope="col">Trạng Thái</th>
+                        <th scope="col">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id ="data-product-group">
+                </tbody>
+            </table>
+
+
+            <div class="modal fade" id="updateModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Thêm Nhóm Sản Phẩm</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Cập Nhật Nhóm Sản Phẩm</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-container">
-                                <form id="form" action="#">
+                                <form id="form-update" action="#">
                                     <div class="form-group">
-                                        <label for="name-product-group"><?= translate_text('Tên Nhóm Sản Phẩm')?>:</label>
-                                        <input type="text" class="form-control" id="name-product-group" placeholder="Nhập Tên Nhóm Sản Phẩm" name="name-product-group">
+                                        <label for="name-product-group-update"><?= translate_text('Tên Nhóm Sản Phẩm')?>:</label>
+                                        <input type="text" class="form-control" id="name-product-group-update" placeholder="Nhập Tên Nhóm Sản Phẩm" name="name-product-group-update" autocomplete="off">
                                     </div>
                                     <div class="form-group">
-                                        <label for="description-product-group"><?= translate_text('Mô Tả')?>:</label>
-                                        <input type="text" class="form-control" id="description-product-group" placeholder="Nhập Mô tả" name="description-product-group">
+                                        <label for="description-product-group-update"><?= translate_text('Mô Tả')?>:</label>
+                                        <input type="text" class="form-control" id="description-product-group-update" placeholder="Nhập Mô tả" name="description-product-group-update" autocomplete="off">
                                     </div>
-                                    <div class="form-group-btn">
-                                        <button type="submit" class="btn btn-primary">Thêm Mới</button>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="submit-update">Cập Nhật</button>
                                 </form>
                             </div>
                         </div>
@@ -62,9 +122,8 @@
                 </div>
             </div>
         </div>
-        <div class="title">
-            <h3>danh sách nhóm bài viết</h3>
-        </div>
+
+
     </div>
 </body>
 </html>
