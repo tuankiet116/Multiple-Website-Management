@@ -1,4 +1,5 @@
 var base_url = '../../../';
+var web_id_create = null;
 $(document).ready(function () {
     $(".pick_website_select").select2({
         ajax: { 
@@ -42,19 +43,28 @@ $(document).ready(function () {
 
     $(".pick_website_select").change(function(){
         let web_id = $('.pick_website_select').select2('data')[0].id;
+        web_id_create = web_id;
         getProductGroup(web_id);
         $('#btn-add').removeAttr('disabled');
-    })
-    
+    });
+
+    $(".table > tbody").html(
+      ` <tr style="background-color: white;">
+            <td colspan="5"><p style="color:red">Vui lòng chọn website</p></td>
+        </tr>`
+    );
+
+    // create product group
+    createProductGroup();
 });
 
-// get product group
+// func get product group
 function getProductGroup(web_id){
   let data = {
     "web_id": web_id
   }
     $.ajax({
-        type: "method",
+        method: 'POST',
         url: base_url+"api/Controller/getProductgroupById.php",
         async: true,
         data: JSON.stringify(data),
@@ -85,6 +95,34 @@ function getProductGroup(web_id){
           console.log(res.responseText);
         }
     });
+}
+
+// func create product group
+function createProductGroup(){
+  $('#submit-add').click(function(){
+    let data={
+      "web_id":                 web_id_create,
+      "product_gr_name":        $("#name-product-group").val(),
+      "product_gr_description": $("#description-product-group").val()
+    }
+    $.ajax({
+      method: 'POST',
+      url: base_url+"api/Controller/createProductGroup.php",
+      data: JSON.stringify(data),
+      success: function (res) {
+        if(res?.code == 200){
+          
+        }
+        web_id_create = null;
+      },
+      error: function(res){
+        console.log(res.responseText);
+        web_id_create = null;
+      }
+    });
+    // console.log(data);
+    return false;
+  })
 }
 
 // handle tooltip
@@ -141,4 +179,33 @@ function checkdefault(default_value, check_parameter){
       return default_value;
     }
     return check_parameter;
+}
+
+function showAlert(type, message){
+  $('.alert').removeClass("alert-success");
+  $('.alert').removeClass("alert-warning");
+  $('.alert').removeClass("alert-danger");
+
+  switch(String(type)){
+    case "success":
+      $('.alert').addClass('alert-success');
+      $('.alert-heading').html('<i class="fas fa-check-circle"></i> Success!');
+      break;
+    case "error":
+      $('.alert').addClass('alert-danger');
+      $('.alert-heading').html('<i class="fas fa-exclamation-circle"></i> Error!');
+      break;
+    case "warning":
+      $('.alert').addClass('alert-warning');
+      $('.alert-heading').html('<i class="fa fa-warning"></i> Warning!');
+      break;
+  }
+
+  $('.alert .message').html(message);
+  $('.alert').addClass('d-block');
+  setTimeout(function(){ $('.alert').removeClass('d-block'); }, 3000);
+
+  $('.alert button.close').on('click', function(){
+    $('.alert').removeClass('d-block');
+  });
 }

@@ -24,10 +24,18 @@
     <title>Document</title>
 </head>
 <body>
+
+    <div class="loader-container"><div class="loader"></div></div>
+    <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">  
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container">
-
         <div class="wrapper-header">
-
             <div class="pick_website_container">
                 <div class="title_pick_website title-pick">
                     <i class="fas fa-caret-right"></i>
@@ -64,7 +72,7 @@
                                             <label for="description-product-group"><?= translate_text('Mô Tả')?>:</label>
                                             <input type="text" class="form-control" id="description-product-group" placeholder="Nhập Mô tả" name="description-product-group" autocomplete="off">
                                         </div>
-                                        <button type="submit" class="btn btn-primary" name="submit-add">Thêm Mới</button>
+                                        <button type="submit" class="btn btn-primary" name="submit-add" id="submit-add">Thêm Mới</button>
                                     </form>
                                 </div>
                             </div>

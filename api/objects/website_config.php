@@ -166,7 +166,7 @@ class Website_Config{
             }
         }
         else{
-            $message = $stmt->debugDumpParams($stmt);
+            $message = "Something has wrong!";
             return $message;
         }
     }
