@@ -57,7 +57,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Thêm Nhóm Sản Phẩm</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-addModal">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -107,7 +107,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Cập Nhật Nhóm Sản Phẩm</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-updateModal">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -120,9 +120,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="description-product-group-update"><?= translate_text('Mô Tả')?>:</label>
-                                        <input type="text" class="form-control" id="description-product-group-update" placeholder="Nhập Mô tả" name="description-product-group-update" autocomplete="off">
+                                        <textarea type="text" class="form-control" id="description-product-group-update" placeholder="Nhập Mô tả" name="description-product-group-update" autocomplete="off"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary" name="submit-update">Cập Nhật</button>
+                                    <button type="submit" class="btn btn-primary" name="submit-update" id="submit-update">Cập Nhật</button>
                                 </form>
                             </div>
                         </div>

@@ -19,10 +19,10 @@ if(isset($data)){
     $product_group->product_gr_description  = $data->product_gr_description;
     $product_group->web_id                  = $data->web_id;
 
-    if($data->product_gr_name == null || $data->product_gr_name=="" || $data->web_id ==null || $data->web_id =""){
+    if($data->product_gr_name == null || $data->product_gr_name == "" || $data->web_id == null || $data->web_id =""){
         http_response_code(200);
         echo json_encode([
-            "message" =>"Data Invalid",
+            "message" =>"Product group name not empty!!!",
             "code"    =>500
         ]);
     }

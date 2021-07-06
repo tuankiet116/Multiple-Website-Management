@@ -1,5 +1,6 @@
 var base_url = '../../../';
 var web_id_create = null;
+var product_gr_id = null;
 $(document).ready(function () {
     $(".pick_website_select").select2({
         ajax: { 
@@ -44,6 +45,7 @@ $(document).ready(function () {
     $(".pick_website_select").change(function(){
         let web_id = $('.pick_website_select').select2('data')[0].id;
         web_id_create = web_id;
+        $('.loader-container').css('display', 'flex');
         getProductGroup(web_id);
         $('#btn-add').removeAttr('disabled');
     });
@@ -65,12 +67,13 @@ function getProductGroup(web_id){
   }
     $.ajax({
         method: 'POST',
-        url: base_url+"api/Controller/getProductgroupById.php",
-        async: true,
+        url: base_url+"api/Controller/getProductgroupByWebId.php",
+        async: false,
         data: JSON.stringify(data),
         success: function (res) {
-          console.log(res);
-          var viewsData =  res.map(function(productGroup){
+          $('.loader-container').css('display', 'none');
+          if(res?.code == 200){
+            var viewsData =  res.result.map(function(productGroup){
               let result ='';
               result+= `<tr>`;
               result+= `
@@ -78,23 +81,56 @@ function getProductGroup(web_id){
                           <td>${productGroup.product_gr_name}</td>
                           <td class="product-gr-description">${productGroup.product_gr_description}</td>`;
               if(productGroup.product_gr_active == 1){
-                result+= `<td><button class="btn btn-success btn-show-hide">Đã Hiện Thị</button></td>`;
+                result+= `<td><button class="btn btn-success btn-show-hide" product_gr_active="${productGroup.product_gr_active}" product_gr_id="${productGroup.product_gr_id}">Đã Hiện Thị</button></td>`;
               }
               else{
-                result+= `<td><button class="btn btn-danger btn-show-hide">Đã Ẩn</button></td>`;
+                result+= `<td><button class="btn btn-danger btn-show-hide" product_gr_active="${productGroup.product_gr_active}" product_gr_id="${productGroup.product_gr_id}">Đã Ẩn</button></td>`;
               }
-              result+=   `<td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal">Sửa</button></td>`
+              result+=   `<td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal" product_gr_id="${productGroup.product_gr_id}">Xem Chi Tiết</button></td>`
               result+= `</tr>`;  
               return result;    
-          })
-          $('.table > tbody').html(viewsData).ready(function(){
+            })
+          }
+          else{
+            var mes = `<tr style="background-color: white;">
+                            <td colspan="5"><p style="color:red">${res?.message}</p></td>
+                      </tr>`;
+          }
+          $('.table > tbody').html(viewsData ?? mes).ready(function(){
             tooltip();
+            getProductGroupById();
+            updateProductGroup();
+            activeStatusProductGroup();
           })
         },
         error: function(res){
           console.log(res.responseText);
+          $('.loader-container').css('display', 'none');
         }
     });
+}
+
+//  func get product group by id
+function getProductGroupById(){
+  $('.btn-edit').click(function(){
+    product_gr_id = $(this).attr('product_gr_id')
+    let data={
+      "product_gr_id": $(this).attr('product_gr_id')
+    }
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/getProductGroupById.php",
+      async: false,
+      data: JSON.stringify(data),
+      success: function (res) {
+        $('#name-product-group-update').val(res?.result.product_gr_name);
+        $('#description-product-group-update').val(res?.result.product_gr_description);
+      },
+      error: function(res){
+        console.log(res.responseText);
+      }
+    });
+  })
 }
 
 // func create product group
@@ -105,27 +141,95 @@ function createProductGroup(){
       "product_gr_name":        $("#name-product-group").val(),
       "product_gr_description": $("#description-product-group").val()
     }
+    $('.loader-container').css('display', 'flex');
     $.ajax({
       method: 'POST',
       url: base_url+"api/Controller/createProductGroup.php",
+      async: false,
       data: JSON.stringify(data),
       success: function (res) {
+        $('.loader-container').css('display', 'none');
         if(res?.code == 200){
-          
+          showAlert('success', `<p>${res?.message}</p>`);
+          $('#form')[0].reset();
+          $('#close-addModal').click();
+          // console.log(res);
         }
-        web_id_create = null;
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+          // console.log(res);
+        }
       },
       error: function(res){
         console.log(res.responseText);
-        web_id_create = null;
       }
     });
-    // console.log(data);
+    getProductGroup(web_id_create);
     return false;
   })
 }
 
-// handle tooltip
+// func update product group
+function updateProductGroup(){
+  $('#submit-update').click(function(){
+    let data ={
+      "web_id":                 web_id_create,
+      "product_gr_id":          product_gr_id,
+      "product_gr_name":        $('#name-product-group-update').val(),
+      "product_gr_description": $('#description-product-group-update').val()
+    }
+    $('.loader-container').css('display', 'flex');
+
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/updateProductGroup.php",
+      async: false,
+      data: JSON.stringify(data),
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res?.code == 200){
+          showAlert('success', `<p>${res?.message}</p>`);
+          $('#close-updateModal').click();
+        }
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+        }
+      }
+    });
+    getProductGroup(web_id_create);
+
+    return false;
+  })
+}
+
+// func active status
+function activeStatusProductGroup(){
+  $('.btn-show-hide').click(function(){
+    let data ={
+      "product_gr_active": $(this).attr('product_gr_active') == "1"? "0": "1",
+      "web_id": web_id_create,
+      "product_gr_id": $(this).attr('product_gr_id')
+    }
+    $.ajax({
+     method: "POST",
+      url: base_url+"api/Controller/activeProductGroup.php",
+      async: false,
+      data: JSON.stringify(data),
+      success: function (res) {
+        console.log(res)
+        if(res.code == 200){
+          showAlert("success", `<p>${res.message}</p>`);
+        }
+        else {
+          showAlert("error", `<p>${res.message}</p>`);
+        }
+      }
+    });
+    getProductGroup(web_id_create);
+  })
+}
+
+// func handle tooltip
 function tooltip(){
   let description = $('.product-gr-description');
   $.each(description, function () { 
