@@ -48,13 +48,14 @@ $(document).ready(function () {
         $('.loader-container').css('display', 'flex');
         getProductGroup(web_id);
         $('#btn-add').removeAttr('disabled');
+        console.log(web_id);
     });
 
-    $(".table > tbody").html(
-      ` <tr style="background-color: white;">
-            <td colspan="5"><p style="color:red">Vui lòng chọn website</p></td>
-        </tr>`
-    );
+    // $(".table > tbody").html(
+    //   ` <tr style="background-color: white;">
+    //         <td colspan="5"><p style="color:red">Vui lòng chọn website</p></td>
+    //     </tr>`
+    // );
 
     // create product group
     createProductGroup();
@@ -67,7 +68,7 @@ function getProductGroup(web_id){
   }
     $.ajax({
         method: 'POST',
-        url: base_url+"api/Controller/getProductgroupByWebId.php",
+        url: base_url+"api/Controller/getProductGroupByWebId.php",
         async: false,
         data: JSON.stringify(data),
         success: function (res) {

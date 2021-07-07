@@ -14,56 +14,18 @@ $(document).ready(function(){
     // productGroupSelect('.product_group_select_add', '#Modal-add');
 
     $(".product_group_select_add").select2({
-      ajax: { 
-        url: "../../../api/Controller/searchTermProductGroup.php",
-        type: "POST",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-          if(params.term == null){
-            var obj = {
-              "term": "",
-              "web_id": 1
-            } 
-          }else{
-            var obj = {
-              "term": params.term.trim(),
-              "web_id": 1
-            } 
-          }
-          console.log(JSON.stringify(obj));
-          return JSON.stringify(obj);
-        },
-        processResults: function (data, params) {
-          console.log(data);
-          if(data.code == 404){
-            return;
-          }
-          return {
-              results: $.map(data, function (item) {
-                debugger;
-                  if(item == 404){
-                    return;
-                  }
-                  return {
-                      text: item.web_name,
-                      id: item.web_id,
-                      image: checkdefault("data/web_icon/icon_default/default.png",item.web_icon),
-                      description: item.web_description,
-                      data: item
-                  };
-              })
-          };
-        },
-        cache: false
-      },
-      placeholder: 'Search for a Website',
-      minimumInputLength: 0,
-    });
+      placeholder: 'Search for categories'
+    })
 
     $('.website_select_add').change(function(){
-      let web_id = $('.website_select_add').select2('data')[0].id;
-      
+      $('.image-loading').css('display', 'block');
+      $('.product_group_select_add').val('').trigger('change');
+      $('.product_group_select_add').select2({
+        placeholder: 'Search For Product Group'
+      });
+      $('.product_group_select_add').prop('disabled', false);
+      activeSelect2PrductGroup();
+
     })
 
     //Show Product
@@ -500,53 +462,56 @@ function websiteSelect2(element, parent = null){
   
 }
 
+function activeSelect2PrductGroup(){
 
-
-// function productGroupSelect(element){
-//   $(element).select2({
-//     ajax: {
-//       url: base_url+ "api/Controller/searchTermProductGroup.php",
-//       type: "POST",
-//       dataType: 'json',
-//       delay: 250,
-//       data: function (params) {
-//         if(params.term == null){
-//           var obj = {
-//             "term": "",
-//             "web_id": 1 
-//           } 
-//         }else{
-//           var obj = {
-//             "term": params.term.trim(),
-//             "web_id": 1
-//           } 
-//         }
-        
-//         return JSON.stringify(obj);
-//       },
-//       processResults: function(data, params){
-//         if(data.code == 400){
-//           return;
-//         }
-//         return {
-//           result: $.map(data, function(item){
-//             if(item.code == 404){
-//               return;
-//             }
-//             return{
-//               id:   item.product_gr_id,
-//               text: item.product_gr_name
-//             };
-//           })
-//         };
-//       },
-//       cache: false
-//     },
-//     placeholder: 'Search for product group',
-//     minimumInputLength: 0,
-//     dropdownParent: $(parent)
-//   })
-// }
+  web_id = $('.website_select_add').select2('data')[0].id;
+  console.log(web_id);
+  $(".product_group_select_add").select2({
+    ajax: { 
+      url: "../../../api/Controller/searchTermProductGroup.php",
+      type: "POST",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        if(params.term == null){
+          var obj = {
+            "term": "",
+            "web_id": web_id
+          } 
+        }else{
+          var obj = {
+            "term": params.term.trim(),
+            "web_id": web_id
+          } 
+        }
+        console.log(JSON.stringify(obj));
+        return JSON.stringify(obj);
+      },
+      processResults: function (data, params) {
+        console.log(data);
+        if(data.code == 404){
+          return;
+        }
+        return {
+            results: $.map(data, function (item) {
+              debugger;
+                if(item == 404){
+                  return;
+                }
+                return {
+                    text: item.product_gr_name,
+                    id: item.product_gr_id
+                };
+            })
+        };
+      },
+      cache: false
+    },
+    placeholder: 'Search for a Website',
+    minimumInputLength: 0,
+  });
+  $('.image-loading').css('display', 'none');
+}
 
 
 function clearModal(){

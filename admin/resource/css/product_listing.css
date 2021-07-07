@@ -195,3 +195,7 @@ hr{
 .wrapper-select{ width: 31.5%;}
 .select-container{width: 100%;}
 .pick_product_group_container{ margin-top: 10px;}
+.image-loading{
+    width: 40px;
+    display: none;
+}
