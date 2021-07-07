@@ -62,7 +62,7 @@ else{
             }
             else{
                 http_response_code(200);
-                echo json_encode(array('message' => "Something has wrong while updating", 
+                echo json_encode(array('message' => $stmt, 
                                        'code'    => 500,
             /*'query'   => $stmt->debugDumpParams()*/ ));
             }

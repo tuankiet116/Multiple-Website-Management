@@ -1,5 +1,6 @@
 <?
 require_once("session.php");
+session_regenerate_id();
 
 $lang_id	= 1;
 require_once("../functions/translate.php");
@@ -29,11 +30,11 @@ if($action == "login" && $check_ip_exists == 1){
 		//Set SESSION
 		$_SESSION["Logged"]			= 1;
 		$_SESSION["logged"]			= 1;
-		$_SESSION["user_id"]			= $user_id;
+		$_SESSION["user_id"]		= $user_id;
 		$_SESSION["userlogin"]		= $username;
 		$_SESSION["password"]		= md5($password);
-		$_SESSION["isAdmin"]			= $isAdmin;
-		$_SESSION["lang_id"]			= $row["lang_id"];
+		$_SESSION["isAdmin"]		= $isAdmin;
+		$_SESSION["lang_id"]		= $row["lang_id"];
 		unset($db_isadmin);
 	}
 }
@@ -64,7 +65,8 @@ body{
 	font-size: 12px;
 	line-height: 22px;
 	position: relative;
-	background: url("resource/images/body.jpg") left top repeat;
+	background-image: url('./resource/images/body.jpg');
+	background-size: 100% 100%;
 	display: block;
 }
 .forumlogin *{

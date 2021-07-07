@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="./resource/css/slideshow/owl.carousel.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="./resource/css/slideshow/bootstrap.min.css">
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <!-- Style -->
     <link rel="stylesheet" href="./resource/css/slideshow/slideshow.css">
     <link rel="stylesheet" href="./resource/css/style.css">
@@ -27,6 +29,7 @@
     <script src="./resource/js/slideshow/owl.carousel.min.js"></script>
     <script src="https://kit.fontawesome.com/17bbaf365c.js" crossorigin="anonymous"></script>
     <script src="./resource/js/slideshow/main.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="./resource/js/myjs.js"></script>
     <!-- Base url -->
     <?php $base_url = "http://cleaning.com:8080/" ?>

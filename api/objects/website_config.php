@@ -26,7 +26,7 @@ class Website_Config{
         $count = 0;
         // query to read single record
         if(!isset($query)){
-            $query = "SELECT * FROM " .$this->table_name. " WHERE web_name LIKE '%".$this->term."%'";
+            $query = "SELECT * FROM " .$this->table_name. " WHERE web_name LIKE '%".$this->term."%' AND web_active = 1";
         }
         
         //prepare query statement
@@ -166,7 +166,7 @@ class Website_Config{
             }
         }
         else{
-            $message = $stmt->debugDumpParams($stmt);
+            $message = "Something has wrong!";
             return $message;
         }
     }

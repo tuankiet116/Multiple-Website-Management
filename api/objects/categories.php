@@ -1,6 +1,4 @@
 <?php
-//require_once("../inc_security.php");
-
 use function Aws\flatmap;
 
 class Categories{

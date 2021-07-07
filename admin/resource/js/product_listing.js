@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    $('.loader-container').css('display', 'flex');
-    var web_id =  null;
+  $('.loader-container').css('display', 'flex');
+  var web_id =  null;
   
     $('b[role="presentation"]').hide();
     $('.select2-arrow').append('<i class="fa fa-angle-down"></i>');
@@ -11,9 +11,62 @@ $(document).ready(function(){
     websiteSelect2('.website_select_update', '#Modal');
     websiteSelect2('.website_select_add', '#Modal-add');
     websiteSelect2('.pick_website_select');
+    // productGroupSelect('.product_group_select_add', '#Modal-add');
 
-    //Show Product 
-    debugger;
+    $(".product_group_select_add").select2({
+      ajax: { 
+        url: "../../../api/Controller/searchTermProductGroup.php",
+        type: "POST",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          if(params.term == null){
+            var obj = {
+              "term": "",
+              "web_id": 1
+            } 
+          }else{
+            var obj = {
+              "term": params.term.trim(),
+              "web_id": 1
+            } 
+          }
+          console.log(JSON.stringify(obj));
+          return JSON.stringify(obj);
+        },
+        processResults: function (data, params) {
+          console.log(data);
+          if(data.code == 404){
+            return;
+          }
+          return {
+              results: $.map(data, function (item) {
+                debugger;
+                  if(item == 404){
+                    return;
+                  }
+                  return {
+                      text: item.web_name,
+                      id: item.web_id,
+                      image: checkdefault("data/web_icon/icon_default/default.png",item.web_icon),
+                      description: item.web_description,
+                      data: item
+                  };
+              })
+          };
+        },
+        cache: false
+      },
+      placeholder: 'Search for a Website',
+      minimumInputLength: 0,
+    });
+
+    $('.website_select_add').change(function(){
+      let web_id = $('.website_select_add').select2('data')[0].id;
+      
+    })
+
+    //Show Product
     var data_init = {
       web_id: null ,
       term: "",
@@ -407,11 +460,11 @@ function websiteSelect2(element, parent = null){
         data: function (params) {
           if(params.term == null){
             var obj = {
-              "term": ""
+              "term": "",
             } 
           }else{
             var obj = {
-            "term": params.term.trim()
+              "term": params.term.trim()
             } 
           }
           
@@ -446,6 +499,55 @@ function websiteSelect2(element, parent = null){
   }
   
 }
+
+
+
+// function productGroupSelect(element){
+//   $(element).select2({
+//     ajax: {
+//       url: base_url+ "api/Controller/searchTermProductGroup.php",
+//       type: "POST",
+//       dataType: 'json',
+//       delay: 250,
+//       data: function (params) {
+//         if(params.term == null){
+//           var obj = {
+//             "term": "",
+//             "web_id": 1 
+//           } 
+//         }else{
+//           var obj = {
+//             "term": params.term.trim(),
+//             "web_id": 1
+//           } 
+//         }
+        
+//         return JSON.stringify(obj);
+//       },
+//       processResults: function(data, params){
+//         if(data.code == 400){
+//           return;
+//         }
+//         return {
+//           result: $.map(data, function(item){
+//             if(item.code == 404){
+//               return;
+//             }
+//             return{
+//               id:   item.product_gr_id,
+//               text: item.product_gr_name
+//             };
+//           })
+//         };
+//       },
+//       cache: false
+//     },
+//     placeholder: 'Search for product group',
+//     minimumInputLength: 0,
+//     dropdownParent: $(parent)
+//   })
+// }
+
 
 function clearModal(){
   $('.title').val("");

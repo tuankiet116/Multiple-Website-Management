@@ -146,7 +146,7 @@ body {
 }
 
 .container .row .news-right {
-    padding: 0 0 0 15px;
+    padding: 0 15px 0 15px;
 }
 
 .container .row .news-right .news-right-container {
@@ -420,12 +420,143 @@ body {
 
 
 
+/********** Product List **********/
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product {
+    width: 100%;
+    height: auto;
+    padding: 0;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container {
+    height: 250px;
+    padding: 0 12px;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content {
+    height: 100%;
+    border: 1px solid rgb(220, 220, 220);
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image {
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    z-index: 10;
+    transition: .3s;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image:hover img {
+    transition: .3s;
+    transform: scale(1.1);
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image .news-product-new {
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #ff9900;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    position: absolute;
+    color: white;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-title {
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-title a {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(60, 60, 60);
+    margin: 0 auto;
+    transition: .3s;
+}
+
+.container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-title a:hover {
+    color: #ed4848;
+    transition: .3s;
+}
+
+
 
 /********** Responsive **********/
 
 @media screen and (max-width: 991px) {
     .container .row .news-left .news-left-content .hotline-logo {
         width: 25%;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container {
+        height: 300px;
+        padding: 0 12px;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image {
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        z-index: 10;
+        transition: .3s;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-title {
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container {
+        height: 350px;
+        padding: 0 12px;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image {
+        height: 270px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-image img {
+        width: 100%;
+        height: 270px;
+        object-fit: cover;
+        z-index: 10;
+        transition: .3s;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .news-right-product .news-product-container .news-product-content .news-product-title {
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(odd) {
+        padding-right: 0;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(even) {
+        padding-left: 0;
     }
 }
 
@@ -436,6 +567,16 @@ body {
 
     .container .row .news-left .news-left-content .hotline-logo {
         width: 40%;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(odd) {
+        padding-right: 0;
+    }
+
+    .container .row .news-right .news-right-container .news-right-content .post-type-list .post-type-list-pos:nth-child(even) {
+        padding-left: 0;
     }
 }
 
