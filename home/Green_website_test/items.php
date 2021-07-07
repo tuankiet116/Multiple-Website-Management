@@ -18,6 +18,8 @@ if (isset($_GET['id'])) {
 $items = get_data_row("SELECT * FROM product WHERE product_id = $id AND product_active = 1");
 $get_other_product = get_data_rows("SELECT * FROM product WHERE NOT (product_id = $id) AND product_active = 1");
 $con_item = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
+$count_post_item = get_data_rows("SELECT COUNT(*) FROM post WHERE product_id = $id AND post_active = 1");
+$count_p_it = $count_post_item[0]['COUNT(*)'];
 $post_item = get_data_rows("SELECT * FROM post WHERE product_id = $id AND post_active = 1");
 $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id");
 
@@ -110,54 +112,62 @@ $category = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = 
                     </div>
                 </div>
 
-                <div class="shop-title"> Bài viết liên quan </div>
+                <?php
+                    if ($count_p_it >= 1) { ?>
+                        <div class="shop-title"> Bài viết liên quan </div>
 
-                <div class="product-post">
-                    <div class="row slide-product-post">
-                        <?php
-                        foreach ($post_item as $key => $p_item) {
-                            foreach ($category as $key => $cate) {
-                                $mod_rewrite = $arr_con['con_mod_rewrite'];
-                                if ($mod_rewrite == 1) {
-                                    if ($p_item['post_rewrite_name'] != "" || $p_item['post_rewrite_name'] != null) {
-                                        $changeUrlName = 'name=' . $p_item['post_rewrite_name'];
-                                    } else if ($p_item['post_rewrite_name'] == "" || $p_item['post_rewrite_name'] == null) {
-                                        $changeUrlName = 'pid=' . $p_item['post_id'];
-                                    }
-                                } else {
-                                    $changeUrlName = 'pid=' . $p_item['post_id'];
-                                }
+                        <div class="product-post">
+                            <div class="row slide-product-post">
+                                <?php
+                                foreach ($post_item as $key => $p_item) {
+                                    foreach ($category as $key => $cate) {
+                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                        if ($mod_rewrite == 1) {
+                                            if ($p_item['post_rewrite_name'] != "" || $p_item['post_rewrite_name'] != null) {
+                                                $changeUrlName = 'name=' . $p_item['post_rewrite_name'];
+                                            } else if ($p_item['post_rewrite_name'] == "" || $p_item['post_rewrite_name'] == null) {
+                                                $changeUrlName = 'pid=' . $p_item['post_id'];
+                                            }
+                                        } else {
+                                            $changeUrlName = 'pid=' . $p_item['post_id'];
+                                        }
 
-                                if ($p_item['cmp_id'] == $cate['cmp_id']) {
-                                    echo '
-                                            <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                                                <div class="product-post-container">
-                                                    <a href="../news.php?' . $changeUrlName . '" target="_self">
-                                                        <div class="product-post-image">
-                                                            <img src="' . $base_url . $p_item['post_image_background'] . '" alt="product post image">
-                                                        </div>
-                                                    </a>
-                                                    
-                                                    <div class="product-post-text">
+                                        if ($p_item['cmp_id'] == $cate['cmp_id']) {
+                                            echo '
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                                                    <div class="product-post-container">
                                                         <a href="../news.php?' . $changeUrlName . '" target="_self">
-                                                            <div class="product-post-title">
-                                                                ' . $p_item['post_title'] . '
+                                                            <div class="product-post-image">
+                                                                <img src="' . $base_url . $p_item['post_image_background'] . '" alt="product post image">
                                                             </div>
                                                         </a>
+                                                        
+                                                        <div class="product-post-text">
+                                                            <a href="../news.php?' . $changeUrlName . '" target="_self">
+                                                                <div class="product-post-title">
+                                                                    ' . $p_item['post_title'] . '
+                                                                </div>
+                                                            </a>
 
-                                                        <div class="product-post-word">
-                                                            ' . $p_item['post_description'] . '
+                                                            <div class="product-post-word">
+                                                                ' . $p_item['post_description'] . '
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ';
+                                            ';
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
+                                ?>
+                            </div>
+                        </div>
+                <?php
+                    }
+                    else if ($count_p_it == 0) {
+                        echo '';
+                    }
+                ?>
 
                 <div class="shop-title"> Sản phẩm khác </div>
 
