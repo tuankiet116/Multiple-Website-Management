@@ -1,6 +1,68 @@
 /********** Navbar **********/
 /***** Menu *****/
 
+#menu-top {
+    position: relative;
+    z-index: 40;
+    width: 100%;
+    height: auto;
+}
+
+#welcome {
+    width: 100%;
+    height: 25px;
+    background-color: white;
+    border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+#welcome .welcome-user {
+    color: rgb(120, 120, 120);
+    font-size: 12px;
+    text-align: left;
+    margin-left: 5%;
+}
+
+#welcome .welcome-user .welcome-name {
+    font-weight: bold;
+    color: #4ca246;
+}
+
+#welcome .welcome-contact {
+    position: absolute;
+    right: 5%;
+    top: 0;
+}
+
+#welcome .welcome-phone {
+    color: rgb(120, 120, 120);
+    font-size: 12px;
+}
+
+#welcome .welcome-contact .welcome-phone i {
+    margin-right: 5px;
+}
+
+#welcome .welcome-contact .welcome-social {
+    border-left: 1px solid rgb(220, 220, 220);
+    padding-left: 10px;
+    margin-left: 10px; 
+}
+
+#welcome .welcome-contact .welcome-social a {
+    color: rgb(120, 120, 120);
+    transition: .3s;
+}
+
+#welcome .welcome-contact .welcome-social a:hover {
+    color: #ed4848;
+    transition: .3s;
+}
+
+#welcome .welcome-contact .welcome-social a i {
+    font-size: 11px;
+    margin-right: 3px;
+}
+
 #menu {
     position: relative;
     width: 100%;
@@ -57,6 +119,7 @@
     height: 35px;
     padding-top: 18px;
     transition: .3s;
+    position: relative;
 }
 
 #menu ul#navbar li:hover a span{
@@ -87,7 +150,7 @@
 #menu ul#navbar li .sub-navbar{
     position: absolute;
     display: none;
-    top: 80px;
+    top: 60px;
     height: auto;
     background-color: white;
     box-shadow: 5px 5px 8px 2px rgba(0, 0, 0, 0.2);
@@ -98,6 +161,7 @@
     animation-name: show;
     animation-duration: .8s;
     transition: .2s;
+    z-index: 30;
 }
 
 #menu ul#navbar li .sub-navbar .sub-container{
@@ -129,6 +193,40 @@
 
 #menu ul#navbar li .sub-navbar table tr td a div:hover{
     color: #79a206;
+    transition: .3s;
+}
+
+#menu #cart {
+    position: absolute;
+    top: 30px;
+    right: 35px;
+}
+
+#menu #cart i {
+    color: white;
+    font-size: 22px;
+    transition: .3s;
+}
+
+#menu #cart i:hover {
+    color: rgb(255,102,51);
+    transition: .3s;
+}
+
+#menu #user {
+    position: absolute;
+    top: 30px;
+    right: 75px;
+}
+
+#menu #user i {
+    color: white;
+    font-size: 22px;
+    transition: .3s;
+}
+
+#menu #user i:hover {
+    color: rgb(255,102,51);
     transition: .3s;
 }
 
@@ -222,6 +320,188 @@
     z-index: 35;
     transition: .5s;
     display: none;
+}
+
+/***** Modal *****/
+
+#userModal {
+    background-color: rgba(120, 120, 120, 0.01);
+}
+
+#signupModal {
+    overflow-y: auto;
+}
+
+.modal-user-content {
+    top: 80px;
+    position: relative;
+    border-radius: 0 !important;
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 25px;
+}
+
+.modal-signup-left {
+    border-right: 1px solid rgb(220, 220, 220);
+    padding-right: 50px;
+}
+
+.modal-signup-right {
+    padding-left: 50px;
+}
+
+.modal-sign {
+    animation-name: modal_signup_effect1;
+    animation-duration: 0.8s;
+    width: 130% !important;
+    margin-left: -15%;
+}
+
+.modal-user-content .modal-header {
+    border: none;
+}
+
+.modal-user-content .modal-header .modal-user-title {
+    background-color: #4ca246;
+    padding: 15px 20px;
+    position: absolute;
+    top: -28px;
+    left: -23px;
+    box-shadow: 7px 7px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+.modal-user-content .modal-header .modal-user-title span {
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.modal-user-content .modal-header .close {
+    outline: none;
+}
+
+.modal-body {
+    padding: 0 30px 20px 30px;
+}
+
+.modal-body .modal-account {
+    margin-bottom: 20px;
+}
+
+.modal-body .modal-account label {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: rgb(60, 60, 60);
+}
+
+.modal-body .modal-account .modal-account-content {
+    position: relative;
+}
+
+.modal-body .modal-account .modal-account-content input {
+    outline: none;
+    width: 100%;
+    height: 38px;
+    border: 2px solid #4ca246;
+    padding: 5px 10px 5px 45px;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+    font-size: 14px;
+    color: rgb(60, 60, 60);
+    transition: .3s;
+}
+
+.modal-body .modal-account .modal-account-content input::placeholder {
+    color: rgb(180, 180, 180);
+}
+
+.modal-body .modal-account .modal-account-content input:focus {
+    box-shadow: 1px 1px 6px 2px rgb(0, 0, 0, 0.3);
+    transition: .3s;
+}
+
+.modal-body .modal-account .modal-account-content i {
+    position: absolute;
+    top: 0px; 
+    left: 0px;
+    padding: 8px;
+    font-size: 20px;
+    background-color: #4ca246;
+    color: white;
+}
+
+.modal-body .modal-submit button{
+    outline: none;
+    border: none;
+    background-color: #4ca246;
+    padding: 10px 20px;
+    margin-top: 30px;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: none;
+    transition: .3s;
+    display: block;
+}
+
+.modal-body .modal-submit button i{
+    margin-right: 5px;
+}
+
+.modal-body .modal-signup,
+.modal-body .modal-back-login {
+    color: rgb(60, 60, 60);
+    display: inline-block;
+    transition: .3s;
+    width: auto;
+    margin-top: 10px;
+}
+
+.modal-body .modal-signup:hover,
+.modal-body .modal-back-login:hover {
+    color: #ed4848; 
+    transition: .3s;
+}
+
+.modal-body .modal-submit button:hover {
+    background-color: rgb(46, 132, 40);
+    transition: .3s;
+}
+
+.modal-effect {
+    transition: .3s;
+    animation-name: modal_effect;
+    animation-duration: 0.5s;
+}
+
+.modal-login-effect {
+    animation-name: modal_login_effect;
+    animation-duration: 0.8s;
+}
+
+
+
+/********** SLIDESHOW **********/
+
+.main-slide {
+    width: 100%;
+    height: 75vh;
+}
+
+.main-slide .main-slide-img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.main-slide .main-slide-img img {
+    width: 100%;
+    height: 75vh;
+    object-fit: cover;
 }
 
 
@@ -831,6 +1111,119 @@
 
 
 
+/********** Facebook plugin **********/
+
+.fb_customer_chat_icon {
+    position: fixed;
+    bottom: 80px !important;
+    right: 5px !important;
+}
+
+
+
+/********** Zalo plugin **********/
+
+.zalo-chat-widget {
+    right: 10px !important;
+}
+
+
+
+/********** Slick **********/
+
+.main-slide-next {
+    position: absolute;
+    background-size: contain;
+    background-color: transparent;
+    color: white;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 3%;
+    padding: 5px;
+    font-size: 50px;
+    border:none;
+    z-index: 30;
+}
+
+.main-slide-next:hover {
+    cursor: pointer;
+}
+
+.main-slide-prev {
+    background-size: contain;
+    background-color: transparent;
+    position: absolute;
+    color: white;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 3%;
+    padding: 5px;
+    font-size: 50px;
+    border:none;
+    z-index: 30;
+}
+
+.main-slide-prev:hover {
+    cursor: pointer;
+}
+
+.mission-next-arrow {
+    position: absolute;
+    background: url(https://raw.githubusercontent.com/solodev/icon-box-slider/master/nextarrow2.png) no-repeat center;
+    background-size: contain;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -36px;
+    height: 17px;
+    width: 10px;
+    border:none;
+}
+.mission-next-arrow:hover {
+    cursor: pointer;	
+}
+.mission-prev-arrow {
+    background: url(https://raw.githubusercontent.com/solodev/icon-box-slider/master/prevarrow2.png) no-repeat center;
+    background-size: contain;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -36px;
+    height: 17px;
+    width: 10px;
+    border:none;
+} 
+.mission-prev-arrow:hover {
+    cursor: pointer;	
+}
+
+.slick-dots {
+    list-style-type: none;
+    text-align: center;
+}
+
+.slick-dots li {
+    display: inline-block;
+}
+
+.slick-dots li button {
+    border: none;
+    outline: none;
+    width: 20px;
+    height: 5px;
+    margin-right: 5px;
+    color: transparent;
+    font-size: 1px;
+    background-color: rgb(220, 220, 220);
+    transition: .3s;
+}
+
+li.slick-active button {
+    background-color: #4ca246;
+    transition: .3s;
+}
+
+
+
 /********** FOOTER **********/
 
 #footer {
@@ -1055,14 +1448,11 @@
 
 
 
-
-
-
 /********** Animation **********/
 
 @keyframes show {
-    0%   {opacity: 0; top: 130px;}
-    100% {opacity: 1; top: 80px;}
+    0%   {opacity: 0; top: 120px;}
+    100% {opacity: 1; top: 60px;}
 }
 
 @keyframes show_scroll {
@@ -1070,6 +1460,28 @@
     100% {top: 0;}
 }
 
+@keyframes modal_effect {
+    0%   {opacity: 0; top: 10px}
+    100% {opacity: 1; top: 80px}
+}
+
+@keyframes modal_login_effect {
+    0%   {opacity: 0; margin-left: 150px}
+    50%  {opacity: 1; margin-left: 50px}
+    100% {opacity: 1; margin: 0 auto}
+}
+
+@keyframes modal_signup_effect1 {
+    0%   {opacity: 0; margin-left: 150px}
+    50%  {opacity: 1; margin-left: -15%}
+    100% {opacity: 1; margin-left: -15%}
+}
+
+@keyframes modal_signup_effect2 {
+    0%   {opacity: 0; margin-left: 150px}
+    50%  {opacity: 1; margin-left: 50px}
+    100% {opacity: 1; margin-left: 50px}
+}
 
 
 /********** Responsive **********/
@@ -1077,21 +1489,21 @@
 
 @media screen and (max-width: 1223px) {
     #menu #logo {
-        width: 22%;
+        width: 18%;
     }
 
     #menu ul#navbar {
-        width: 75%;
+        width: 72%;
     }
 }
 
 @media screen and (max-width: 1192px) {
     #menu #logo {
-        width: 18%;
+        width: 15%;
     }
 
     #menu ul#navbar {
-        width: 80%;
+        width: 75%;
     }
 }
 
@@ -1106,47 +1518,89 @@
 
     #menu #logo {
         width: 28%;
+        border-bottom: 80px solid white !important;
+    }
+
+    #menu #cart {
+        position: absolute;
+        top: 30px;
+        right: 75px;
+    }
+
+    #menu #user {
+        position: absolute;
+        top: 30px;
+        right: 115px;
+    }
+
+    #menu {
+        min-height: 80px !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .modal-signup-left {
+        border-right: none;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .modal-signup-right {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .modal-sign {
+        animation-name: modal_signup_effect2;
+        width: 80% !important;
+        margin-left: 0;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 714px) {
+    #menu #logo {
+        width: 40%;
+    }
+
+    #menu ul#navbar {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    #welcome .welcome-contact {
+        right: 2%;
+    }
+
+    #welcome .welcome-contact .welcome-social {
+        display: none;
+    }
+
+    #welcome .welcome-user {
+        margin-left: 2%;
     }
 }
 
 /***** Slideshow *****/
 
-@media screen and (max-width: 1005px) {
-    .owl-carousel .owl-item {
-        height: 580px;
-    }
-}
-
-@media screen and (max-width: 990px) {
-    #main-container .container .row div .text {
-        padding-right: 0;
-        padding-left: 0;
-    }
-}
-
-@media screen and (max-width: 870px) {
-    .owl-carousel .owl-item {
-        height: 500px;
+@media screen and (max-width: 415px) {
+    .main-slide {
+        width: 100%;
+        height: 40vh;
     }
 
-    .owl-carousel .owl-item img {
-        height: 600px;
-    }
-}
-
-@media screen and (max-width: 665px) {
-    .owl-carousel .owl-item {
-        height: 400px;
+    .main-slide .main-slide-img {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
 
-    .owl-carousel .owl-item img {
-        height: 550px;
-    }
-}
-
-@media screen and (max-width: 584px) {
-    .owl-carousel .owl-item img {
-        height: 400px;
+    .main-slide .main-slide-img img {
+        width: 100%;
+        height: 40vh;
+        object-fit: cover;
     }
 }
 
@@ -1198,6 +1652,133 @@
 @media screen and (max-width: 766px) {
     #footer-photos #photos {
         height: auto;
+    }
+}
+
+@media screen and (max-width: 630px) {
+
+    #footer #footer-container #footer-map iframe {
+        width: 100% !important;
+        height: 350px !important;
+        position: relative;
+    }
+
+    #footer #footer-container {
+        padding: 0 0 50px 0;
+    }
+
+    #footer #footer-container .container-fluid {
+        padding-left: 30px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+
+    .container .row .choose-container {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        padding: 0;
+        /* margin-bottom: 50px; */
+    }
+
+    .container .row .choose-container img{
+        width: 150%;
+        height: 400px;
+        margin-left: -180px;
+        z-index: 10;
+    }
+
+    .container .row .choose-container .choose-content .choose-text p.choose-title {
+        width: 200px;
+        font-size: 26px;
+        padding-top: 120px;
+    }
+
+    .container .row .choose-container .choose-right-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .container .row .choose-container .choose-right-container img {
+        width: 285px;
+        height: 200px;
+        margin: 0;
+        z-index: 10;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text p.choose-right-title {
+        width: 140px;
+        font-size: 18px;
+        padding-top: 80px;
+        margin-left: 13px;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text p.choose-right-word {
+        width: 250px;
+        font-size: 15px;
+        padding-top: 5px;
+        margin-left: -40px;
+    }
+
+    .container .row .choose-container .choose-right-container .choose-right-content .choose-right-text .choose-right-line {
+        margin-left: 58px;
+    }
+}
+
+@media screen and (max-width: 376px) {
+
+    .fb-page {
+        width: 310px !important;
+    }
+
+    @keyframes modal_signup_effect2 {
+        0%   {opacity: 0; margin-left: 150px}
+        50%  {opacity: 1; margin-left: 36px}
+        100% {opacity: 1; margin-left: 36px}
+    }
+}
+
+@media screen and (max-width: 321px) {
+
+    .fb-page {
+        width: 260px !important;
+    }
+
+    .container .row .choose-container img{
+        width: 157%;
+        height: 600px;
+        margin-left: -180px;
+        z-index: 10;
+    }
+
+    #main-container .title .main-title {
+        line-height: 28px;
+    }
+
+    #main-container .container-fluid .row .services .sv-title{
+        background-color: rgba(76, 162, 70, 0.8);
+        position: absolute;
+        width: 180px;
+        padding: 5px 10px;
+        top: 120px;
+        right: 110px;
+        z-index: 20;
+    }
+
+    #main-container .container-fluid .row .services .sv-title p{
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        width: 160px;
+        height: 42px;
+        overflow: hidden;
+        text-transform: uppercase;
+        text-align: center;
+        z-index: 20;
+        margin: 0 auto;
     }
 }
 
