@@ -12,6 +12,7 @@
         public $web_id;
         public $term;
         public $product_active;
+        public $product_gr_id;
 
         public function __construct($db){
             $this->conn = $db;
@@ -193,8 +194,8 @@
             $stmt->execute();
             $count = $stmt->rowCount();
             if($count === 0){
-                $query = "INSERT INTO ".$this->table."(product_name, product_description, product_image_path, product_price, product_currency, web_id) 
-                            VALUES (:product_name,:product_description,:product_image_path,:product_price,:product_currency,:web_id )";
+                $query = "INSERT INTO ".$this->table."(product_name, product_description, product_image_path, product_price, product_currency, web_id, product_gr_id) 
+                            VALUES (:product_name,:product_description,:product_image_path,:product_price,:product_currency,:web_id, :product_gr_id )";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(':product_name'       , $this->product_name);
                 $stmt->bindParam(':product_description', $this->product_description);
@@ -202,6 +203,7 @@
                 $stmt->bindParam(':product_price'      , $this->product_price);
                 $stmt->bindParam(':product_currency'   , $this->product_currency);
                 $stmt->bindParam(':web_id'             , $this->web_id);
+                $stmt->bindParam(':product_gr_id'      , $this->product_gr_id);
                 if($stmt->execute() === true){
                     return true;
                 }

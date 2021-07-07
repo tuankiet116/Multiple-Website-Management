@@ -157,13 +157,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="select-container pick_website_container col-4">
-                                <div class="title_pick_website title">
-                                    <h4><?=translate_text('Chọn Trang Web')?>: </h4>
+                            <div class="wrapper-select">
+                                <div class="select-container pick_website_container">
+                                    <div class="title_pick_website title">
+                                        <h4><?=translate_text('Chọn Trang Web')?>: </h4>
+                                    </div>
+                                    <div class="box">
+                                        <select class="website_select_add">
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="box">
-                                    <select class="website_select_add">
-                                    </select>
+
+                                <div class="select-container pick_product_group_container">
+                                    <div class="title_pick_product_group title">
+                                        <h4><?=translate_text('Chọn Nhóm Sản Phẩm')?>: </h4>
+                                    </div>
+                                    <div class="box">
+                                        <select class="product_group_select_add">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +203,10 @@
     <div class="title-searching container-fluid">
         <h3>Tìm Kiếm Sản Phẩm</h3>
     </div>
-    
+    <div class="box">
+                                        <select class="product_group_select_add">
+                                        </select>
+                                    </div>
     <div class="search-container container-fluid">
         <div class="select-container pick_website_container col-3">
             <div class="title_pick_website title">
@@ -202,6 +217,7 @@
                 </select>
             </div>
         </div>
+        
         <div class="form-group col-3">
             <label for="searching"><?= translate_text('Tìm Kiếm')?></label>
             <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm')?>">
