@@ -94,7 +94,8 @@ $(document).ready(function(){
         "product_price": $('#add-price').val(),
         "product_currency": $('#Modal-add select.currency-select').val(),
         "product_image_path": $('#image_product_add').attr('src'),
-        "web_id":  $('.website_select_add').select2('val')
+        "web_id":  $('.website_select_add').select2('val'),
+        "product_gr_id": $('.product_group_select_add').select2('val')
       }
       if(data.product_name == ""  || data.product_name == null){
         showAlert('warning', "Tên Sản Phẩm Không Được Bỏ Trống");

@@ -80,13 +80,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="select-container pick_website_container col-4">
-                                <div class="title_pick_website title">
-                                    <h4><?=translate_text('Chọn Trang Web')?>: </h4>
+                            <div class="wrapper-select">
+                                <div class="select-container pick_website_container">
+                                    <div class="title_pick_website title">
+                                        <h4><?=translate_text('Chọn Trang Web')?>: </h4>
+                                    </div>
+                                    <div class="box">
+                                        <select class="website_select_update">
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="box">
-                                    <select class="website_select_update">
-                                    </select>
+
+                                <div class="select-container pick_product_group_container">
+                                    <div class="title_pick_product_group title">
+                                        <h4><?=translate_text('Chọn Nhóm Sản Phẩm')?>: </h4>
+                                    </div>
+                                    <div class="box">
+                                        <img class="image-loading" src="../../../Bean Eater-1s-200px.gif">
+                                        <select class="product_group_select_update">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
