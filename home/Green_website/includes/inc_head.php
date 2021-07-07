@@ -32,6 +32,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="./resource/js/myjs.js"></script>
     <!-- Base url -->
-    <?php $base_url = "http://cleaning.com:8080/" ?>
+    <?php $base_url = "http://localhost:8093/" ?>
     <!-- Web icon -->
     <link href="<?php echo $base_url . $web_icon ?>" rel="icon" type="image/gif">
