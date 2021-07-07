@@ -173,7 +173,7 @@ function update(){
 function activeWeb(){
   $('.btn-show-hide').click(function(){
     var data ={
-      "web_active": $(this).attr('status')==1? 0: 1,
+      "web_active": $(this).attr('status') == "1"? "0": "1",
       "web_id"    : $(this).attr('w_id')
     }
     $.ajax({
