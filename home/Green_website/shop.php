@@ -19,6 +19,12 @@ if (isset($_GET['page'])) {
     $page = 1;
 }
 
+if (isset($_GET['gid'])) {
+    $gid = $_GET['gid'];
+    $arr_gr_shop = get_data_rows("SELECT * FROM product WHERE web_id = $web_id AND product_gr_id = $gid");
+    $get_gr_shop = get_data_row("SELECT * FROM product_group WHERE product_gr_id = $gid AND product_gr_active = 1");
+}
+
 $start_from = ($page - 1) * $per_page_record;
 
 /********** SHOP **********/
@@ -56,7 +62,7 @@ $pageLink = "";
 
     <!--------------- CONTENT --------------->
 
-    <?php  $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
+    <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
     <div id="shop">
         <div id="shop-container">
             <div class="container-fluid">
@@ -70,42 +76,91 @@ $pageLink = "";
                     </span>
                     <a href="shop.php" target="_self">Báo giá sản phẩm</a>
                 </div>
-                <div class="shop-title">Báo giá sản phẩm</div>
-                
+                <div class="shop-title">
+                    <?php
+                    if (!isset($_GET['gid'])) {
+                        echo 'Báo giá s?n ph?m';
+                    } else if (isset($_GET['gid'])) {
+                        echo $get_gr_shop['product_gr_name'];
+                    }
+                    ?>
+                </div>
+
                 <div class="row">
                     <?php
-                    foreach ($arr_shop as $key => $shop) {
-                        if ($shop['product_active'] == 1) {
-                            echo'
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                <div class="shop-content">
-                                    <div class="shop-image">
-                                        <a href="#" target="_self">
-                                            <img src="' . $base_url . $shop['product_image_path'] . '" alt="shop image">
-                       
-                                            <div class="shop-detail">
+                    if (!isset($_GET['gid'])) {
+                        foreach ($arr_shop as $key => $shop) {
+                            if ($shop['product_active'] == 1) {
+                                echo '
+                                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="shop-content">
+                                            <div class="shop-image">
+                                                <a href="#" target="_self">
+                                                    <img src="' . $base_url . $shop['product_image_path'] . '" alt="shop image">
+                            
+                                                    <div class="shop-detail">
+                                                        <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
+                                                            <div> Chi tiết </div>
+                                                        </a>
+                                                    </div>
+                                                    
+                                                </a>
+
+                                                <div class="new-sticker"> New </div>
+                                            </div>
+
+                                            <div class="shop-name">
                                                 <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
-                                                    <div> Chi tiết </div>
+                                                    ' . $shop['product_name'] . '
                                                 </a>
                                             </div>
-                                            
-                                        </a>
 
-                                        <div class="new-sticker"> New </div>
-                                    </div>
+                                            <div class="shop-des">
+                                                <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $shop['product_price'] . ' </span>
+                                                <span> ' . $shop['product_currency'] . '</span>
+                                            </div>
+                                        </div>
+                                    </div>';
+                            } else {
+                                echo '';
+                            }
+                        }
+                    } else if (isset($_GET['gid'])) {
+                        foreach ($arr_gr_shop as $key => $gr_shop) {
+                            if ($gr_shop['product_active'] == 1) {
+                                echo '
+                                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                        <div class="shop-content">
+                                            <div class="shop-image">
+                                                <a href="#" target="_self">
+                                                    <img src="' . $base_url . $gr_shop['product_image_path'] . '" alt="shop image">
+                            
+                                                    <div class="shop-detail">
+                                                        <a href="items.php?id=' . $gr_shop['product_id'] . '" target="_self">
+                                                            <div> Chi tiết </div>
+                                                        </a>
+                                                    </div>
+                                                    
+                                                </a>
 
-                                    <div class="shop-name">
-                                        <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
-                                            ' . $shop['product_name'] . '
-                                        </a>
-                                    </div>
+                                                <div class="new-sticker"> New </div>
+                                            </div>
 
-                                    <div class="shop-des">
-                                        <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $shop['product_price'] . ' </span>
-                                        <span> ' . $shop['product_currency'] . '</span>
-                                    </div>
-                                </div>
-                            </div>';
+                                            <div class="shop-name">
+                                                <a href="items.php?id=' . $gr_shop['product_id'] . '" target="_self">
+                                                    ' . $gr_shop['product_name'] . '
+                                                </a>
+                                            </div>
+
+                                            <div class="shop-des">
+                                                <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $gr_shop['product_price'] . ' </span>
+                                                <span> ' . $gr_shop['product_currency'] . '</span>
+                                            </div>
+                                        </div>
+                                    </div>';
+                            } else {
+                                echo '';
+                            }
                         }
                     }
                     ?>
