@@ -148,12 +148,12 @@
                 $this->web_id               = $row['web_id'];
                 $this->payment_active       = $row['payment_active'];
 
-                $query = 'SELECT * FROM post_detail WHERE ptd_id = :ptd_id';
-                $stmt = $this->conn->prepare($query);
-                $stmt->bindParam(':ptd_id', $this->ptd_id);
-                $stmt->execute();
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $this->content = $row['ptd_text'];
+                // $query = 'SELECT * FROM post_detail WHERE ptd_id = :ptd_id';
+                // $stmt = $this->conn->prepare($query);
+                // $stmt->bindParam(':ptd_id', $this->ptd_id);
+                // $stmt->execute();
+                // $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                // $this->content = $row['ptd_text'];
             }
             else{
                 return $stmt->rowCount();
