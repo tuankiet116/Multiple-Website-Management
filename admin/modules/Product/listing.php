@@ -173,7 +173,8 @@
                                         <h4><?=translate_text('Chọn Nhóm Sản Phẩm')?>: </h4>
                                     </div>
                                     <div class="box">
-                                        <select class="product_group_select_add">
+                                        <img class="image-loading" src="../../../Bean Eater-1s-200px.gif">
+                                        <select class="product_group_select_add" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -203,10 +204,6 @@
     <div class="title-searching container-fluid">
         <h3>Tìm Kiếm Sản Phẩm</h3>
     </div>
-    <div class="box">
-                                        <select class="product_group_select_add">
-                                        </select>
-                                    </div>
     <div class="search-container container-fluid">
         <div class="select-container pick_website_container col-3">
             <div class="title_pick_website title">
