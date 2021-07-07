@@ -49,10 +49,6 @@ body{
     padding-right: 10px;
 }
 
-.select2-selection:focus{
-    
-}
-
 .select2-selection{
     border:rgb(16, 12, 226) 1px;
 }
@@ -245,9 +241,6 @@ input:checked + .slider:before {
     border-radius: 50%; 
 }
 
-.form-check .label-form-check{
-    
-}
 
 /* CSS Alert Bootstrap */
 .alert-message{

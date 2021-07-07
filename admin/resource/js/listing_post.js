@@ -120,7 +120,7 @@ function formatRepoSelectionWebsite (state) {
 } //End Of Function Website Select2
 
 function checkdefault(default_value, check_parameter){
-    if(check_parameter == null){
+    if(check_parameter == null || check_parameter == ""){
       return default_value;
     }
     return check_parameter;
@@ -152,19 +152,19 @@ function postSuccess(data){
         var status = '';
         var post_type_status = '';
 
-        if(value.post_title == null){
+        if(value.post_title == null || value.post_title == ""){
             value.post_title = "<p style = 'color: red'>NULL</p>";
         }
 
-        if(value.description == null){
-            value.description = "<p style = 'color: red'>NULL</p>";
+        if(value.post_description == null || value.post_description == ""){
+            value.post_description = "<p style = 'color: red'>NULL</p>";
         }
 
-        if(value.post_type_title == null){
+        if(value.post_type_title == null || value.post_type_title == ""){
             value.post_type_title = "<p style = 'color: red'>NULL</p>";
         }
 
-        if(value.web_name == null){
+        if(value.web_name == null || value.web_name == ""){
             value.web_name = "<p style = 'color: red'>NULL</p>";
         }
 
@@ -186,7 +186,7 @@ function postSuccess(data){
         html += `<tr>
                     <th scope="row">`+stt+`</th>
                     <td><div><p style = 'word-wrap: break-word'>`+ value.post_title  +`</p></div></td>
-                    <td><div><p style = 'word-wrap: break-word'>`+ value.description +`</p></div></td>
+                    <td><div><p style = 'word-wrap: break-word'>`+ value.post_description +`</p></div></td>
                     <td><div><p style = 'word-wrap: break-word'>`+ value.post_type_title + `</p></div>
                         <div style = 'margin-top: -10px'>` + post_type_status +`</div></td>
                     <td><div><p style = 'word-wrap: break-word'>`+ value.web_name +`</p></div></td>

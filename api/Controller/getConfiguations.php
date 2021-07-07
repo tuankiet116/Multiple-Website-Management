@@ -1,11 +1,14 @@
 <?php
+
+require_once("../Token/checkToken.php");
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
-  
+
 // include database and object files
 include_once '../objects/configuations.php';
 include_once '../config/database.php';
@@ -59,6 +62,9 @@ if($config->con_id != null && $data->web_id != "" && $data->web_id != null){
         "con_banner_description"    => $config->con_banner_description,
         "con_banner_active"         => $config->con_banner_active,
         "con_rewrite_name_homepage" => $config->con_rewrite_name_homepage,
+        "con_active_sale"           => $config->con_active_sale,
+        "con_active_product"        => $config->con_active_product,
+        "con_active_service"        => $config->con_active_service,
         "code"                      => 200
     );
 

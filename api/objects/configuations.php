@@ -37,6 +37,9 @@ class Configuations{
     public $con_banner_description;
     public $con_banner_active;
     public $con_rewrite_name_homepage;
+    public $con_active_product;
+    public $con_active_service;
+    public $con_active_sale;
   
     //constructor with $db as database connection
     public function __construct($db){
@@ -90,6 +93,9 @@ class Configuations{
                 $this->con_banner_description    = $row["con_banner_description"];
                 $this->con_banner_active         = $row["con_banner_active"];
                 $this->con_rewrite_name_homepage = $row["con_rewrite_name_homepage"];
+                $this->con_active_product        = $row["con_active_product"];
+                $this->con_active_sale           = $row["con_active_sale"];
+                $this->con_active_service        = $row["con_active_service"];
             }
         }
         
@@ -103,8 +109,8 @@ class Configuations{
                   con_hotline_banhang, con_hotline_hotro_kythuat, con_address, con_background_homepage, con_info_payment, 
                   con_fee_transport, con_contact_sale, con_info_company, con_logo_top, con_logo_bottom, con_page_fb, con_link_fb, 
                   con_link_twitter, con_link_insta, con_map, con_banner_image, con_banner_title, con_banner_description, 
-                  con_banner_active, con_rewrite_name_homepage)
-                  Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                  con_banner_active, con_rewrite_name_homepage, con_active_sale, con_active_product, con_active_service)
+                  Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt  = $this->conn->prepare($query);
 
         $stmt->bindParam(1,  $this->web_id,  PDO::PARAM_INT);
@@ -114,28 +120,31 @@ class Configuations{
         $stmt->bindParam(5,  $this->con_meta_keyword);
         $stmt->bindParam(6,  $this->con_mod_rewrite, PDO::PARAM_INT);
         //$stmt->bindParam(8,  $this->lang_id, PDO::PARAM_INT);
-        $stmt->bindParam(9,  $this->con_active_contact, PDO::PARAM_INT);
-        $stmt->bindParam(10, $this->con_hotline);
-        $stmt->bindParam(11, $this->con_hotline_banhang);
-        $stmt->bindParam(12, $this->con_hotline_hotro_kythuat);
-        $stmt->bindParam(13, $this->con_address);
-        $stmt->bindParam(14, $this->con_background_homepage);
-        $stmt->bindParam(15, $this->con_info_payment);
-        $stmt->bindParam(16, $this->con_fee_transport);
-        $stmt->bindParam(17, $this->con_contact_sale);
-        $stmt->bindParam(18, $this->con_info_company);
-        $stmt->bindParam(19, $this->con_logo_top);
-        $stmt->bindParam(20, $this->con_logo_bottom);
-        $stmt->bindParam(21, $this->con_page_fb);
-        $stmt->bindParam(22, $this->con_link_fb);
-        $stmt->bindParam(23, $this->con_link_twitter);
-        $stmt->bindParam(24, $this->con_link_insta);
-        $stmt->bindParam(25, $this->con_map);
-        $stmt->bindParam(26, $this->con_banner_image);
-        $stmt->bindParam(27, $this->con_banner_title);
-        $stmt->bindParam(28, $this->con_banner_description);
-        $stmt->bindParam(29, $this->con_banner_active, PDO::PARAM_INT);
-        $stmt->bindParam(30, $this->con_rewrite_name_homepage);
+        $stmt->bindParam(7,  $this->con_active_contact, PDO::PARAM_INT);
+        $stmt->bindParam(8, $this->con_hotline);
+        $stmt->bindParam(9, $this->con_hotline_banhang);
+        $stmt->bindParam(10, $this->con_hotline_hotro_kythuat);
+        $stmt->bindParam(11, $this->con_address);
+        $stmt->bindParam(12, $this->con_background_homepage);
+        $stmt->bindParam(13, $this->con_info_payment);
+        $stmt->bindParam(14, $this->con_fee_transport);
+        $stmt->bindParam(15, $this->con_contact_sale);
+        $stmt->bindParam(16, $this->con_info_company);
+        $stmt->bindParam(17, $this->con_logo_top);
+        $stmt->bindParam(18, $this->con_logo_bottom);
+        $stmt->bindParam(19, $this->con_page_fb);
+        $stmt->bindParam(20, $this->con_link_fb);
+        $stmt->bindParam(21, $this->con_link_twitter);
+        $stmt->bindParam(22, $this->con_link_insta);
+        $stmt->bindParam(23, $this->con_map);
+        $stmt->bindParam(24, $this->con_banner_image);
+        $stmt->bindParam(25, $this->con_banner_title);
+        $stmt->bindParam(26, $this->con_banner_description);
+        $stmt->bindParam(27, $this->con_banner_active, PDO::PARAM_INT);
+        $stmt->bindParam(28, $this->con_rewrite_name_homepage);
+        $stmt->bindParam(29, $this->con_active_sale, PDO::PARAM_INT);
+        $stmt->bindParam(30, $this->con_active_product, PDO::PARAM_INT);
+        $stmt->bindParam(31, $this->con_active_service, PDO::PARAM_INT);
 
         if($stmt->execute()){
             return true;
@@ -171,7 +180,10 @@ class Configuations{
                   con_banner_title          = :con_banner_title, 
                   con_banner_description    = :con_banner_description, 
                   con_banner_active         = :con_banner_active,
-                  con_rewrite_name_homepage = :con_rewrite_name_homepage
+                  con_rewrite_name_homepage = :con_rewrite_name_homepage,
+                  con_active_product        = :con_active_product,
+                  con_active_sale           = :con_active_sale,
+                  con_active_service        = :con_active_service
                   WHERE web_id              = :web_id";
         $stmt  = $this->conn->prepare($query);
 
@@ -203,6 +215,9 @@ class Configuations{
         $stmt->bindParam(':con_banner_description'   , $this->con_banner_description);
         $stmt->bindParam(':con_banner_active'        , $this->con_banner_active, PDO::PARAM_INT);
         $stmt->bindParam(':con_rewrite_name_homepage', $this->con_rewrite_name_homepage);
+        $stmt->bindParam(':con_active_product'       , $this->con_active_product, PDO::PARAM_INT);
+        $stmt->bindParam(':con_active_sale'          , $this->con_active_sale, PDO::PARAM_INT);
+        $stmt->bindParam(':con_active_service'       , $this->con_active_service, PDO::PARAM_INT);
 
         if($stmt->execute()){
             return true;

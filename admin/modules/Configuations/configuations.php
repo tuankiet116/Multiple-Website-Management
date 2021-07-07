@@ -317,6 +317,32 @@
                         </div>
                     </div>
 
+                    <h4 style="font-weight: bold"> <i class="fas fa-hand-point-right"></i> Bán Hàng, Sản Phẩm Và Dịch Vụ</h4>
+                    <hr style=" border-top: 1px solid black;">
+                    <div class="card">
+                        <div id="form-check-sale" class="form-check form-configuations">
+                            <label class="label-form-check form-check-active-sale" for="check-active-sale"><?=translate_text('Kích Hoạt Bán Hàng')?></label>
+                            <label class="switch">
+                                <input class="check-box" id="check-active-sale" type="checkbox">
+                                <span id="check-button-sale" class="slider round"></span>
+                            </label>
+                        </div>
+                        <div id="form-check-product" class="form-check form-configuations">
+                            <label class="label-form-check form-check-active-product" for="check-active-product"><?=translate_text('Kích Hoạt Sản Phẩm')?></label>
+                            <label class="switch">
+                                <input class="check-box" id="check-active-product" type="checkbox">
+                                <span id="check-button-product" class="slider round"></span>
+                            </label>
+                        </div>
+                        <div id="form-check-service" class="form-check form-configuations">
+                            <label class="label-form-check form-check-active-service" for="check-active-service"><?=translate_text('Kích Hoạt Dịch Vụ')?></label>
+                            <label class="switch">
+                                <input class="check-box" id="check-active-service" type="checkbox">
+                                <span id="check-button-service" class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="button_configuation">
                         <button id="submit_configuation" type="submit" class="btn btn-primary"><?=translate_text('Xác Nhận')?></button>
                         <button id="cancel_configuation" type="button" class="btn btn-primary"><?=translate_text('Hủy')?></button>

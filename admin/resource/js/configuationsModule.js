@@ -334,7 +334,7 @@ function formatRepoSelectionWebsite (state) {
 
 //set default image which null value
 function checkdefault(default_value, check_parameter){
-  if(check_parameter == null){
+  if(check_parameter == null || check_parameter == ""){
     return default_value;
   }
   return check_parameter;
@@ -446,6 +446,36 @@ function getSuccessDataConfiguration(data){
     $('#check-active-banner').val('off');
   }
 
+  //Set Check Active Product
+  if(parseInt(data.con_active_product) == 1){
+    $('#check-active-product').prop('checked', true);
+    $('#check-active-product').val('on');
+  }
+  else{
+    $('#check-active-product').prop('checked', false);
+    $('#check-active-product').val('off');
+  }
+
+  //Set Check Active Sale
+  if(parseInt(data.con_active_sale) == 1){
+    $('#check-active-sale').prop('checked', true);
+    $('#check-active-sale').val('on');
+  }
+  else{
+    $('#check-active-sale').prop('checked', false);
+    $('#check-active-sale').val('off');
+  }
+
+  //Set Check Active Service
+  if(parseInt(data.con_active_service) == 1){
+    $('#check-active-service').prop('checked', true);
+    $('#check-active-service').val('on');
+  }
+  else{
+    $('#check-active-service').prop('checked', false);
+    $('#check-active-service').val('off');
+  }
+
   //End Of Call Data
 }
 
@@ -513,6 +543,9 @@ function GetAllData(){
   input_banner_title          = $('#input-banner-title').val().replace(/"/g, "'");
   input_banner_description    = $('#input-banner-description').val().replace(/"/g, "'");
   check_active_banner         = $('#check-active-banner').val() == 'on'? 1:0;
+  check_active_product        = $('#check-active-product').val() == 'on'? 1:0;
+  check_active_sale           = $('#check-active-sale').val() == 'on'? 1:0;
+  check_active_service        = $('#check-active-service').val() == 'on'? 1:0;
   input_rewrite_name_homepage = $('#input-rewrite-name-homepage').val().replace(/"/g, "'");
 
   data = {
@@ -540,7 +573,10 @@ function GetAllData(){
     con_banner_title          : input_banner_title.trim(),
     con_banner_description    : input_banner_description.trim(),
     con_banner_active         : check_active_banner,
-    con_rewrite_name_homepage : input_rewrite_name_homepage.trim()
+    con_rewrite_name_homepage : input_rewrite_name_homepage.trim(),
+    con_active_product        : check_active_product,
+    con_active_sale           : check_active_sale,
+    con_active_service        : check_active_service
   }
   return data;
 }

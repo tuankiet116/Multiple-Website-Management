@@ -36,7 +36,7 @@ $post->post_meta_description = htmlspecialchars(trim($data->post_meta_descriptio
 $post->post_rewrite_name     = htmlspecialchars(trim($data->post_rewrite_name));
 $post->cmp_id                = intVal($data->cmp_id);
 $post->post_type_id          = intVal($data->post_type_id);
-$post->produce_id            = intVal($data->product_id);
+$post->product_id            = intVal($data->product_id);
 $post->content               = $data->content;
 
 if($data->post_title == null || $data->post_title == "" || $data->post_type_id == "" || $data->post_type_id == null){

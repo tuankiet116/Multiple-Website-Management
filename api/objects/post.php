@@ -28,9 +28,11 @@
 
         public function create(){
             $message = "";
-            $query = "SELECT * FROM post WHERE post_title =:post_title";
+            $query = "SELECT * FROM post WHERE post_title =:post_title AND cmp_id = :cmp_id AND post_type_id = :post_type_id";
             $stmt =  $this->conn->prepare($query);
-            $stmt->bindParam(':post_title', $this->post_title);
+            $stmt->bindParam(':post_title'  , $this->post_title);
+            $stmt->bindParam(':cmp_id'      , $this->cmp_id);
+            $stmt->bindParam(':post_type_id', $this->post_type_id);
             if($stmt->execute() === true){
                 $count = $stmt->rowCount();
                 if($count===0){
@@ -79,52 +81,72 @@
         }
 
         public function update(){
-            $query_ptd ="SELECT ptd_id FROM post WHERE post_id = :post_id";
+            $message = "";
+            $query_ptd ="SELECT ptd_id, cmp_id, post_type_id FROM post WHERE post_id = :post_id";
             $stmt_ptd = $this->conn->prepare($query_ptd);
             $stmt_ptd->bindParam(':post_id', $this->post_id);
             if($stmt_ptd->execute() === true){
                 $row = $stmt_ptd->fetch(PDO::FETCH_ASSOC);
-                $ptd_id = $row['ptd_id'];
+                $ptd_id       = $row['ptd_id'];
+                $cmp_id       = $row['cmp_id'];
+                $post_type_id = $row['post_type_id'];
 
-                $query = "UPDATE post_detail SET ptd_text = :ptd_text  WHERE ptd_id = :ptd_id";
-                $stmt = $this->conn->prepare($query);
-                $stmt->bindParam(':ptd_id', $ptd_id);
-                $stmt->bindParam(':ptd_text', $this->content);
+                $query = "SELECT * FROM post WHERE post_title =:post_title AND cmp_id = :cmp_id AND post_id != :post_id";
+                $stmt =  $this->conn->prepare($query);
+                $stmt->bindParam(':post_title'  , $this->post_title);
+                $stmt->bindParam(':cmp_id'      , $cmp_id);
+                // $stmt->bindParam(':post_type_id', $post_type_id);
+                $stmt->bindParam(':post_id'     , $this->post_id);
+                if ($stmt->execute() === true) {
+                    $count = $stmt->rowCount();
+                    if ($count===0) {
+                        $query = "UPDATE post_detail SET ptd_text = :ptd_text  WHERE ptd_id = :ptd_id";
+                        $stmt = $this->conn->prepare($query);
+                        $stmt->bindParam(':ptd_id', $ptd_id);
+                        $stmt->bindParam(':ptd_text', $this->content);
 
-                if($stmt->execute() === true){
-                    $query_post = "UPDATE post
-                            SET post_title            =:post_title, 
-                                post_description      =:post_description,
-                                post_image_background =:post_image_background, 
-                                post_color_background =:post_color_background,
-                                post_meta_description =:post_meta_description, 
-                                post_rewrite_name     =:post_rewrite_name,
-                                product_id            =:product_id,
-                                post_datetime_update  = CURRENT_TIMESTAMP() 
-                            WHERE post_id = :post_id ";
-                    $stmt_post = $this->conn->prepare($query_post);
+                        if ($stmt->execute() === true) {
+                            $query_post = "UPDATE post
+                                    SET post_title            =:post_title, 
+                                        post_description      =:post_description,
+                                        post_image_background =:post_image_background, 
+                                        post_color_background =:post_color_background,
+                                        post_meta_description =:post_meta_description, 
+                                        post_rewrite_name     =:post_rewrite_name,
+                                        product_id            =:product_id,
+                                        post_datetime_update  = CURRENT_TIMESTAMP() 
+                                    WHERE post_id = :post_id ";
+                            $stmt_post = $this->conn->prepare($query_post);
 
-                    $stmt_post->bindParam(':post_title'           , $this->post_title);
-                    $stmt_post->bindParam(':post_description'     , $this->post_description);
-                    $stmt_post->bindParam(':post_image_background', $this->post_image_background);
-                    $stmt_post->bindParam(':post_color_background', $this->post_color_background);
-                    $stmt_post->bindParam(':post_meta_description', $this->post_meta_description);
-                    $stmt_post->bindParam(':post_rewrite_name'    , $this->post_rewrite_name);
-                    $stmt_post->bindParam(':product_id'           , $this->product_id);
-                    $stmt_post->bindParam(':post_id'              , $this->post_id);
+                            $stmt_post->bindParam(':post_title', $this->post_title);
+                            $stmt_post->bindParam(':post_description', $this->post_description);
+                            $stmt_post->bindParam(':post_image_background', $this->post_image_background);
+                            $stmt_post->bindParam(':post_color_background', $this->post_color_background);
+                            $stmt_post->bindParam(':post_meta_description', $this->post_meta_description);
+                            $stmt_post->bindParam(':post_rewrite_name', $this->post_rewrite_name);
+                            $stmt_post->bindParam(':product_id', $this->product_id);
+                            $stmt_post->bindParam(':post_id', $this->post_id);
 
-                    if($stmt_post->execute() === true){
-                        return true;
+                            if ($stmt_post->execute() === true) {
+                                return true;
+                            }
+                            $message = "Error While Updating Post";
+                            return $message;
+                        } else {
+                            $message = "Error While Updating Post Detail";
+                            return $message;
+                        }
+                    } else {
+                        $message = "Duplicate Post Title";
+                        return $message;
                     }
-                    return $stmt_post;
-                }
-                else{
-                    return $stmt;
                 }
             }
             else{
-                return $stmt_ptd;
+                $message = "Error While Getting Post Detail";
+                return $message;
             }
+                
         }
 
         public function ActiveInactivePost(){
@@ -155,6 +177,7 @@
 
             $query = "SELECT post.post_id , post.post_title , post.post_description, post_type.post_type_title, 
                              product.product_name, website_config.web_name, post.post_active, website_config.web_id, post_type.post_type_active
+                             
                       FROM post
                       LEFT JOIN post_type  ON post.post_type_id = post_type.post_type_id ".$query_post_type.
                       " LEFT JOIN product   ON post.product_id   = product.product_id  

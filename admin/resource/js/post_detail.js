@@ -290,11 +290,11 @@ function setImageData(data, element, max=0){
 }
 
   function updatePostSuccess(data){
-    if(data.code == 200){
+    if(data.code === 200){
       showAlert('success', data.message);
     }
     else{
-      showAlert('warning', data.message);
+      showAlert('error', data.message);
     }
   }
   
@@ -358,7 +358,6 @@ function setImageData(data, element, max=0){
             success: function(data){
                 updatePostSuccess(data);
                 reload();
-                showAlert('success', data.message);
             },
             error: function (request, status, error) {
                 updatePostError(request.responseText);
