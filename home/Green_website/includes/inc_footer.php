@@ -1,15 +1,15 @@
 <div id="footer">
     <div id="footer-container">
         <?php
-            if ($get_web_icon['con_map'] != "" || $get_web_icon['con_map'] != null) {
-                echo '
+        if ($get_web_icon['con_map'] != "" || $get_web_icon['con_map'] != null) {
+            echo '
                             <div id="footer-map"> ' . $get_web_icon['con_map'] . ' </div>
                         ';
-            } else {
-                echo '';
-            }
+        } else {
+            echo '';
+        }
         ?>
-        
+
         <div class="container-fluid">
             <div id="footer-content" class="row">
                 <div class="col-lg-4 col-md-12">
@@ -27,7 +27,7 @@
 
                                     <li>
                                         <a href="" target="_self">
-                                            Địa chỉ: ' . $f_contact['con_address'] . '
+                                            Ð?a ch?: ' . $f_contact['con_address'] . '
                                         </a>
                                     </li>
 
