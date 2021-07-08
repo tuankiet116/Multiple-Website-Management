@@ -64,12 +64,12 @@ function getDataTable(){
     method: "POST",
     async: false,
     success: function (res){
-      var view = res.map((e)=>{
+      var view = res.map((e, index)=>{
         var checkIcon = checkdefault("data/web_icon/icon_default/default.png", e.web_icon);
         rs =``;
         rs += `<tr>`;
         rs += `
-                <td>${e.web_id}</td>
+                <td>${index + 1}</td>
                 <td><p class="web_name">${e.web_name}</p></td>
                 <td><p class="web_url">${e.web_url}</p></td>
                 <td><img src="${base_url}${checkIcon}" alt="icon" class="icon-website"></td>

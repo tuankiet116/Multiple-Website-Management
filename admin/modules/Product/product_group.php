@@ -90,7 +90,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">id</th>
+                        <th scope="col">No</th>
                         <th scope="col">Tên</th>
                         <th scope="col">Mô tả</th>
                         <th scope="col">Trạng Thái</th>

@@ -51,11 +51,11 @@ $(document).ready(function () {
         console.log(web_id);
     });
 
-    // $(".table > tbody").html(
-    //   ` <tr style="background-color: white;">
-    //         <td colspan="5"><p style="color:red">Vui lòng chọn website</p></td>
-    //     </tr>`
-    // );
+    $(".table > tbody").html(
+      ` <tr style="background-color: white;">
+            <td colspan="5"><p style="color:red">Vui lòng chọn website</p></td>
+        </tr>`
+    );
 
     // create product group
     createProductGroup();
@@ -74,11 +74,11 @@ function getProductGroup(web_id){
         success: function (res) {
           $('.loader-container').css('display', 'none');
           if(res?.code == 200){
-            var viewsData =  res.result.map(function(productGroup){
+            var viewsData =  res.result.map(function(productGroup, index){
               let result ='';
               result+= `<tr>`;
               result+= `
-                          <td scope="row">${productGroup.product_gr_id}</td>
+                          <td scope="row">${index + 1}</td>
                           <td>${productGroup.product_gr_name}</td>
                           <td class="product-gr-description">${productGroup.product_gr_description}</td>`;
               if(productGroup.product_gr_active == 1){
@@ -87,7 +87,7 @@ function getProductGroup(web_id){
               else{
                 result+= `<td><button class="btn btn-danger btn-show-hide" product_gr_active="${productGroup.product_gr_active}" product_gr_id="${productGroup.product_gr_id}">Đã Ẩn</button></td>`;
               }
-              result+=   `<td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal" product_gr_id="${productGroup.product_gr_id}">Xem Chi Tiết</button></td>`
+              result+=   `<td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal" product_gr_id="${productGroup.product_gr_id}">Chi Tiết</button></td>`
               result+= `</tr>`;  
               return result;    
             })

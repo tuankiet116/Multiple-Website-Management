@@ -225,7 +225,7 @@ function productSuccess(data){
         else{
           status = '<button style = "width: 100px;" id="product_hide_'+ value.product_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
         }
-        statusProductGr = value.product_gr_active ==1? `<span style="color: green; font-size: 10px; text-decoration: underline">Đã Hiện</span>`:`<span style="color: red; font-size: 10px; text-decoration: underline">Đã Ẩn</span>`
+        statusProductGr = value.product_gr_active == 1 ? `<span style="color: green; font-size: 10px; text-decoration: underline">Đã Hiện</span>`:`<span style="color: red; font-size: 10px; text-decoration: underline">Đã Ẩn</span>`
         action = `<button style = "margin-left: 10px; width: 60px;" 
                           web_id = `+value.web_id+` 
                           id = "info_product_`+ value.product_id +`"

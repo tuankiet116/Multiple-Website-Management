@@ -88,7 +88,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">id</th>
+                        <th scope="col">No</th>
                         <th scope="col">Tên</th>
                         <th scope="col">Tên Miền</th>
                         <th scope="col">Icon</th>
