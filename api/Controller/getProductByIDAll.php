@@ -21,25 +21,27 @@ $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data)){
     // set Term property of record to read
-$product->product_id = intVal($data->product_id); 
+    $product->product_id = intVal($data->product_id); 
 
-if($product->getByIDAll()===true && isset($product->product_id)){
+    if($product->getByIDAll()===true && isset($product->product_id)){
     //language array
-    $product_array = array(
-        "product_id"          => $product->product_id,
-        "product_name"        => $product->product_name,
-        "product_description" => $product->product_description,
-        "product_image_path"  => $product->product_image_path,
-        "product_price"       => $product->product_price,
-        "product_currency"    => $product->product_currency,
-        "web_id"              => $product->web_id
-    );
-  
-    // set response code - 200 OK
-    http_response_code(200);
-  
-    // make it json format
-    echo json_encode($product_array);
+        $product_array = array(
+            "product_id"          => $product->product_id,
+            "product_name"        => $product->product_name,
+            "product_description" => $product->product_description,
+            "product_image_path"  => $product->product_image_path,
+            "product_price"       => $product->product_price,
+            "product_currency"    => $product->product_currency,
+            "web_id"              => $product->web_id,
+            "product_gr_id"       => $product->product_gr_id,
+            "product_gr_name"     => $product->product_gr_name
+        );
+    
+        // set response code - 200 OK
+        http_response_code(200);
+    
+        // make it json format
+        echo json_encode($product_array);
     }
     else{
         // set response code - 404 Not found

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('.loader-container').css('display', 'flex');
+  // $('.loader-container').css('display', 'flex');
   var web_id =  null;
   
     $('b[role="presentation"]').hide();
@@ -24,10 +24,19 @@ $(document).ready(function(){
         placeholder: 'Search For Product Group'
       });
       $('.product_group_select_add').prop('disabled', false);
-      activeSelect2PrductGroup();
-
+      activeSelect2PrductGroup(".product_group_select_add", ".website_select_add");
+      web_id = $('.website_select_add').select2('data')[0].id;
     })
 
+    $('.website_select_update').change(function(){
+      $('.image-loading').css('display', 'block');
+      $('.product_group_select_update').val('').trigger('change');
+      $('.product_group_select_update').select2({
+        placeholder: 'Search For Product Group'
+      });
+      $('.product_group_select_update').prop('disabled', false);
+      activeSelect2PrductGroup(".product_group_select_update", ".website_select_update");
+    })
     //Show Product
     var data_init = {
       web_id: null ,
@@ -97,6 +106,7 @@ $(document).ready(function(){
         "web_id":  $('.website_select_add').select2('val'),
         "product_gr_id": $('.product_group_select_add').select2('val')
       }
+      console.log(data);
       if(data.product_name == ""  || data.product_name == null){
         showAlert('warning', "Tên Sản Phẩm Không Được Bỏ Trống");
       }
@@ -215,10 +225,11 @@ function productSuccess(data){
         else{
           status = '<button style = "width: 100px;" id="product_hide_'+ value.product_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
         }
-
+        statusProductGr = value.product_gr_active ==1? `<span style="color: green; font-size: 10px; text-decoration: underline">Đã Hiện</span>`:`<span style="color: red; font-size: 10px; text-decoration: underline">Đã Ẩn</span>`
         action = `<button style = "margin-left: 10px; width: 60px;" 
                           web_id = `+value.web_id+` 
-                          id = "info_product_`+ value.product_id +`" 
+                          id = "info_product_`+ value.product_id +`"
+                          product_gr_id= `+value.product_gr_id+`
                           type="button" 
                           data-toggle="modal" data-target="#Modal"
                           class="btn btn-info">Chi Tiết</button>`;
@@ -233,6 +244,12 @@ function productSuccess(data){
                     <td><div><p>`+ value.product_price +`</p></div></td>
                     <td><div><p>`+ value.product_currency +`</p></div></td>
                     <td><div><p>`+ value.web_name +`</p></div></td>
+                    <td>
+                      <div>
+                        <p>`+value.product_gr_name+`</p>
+                        <span>`+statusProductGr+`</span>
+                      </div>
+                    </td>
                     <td><div><p>`+ status +`</p></div></td>
                     <td><div><p>`+ action +`</p></div> </td>
                 </tr>`
@@ -242,19 +259,21 @@ function productSuccess(data){
       $('.btn-info').unbind().click(function(){
         web_id = $(this).attr('web_id');
         product_id = $(this).attr('id').split('_')[2];
-        loadModal(product_id, web_id, '.website_select_update');
-
+        loadModal(product_id, web_id, '.website_select_update', '.product_group_select_update');
+        activeSelect2PrductGroup(".product_group_select_update",".website_select_update");
+        
         $('#modal-update').unbind().click(function(){
           data = {
-            "web_id": $('.website_select_update').select2('val'),
-            "product_id": product_id,
-            "product_name": $('#update-title').val(),
-            "product_description": $('#update-description').val(),
-            "product_price": $('#update-price').val(),
-            "product_currency": $('#Modal select.currency-select').val(),
-            "product_image_path": $('#image_product_update').attr('src')
+            "web_id":             $('.website_select_update').select2('val'),
+            "product_id":         product_id,
+            "product_name":       $('#update-title').val(),
+            "product_description":$('#update-description').val(),
+            "product_price":      $('#update-price').val(),
+            "product_currency":   $('#Modal select.currency-select').val(),
+            "product_image_path": $('#image_product_update').attr('src'),
+            "product_gr_id":      $('.product_group_select_update').select2('val')
           }
-          
+          // console.log(data);
 
           if(data.product_name == ""  || data.product_name == null){
             showAlert('warning', "Tên Sản Phẩm Không Được Bỏ Trống");
@@ -463,11 +482,11 @@ function websiteSelect2(element, parent = null){
   
 }
 
-function activeSelect2PrductGroup(){
+function activeSelect2PrductGroup(productGroupElement, websiteElement){
 
-  web_id = $('.website_select_add').select2('data')[0].id;
-  console.log(web_id);
-  $(".product_group_select_add").select2({
+  web_id = $(websiteElement).select2('data')[0].id;
+  // console.log(web_id);
+  $(productGroupElement).select2({
     ajax: { 
       url: "../../../api/Controller/searchTermProductGroup.php",
       type: "POST",
@@ -495,7 +514,6 @@ function activeSelect2PrductGroup(){
         }
         return {
             results: $.map(data, function (item) {
-              debugger;
                 if(item == 404){
                   return;
                 }
@@ -526,7 +544,7 @@ function clearModal(){
   $('.input-image img').siblings('svg').css('display', 'block');
 }
 
-function loadModal(product_id, web_id, element_select2){
+function loadModal(product_id, web_id, web_select2, product_gr_select2){
   product_data = loadProductByID(product_id);
   web_data = loadWebsiteByID(web_id);
   if(product_data == '' || web_data == ''){
@@ -538,8 +556,10 @@ function loadModal(product_id, web_id, element_select2){
     $('#update-description').val(product_data.product_description);
     $('#update-price').val(product_data.product_price);
     $('#Modal select.currency-select').val(product_data.product_currency).niceSelect('update');
-    option = "<option selected value = '"+web_data.web_id+"' title = '"+web_data.web_icon+"' >"+web_data.web_name+"</option>";
-    setSelect2Data(element_select2, option, product_data);
+    optionWeb = "<option selected value = '"+web_data.web_id+"' title = '"+web_data.web_icon+"' >"+web_data.web_name+"</option>";
+    optionProductGr = `<option selected value ='${product_data.product_gr_id}'>${product_data.product_gr_name}</option>`;
+    setSelect2Data(web_select2, optionWeb, product_data);
+    setSelect2Data(product_gr_select2, optionProductGr, product_data);
     setImageData(product_data.product_image_path, '#image_product_update');
   }
 }
@@ -553,7 +573,7 @@ function loadProductByID(product_id){
     data: JSON.stringify(data),
     dataType: 'JSON',
     type: 'POST',
-    url: "../../../api/Controller/getProductByIDAll.php",
+    url: base_url+"api/Controller/getProductByIDAll.php",
     async: false,
     success:function(data){
       result = data;
@@ -575,7 +595,7 @@ function loadWebsiteByID(web_id){
     data: JSON.stringify(data),
     dataType: 'JSON',
     type: 'POST',
-    url: "../../../api/Controller/getWebsiteByID.php",
+    url: base_url+"api/Controller/getWebsiteByID.php",
     async: false,
     success:function(data){
       result = data;

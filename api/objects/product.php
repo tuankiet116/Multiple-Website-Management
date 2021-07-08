@@ -13,6 +13,7 @@
         public $term;
         public $product_active;
         public $product_gr_id;
+        public $product_gr_name;
 
         public function __construct($db){
             $this->conn = $db;
@@ -36,8 +37,9 @@
             if($this->product_active !== null){
                 $queryWhere .= "AND product.product_active = ".$this->product_active;
             }
-            $query = "SELECT product.*, web_name FROM product
+            $query = "SELECT product.*, website_config.web_name, product_group.product_gr_name, product_group.product_gr_active FROM product
                     INNER JOIN website_config ON product.web_id = website_config.web_id ".$queryWhere."
+                    LEFT JOIN product_group ON product_group.product_gr_id = product.product_gr_id
                     WHERE product_name LIKE '%".$this->term."%' OR web_name LIKE '%".$this->term."%' 
                     OR product_description LIKE '%".$this->term."%'";
             $stmt = $this->conn->prepare($query);
@@ -77,9 +79,11 @@
         }
 
         function getByIDAll($get = true){ //Get Count And Get By ID With Activity
-            $query = "SELECT * FROM ".$this->table." WHERE product_id = :product_id";
+            $query = "SELECT product.*, product_group.product_gr_name FROM ".$this->table." INNER JOIN product_group 
+             ON product.product_gr_id = product_group.product_gr_id
+             WHERE product.product_id = :product_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':product_id', $this->product_id);
+            $stmt->bindParam(':product_id', $this->product_id, PDO::PARAM_INT);
             if($get === true){
                 if($stmt->execute()){
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -90,6 +94,8 @@
                     $this->product_price       = $row['product_price'];
                     $this->product_currency    = $row['product_currency'];
                     $this->web_id              = $row['web_id'];
+                    $this->product_gr_id       = $row['product_gr_id'];
+                    $this->product_gr_name     = $row['product_gr_name'];
                     return true;
                 }
                 else{
@@ -137,16 +143,18 @@
                                 product_image_path  =:product_image_path,
                                 product_price       =:product_price,
                                 product_currency    =:product_currency,
-                                web_id              =:web_id 
+                                web_id              =:web_id,
+                                product_gr_id       =:product_gr_id
                             WHERE product_id =:product_id";
                     $stmt = $this->conn->prepare($query);
-                    $stmt->bindParam(':product_id'         , $this->product_id);
+                    $stmt->bindParam(':product_id'         , $this->product_id, PDO::PARAM_INT);
                     $stmt->bindParam(':product_name'       , $this->product_name);
                     $stmt->bindParam(':product_description', $this->product_description);
                     $stmt->bindParam(':product_image_path' , $this->product_image_path);
                     $stmt->bindParam(':product_price'      , $this->product_price);
                     $stmt->bindParam(':product_currency'   , $this->product_currency);
-                    $stmt->bindParam(':web_id'             , $this->web_id);
+                    $stmt->bindParam(':web_id'             , $this->web_id, PDO::PARAM_INT);
+                    $stmt->bindParam(':product_gr_id'      , $this->product_gr_id, PDO::PARAM_INT);
                     if($stmt->execute() === true){
                         return true;
                     }

@@ -270,6 +270,7 @@
                     <th scope="col"><?= translate_text('Giá Cả')?></th>
                     <th scope="col"><?= translate_text('Tiền Tệ')?></th>
                     <th scope="col"><?= translate_text('Website')?></th>
+                    <th scope="col"><?= translate_text('Nhóm sản phẩm')?></th>
                     <th scope="col"><?= translate_text('Trạng Thái')?></th>
                     <th scope="col"><?= translate_text('Hành Động')?></th>
                 </tr>

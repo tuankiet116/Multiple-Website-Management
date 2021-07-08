@@ -41,6 +41,7 @@ $product->product_image_path  = $image_product;
 $product->product_price       = floatval($data->product_price);
 $product->product_currency    = htmlspecialchars(trim($data->product_currency));
 $product->web_id              = intVal($data->web_id);
+$product->product_gr_id       = intVal($data->product_gr_id);
 
 
 $count = $product -> getByIDAll(false);
