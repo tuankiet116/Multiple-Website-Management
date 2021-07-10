@@ -76,7 +76,7 @@ function getDataTable(){
                 <td><p class="web_description">${e.web_description}</p></td>
               `
               if(e.web_active ==1){
-                rs += `<td><button class="btn btn-basic btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
+                rs += `<td><button class="btn btn-success btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
               }
               else{
                 rs += `<td><button class="btn btn-danger btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đã Ẩn</button></td>`

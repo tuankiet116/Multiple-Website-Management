@@ -1,3 +1,4 @@
+<? require_once("inc_security.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,112 @@
     </div>
     <div class="container">
         <div class="wrapper-header">
+            <div class="pick_website_container">
+                <div class="title_pick_website title-pick">
+                    <i class="fas fa-caret-right"></i>
+                    <h4><?= translate_text('Nhóm Dịch Vụ theo trang web')?>: </h4>
+                </div>
+                <div class="box">
+                    <select class="pick_website_select">
+                    </select>
+                </div>
+            </div>
 
+            <div class="add-service-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal"  id="btn-add">
+                    <i class="fas fa-plus"></i>Thêm mới
+                </button>
+    
+                <div class="modal fade" id="addModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm Nhóm Dịch Vụ</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-addModal">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-container">
+                                    <form id="form" action="#">
+                                        <div class="form-group">
+                                            <label for="name-service-group"><?= translate_text('Tên Nhóm Sản Phẩm')?>:</label>
+                                            <input type="text" class="form-control" id="name-service-group" placeholder="Nhập Tên Nhóm Dịch Vụ" name="name-service-group" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description-service-group"><?= translate_text('Mô Tả')?>:</label>
+                                            <input type="text" class="form-control" id="description-service-group" placeholder="Nhập Mô tả" name="description-service-group" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="pick_website_container fiximg" style="width: 100%">
+                                                <div class="title_pick_website title-pick">
+                                                    <h4><?= translate_text('Chọn Trang Web')?>: </h4>
+                                                </div>
+                                                <div class="box" style="padding: 0">
+                                                    <select class="pick_website_select_add" style="width: 100%;">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" name="submit-add" id="submit-add">Thêm Mới</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="title">
+            <h3>Danh Sách Nhóm Dịch Vụ</h3>
+        </div>
+
+
+        <div class="list-service-group">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Tên</th>
+                        <th scope="col">Mô tả</th>
+                        <th scope="col">Website</th>
+                        <th scope="col">Trạng Thái</th>
+                        <th scope="col">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id ="data-service-group">
+                </tbody>
+            </table>
+
+
+            <div class="modal fade" id="updateModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Cập Nhật Nhóm Dịch Vụ</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-updateModal">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                <form id="form-update" action="#">
+                                    <div class="form-group">
+                                        <label for="name-product-group-update"><?= translate_text('Tên Nhóm Sản Phẩm')?>:</label>
+                                        <input type="text" class="form-control" id="name-service-group-update" placeholder="Nhập Tên Nhóm Dịch Vụ" name="name-service-group-update" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description-product-group-update"><?= translate_text('Mô Tả')?>:</label>
+                                        <textarea type="text" class="form-control" id="description-service-group-update" placeholder="Nhập Mô tả" name="description-service-group-update" autocomplete="off"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="submit-update" id="submit-update">Cập Nhật</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

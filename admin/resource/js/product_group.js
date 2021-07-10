@@ -98,7 +98,7 @@ function getProductGroup(web_id){
                       </tr>`;
           }
           $('.table > tbody').html(viewsData ?? mes).ready(function(){
-            tooltip();
+            tooltip('.product-gr-description');
             getProductGroupById();
             updateProductGroup();
             activeStatusProductGroup();
@@ -231,8 +231,8 @@ function activeStatusProductGroup(){
 }
 
 // func handle tooltip
-function tooltip(){
-  let description = $('.product-gr-description');
+function tooltip(element){
+  let description = $(element);
   $.each(description, function () { 
     if($(this).text().length > 40){
       var stringOriginal = $(this).text();

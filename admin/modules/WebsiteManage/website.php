@@ -85,7 +85,7 @@
             <div class="list-website-title">
                 <p>Danh Sách Website</p>
             </div>
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
