@@ -64,19 +64,19 @@ function getDataTable(){
     method: "POST",
     async: false,
     success: function (res){
-      var view = res.map((e)=>{
+      var view = res.map((e, index)=>{
         var checkIcon = checkdefault("data/web_icon/icon_default/default.png", e.web_icon);
         rs =``;
         rs += `<tr>`;
         rs += `
-                <td>${e.web_id}</td>
+                <td>${index + 1}</td>
                 <td><p class="web_name">${e.web_name}</p></td>
                 <td><p class="web_url">${e.web_url}</p></td>
                 <td><img src="${base_url}${checkIcon}" alt="icon" class="icon-website"></td>
                 <td><p class="web_description">${e.web_description}</p></td>
               `
               if(e.web_active ==1){
-                rs += `<td><button class="btn btn-basic btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
+                rs += `<td><button class="btn btn-success btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
               }
               else{
                 rs += `<td><button class="btn btn-danger btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đã Ẩn</button></td>`

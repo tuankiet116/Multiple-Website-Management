@@ -17,11 +17,9 @@ $db = $database->getConnection();
 
 // prepare website object
 $post = new Post($db);
-
 $data = json_decode(file_get_contents("php://input"));
 
 $post_image_background = array(htmlspecialchars(trim($data->post_image_background)));
-
 $UploadBase64 = new upload_image();
 
 $url_save = '../../data/image/post';

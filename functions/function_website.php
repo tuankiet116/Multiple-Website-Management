@@ -1,7 +1,7 @@
 <?
 /**
  * Hiện tên Trường
- * @param $school_id
+ * @param $school_id int
  */
 function showUserSchool($school_id){
     $sch_name = "not_found";

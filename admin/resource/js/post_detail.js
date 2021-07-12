@@ -1,6 +1,6 @@
 $(document).ready(function(){
     url = window.location.href;
-    debugger;
+    
     url_split = url.split("detail.php?record_id=")[1];
     post_id = url_split.split("&web_id=")[0];
     web_id = url_split.split("&web_id=")[1];

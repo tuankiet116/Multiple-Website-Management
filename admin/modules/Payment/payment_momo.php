@@ -19,6 +19,7 @@
     <script src="../../resource/select_nice/js/jquery.js"></script>
     <script src="../../resource/select_nice/js/jquery.nice-select.min.js" ></script>
     <script src="../../../plugins/select2/js/select2.min.js"></script>
+    <script language="javascript" src="../../resource/js/helper/function.js"></script>
     <script language="javascript" src="../../resource/js/payment_momo.js"></script>
 </head>
 <body>
@@ -49,8 +50,8 @@
             <label for="searching"><?= translate_text('Hình Thức Thanh Toán')?></label>
             <select id="payment-method" class="form-group">
                 <option value="#">All</option>
-                <option value="1">Momo</option>
-                <option value="0">Thanh Toán Sau Khi Nhận(COD)</option>
+                <option value="2">Momo</option>
+                <option value="1">Thanh Toán Sau Khi Nhận(COD)</option>
             </select>
         </div>
         <div class=" col-2">

@@ -49,6 +49,8 @@ if($num>0){
             "product_active"      => $row['product_active'],
             "web_name"            => $row['web_name'],
             "product_term"        => $data->term,
+            "product_gr_name"     => $row['product_gr_name'],
+            "product_gr_active"   => $row['product_gr_active']
         );
         array_push($product_arr, $product_array);   
     }
