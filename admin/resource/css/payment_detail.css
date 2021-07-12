@@ -1,0 +1,71 @@
+p{
+    font-size: 15px;
+}
+label{
+    font-size: 15px;
+}
+/* Loader Css  */
+.loader-container{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid hsl(204, 70%, 53%); /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    z-index: 200000;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.payment_info_title{
+    text-align: center;
+}
+
+/* CSS Alert Bootstrap */
+.alert-message{
+    position: fixed;
+    right: 50px;
+    width: 30%;
+    z-index: 10000;
+}
+
+p{
+    padding-left: 10px;
+    margin: 0 0 5px;
+}
+
+table{
+    margin: auto;
+    margin-top: 20px;
+}
+
+input{
+    border: 1.5px solid #ced4da;
+    border-radius: .25rem;
+}
+
+input:focus-visible{
+    outline: none;
+    border-color: rgb(16, 12, 226) !important;
+    border-radius: .25rem;
+    border-width: 2px;
+}
+
+small{
+    color: red;
+    margin-left: 10px
+}

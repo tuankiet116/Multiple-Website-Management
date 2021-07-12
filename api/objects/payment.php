@@ -1,5 +1,5 @@
 <?php
-    class Post{
+    class Payment{
         private $conn;
         private $table = 'payment';
 
@@ -10,6 +10,7 @@
         public $payment_method;
         public $web_id;
         public $payment_active;
+        public $web_name;
 
         public function __construct($db){
             $this->conn = $db;
@@ -25,7 +26,7 @@
                 $count = $stmt->rowCount();
                 if($count===0){
                     $query = "INSERT INTO ".$this->table."(payment_partner_code, payment_access_key, payment_secret_key,
-                                payment_method, web_id, payment_active) 
+                                payment_method, web_id) 
                                 VALUES(:payment_partner_code, :payment_access_key, :payment_secret_key,
                                 :payment_method, :web_id)";
                     $stmt = $this->conn->prepare($query);
@@ -58,18 +59,20 @@
         public function update(){
             $message = "";
             //check if payment method is available 
-            $query_check_payment = "SELECT payment_method From payment WHERE payment_id = :payment";
+            $query_check_payment = "SELECT payment_method From payment WHERE payment_id = :payment_id";
             $stmt = $this->conn->prepare($query_check_payment);
             $stmt->bindParam(':payment_id', $this->payment_id);
             if($stmt->execute() === true){
                 if($stmt->rowCount() === 1){
-                    $query = "Update payment SET payment_partner_code = :payment_partner_code, payment_access_key = :payment_access_key, 
-                                                payment_secret_key = :payment_secret_key
-                                WHERE payment_id = :payment_id";
+                    $query = "Update payment 
+                              SET payment_partner_code = :payment_partner_code, payment_access_key = :payment_access_key, 
+                                  payment_secret_key = :payment_secret_key
+                              WHERE payment_id = :payment_id";
                     $stmt = $this->conn->prepare($query);
                     $stmt->bindParam(':payment_partner_code', $this->payment_partner_code);
                     $stmt->bindParam(':payment_access_key'  , $this->payment_access_key);
                     $stmt->bindParam(':payment_secret_key'  , $this->payment_secret_key);
+                    $stmt->bindParam(':payment_id'          , $this->payment_id);
                     if($stmt->execute()===true){
                         return true;
                     }
@@ -79,7 +82,7 @@
                     }
                 }
                 else{
-                    $message = "Your payment method's not accepted or something got trouble in your system";
+                    $message = "Your payment method's not accepted or not exists";
                     return $message;
                 }
             }
@@ -109,24 +112,24 @@
             }
 
             if($this->payment_active !== null){
-                $query_payment = "WHERE payment.payment_active = ".$this->payment_active;
+                $query_payment = " WHERE payment.payment_active = ".$this->payment_active;
             }
 
             if($this->payment_method !== null){
-                $query_payment = "WHERE payment.payment_method = ".$this->payment_method;
+                $query_payment = " WHERE payment.payment_method = ".$this->payment_method;
             }
 
             if($this->payment_method !== null && $this->payment_active !== null){
-                $query_payment = "WHERE payment.payment_active = ".$this->payment_active.
+                $query_payment = " WHERE payment.payment_active = ".$this->payment_active.
                                     " AND payment.payment_method = ".$this->payment_method;
             }
 
             $query = "SELECT payment.payment_id , payment.payment_partner_code , payment.payment_access_key, payment.payment_secret_key, 
-                             payment.payment_active, payment.payment_method website_config.web_name, website_config.web_id
+                             payment.payment_active, payment.payment_method, website_config.web_name, website_config.web_id
                       FROM payment
                       INNER JOIN website_config ON website_config.web_id = payment.web_id ".$query_website.
                         $query_payment.
-                     "ORDER BY payment.payment_id DESC";
+                     " ORDER BY payment.payment_id DESC ";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
@@ -134,7 +137,11 @@
         }
 
         public function getPaymentByID($getData = true){
-            $query = 'SELECT * FROM payment WHERE payment_id = :payment_id';
+            $query = 'SELECT payment.*, website_config.web_name 
+                      FROM payment
+                      INNER JOIN website_config ON website_config.web_id = payment.web_id 
+                      WHERE payment_id = :payment_id';
+
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':payment_id', $this->payment_id);
             $stmt->execute();
@@ -147,13 +154,7 @@
                 $this->payment_method       = $row['payment_method'];
                 $this->web_id               = $row['web_id'];
                 $this->payment_active       = $row['payment_active'];
-
-                // $query = 'SELECT * FROM post_detail WHERE ptd_id = :ptd_id';
-                // $stmt = $this->conn->prepare($query);
-                // $stmt->bindParam(':ptd_id', $this->ptd_id);
-                // $stmt->execute();
-                // $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                // $this->content = $row['ptd_text'];
+                $this->web_name             = $row['web_name'];
             }
             else{
                 return $stmt->rowCount();
