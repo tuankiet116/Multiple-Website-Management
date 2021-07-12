@@ -190,6 +190,7 @@
     color: rgb(120, 120, 120);
     transition: .3s;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 #menu ul#navbar li .sub-navbar table tr td a div:hover{
@@ -389,6 +390,7 @@
 
 .modal-body .modal-account {
     margin-bottom: 20px;
+    position: relative;
 }
 
 .modal-body .modal-account label {
@@ -431,6 +433,11 @@
     font-size: 20px;
     background-color: #4ca246;
     color: white;
+}
+
+.modal-body .modal-account .modal-alert-position {
+    position: absolute; 
+    bottom: -22px;
 }
 
 .modal-body .modal-submit button{

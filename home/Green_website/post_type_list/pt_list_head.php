@@ -29,6 +29,8 @@
     <script src="../resource/js/slideshow/main.js"></script>
     <script src="../resource/js/myjs.js"></script>
     <!-- Base url -->
-    <?php $base_url = "http://localhost:8093/" ?>
+    <?php 
+        require_once('../helper/config_baseurl.php');
+    ?>
     <!-- Web icon -->
     <link href="<?php echo $base_url . $web_icon ?>" rel="icon" type="image/gif">

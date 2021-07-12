@@ -74,18 +74,26 @@ $pageLink = "";
 
     <!--------------- SLIDESHOW --------------->
 
-    <div class="content">
-        <div class="container-fluid">
-            <div class="main-slide">
-                <?php
-                foreach ($url_slide as $key => $url) { ?>
-                    <div class="main-slide-img">
-                        <img src="<?php echo $base_url . $url ?>" alt="Slideshow image">
+    <?php
+        if ($arr_con['con_background_homepage'] != "" || $arr_con['con_background_homepage'] != null) {
+            echo'
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="main-slide">';
+                            foreach ($url_slide as $key => $url) {
+                                echo'
+                                    <div class="main-slide-img">
+                                        <img src="' . $base_url . $url . '" alt="Slideshow image">
+                                    </div>';
+                            }
+            echo'       </div>
                     </div>
-                <?php } ?>
-            </div>
-        </div>
-    </div>
+                </div>';
+        }
+        else if ($arr_con['con_background_homepage'] == "" || $arr_con['con_background_homepage'] == null) {
+            echo '';
+        }
+    ?>
 
     <!--------------- CONTENT --------------->
 
@@ -287,11 +295,16 @@ $pageLink = "";
             <?php } ?>
 
             <?php
-            $banner = get_data_row("SELECT * FROM configuration WHERE con_banner_active = 1 AND web_id = $web_id");
-            echo '
-                    <div id="contact">
-                        <img src="' . $base_url . $banner['con_banner_image'] . '" alt="contact image">
-                    </div>';
+                $banner = get_data_row("SELECT * FROM configuration WHERE web_id = $web_id");
+                if ($banner['con_banner_active'] == 1) {
+                    echo'
+                        <div id="contact">
+                            <img src="' . $base_url . $banner['con_banner_image'] . '" alt="contact image">
+                        </div>';
+                }
+                else {
+                    echo '';
+                }
             ?>
 
             <div class="container">

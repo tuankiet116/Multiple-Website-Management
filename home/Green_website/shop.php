@@ -31,6 +31,10 @@ $start_from = ($page - 1) * $per_page_record;
 
 $arr_shop = get_data_rows("SELECT * FROM product WHERE web_id = $web_id LIMIT $start_from, $per_page_record");
 
+/********** CONTACT **********/
+
+$arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
+
 /********** PAGINATION **********/
 
 $sql = "SELECT * FROM product";
@@ -51,7 +55,7 @@ $pageLink = "";
 <html>
 
 <head>
-    <title> Báo giá sản phẩm </title>
+    <title> Sản phẩm </title>
     <? include("./includes/inc_head.php"); ?>
 </head>
 
@@ -62,168 +66,253 @@ $pageLink = "";
 
     <!--------------- CONTENT --------------->
 
-    <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id"); ?>
-    <div id="shop">
-        <div id="shop-container">
-            <div class="container-fluid">
-                <div class="breadcrumb">
-                    <a href="index.php" target="_self">
-                        Trang chủ
-                    </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-lg-1 order-md-2 order-sm-2 order-2">
+                <div class="news-left">
+                    <div class="news-left-title">
+                        <a href="" target="_self">
+                            Chuyên mục khác
+                        </a>
+                    </div>
 
-                    <span class="navigation-pipe">
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-                    <a href="shop.php" target="_self">Báo giá sản phẩm</a>
-                </div>
-                <div class="shop-title">
-                    <?php
-                    if (!isset($_GET['gid'])) {
-                        echo 'Báo giá s?n ph?m';
-                    } else if (isset($_GET['gid'])) {
-                        echo $get_gr_shop['product_gr_name'];
-                    }
-                    ?>
-                </div>
+                    <div class="news-left-content">
+                        <ul class="list-post">
+                            <?php
+                            $other_cate = get_data_rows("SELECT * FROM categories_multi_parent WHERE cmp_parent_id IS NOT NULL AND cmp_active = 1 AND web_id = $web_id");
+                            foreach ($other_cate as $key => $oc) {
+                                $oc_id = $oc['cmp_id'];
+                                $oc_p = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_id LIMIT 1");
 
-                <div class="row">
-                    <?php
-                    if (!isset($_GET['gid'])) {
-                        foreach ($arr_shop as $key => $shop) {
-                            if ($shop['product_active'] == 1) {
-                                echo '
-                                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="shop-content">
-                                            <div class="shop-image">
-                                                <a href="#" target="_self">
-                                                    <img src="' . $base_url . $shop['product_image_path'] . '" alt="shop image">
-                            
-                                                    <div class="shop-detail">
-                                                        <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
-                                                            <div> Chi tiết </div>
-                                                        </a>
-                                                    </div>
-                                                    
+                                $oc_cmp_id = $oc['cmp_id'];
+                                $oc_pt_id = $oc['post_type_id'];
+                                $oc_pt = explode(",", $oc_pt_id);
+                                $count_oc_pt = count($oc_pt);
+                                if ($count_oc_pt == 1) {
+                                    foreach ($oc_p as $key => $op) {
+
+                                        $changeUrlId = 'id=' . $oc['post_type_id'];
+
+                                        echo '
+                                            <li>
+                                                <a href="../post_list/post_list.php?' . $changeUrlId . '" target="_self">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                    ' . $oc['cmp_name'] . '
                                                 </a>
+                                            </li>
+                                ';
+                                    }
+                                } else if ($count_oc_pt > 1) {
+                                    if ($oc_pt_id != "" || $oc_pt_id != null) {
+                                        $topic_post = get_data_rows("SELECT * FROM post WHERE cmp_id = $oc_cmp_id AND post_active = 1 AND post_type_id IN ($oc_pt_id)");
+                                        $mod_rewrite = $arr_con['con_mod_rewrite'];
+                                        if ($mod_rewrite == 1) {
+                                            if ($oc['cmp_rewrite_name'] != "" || $oc['cmp_rewrite_name'] != null) {
+                                                $changeUrlName = 'name=' . $oc['cmp_rewrite_name'];
+                                            } else if ($oc['cmp_rewrite_name'] == "" || $oc['cmp_rewrite_name'] == null) {
+                                                $changeUrlName = 'cid=' . $oc['cmp_id'];
+                                            }
+                                        } else {
+                                            $changeUrlName = 'cid=' . $oc['cmp_id'];
+                                        }
 
-                                                <div class="new-sticker"> New </div>
-                                            </div>
-
-                                            <div class="shop-name">
-                                                <a href="items.php?id=' . $shop['product_id'] . '" target="_self">
-                                                    ' . $shop['product_name'] . '
+                                        echo '
+                                            <li>
+                                                <a href="../post_type_list/post_type_list.php?' . $changeUrlName . '" target="_self">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                    ' . $oc['cmp_name'] . '
                                                 </a>
-                                            </div>
-
-                                            <div class="shop-des">
-                                                <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $shop['product_price'] . ' </span>
-                                                <span> ' . $shop['product_currency'] . '</span>
-                                            </div>
-                                        </div>
-                                    </div>';
-                            } else {
-                                echo '';
+                                            </li>
+                                        ';
+                                    } else if ($oc_pt_id == "" || $oc_pt_id == null) {
+                                        echo '
+                                            <li>
+                                                <a href="error.php" target="_self">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                    ' . $oc['cmp_name'] . '
+                                                </a>
+                                            </li>
+                                        ';
+                                    }
+                                } else if ($count_oc_pt == 0) {
+                                    echo '
+                                        <li>
+                                            <a href="error.php" target="_self">
+                                                <i class="fas fa-chevron-right"></i>
+                                                ' . $oc['cmp_name'] . '
+                                            </a>
+                                        </li>
+                                    ';
+                                }
                             }
-                        }
-                    } else if (isset($_GET['gid'])) {
-                        foreach ($arr_gr_shop as $key => $gr_shop) {
-                            if ($gr_shop['product_active'] == 1) {
-                                echo '
-                                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                        <div class="shop-content">
-                                            <div class="shop-image">
-                                                <a href="#" target="_self">
-                                                    <img src="' . $base_url . $gr_shop['product_image_path'] . '" alt="shop image">
-                            
-                                                    <div class="shop-detail">
-                                                        <a href="items.php?id=' . $gr_shop['product_id'] . '" target="_self">
-                                                            <div> Chi tiết </div>
-                                                        </a>
-                                                    </div>
-                                                    
-                                                </a>
-
-                                                <div class="new-sticker"> New </div>
-                                            </div>
-
-                                            <div class="shop-name">
-                                                <a href="items.php?id=' . $gr_shop['product_id'] . '" target="_self">
-                                                    ' . $gr_shop['product_name'] . '
-                                                </a>
-                                            </div>
-
-                                            <div class="shop-des">
-                                                <span class="price-numbers" style="font-size: 17px; font-weight: bold"> ' . $gr_shop['product_price'] . ' </span>
-                                                <span> ' . $gr_shop['product_currency'] . '</span>
-                                            </div>
-                                        </div>
-                                    </div>';
-                            } else {
-                                echo '';
-                            }
-                        }
-                    }
-                    ?>
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div id="pagination">
                 <?php
-                echo "
-                    <div id='pag-btn'>
-                        <a href='shop.php?page=" . ($page - 1) . "'> 
-                            <button type='button' id='prev-btn'> 
-                                <i class='fas fa-chevron-left'></i>
-                            </button>
-                        </a>
+                foreach ($arr_contact as $key => $contact) {
+                    if ($contact['con_banner_active'] == 1) {
+                        echo '
+                                <div class="news-left">
+                                    <div class="news-left-title">
+                                        <a href="#" target="_self">
+                                            Hỗ trợ trực tuyến
+                                        </a>
+                                    </div>
 
-                        <div id='prev-disable'></div>
-                    </div>";
+                                    <div class="news-left-content">
+                                        <div class="hotline-title">Trực tuyến</div>
 
-                for ($i = 1; $i <= $total_pages; $i++) {
-                    if ($i == $page) {
-                        $pageLink .= "<a class='pages-number active' href='shop.php?page="
-                            . $i . "'>" . $i . " </a>";
-                    } else {
-                        $pageLink .= "<a class='pages-number' href='shop.php?page=" . $i . "'>   
-                                        " . $i . " </a>";
+                                        <div class="hotline-logo">
+                                            <img src="' . $base_url . 'data/image/post/hotline3.png" alt="hotline">
+                                        </div>
+              
+                                        <div class="hotline-contact">
+                                            <a href="tel:' . $contact['con_hotline'] . '" target="_self">
+                                                <i class="fas fa-phone-alt"></i>
+                                                ' . $contact['con_hotline'] . '
+                                            </a>
+                                        </div>
+                                
+                                        <div class="hotline-contact">
+                                            <a href="#" target="_self">
+                                                <i class="far fa-envelope"></i>
+                                                ' . $contact['con_admin_email'] . '
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="hotline-social-media">
+                                            <table>
+                                                <tr>      
+                                                    <td>
+                                                        <a href="' . $contact['con_link_fb'] . '" target="_self">
+                                                            <i class="fab fa-facebook-square fb"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="' . $contact['con_link_twitter'] . '" target="_self">
+                                                            <i class="fab fa-twitter-square tw"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="' . $contact['con_link_insta'] . '" target="_self">
+                                                            <i class="fab fa-instagram-square ins"></i>
+                                                        </a>
+                                                    </td>                                    
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div class="hotline-support">
+                                            <div class="hotline-title"> Hỗ trợ </div>
+
+                                            <div class="hotline-contact">
+                                                <a href="tel:' . $contact['con_hotline_hotro_kythuat'] . '" target="_self" style="font-size: 22px">
+                                                    <i class="fas fa-mobile-alt"></i>
+                                                    ' . $contact['con_hotline_hotro_kythuat'] . '
+                                                </a>
+                                            </div>
+
+                                            <div class="hotline-contact">
+                                                <a href="#" target="_self">
+                                                    <i class="far fa-envelope"></i>
+                                                    ' . $contact['con_admin_email'] . '
+                                                </a>
+                                            </div>        
+                                        </div>
+                                    </div>
+                                </div>
+                            ';
                     }
-                };
-                echo $pageLink;
-
-                echo "
-                    <div id='pag-btn'>
-                        <a href='shop.php?page=" . ($page + 1) . "'> 
-                            <button type='button' id='next-btn'>
-                                <i class='fas fa-chevron-right'></i>
-                            </button>
-                        </a>
-
-                        <div id='next-disable'></div>
-                    </div>";
-
-                if ($page == 1) {
-                    echo "
-                        <script type='text/javascript'>
-                            var prev_disable = document.getElementById('prev-disable');
-                            prev_disable.style.display = 'block';
-
-                            var prev_button = document.getElementById('prev-btn');
-                            prev_button.style.display = 'none';
-                        </script>";
-                }
-
-                if ($page == $total_pages) {
-                    echo "
-                        <script type='text/javascript'>
-                            var next_disable = document.getElementById('next-disable');
-                            next_disable.style.display = 'block';
-
-                            var next_button = document.getElementById('next-btn');
-                            next_button.style.display = 'none';
-                        </script>";
                 }
                 ?>
+            </div>
+
+            <?php $bread_topic = get_data_rows("SELECT * FROM categories_multi_parent WHERE web_id = $web_id ") ?>
+            <div class="news-right col-lg-9 order-lg-2 order-md-1 order-sm-1 order-1">
+                <div class="news-right-container">
+                    <div class="breadcrumb">
+                        <a href="../index.php" target="_self"> Trang chủ </a>
+
+                        <span class="navigation-pipe">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+
+                        <a href="../index.php" target="_self"> Sản phẩm </a>
+                    </div>
+
+                    <div class="news-right-content">
+                        <div class="shop-title">
+                            <?php
+                            if (!isset($_GET['gid'])) {
+                                echo 'Báo giá sản phẩm';
+                            } else if (isset($_GET['gid'])) {
+                                echo $get_gr_shop['product_gr_name'];
+                            }
+                            ?>
+                        </div>
+
+                        <div id="shop-container">
+                            <div class="row">
+                                <div class="shop-content col-lg-3">
+                                    <div class="shop-items">
+                                        <div class="shop-items-image">
+
+                                        </div>
+
+                                        <div class="shop-items-name">
+                                            <div class="shop-items-box">
+                                                <a href="" target="_self" class="shop-items-title"> Cây lan </a>
+                                            </div>
+
+                                            <p class="shop-items-price"> 300.000đ </p>
+
+                                            <div class="shop-items-add-box">
+                                                <button class="shop-items-add">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Thêm giỏ hàng
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="shop-content col-lg-3">
+                                    <div class="shop-items">
+
+                                    </div>
+                                </div>
+
+                                <div class="shop-content col-lg-3">
+                                    <div class="shop-items">
+
+                                    </div>
+                                </div>
+
+                                <div class="shop-content col-lg-3">
+                                    <div class="shop-items">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-footer">
+                        <h5>Mời liên hệ:</h5>
+                        <?php
+                        foreach ($arr_contact as $key => $call) {
+                            if ($call['con_active_contact'] == 1) {
+                                echo '
+                                    <p> Địa chỉ: ' . $call['con_address'] . '</p>
+                                    <p> Hotline: ' . $call['con_hotline'] . '</p>
+                                ';
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

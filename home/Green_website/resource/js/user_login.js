@@ -11,17 +11,30 @@ $(document).ready(function () {
     $.ajax({
       method: "POST",
       data: JSON.stringify(data),
-      async: false,
+      async: true,
       dataType: "JSON",
       url: url,
       success: function (data) {
-        console.log(data);
+        loginSuccess(data);
       },                    
       error: function (data) {
-        console.log(data);
+        loginError(data);
       },
     });
     //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
     return false;
   });
 });
+
+function loginSuccess(data){
+  if(data.code == 200){
+    showAlert('success', data.message);
+  }
+  else{
+    showAlert('warning', data.message);
+  }
+}
+
+function loginError(data){
+  showAlert('error', '<strong>ERROR: </strong>' + data.message||data.statusText );
+}

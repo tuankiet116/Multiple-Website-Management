@@ -269,16 +269,26 @@ $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id
                         <p class="news-right-content-title"> <?php echo $get_post['post_title'] ?> </p>
 
                         <?php
-                        echo '<div class="news-right-main">
-                                        ' . $get_post_detail['ptd_text'] . '
-                                        </div>';
+                            echo'   
+                                <div class="news-right-main">
+                                    ' . $get_post_detail['ptd_text'] . '
+                                </div>';
 
-                        echo '<script type="text/javascript">
-                                        $(document).ready(function(){
-                                            var srcImg = $(".news-right-main img").attr("src");
-                                            $(".news-right-main img").attr("src", "' . $base_url . '" + srcImg);
-                                            });
-                                        </script>';
+                            echo '   
+                                <script type="text/javascript">
+                                    $(document).ready(function(){
+                                        $(".news-right-main p img").addClass(function(i) {
+                                            return "img_" + (i + 1)
+                                        })
+
+                                        var imgLength = $(".news-right-main p img").length;
+                                        for(var ig = 1; ig <= imgLength; ig++) {
+                                            var srcImg = $(".news-right-main p img.img_" + ig).attr("src");
+                                            $(".news-right-main p img.img_" + ig).attr("src", "' . $base_url . '" + srcImg);
+                                        }
+                                    });
+                                </script>
+                            ';
                         ?>
                     </div>
 

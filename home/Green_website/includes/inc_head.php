@@ -31,7 +31,11 @@
     <script src="./resource/js/slideshow/main.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="./resource/js/myjs.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script language="javascript" src="./resource/js/userSignUp.js"></script>
     <!-- Base url -->
-    <?php $base_url = "http://localhost:8093/" ?>
+    <?php
+    require_once('./helper/config_baseurl.php');
+    ?>
     <!-- Web icon -->
     <link href="<?php echo $base_url . $web_icon ?>" rel="icon" type="image/gif">
