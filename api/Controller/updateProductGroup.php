@@ -36,8 +36,15 @@ if(isset($data)
         http_response_code(200);
         echo json_encode([
             "message" => $message,
-            "code"    => 500
+            "code"    => 403
         ]);
     }
+}
+else{
+    http_response_code(200);
+    echo json_encode([
+        "message"  => "Data Invalid!",
+        "code"     => 403
+    ]);
 }
 ?>

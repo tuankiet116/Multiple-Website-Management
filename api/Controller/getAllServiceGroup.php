@@ -24,7 +24,8 @@ if($res->rowCount()> 0){
             "service_gr_name"           => $row['service_gr_name'],
             "service_gr_description"    => $row['service_gr_description'],
             "service_gr_active"         => $row['service_gr_active'],
-            "web_name"                  => $row['web_name']
+            "web_name"                  => $row['web_name'],
+            "web_id"                    => $row['web_id']
         ]);
     }
 
