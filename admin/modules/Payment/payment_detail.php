@@ -59,15 +59,15 @@ require_once("inc_security.php")
                     </tr>
                     <tr>
                         <td style="text-align: right;"><label for="payment_partner_code"><?= translate_text('Partner Code:') ?></label></td>
-                        <td><input style="margin-left: 10px;" type="text" require id="payment_partner_code"><small></small></td>
+                        <td><input autocomplete="off" style="margin-left: 10px;" type="text" require id="payment_partner_code"><small></small></td>
                     </tr>
                     <tr>
                         <td style="text-align: right;"><label for="payment_access_key"><?= translate_text('Access Key: ') ?></label></td>
-                        <td><input style="margin-left: 10px;" type="text" require id="payment_access_key"><small></small></td>
+                        <td><input autocomplete="off" style="margin-left: 10px;" type="text" require id="payment_access_key"><small></small></td>
                     </tr>
                     <tr>
                         <td style="text-align: right;"><label for="payment_secret_key"><?= translate_text('Secret Key: ') ?></label></td>
-                        <td><input style="margin-left: 10px;" type="text" require id="payment_secret_key"><small></small></td>
+                        <td><input autocomplete="off" style="margin-left: 10px;" type="text" require id="payment_secret_key"><small></small></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="btn_action" style="justify-content: center; ">
