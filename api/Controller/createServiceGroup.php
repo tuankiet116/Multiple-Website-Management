@@ -19,8 +19,6 @@ if(isset($data)){
     $service_group->service_gr_name         = htmlspecialchars(trim($data->service_gr_name));
     $service_group->service_gr_description  = htmlspecialchars(trim($data->service_gr_description));
 
-
-
     if($data->service_gr_name == null || $data->service_gr_name == "" || $data->web_id == null || $data->web_id =""){
         http_response_code(200);
         echo json_encode([
