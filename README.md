@@ -3,5 +3,5 @@ This web application allow you can create your own website with our themes and u
 Every website can manage by admin and domain name
 
 Need:
-      PHP 7.0 +
+      PHP 7.3 +
       MySQL
