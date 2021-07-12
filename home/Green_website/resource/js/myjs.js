@@ -274,3 +274,5 @@ $(document).ready(function () {
     e.preventDefault();
   });
 });
+
+base_url = "http://www.webmultiple.com:8080/";

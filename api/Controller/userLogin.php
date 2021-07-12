@@ -21,15 +21,11 @@ $stmt = $user->login();
 
 if($stmt === true){
     http_response_code(200);
-    echo json_encode([
+    echo json_encode(array(
         "message" => "login success",
         "code" => 200
-    ]);
+    ));
 }
 else{
-    http_response_code(200);
-    echo json_encode([
-        "message"  => $stmt,
-        "code"  => 501
-    ]);
+    echo json_encode($stmt);
 }

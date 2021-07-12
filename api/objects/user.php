@@ -17,21 +17,24 @@
         function login() 
         {
             $message = "";
-            $query = "SELECT user_name, user_password FROM user_tb WHERE user_name = :user_name AND user_password = :user_password";
+            $password = md5($this->user_password);
+            $query = "SELECT * FROM user_tb WHERE user_name = :user_name AND user_password = :user_password";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':user_name', $this->user_name);
-            $stmt->bindParam(':user_password', md5($this->user_password));
+            $stmt->bindParam(':user_password', $password);
            
             if ($stmt->execute() === true) {
                 if($stmt->rowCount() === 1){
                     return true;
                 }
                 else{
-                    $message = "Cannot login!";
+                    $message = array('message' => "Error account or password",
+                                     'code'    => 3);
                 }
             }
             else{
-                $message = "Something has wrong!?";
+                $message = array('message' => "Server's got error while loging in",
+                                     'code'    => 4);
             }
             return $message;
         }

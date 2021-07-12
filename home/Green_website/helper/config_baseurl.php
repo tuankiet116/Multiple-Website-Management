@@ -1,3 +1,3 @@
 <?php 
-    $base_url = "http://localhost:8093/";
+    $base_url = "http://www.webmultiple.com:8080/";
 ?>
