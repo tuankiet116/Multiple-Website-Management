@@ -96,7 +96,7 @@
                                 <div class="modal-account">
                                     <label> Email </label>
                                     <div class="modal-account-content">
-                                        <input class="signup-email" type="email" name="account_signup" placeholder="Nhập email">
+                                        <input class="signup-email" type="email" name="email_signup" placeholder="Nhập email">
                                         <i class="fas fa-envelope"></i>
                                     </div>
                                     <div id="modal-account-email"></div>
@@ -105,7 +105,7 @@
                                 <div class="modal-account">
                                     <label> Số điện thoại </label>
                                     <div class="modal-account-content">
-                                        <input class="signup-phone" type="number" name="password_signup" placeholder="Nhập số điện thoại">
+                                        <input class="signup-phone" type="number" name="phone_signup" placeholder="Nhập số điện thoại">
                                         <i class="fas fa-phone-alt"></i>
                                     </div>
                                     <div id="modal-account-phone"></div>
@@ -114,7 +114,7 @@
                                 <div class="modal-account">
                                     <label> Địa chỉ </label>
                                     <div class="modal-account-content">
-                                        <input class="signup-address" type="text" name="password_signup_again" placeholder="Nhập địa chỉ">
+                                        <input class="signup-address" type="text" name="address_signup" placeholder="Nhập địa chỉ">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </div>
                                     <div id="modal-account-address"></div>

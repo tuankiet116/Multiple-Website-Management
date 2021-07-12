@@ -31,6 +31,10 @@ $start_from = ($page - 1) * $per_page_record;
 
 $arr_shop = get_data_rows("SELECT * FROM product WHERE web_id = $web_id LIMIT $start_from, $per_page_record");
 
+$arr_product_gr = get_data_rows("SELECT * FROM product_group WHERE product_gr_active = 1");
+
+$arr_product = get_data_rows("SELECT * FROM product WHERE web_id = $web_id AND product_active = 1 LIMIT 12");
+
 /********** CONTACT **********/
 
 $arr_contact = get_data_rows("SELECT * FROM configuration WHERE web_id = $web_id");
@@ -253,12 +257,29 @@ $pageLink = "";
                             ?>
                         </div>
 
-                        <div id="shop-container">
+                        <?php
+                             
+                        ?>
+                        <div class="shop-container">
+                            <div class="shop-container-title">
+                                <a href="" target="_self">
+                                    Cây nhập khẩu
+                                </a>
+                            </div>
+
                             <div class="row">
                                 <div class="shop-content col-lg-3">
                                     <div class="shop-items">
                                         <div class="shop-items-image">
-
+                                            <div class="shop-items-fade">
+                                                <div class="shop-items-fade-margin">
+                                                    <a href="" target="_self">
+                                                        <button class="shop-items-detail">
+                                                            Chi tiết
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="shop-items-name">
@@ -280,19 +301,94 @@ $pageLink = "";
 
                                 <div class="shop-content col-lg-3">
                                     <div class="shop-items">
+                                        <div class="shop-items-image">
+                                            <div class="shop-items-fade">
+                                                <div class="shop-items-fade-margin">
+                                                    <a href="" target="_self">
+                                                        <button class="shop-items-detail">
+                                                            Chi tiết
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div class="shop-items-name">
+                                            <div class="shop-items-box">
+                                                <a href="" target="_self" class="shop-items-title"> Cây lan </a>
+                                            </div>
+
+                                            <p class="shop-items-price"> 300.000đ </p>
+
+                                            <div class="shop-items-add-box">
+                                                <button class="shop-items-add">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Thêm giỏ hàng
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="shop-content col-lg-3">
                                     <div class="shop-items">
+                                        <div class="shop-items-image">
+                                            <div class="shop-items-fade">
+                                                <div class="shop-items-fade-margin">
+                                                    <a href="" target="_self">
+                                                        <button class="shop-items-detail">
+                                                            Chi tiết
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div class="shop-items-name">
+                                            <div class="shop-items-box">
+                                                <a href="" target="_self" class="shop-items-title"> Cây lan </a>
+                                            </div>
+
+                                            <p class="shop-items-price"> 300.000đ </p>
+
+                                            <div class="shop-items-add-box">
+                                                <button class="shop-items-add">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Thêm giỏ hàng
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="shop-content col-lg-3">
                                     <div class="shop-items">
+                                        <div class="shop-items-image">
+                                            <div class="shop-items-fade">
+                                                <div class="shop-items-fade-margin">
+                                                    <a href="" target="_self">
+                                                        <button class="shop-items-detail">
+                                                            Chi tiết
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div class="shop-items-name">
+                                            <div class="shop-items-box">
+                                                <a href="" target="_self" class="shop-items-title"> Cây lan </a>
+                                            </div>
+
+                                            <p class="shop-items-price"> 300.000đ </p>
+
+                                            <div class="shop-items-add-box">
+                                                <button class="shop-items-add">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Thêm giỏ hàng
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
