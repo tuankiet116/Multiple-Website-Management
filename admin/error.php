@@ -6,8 +6,8 @@
 </head>
 <body>
 	<center>
-		<h2>Bạn không có quyền thực thi!</h2>
-		<h5>Vui lòng liên hệ username admin!</h5>
+		<h2>Phiên Đăng Nhập Hết Hạn Hoặc Bạn Không Có Quyền Thực Thi!</h2>
+		<h5>Vui Lòng Đăng Nhập Lại Hoặc Liên Hệ Quản Trị! <a target="_parent" href="../admin/login.php">Đăng Nhập Lại?</a></h5>
 	</center>
 </body>
 </html>
