@@ -258,7 +258,7 @@ $pageLink = "";
                         </div>
 
                         <?php
-                             
+                            foreach ($arr_product_gr as $key)
                         ?>
                         <div class="shop-container">
                             <div class="shop-container-title">
