@@ -182,7 +182,7 @@ $web_top_icon = $get_web_icon['con_logo_top'];
 
                                     echo '
                                     <li>
-                                        <a href="news.php?' . $changeUrlName . '" target="_self">
+                                        <a href="../../news.php?' . $changeUrlName . '" target="_self">
                                             <span>' . $topic_parents['cmp_name'] . '</span>
                                         </a>
                                     </li>
@@ -329,7 +329,7 @@ $web_top_icon = $get_web_icon['con_logo_top'];
             </li>
         </ul>
 
-        <a id="user" target="_self" data-toggle="modal" data-target="#userModal">
+        <a id="user" target="_self" data-toggle="modal" data-target="#userModal" style="cursor: pointer">
             <i class="fas fa-user"></i>
         </a>
 

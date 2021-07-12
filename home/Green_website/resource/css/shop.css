@@ -10,28 +10,104 @@ body {
     padding-top: 30px;
 }
 
-#shop #shop-container {
-    border: 1px solid rgb(220, 220, 220);
-    background-color: white;
-    width: 86%;
-    height: auto;
-    margin: 0 auto;
-}
-
-#shop #shop-container .container-fluid .shop-title {
+.container .row .news-right .news-right-container .news-right-content .shop-title {
     color: rgb(30, 30, 30);
     font-size: 25px;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
     padding: 5px 15px 4px 0;
-    margin-left: 15px;
+    margin-left: 0;
     margin-bottom: 50px;
     width: auto;
     border-bottom: 3px solid #ff9900;
     display: inline-block;
 }
 
-#shop #shop-container .container-fluid .row {
+#shop-container {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+}
+
+#shop-container .shop-content {
+    height: 250px;
+}
+
+#shop-container .shop-content .shop-items {
+    border: 1px solid rgb(220, 220, 220);
+    width: 100%;
+    height: 100%;
+}
+
+#shop-container .shop-content .shop-items .shop-items-image {
+    height: 70%;
+    overflow: hidden;
+    transition: .3s;
+}
+
+#shop-container .shop-content .shop-items .shop-items-image image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name {
+    border-top: 1px solid rgb(220, 220, 220);
+    height: 30%;
+    width: 100%;
+    position: relative;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-box {
+    overflow: hidden;
+    height: 27%;
+    text-align: center;
+    margin-top: 3px;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-title {
+    color: rgb(90, 90, 90);
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-price {
+    color: #4ca246;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#shop-container .shop-content .shop-items .shop-items-add-box {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border: 1px solid red;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-add-box .shop-items-add {
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    background-color: #4ca246;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    transition: .3s;
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-add-box .shop-items-add:hover {
+    
+}
+
+#shop-container .shop-content .shop-items .shop-items-name .shop-items-add-box .shop-items-add i {
+    margin-right: 3px;
+}
+
+/* #shop #shop-container .container-fluid .row {
     width: 100%;
     margin-left: 0px;
 }
@@ -138,7 +214,7 @@ body {
     text-transform: uppercase;
     padding: 5px 15px;
     background-color: #ff9900;
-}
+} */
 
 
 

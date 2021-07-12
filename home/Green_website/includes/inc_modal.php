@@ -67,25 +67,28 @@
                                 <div class="modal-account">
                                     <label> Tài khoản </label>
                                     <div class="modal-account-content">
-                                        <input type="text" name="account_signup" placeholder="Nhập tài khoản">
+                                        <input class="signup-account" type="text" name="account_signup" placeholder="Nhập tài khoản">
                                         <i class="fas fa-user"></i>
                                     </div>
+                                    <div id="modal-account-name"></div>
                                 </div>
 
                                 <div class="modal-account">
                                     <label> Mật khẩu </label>
                                     <div class="modal-account-content">
-                                        <input type="password" name="password_signup" placeholder="Nhập mật khẩu">
+                                        <input class="signup-password" type="password" name="password_signup" placeholder="Nhập mật khẩu">
                                         <i class="fas fa-unlock"></i>
                                     </div>
+                                    <div id="modal-account-password"></div>
                                 </div>
 
                                 <div class="modal-account">
                                     <label> Nhập lại mật khẩu </label>
                                     <div class="modal-account-content">
-                                        <input type="password" name="password_signup_again" placeholder="Nhập lại mật khẩu">
+                                        <input class="signup-password-again" type="password" name="password_signup_again" placeholder="Nhập lại mật khẩu">
                                         <i class="fas fa-lock"></i>
                                     </div>
+                                    <div id="modal-account-password-main"></div>
                                 </div>
                             </div>
 
@@ -93,32 +96,35 @@
                                 <div class="modal-account">
                                     <label> Email </label>
                                     <div class="modal-account-content">
-                                        <input type="email" name="account_signup" placeholder="Nhập email">
+                                        <input class="signup-email" type="email" name="account_signup" placeholder="Nhập email">
                                         <i class="fas fa-envelope"></i>
                                     </div>
+                                    <div id="modal-account-email"></div>
                                 </div>
 
                                 <div class="modal-account">
                                     <label> Số điện thoại </label>
                                     <div class="modal-account-content">
-                                        <input type="number" name="password_signup" placeholder="Nhập số điện thoại">
+                                        <input class="signup-phone" type="number" name="password_signup" placeholder="Nhập số điện thoại">
                                         <i class="fas fa-phone-alt"></i>
                                     </div>
+                                    <div id="modal-account-phone"></div>
                                 </div>
 
                                 <div class="modal-account">
                                     <label> Địa chỉ </label>
                                     <div class="modal-account-content">
-                                        <input type="text" name="password_signup_again" placeholder="Nhập địa chỉ">
+                                        <input class="signup-address" type="text" name="password_signup_again" placeholder="Nhập địa chỉ">
                                         <i class="fas fa-map-marked-alt"></i>
                                     </div>
+                                    <div id="modal-account-address"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-submit">
-                        <button type="submit" name="signup">
+                        <button class="signup-submit" type="submit" name="signup">
                             <i class="fas fa-user-plus"></i>
                             Đăng ký
                         </button>

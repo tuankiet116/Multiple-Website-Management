@@ -3,8 +3,8 @@
         <?php
         if ($get_web_icon['con_map'] != "" || $get_web_icon['con_map'] != null) {
             echo '
-                            <div id="footer-map"> ' . $get_web_icon['con_map'] . ' </div>
-                        ';
+                <div id="footer-map"> ' . $get_web_icon['con_map'] . ' </div>
+            ';
         } else {
             echo '';
         }

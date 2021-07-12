@@ -44,6 +44,13 @@ $(document).ready(function () {
     // $(".modal-login").removeClass("modal-effect");
     // $(".modal-login").addClass("modal-login-effect");
     $("#close-login").click();
+    $(".modal-account-content input").val("");
+    $("#modal-account-phone").remove();
+    $("#modal-account-name small").remove();
+    $("#modal-account-password small").remove();
+    $("#modal-account-password-main small").remove();
+    $("#modal-account-email small").remove();
+    $("#modal-account-address small").remove();
   });
 
   $("#userModal").click(function () {
