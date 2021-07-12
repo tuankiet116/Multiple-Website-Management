@@ -6,7 +6,7 @@ $(document).ready(function () {
       'user_password'      : $(".user-pass").val(),
     };
 
-    var url = "../../../api/Controller/userLogin.php";
+    var url = base_url + "api/Controller/userLogin.php";
 
     $.ajax({
       method: "POST",
@@ -21,17 +21,21 @@ $(document).ready(function () {
         loginError(data);
       },
     });
-    //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
     return false;
   });
 });
 
 function loginSuccess(data){
   if(data.code == 200){
-    showAlert('success', data.message);
+    showAlert('success', 'Đăng Nhập Thành Công');
   }
   else{
-    showAlert('warning', data.message);
+    if(data.code == 3){
+      showAlert('warning', 'Sai Tên Đăng Nhập Hoặc Mật Khẩu');
+    }
+    else if(data.code == 4){
+      showAlert('warning', 'Hệ Thống Đang Gặp Lỗi!');
+    }
   }
 }
 

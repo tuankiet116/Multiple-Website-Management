@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  var base_url = "http://localhost:8093/";
-
   $(".signup-submit").click(function (e) {
     e.preventDefault();
     var data = {

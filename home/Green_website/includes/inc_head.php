@@ -33,6 +33,7 @@
     <script src="./resource/js/myjs.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script language="javascript" src="./resource/js/userSignUp.js"></script>
+    <script language="javascript" src="./resource/js/user_login.js" ></script>
     <!-- Base url -->
     <?php
     require_once('./helper/config_baseurl.php');
