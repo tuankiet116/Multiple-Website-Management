@@ -1,11 +1,13 @@
 var base_url = '../../../';
+var web_id   = null;
+var sv_gr_id = null;
 $(document).ready(function () {
   pickWebsiteSelect(".pick_website_select");
   pickWebsiteSelect(".pick_website_select_add");
     
   $('.pick_website_select').change(function () { 
     let web_id = $('.pick_website_select').select2('data')[0].id;
-    console.log(web_id);
+    // console.log(web_id);
     getServiceGroup(web_id, true);
   });
   getServiceGroup();
@@ -32,7 +34,9 @@ function getServiceGroup(web_id = null, checkWebId = false){
     success: function (res) {
       if(res.code == 200){
         var viewData = res?.result.map(function(item, index){
-          let status = item.service_gr_active == 1? `<button class="btn btn-success btn-show-hide">Đã Hiện Thị</button>` :`<button class="btn btn-danger btn-show-hide">Đã Ẩn</button>`; 
+          let status = item.service_gr_active == 1 ? 
+          `<button class="btn btn-success btn-show-hide" sv_gr_id="${item.service_gr_id}" web_id="${item.web_id}" sv_gr_active=${item.service_gr_active}>Đã Hiện Thị</button>` :
+          `<button class="btn btn-danger btn-show-hide" sv_gr_id="${item.service_gr_id}" web_id="${item.web_id}" sv_gr_active=${item.service_gr_active}>Đã Ẩn</button>`; 
           return `
               <tr>
                 <td scope="row">${index + 1}</td>
@@ -40,7 +44,7 @@ function getServiceGroup(web_id = null, checkWebId = false){
                 <td class="service-gr-description">${item.service_gr_description}</td>
                 <td>${item.web_name}</td>
                 <td>${status}</td>
-                <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal" sv_id="${item.service_gr_id}">Chi tiết</button></td>
+                <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#updateModal" sv_gr_id="${item.service_gr_id}" web_id="${item.web_id}">Chi tiết</button></td>
               </tr>
           `;
         })
@@ -52,6 +56,9 @@ function getServiceGroup(web_id = null, checkWebId = false){
       }
       $('.table > tbody').html(viewData ?? mes).ready(function(){
           tooltip('.service-gr-description', 30);
+          activeStatus();
+          getServiceGroupById();
+          updateServiceGroup();
       })
     },
     error: function(res){
@@ -89,11 +96,115 @@ function createServiceGroup(){
       },
       error: function(res){
         console.log(res.responseText);
+        $('.loader-container').css('display', 'none');
       }
     });
     return false;
   })
 }
+
+// func active status
+function activeStatus(){
+  $('.btn-show-hide').click(function(){
+    let data={
+      "web_id":            $(this).attr('web_id'),
+      "service_gr_active": $(this).attr('sv_gr_active') == 1 ? "0" : "1",
+      "service_gr_id":     $(this).attr('sv_gr_id')
+    }
+    $('.loader-container').css('display', 'flex');
+
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/activeServiceGroup.php",
+      data: JSON.stringify(data),
+      async: false,
+      dataType: "JSON",
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res.code == 200){
+          showAlert('success', `<p>${res?.message}</p>`);
+          $('.pick_website_select').empty();
+        }else{
+          showAlert('success', `<p>${res?.message}</p>`);
+        }
+      },
+      error: function(res){
+        $('.loader-container').css('display', 'none');
+        console.log(res.responseText);
+      }
+    });
+    getServiceGroup();
+    
+  })
+}
+
+//func get service group bu Id
+function getServiceGroupById(){
+  $('.btn-edit').click(function(){
+    sv_gr_id = $(this).attr('sv_gr_id');
+    web_id =   $(this).attr('web_id');
+    let data = {
+      "service_gr_id": $(this).attr('sv_gr_id')
+    }
+    console.log(data);
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/getServiceGroupById.php",
+      data: JSON.stringify(data),
+      dataType: "JSON",
+      success: function (res) {
+        if(res.code ==200){
+          $('#name-service-group-update').val(res.result.service_gr_name);
+          $('#description-service-group-update').val(res.result.service_gr_description);
+        }
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+        }
+      },
+      error: function(res){
+        console.log(res.responseText);
+      }
+    });
+    
+  });
+}
+
+// func update service group
+function updateServiceGroup(){
+  $('#submit-update').click(function(){
+    let data ={
+      "web_id" :                web_id,
+      "service_gr_id":          sv_gr_id,
+      "service_gr_name":        $('#name-service-group-update').val(),
+      "service_gr_description": $('#description-service-group-update').val()
+    }
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/updateServiceGroup.php",
+      data: JSON.stringify(data),
+      dataType: "JSON",
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res.code == 200){
+          showAlert('success', `<p>${res?.message}</p>`);
+          $('#close-updateModal').click();
+          $('.pick_website_select').empty();
+          getServiceGroup();
+        }
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+        }
+      },
+      error: function(res){
+        $('.loader-container').css('display', 'none');
+        console.log(res.responseText);
+      }
+    });
+    return false;
+  });
+}
+
 // pick website select2
 function pickWebsiteSelect(element){
   $(element).select2({

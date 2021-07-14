@@ -38,7 +38,7 @@ button.btn-edit{ width: 50px; padding: 1px 0px; font-size: 12px; color: white; b
 button.btn-edit:focus{color: white;}
 button.btn-edit:hover{color: white;}
 .form-container > form#form-update > button{width: 100%;}
-#close-addModal{outline: none;}
+#close-addModal, #close-updateModal{outline: none;}
 
 
 /* loading */

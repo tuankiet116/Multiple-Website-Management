@@ -47,7 +47,7 @@ if($image_product === false){
                             "code"    => 500));
 }
 else{
-    if($data->product_name == "" || $data->product_name == null || $data->web_id == "" || $data->web_id == null){
+    if($data->product_name == "" || $data->product_name == null || $data->web_id == "" || $data->web_id == null || $data->product_gr_id == null || $data->product_gr_id == ""){
         http_response_code(200);
             echo json_encode(array("message" => "Data Invalid", "code" => 500));
     }
