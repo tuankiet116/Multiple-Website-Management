@@ -1,10 +1,7 @@
 <?php
-    require_once '../../vendor/autoload.php';
     require_once '../config/database.php';
     require_once '../objects/admin.php';
-    // require_once("../../admin/session.php");
-    use Tymon\JWTAuth\JWT;
-    // $jwt = new JWT();
+
     session_start();
     if(!isset($_SESSION['userlogin']) || !isset($_SESSION['password'])){
         //set response code - 200 OK

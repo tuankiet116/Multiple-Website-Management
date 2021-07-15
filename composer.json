@@ -1,5 +1,5 @@
 {
     "require": {
-        "tymon/jwt-auth": "^1.0"
+        "firebase/php-jwt": "^5.4"
     }
 }
