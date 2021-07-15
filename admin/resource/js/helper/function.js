@@ -57,3 +57,10 @@ function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', asyn
   });
 }
 
+function setSelect2Data(id ,data_select = "", data){
+  $(id)
+      .empty()
+      .append(data_select);
+
+  $(id).trigger('change');
+}

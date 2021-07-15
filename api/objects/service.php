@@ -17,9 +17,10 @@
 
         public function createService(){
             $message ="";
-            $query = "SELECT * FROM ".$this->table." WHERE service_gr_id = :service_gr_id";
+            $query = "SELECT * FROM ".$this->table." WHERE service_gr_id = :service_gr_id AND service_name = :service_name";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":service_gr_id", $this->service_gr_id, PDO::PARAM_INT);
+            $stmt->bindParam(":service_name",  $this->service_name,);
             
             if($stmt->execute() === true){
                 if($stmt->rowCount() === 0){
@@ -73,7 +74,7 @@
             $message ='';
             $query = "UPDATE ".$this->table." SET
                       service_active = :service_active WHERE
-                      service_id     = :service_id
+                      service_id     = :service_id AND
                       service_gr_id  = :service_gr_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":service_active", $this->service_active, PDO::PARAM_INT);
@@ -85,7 +86,68 @@
                 return $message;
             }
             else{
-                $message="failure";
+                $message = "failure";
+                return $message;
+            }
+        }
+
+        public function getServiceById(){
+            $query = "SELECT * FROM ".$this->table." WHERE service_id = :service_id AND service_gr_id = :service_gr_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":service_id",    $this->service_id, PDO::PARAM_INT);
+            $stmt->bindParam(":service_gr_id", $this->service_gr_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
+        }
+
+        public function updateService(){
+            $message ="";
+            $total = 0;
+            $arrDuplicate =[];
+            $query = "SELECT * FROM ".$this->table." WHERE service_gr_id = :service_gr_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":service_gr_id", $this->service_gr_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if($stmt->rowCount() > 0){
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    array_push($arrDuplicate, $row);
+                }
+            }
+            else{
+                $message = 'Something Has Wrong!!';
+                return $message;
+            }
+
+            foreach($arrDuplicate as $item){
+                if($item['service_name'] == $this->service_name || $item['service_id'] == $this->service_id){
+                    $total += 1;
+                }
+            }
+
+            if($total == 1){
+                $query = "UPDATE ".$this->table." SET
+                          service_name = :service_name,
+                          service_description = :service_description,
+                          service_content = :service_content WHERE
+                          service_id = :service_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(":service_name",        $this->service_name);
+                $stmt->bindParam(":service_description", $this->service_description);
+                $stmt->bindParam(":service_content",     $this->service_content);
+                $stmt->bindParam(":service_id",          $this->service_id, PDO::PARAM_INT);
+
+                if($stmt->execute()){
+                    $message = true;
+                    return $message;
+                }
+                else{
+                    $message = "Cannot Update Service!!";
+                    return $message;
+                }
+            }
+            else{
+                $message = "Service Existed!!";
                 return $message;
             }
         }

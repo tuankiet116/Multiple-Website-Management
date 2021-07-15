@@ -19,7 +19,7 @@ if($data->service_gr_id != null || $data->service_gr_id !=""){
     $service->service_gr_id = intval($data->service_gr_id);
 }
 if($data->service_active != null || $data->service_active !=""){
-    $service->service_active = intval($data->service_active);
+    $service->service_active = intval(boolval($data->service_active));
 }
 $res = $service->getAllService();
 if($res->rowCount() > 0){

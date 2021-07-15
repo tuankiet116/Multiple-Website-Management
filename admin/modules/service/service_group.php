@@ -70,7 +70,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="description-service-group"><?= translate_text('Mô Tả')?>:</label>
-                                            <input type="text" class="form-control" id="description-service-group" placeholder="Nhập Mô tả" name="description-service-group" autocomplete="off">
+                                            <textarea type="text" class="form-control" id="description-service-group" placeholder="Nhập Mô tả" name="description-service-group" autocomplete="off"></textarea>
                                         </div>
                                         <div class="form-group">
                                             <div class="pick_website_container fiximg" style="width: 100%">

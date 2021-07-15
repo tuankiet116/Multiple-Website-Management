@@ -1,5 +1,6 @@
 var base_url ='../../../';
-
+var service_gr_id_update = null;
+var service_id_update = null
 $(document).ready(function () {
     pickWebsiteSelect('.pick_website_select');
 
@@ -12,10 +13,6 @@ $(document).ready(function () {
     pickServiceGroupSelect('.pick_service_gr_select');
     $('#service-status').niceSelect();
 
-    // $('.pick_website_select.add').change(function(){
-    //   console.log($('.pick_website_select.add').select2('data')[0].id)
-    // })
-
     //creat service
     createService();
 
@@ -26,6 +23,47 @@ $(document).ready(function () {
     searchService();
 
 });
+
+function getService(data){
+  $.ajax({
+    type: "POST",
+    url: base_url+"api/Controller/getAllService.php",
+    data: JSON.stringify(data),
+    async: false,
+    dataType: "JSON",
+    success: function (res) {
+      if(res.code == 200){
+        var viewData = res?.result.map(function(item, index){
+          let status = item.service_active == 1 ? 
+          `<button class="btn btn-success btn-status" sv_active="${item.service_active}" sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Đã Hiện</button>` :
+          `<button class="btn btn-danger btn-status" sv_active="${item.service_active}"  sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Đã Ẩn</button>`
+
+          return `
+            <tr>
+              <th scope="row">${index + 1}</th>
+              <td>${item.service_name}</td>
+              <td class="service-description">${item.service_description}</td>
+              <td>${item.service_gr_name}</td>
+              <td>${status}</td>
+              <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update" sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Chi Tiết</button></td>
+            </tr>`
+        })
+
+      }
+      else{
+        var mes = `<tr style="background-color: white;">
+                        <td colspan="6"><p style="color:red; text-align: center">${res?.message}</p></td>
+                   </tr>`; 
+      }
+      $('.table > tbody').html(viewData ?? mes).ready(function(){
+        activeStatus();
+        getServiceById();
+        tooltip('.service-description', 30);
+        updateService();
+      })
+    }
+  });
+}
 
 function createService(){
   $('#btn-submit-add').click(function(){
@@ -42,13 +80,18 @@ function createService(){
       method: "POST",
       url: base_url+"api/Controller/createService.php",
       data: JSON.stringify(data),
+      async: false,
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
         if(res.code == 200){
           showAlert('success', `<p>${res.message}</p>`);
           $('#form')[0].reset();
+          $('.pick_service_gr_select.add').empty();
+          $('.pick_service_gr_select.add').attr('disabled','true');
+          $('.pick_website_select.add').empty();
           $('#close-form-add').click();
+
         }
         else{
           showAlert('error', `<p>${res?.message}</p>`);
@@ -59,45 +102,76 @@ function createService(){
         console.log(res.responseText);
       }
     });
+    getService({term: "", service_gr_id: null, service_active: null});
   });
 
 }
 
-function getService(data){
-  $.ajax({
-    type: "POST",
-    url: base_url+"api/Controller/getAllService.php",
-    data: JSON.stringify(data),
-    dataType: "JSON",
-    success: function (res) {
-      if(res.code == 200){
-        var viewData = res?.result.map(function(item, index){
-          let status = item.service_active == 1 ? 
-          `<button class="btn btn-success btn-status" sv_active="${item.service_active}">Đã Hiện</button>` :
-          `<button class="btn btn-danger btn-status" sv_active="${item.service_active}">Đã Ẩn</button>`
-
-          return `
-            <tr>
-              <th scope="row">${index + 1}</th>
-              <td>${item.service_name}</td>
-              <td>${item.service_description}</td>
-              <td>${item.service_gr_name}</td>
-              <td>${status}</td>
-              <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update" sv_id="${item.service_id}">Chi Tiết</button></td>
-            </tr>`
-        })
-
-      }
-      else{
-        var mes = `<tr style="background-color: white;">
-                        <td colspan="6"><p style="color:red; text-align: center">${res?.message}</p></td>
-                   </tr>`; 
-      }
-      $('.table > tbody').html(viewData ?? mes).ready(function(){
-
-      })
+function getServiceById(){
+  $('.btn-edit').click(function(){
+    let data = {
+        "service_id": $(this).attr('sv_id'),
+        "service_gr_id": $(this).attr('sv_gr_id')
     }
-  });
+    service_gr_id_update = $(this).attr('sv_gr_id');
+    service_id_update    = $(this).attr('sv_id')
+    $.ajax({
+      type: "POST",
+      url: base_url+"api/Controller/getServiceById.php",
+      data: JSON.stringify(data),
+      async: false,
+      dataType: "JSON",
+      success: function (res) {
+        if(res.code == 200){
+          $('#service_name_update').val(res.result.service_name);
+          $('#service_description_update').val(res.result.service_description);
+          CKEDITOR.instances.content_service_update.setData(res.result.service_content);
+        }
+        else {
+          console.log(res?.message);
+        }
+      },
+      error: function(res){
+        console.log(res.responseText);
+      }
+    });
+  })
+}
+
+function updateService(){
+  $('#btn-submit-update').click(function(){
+    let data = {
+      "service_name":        $('#service_name_update').val(),
+      "service_description": $('#service_description_update').val(),
+      "service_content":     CKEDITOR.instances.content_service_update.getData(),
+      "service_gr_id":       service_gr_id_update,
+      "service_id":          service_id_update,   
+    }
+    // console.log(data);
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+      type: "POST",
+      url: base_url+"api/Controller/updateService.php",
+      data: JSON.stringify(data),
+      async: false,
+      dataType: "JSON",
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res.code == 200){
+          showAlert('success', `<p>${res.message}</p>`);
+          $('#close-form-update').click();
+        }
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+        }
+      },
+      error: function(res){
+        $('.loader-container').css('display', 'none');
+        console.log(res.responseText);
+      }
+    });
+    getService({term: "", service_gr_id: null, service_active: null});
+  })
 }
 
 function searchService(){
@@ -117,6 +191,40 @@ function searchService(){
     $('.pick_website_select.search').empty();
     $('.pick_service_gr_select.search').attr('disabled', 'true');
 
+  })
+}
+
+function activeStatus(){
+  $('.btn-status').click(function(){
+    let data ={
+      "service_id":     $(this).attr('sv_id'),
+      "service_gr_id":  $(this).attr('sv_gr_id'),
+      "service_active": $(this).attr('sv_active') == "1" ? "0" : "1"
+    }
+    console.log(data)
+    $('.loader-container').css('display', 'flex');
+
+    $.ajax({
+      type: "POST",
+      url: base_url+"api/Controller/activeService.php",
+      data: JSON.stringify(data),
+      async:false,
+      dataType: "JSON",
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res.code == 200){
+          showAlert('success', `<p>${res.message}</p>`);
+        }
+        else{
+          showAlert('success', `<p>${res.message}</p>`);
+        }
+      },
+      error: function(){
+        $('.loader-container').css('display', 'none');
+        console.log(res.responseText);
+      }
+    });
+    getService({term: "", service_gr_id: null, service_active: null});
   })
 }
 

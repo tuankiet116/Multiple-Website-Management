@@ -191,7 +191,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cập Nhật Dịch Vụ</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-form-update">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -212,7 +212,7 @@
                                         <h4><?= translate_text('trang web')?></h4>
                                     </div>
                                     <div class="box update">
-                                        <select class="pick_website_select update">
+                                        <select class="pick_website_select update" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -230,7 +230,7 @@
 
                             <div class="content-service">
                                 <div class="content-service-edit">
-                                    <textarea name="content-service-update" id="content_service_update"></textarea>
+                                    <textarea name="content_service_update" id="content_service_update"></textarea>
                                 </div>
                             </div>
 

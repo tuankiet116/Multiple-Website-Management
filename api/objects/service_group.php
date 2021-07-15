@@ -150,7 +150,7 @@
                 }
             }
             else{
-                $message = "Service Group Name Duplicate!!";
+                $message = "Service Group Existed!!";
                 return $message;
             }
         }
