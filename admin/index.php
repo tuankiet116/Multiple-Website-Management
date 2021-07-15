@@ -4,7 +4,7 @@ session_start();
 require_once("../functions/translate.php");
 require_once("../functions/functions.php");
 require_once("../classes/database.php");
-
+//phpinfo();
 $loginpath	= "login.php";
 if (!isset($_SESSION["logged"])){
 	redirect($loginpath);
