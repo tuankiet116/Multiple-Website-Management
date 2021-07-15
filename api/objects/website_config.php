@@ -15,6 +15,7 @@ class Website_Config{
     public $web_description;
     public $term;
     public $result;
+    public $domain_status;
   
     //constructor with $db as database connection
     public function __construct($db){
@@ -39,7 +40,11 @@ class Website_Config{
     }
 
     function getWebsiteByID(){
-        $query = "SELECT * FROM " .$this->table_name. " WHERE web_id =:web_id ";
+        $query = "SELECT website_config.*, GROUP_CONCAT(domain.domain_name) as list_domain, GROUP_CONCAT(CAST(domain.domain_active as INT)) as list_domain_status
+                    FROM website_config 
+                    LEFT JOIN domain On domain.web_id = website_config.web_id  
+                    WHERE website_config.web_id = :web_id 
+                    GROUP BY website_config.web_id";
         
         //prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -51,10 +56,11 @@ class Website_Config{
         if($count>0){
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->web_name        = $row['web_name'];
-            $this->web_url         = $row['web_url'];
+            $this->web_url         = $row['list_domain'];
             $this->web_active      = $row['web_active'];
             $this->web_icon        = $row['web_icon'];
             $this->web_description = $row['web_description'];
+            $this->domain_status   = $row['list_domain_status'];
             return true;
         }
         return false;
@@ -62,7 +68,7 @@ class Website_Config{
 
     function getAllWebSite(){
         $query = " SELECT website_config.*, GROUP_CONCAT(domain.domain_name) as domain_name_list FROM website_config 
-                        INNER JOIN domain On FIND_IN_SET(domain.web_id, website_config.web_id ) 
+                        LEFT JOIN domain On FIND_IN_SET(domain.web_id, website_config.web_id ) 
                         GROUP BY website_config.web_id ";
         $stmt = $this->conn->prepare($query);
         $stmt -> execute();

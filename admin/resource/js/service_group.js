@@ -82,6 +82,7 @@ function createServiceGroup(){
       method: "POST",
       url: base_url+"api/Controller/createServiceGroup.php",
       data: JSON.stringify(data),
+      async: false,
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
@@ -99,6 +100,7 @@ function createServiceGroup(){
         $('.loader-container').css('display', 'none');
       }
     });
+    getServiceGroup();
     return false;
   })
 }
