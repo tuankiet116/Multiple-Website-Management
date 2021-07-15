@@ -13,6 +13,7 @@ class userToken
     private $conn;
 
     public $user_id;
+    public $token;
 
     public function __construct()
     {
@@ -85,7 +86,15 @@ class userToken
     }
 
     public function validation()
-    {
-
+    {   
+        $now = new DateTimeImmutable();
+        $token = JWT::decode($this->token, $this->secretKey, ['HS512']);
+        if ($token->iss !== $this->serverName ||
+            $token->nbf > $now->getTimestamp() ||
+            $token->exp < $now->getTimestamp())
+        {
+            return false;
+        }
+        return true;
     }
 }

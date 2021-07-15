@@ -22,9 +22,9 @@ if($result->rowCount() > 0){
             "web_id"          => $row['web_id'],
             "web_name"        => $row['web_name'],
             "web_active"      => $row['web_active'],
-            "web_url"         => $row['web_url'],
             "web_icon"        => $row['web_icon'],
-            "web_description" => $row['web_description']
+            "web_description" => $row['web_description'],
+            "domain_name_list"=> $row['domain_name_list']
         );
         array_push($website_arr, $arr_push);
     }

@@ -71,7 +71,7 @@ function getDataTable(){
         rs += `
                 <td>${index + 1}</td>
                 <td><p class="web_name">${e.web_name}</p></td>
-                <td><p class="web_url">${e.web_url}</p></td>
+                <td><p class="web_url">${e.domain_name_list}</p></td>
                 <td><img src="${base_url}${checkIcon}" alt="icon" class="icon-website"></td>
                 <td><p class="web_description">${e.web_description}</p></td>
               `

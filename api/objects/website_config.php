@@ -61,7 +61,9 @@ class Website_Config{
     }
 
     function getAllWebSite(){
-        $query = "SELECT * FROM ".$this->table_name;
+        $query = " SELECT website_config.*, GROUP_CONCAT(domain.domain_name) as domain_name_list FROM website_config 
+                        INNER JOIN domain On FIND_IN_SET(domain.web_id, website_config.web_id ) 
+                        GROUP BY website_config.web_id ";
         $stmt = $this->conn->prepare($query);
         $stmt -> execute();
         return $stmt;
