@@ -1,4 +1,5 @@
 var base_url ='../../../';
+
 $(document).ready(function () {
     pickWebsiteSelect('.pick_website_select');
 
@@ -14,8 +15,110 @@ $(document).ready(function () {
     // $('.pick_website_select.add').change(function(){
     //   console.log($('.pick_website_select.add').select2('data')[0].id)
     // })
+
+    //creat service
+    createService();
+
+    // load service
+    getService({term: "", service_gr_id: null, service_active: null});
+
+    //search service
+    searchService();
+
 });
 
+function createService(){
+  $('#btn-submit-add').click(function(){
+    let data = {
+      "service_name":         $('#service_name').val(),
+      "service_description":  $('#service_description').val(),
+      "service_content":      CKEDITOR.instances.content_service_add.getData(),
+      "service_gr_id":        $('.pick_service_gr_select.add').select2('val')
+    }
+
+    $('.loader-container').css('display', 'flex');
+    
+    $.ajax({
+      method: "POST",
+      url: base_url+"api/Controller/createService.php",
+      data: JSON.stringify(data),
+      dataType: "JSON",
+      success: function (res) {
+        $('.loader-container').css('display', 'none');
+        if(res.code == 200){
+          showAlert('success', `<p>${res.message}</p>`);
+          $('#form')[0].reset();
+          $('#close-form-add').click();
+        }
+        else{
+          showAlert('error', `<p>${res?.message}</p>`);
+        }
+      },
+      error: function(res){
+        $('.loader-container').css('display', 'none');
+        console.log(res.responseText);
+      }
+    });
+  });
+
+}
+
+function getService(data){
+  $.ajax({
+    type: "POST",
+    url: base_url+"api/Controller/getAllService.php",
+    data: JSON.stringify(data),
+    dataType: "JSON",
+    success: function (res) {
+      if(res.code == 200){
+        var viewData = res?.result.map(function(item, index){
+          let status = item.service_active == 1 ? 
+          `<button class="btn btn-success btn-status" sv_active="${item.service_active}">Đã Hiện</button>` :
+          `<button class="btn btn-danger btn-status" sv_active="${item.service_active}">Đã Ẩn</button>`
+
+          return `
+            <tr>
+              <th scope="row">${index + 1}</th>
+              <td>${item.service_name}</td>
+              <td>${item.service_description}</td>
+              <td>${item.service_gr_name}</td>
+              <td>${status}</td>
+              <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update" sv_id="${item.service_id}">Chi Tiết</button></td>
+            </tr>`
+        })
+
+      }
+      else{
+        var mes = `<tr style="background-color: white;">
+                        <td colspan="6"><p style="color:red; text-align: center">${res?.message}</p></td>
+                   </tr>`; 
+      }
+      $('.table > tbody').html(viewData ?? mes).ready(function(){
+
+      })
+    }
+  });
+}
+
+function searchService(){
+  $('#btn-search').click(function(){
+    let data = {
+      "term": $('#text-search').val().trim(),
+      "service_gr_id":  $('.pick_service_gr_select.search').select2('val'),
+      "service_active": $('#service-status').val() == '1' || $('#service-status').val() == '0'?  $('#service-status').val() : null
+    }
+    getService(data);
+  });
+
+  $('#btn-clear').click(function(){
+    $('#text-search').val("");
+    $('.pick_service_gr_select.search').empty();
+    $('#service-status').val("#").niceSelect('update');
+    $('.pick_website_select.search').empty();
+    $('.pick_service_gr_select.search').attr('disabled', 'true');
+
+  })
+}
 
 function pickWebsiteSelect(element){
     $(element).select2({
