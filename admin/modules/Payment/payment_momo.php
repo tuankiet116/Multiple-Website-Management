@@ -66,6 +66,12 @@
             <button id="search_button" class="btn btn-primary" type="button"><?= translate_text('Tìm Kiếm')?></button>
             <button id="clear_button" class="btn btn-danger" type="button"><?= translate_text('Xóa')?></button>
         </div>
+        <div class="btn-add">
+            <button class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                <p>Thêm mới</p>
+            </button>
+        </div>
     </div>
     <hr>
     <div class="show-payment-container container-fluid">

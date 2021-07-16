@@ -225,7 +225,7 @@ function productSuccess(data){
         else{
           status = '<button style = "width: 100px;" id="product_hide_'+ value.product_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
         }
-        statusProductGr = value.product_gr_active == 1 ? `<span style="color: green; font-size: 10px; text-decoration: underline">Đã Hiện</span>`:`<span style="color: red; font-size: 10px; text-decoration: underline">Đã Ẩn</span>`
+        statusProductGr = value.product_gr_active == 0 ? `<span class="badge badge-danger">Đã Ẩn</span>`:``
         action = `<button style = "margin-left: 10px; width: 60px;" 
                           web_id = `+value.web_id+` 
                           id = "info_product_`+ value.product_id +`"
@@ -260,7 +260,7 @@ function productSuccess(data){
         web_id = $(this).attr('web_id');
         product_id = $(this).attr('id').split('_')[2];
         loadModal(product_id, web_id, '.website_select_update', '.product_group_select_update');
-        activeSelect2PrductGroup(".product_group_select_update",".website_select_update");
+        activeSelect2PrductGroup(".product_group_select_update", web_id);
         
         $('#modal-update').unbind().click(function(){
           data = {
@@ -482,9 +482,9 @@ function websiteSelect2(element, parent = null){
   
 }
 
-function activeSelect2PrductGroup(productGroupElement, websiteElement){
+function activeSelect2PrductGroup(productGroupElement, web_id){
 
-  web_id = $(websiteElement).select2('data')[0].id;
+  // let web_id = $(websiteElement).select2('val');
   // console.log(web_id);
   $(productGroupElement).select2({
     ajax: { 
@@ -504,11 +504,11 @@ function activeSelect2PrductGroup(productGroupElement, websiteElement){
             "web_id": web_id
           } 
         }
-        console.log(JSON.stringify(obj));
+        // console.log(JSON.stringify(obj));
         return JSON.stringify(obj);
       },
       processResults: function (data, params) {
-        console.log(data);
+        // console.log(data);
         if(data.code == 404){
           return;
         }

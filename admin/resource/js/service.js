@@ -21,7 +21,6 @@ $(document).ready(function () {
 
     //search service
     searchService();
-
 });
 
 function getService(data){
