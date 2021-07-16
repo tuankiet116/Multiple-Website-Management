@@ -107,6 +107,7 @@
 
         public function getAll(){
             $query_website = "";
+            $query_payment = "";
             if($this->web_id != null && $this ->web_id != 0){
                 $query_website = " AND website_config.web_id = ".$this->web_id;
             }

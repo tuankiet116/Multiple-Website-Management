@@ -15,9 +15,11 @@ $db = $database->getConnection();
 $payment = new Payment($db);
 $data = json_decode(file_get_contents("php://input"));
 
-$payment->web_id         = $data->web_id;
-$payment->payment_method = $data->payment_method;
-$payment->payment_active = $data->payment_active;
+if($data !== null){
+    $payment->web_id         = $data->web_id;
+    $payment->payment_method = $data->payment_method;
+    $payment->payment_active = $data->payment_active;
+}
 
 // excute searching and get data information
 $result = $payment->getAll();
