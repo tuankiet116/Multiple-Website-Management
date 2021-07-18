@@ -31,10 +31,11 @@ if($data != null){
 
 $stmt = $post_type->getAll();
 $count = $stmt->rowCount();
-
+//$debug = $stmt->debugDumpParams();
 if($count>0){
     //post_type array
     $post_type_arr = array();
+    
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         $post_type_array = array(
             "post_type_id"          => $row['post_type_id'],
@@ -68,5 +69,6 @@ else{
   
     // tell the user product does not exist
     echo json_encode(array("message" => "Post Type not found.",
-                            "code"   => "404"));
+                            "code"   => "404"
+                            ));
 }
