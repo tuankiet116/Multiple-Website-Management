@@ -1,5 +1,6 @@
 <?
-require_once("inc_security.php")
+require_once("inc_security.php");
+
 
 ?>
 <!DOCTYPE html>

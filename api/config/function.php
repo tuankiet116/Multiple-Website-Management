@@ -21,4 +21,17 @@
                 return $payment_method;
         }
     }
+    function check_payment_method($payment_method){
+        $field = array();
+        switch($payment_method){
+            case 1:
+                $field = array('payment_partner_code', 'payment_access_key', 'payment_secret_key');
+                return $field;
+            case 2:
+                $field = [];
+                return $field;
+            default:
+                return false;
+        }
+    }
 ?>

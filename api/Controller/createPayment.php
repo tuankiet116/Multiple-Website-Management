@@ -22,7 +22,7 @@ $data = json_decode(file_get_contents("php://input"));
 $payment->payment_partner_code  = htmlspecialchars(trim($data->payment_partner_code)); 
 $payment->payment_access_key    = htmlspecialchars(trim($data->payment_access_key));
 $payment->payment_secret_key    = htmlspecialchars(trim($data->payment_secret_key));
-$payment->payment_method        = htmlspecialchars(trim($data->payment_method));
+$payment->payment_method        = intval($data->payment_method);
 $payment->web_id                = intVal($data->web_id);
 
 if($data->payment_method == null || $data->payment_method == "" || $data->web_id == "" || $data->web_id == null){
