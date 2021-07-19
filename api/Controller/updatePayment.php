@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../objects/payment.php';
 include_once '../config/database.php';
-
+error_reporting(E_ERROR | E_PARSE);
 //prepare database connection
 $database = new ConfigAPI();
 $db = $database->getConnection();
@@ -19,10 +19,12 @@ $payment = new Payment($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set Term property of record to create
-$payment->payment_partner_code  = htmlspecialchars(trim($data->payment_partner_code)); 
-$payment->payment_access_key    = htmlspecialchars(trim($data->payment_access_key));
-$payment->payment_secret_key    = htmlspecialchars(trim($data->payment_secret_key));
-$payment->payment_id            = intVal($data->payment_id);
+if($data !== null){
+    $payment->payment_partner_code  = $data->payment_partner_code==null ? null: htmlspecialchars(trim($data->payment_partner_code)); 
+    $payment->payment_access_key    = $data->payment_access_key ==null ? null: htmlspecialchars(trim($data->payment_access_key));
+    $payment->payment_secret_key    = $data->payment_secret_key == null? null: htmlspecialchars(trim($data->payment_secret_key));
+    $payment->payment_id            = intVal($data->payment_id);
+}
 
 if($data->payment_id == null || $data->payment_id == "" || $data->payment_id == 0){
     http_response_code(200);

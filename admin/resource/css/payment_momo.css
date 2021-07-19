@@ -126,3 +126,14 @@ hr{
     height: 30px !important;
     line-height: 30px !important;
 }
+
+.btn-add{ padding-top: 30px;}
+#btn-add{ display: flex; align-items: center;}
+#btn-add > p{ margin-bottom: 0; font-size: 13px; margin-left: 5px;}
+#btn-add > i{ font-size: 11px;}
+#btn-add:focus{ box-shadow: none;}
+.container{ max-width: 1104px;}
+.pick_website_select.add{ width: 200px;}
+/* .modal-body{ height: 100px !important;} */
+.input-text{ margin-top: 10px;}
+.select-container.add { padding-left: 4px;}

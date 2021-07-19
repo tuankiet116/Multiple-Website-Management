@@ -55,6 +55,7 @@ class Website_Config{
         $count = $stmt->rowCount();
         if($count>0){
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->web_id          = $row['web_id'];
             $this->web_name        = $row['web_name'];
             $this->domain         = $row['list_domain'];
             $this->web_active      = $row['web_active'];

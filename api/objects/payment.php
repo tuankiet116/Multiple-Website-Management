@@ -1,4 +1,5 @@
 <?php
+    // require_once('./api/config/function.php');
     class Payment{
         private $conn;
         private $table = 'payment';
@@ -22,22 +23,40 @@
             $stmt =  $this->conn->prepare($query);
             $stmt->bindParam(':payment_method', $this->payment_method);
             $stmt->bindParam(':web_id'        , $this->web_id);
+
             if($stmt->execute() === true){
                 $count = $stmt->rowCount();
+                $stmt = "";
                 if($count===0){
-                    $query = "INSERT INTO ".$this->table."(payment_partner_code, payment_access_key, payment_secret_key,
+                    switch($this->payment_method){
+                        case 1:
+                            $query = "INSERT INTO ".$this->table."(payment_method, web_id) 
+                                VALUES(:payment_method, :web_id)";
+                            $stmt = $this->conn->prepare($query);
+
+                            $stmt->bindParam(':payment_method',       $this->payment_method);
+                            $stmt->bindParam(':web_id',               $this->web_id);
+                            break;
+                        case 2:
+                            $query = "INSERT INTO ".$this->table."(payment_partner_code, payment_access_key, payment_secret_key,
                                 payment_method, web_id) 
                                 VALUES(:payment_partner_code, :payment_access_key, :payment_secret_key,
                                 :payment_method, :web_id)";
-                    $stmt = $this->conn->prepare($query);
+                            $stmt = $this->conn->prepare($query);
 
-                    $stmt->bindParam(':payment_partner_code', $this->payment_partner_code);
-                    $stmt->bindParam(':payment_access_key',   $this->payment_access_key);
-                    $stmt->bindParam(':payment_secret_key',   $this->payment_secret_key);
-                    $stmt->bindParam(':payment_method',       $this->payment_method);
-                    $stmt->bindParam(':web_id',               $this->web_id);
-
-                    if($stmt->execute()){
+                            $stmt->bindParam(':payment_partner_code', $this->payment_partner_code);
+                            $stmt->bindParam(':payment_access_key',   $this->payment_access_key);
+                            $stmt->bindParam(':payment_secret_key',   $this->payment_secret_key);
+                            $stmt->bindParam(':payment_method',       $this->payment_method);
+                            $stmt->bindParam(':web_id',               $this->web_id);
+                            break;
+                        default:
+                            $message = "The Payment Method Does Not Supported!";
+                            return $message;
+                    }
+                    
+                    
+                    if($stmt !== "" && $stmt->execute()){
                         return true;
                     }
                     else{
