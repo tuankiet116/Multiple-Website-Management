@@ -166,7 +166,7 @@ class denyconnect{
 											  FROM " . $table_ip_denyconnect . " USE INDEX (ip)
 											  WHERE ip = " . $deny_ip_long . " AND time >= " . ($today[0] - $this->timeout),
 											  __FILE__, "", 1);
-			if ($row = mysql_fetch_array($db_count->result)){
+			if ($row = mysqli_fetch_array($db_count->result)){
 				$total_count = $row["count"];
 			}
 

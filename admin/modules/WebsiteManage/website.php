@@ -31,7 +31,7 @@ require("inc_security.php");
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="btn-show-modal">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#show-modal-form">
                 <i class="fas fa-plus"></i> Thêm mới
@@ -52,10 +52,6 @@ require("inc_security.php");
                                 <div class="form-group">
                                     <label for="web_name"><?= translate_text('Tên Website') ?>:</label>
                                     <input type="text" class="form-control" id="web_name" placeholder="Nhập Tên Website" name="web_name" autocomplete="off">
-                                </div>
-                                <div class="form-group">
-                                    <label for="web_url"><?= translate_text('Tên Miền Website') ?>:</label>
-                                    <input type="text" class="form-control" id="web_url" placeholder="Nhập Tên Miền Website" name="web_url" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label for=""><?= translate_text('icon website') ?>:</label>
@@ -90,8 +86,8 @@ require("inc_security.php");
             <div class="list-website-title">
                 <p>Danh Sách Website</p>
             </div>
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-listing-website">
+                <thead class="table-primary">
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Tên</th>
@@ -108,8 +104,89 @@ require("inc_security.php");
             </table>
         </div>
 
+        <!-- Modal Domain Information -->
+        <div class="modal fade" id="modal-domain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title modal-title-domain" id="exampleModalLabel">Quản Lý Tên Miền<span class="web_name"></span></h5>
+                        <button type="button" class="close close-modal-domain" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button style="margin-bottom: 10px;" data-dismiss="modal" data-toggle="modal" data-target="#modal-add-domain" id="btn-add-domain" type="button" class="btn btn-primary btn-sm">
+                            Thêm Tên Miền <i class="fas fa-plus-circle"></i>
+                        </button>
+                        <table class="table listing-domain">
+                            <thead class="table-primary">
+                                <th>Tên Miền</th>
+                                <th>Trạng Thái</th>
+                                <th>Hành Động</th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-back-modal btn-sm" data-dismiss="modal" data-toggle="modal" data-target="#show-modal-form-update"><i class="fas fa-arrow-circle-left"></i> Quay Lại</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Thoát</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Detail Domain -->
+        <div class="modal fade" id="modal-domain-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title modal-title-domain" id="exampleModalLabel">Chi Tiết Tên Miền</h5>
+                        <button type="button" class="close close-modal-domain-detail" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="form-group" style="padding: 20px;">
+                        <label for="input-domain-detail">Tên Miền: </label>
+                        <input autocomplete="off" type="url" class="form-control" id="input-domain-detail" placeholder="Enter Domain">
+                        <small id="domain-small" style="display: none; color: red !important;" class="form-text text-muted"></small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-back-modal btn-sm btn-back-modal-info" data-dismiss="modal" data-toggle="modal" data-target="#modal-domain"><i class="fas fa-arrow-circle-left"></i> Quay Lại</button>
+                        <button type="button" id="update-domain-btn" class="btn btn-success btn-sm">Cập Nhật</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Thoát</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Create Domain -->
+        <div class="modal fade" id="modal-add-domain" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title modal-title-domain">Thêm Mới Tên Miền</h5>
+                        <button type="button" class="close close-modal-domain-add" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="form-group" style="padding: 20px;">
+                        <label for="input-domain-detail">Tên Miền: </label>
+                        <input type="url" autocomplete="off" class="form-control" id="input-domain-add" placeholder="Enter Domain">
+                        <small id="domain-add-small" style="display: none; color: red !important;" class="form-text text-muted"></small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-back-modal btn-sm btn-back-modal-info" data-dismiss="modal" data-toggle="modal" data-target="#modal-domain"><i class="fas fa-arrow-circle-left"></i> Quay Lại</button>
+                        <button type="button" id="add-domain-btn" class="btn btn-success btn-sm">Thêm</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Thoát</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Update Website Information -->
         <div class="modal fade" id="show-modal-form-update">
-            <div class="modal-dialog">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Cập Nhật Website</h5>
@@ -125,10 +202,12 @@ require("inc_security.php");
                                     <input type="text" class="form-control" id="web_name_update" placeholder="Nhập Tên Website" name="web_name_update" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label id="label-domain" for="web_url_update"><?= translate_text('Tên Miền Website') ?>:</label>
-                                    <button type="button" class="btn btn-secondary" style="float: right;">
-                                        <a style="text-decoration: none; color: white;" href="../../resource/Error/404/404.html">Quản Lý Domain</a>
-                                    </button>
+                                    <label id="label-domain" for="web_url_update"><?= translate_text('Tên Miền Website') ?>:</label><span id="domain-status"></span>
+                                    <a id="redirect-domain-manage" style="text-decoration: none; color: white;" href="../../resource/Error/404/404.html">
+                                        <button type="button" class="btn btn-info" style="float: right;">
+                                            Quản Lý Domain <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </a>
                                     <table style="margin: auto;" class="domain-listing">
                                         <thead>
                                             <th style="font-size: 15px;">Domain: </th>
@@ -136,7 +215,6 @@ require("inc_security.php");
                                         <tbody>
                                         </tbody>
                                     </table>
-                                    <!-- <input type="text" class="form-control" id="web_url_update" placeholder="Nhập Tên Miền Website" name="web_url_update" autocomplete="off"> -->
                                 </div>
                                 <div class="form-group">
                                     <label for=""><?= translate_text('icon website') ?>:</label>

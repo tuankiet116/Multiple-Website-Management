@@ -10,7 +10,7 @@ class Website_Config{
     public $web_id;
     public $web_name;
     public $web_active;
-    public $web_url;
+    public $domain;
     public $web_icon;
     public $web_description;
     public $term;
@@ -56,7 +56,7 @@ class Website_Config{
         if($count>0){
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->web_name        = $row['web_name'];
-            $this->web_url         = $row['list_domain'];
+            $this->domain         = $row['list_domain'];
             $this->web_active      = $row['web_active'];
             $this->web_icon        = $row['web_icon'];
             $this->web_description = $row['web_description'];
@@ -107,21 +107,19 @@ class Website_Config{
             }
         }
         foreach($allWeb as $web){
-            if($web['web_name'] == $this->web_name || $web['web_url'] == $this->web_url){
+            if($web['web_name'] == $this->web_name ){
                 $total+=1;
             }
         }
         if($total == 1){
             $query ="UPDATE website_config SET 
                     web_name        = :web_name,
-                    web_url         = :web_url,
                     web_icon        = :web_icon,
                     web_description = :web_description
                     WHERE web_id    = :web_id";
     
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':web_name',        $this->web_name);
-            $stmt->bindParam(':web_url',         $this->web_url);
             $stmt->bindParam(':web_icon',        $this->web_icon);
             $stmt->bindParam(':web_description', $this->web_description);
             $stmt->bindParam(':web_id',          $this->web_id, PDO::PARAM_INT);
@@ -143,19 +141,17 @@ class Website_Config{
 
     function createWebsite(){
         $message='';
-        $query ="SELECT web_name, web_url FROM website_config WHERE web_name = :web_name OR web_url= :web_url";
+        $query ="SELECT web_name FROM website_config WHERE web_name = :web_name ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':web_name', $this->web_name);
-        $stmt->bindParam(':web_url',  $this->web_url);
 
         if($stmt->execute()===true){
             if($stmt->rowCount() == 0){
-                $query = "INSERT INTO website_config (web_name, web_url, web_icon, web_description)
-                          VALUES(:web_name, :web_url, :web_icon, :web_description)";
+                $query = "INSERT INTO website_config (web_name, web_icon, web_description)
+                          VALUES(:web_name, :web_icon, :web_description)";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(':web_name',        $this->web_name);
-                $stmt->bindParam(':web_url',         $this->web_url);
                 $stmt->bindParam(':web_icon',        $this->web_icon);
                 $stmt->bindParam(':web_description', $this->web_description);
 
