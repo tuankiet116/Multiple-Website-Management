@@ -69,14 +69,15 @@
             <button id="clear_button" class="btn btn-danger" type="button"><?= translate_text('Xóa')?></button>
         </div>
     </div>
-    <div class="container">
-        <div class="btn-add">
-            <button class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">
-                <i class="fas fa-plus"></i>
-                <p>Thêm mới</p>
-            </button>
-        </div>
-        
+    <div class="container-fluid">
+        <row>
+            <div class="btn-add col-3">
+                <button style="margin-left: 5%;" class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fas fa-plus"></i>
+                    <p>Thêm mới</p>
+                </button>
+            </div>
+        </row>
         
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
