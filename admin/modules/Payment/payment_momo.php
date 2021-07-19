@@ -18,6 +18,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../../resource/select_nice/js/jquery.js"></script>
     <script src="../../resource/select_nice/js/jquery.nice-select.min.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="../../../plugins/select2/js/select2.min.js"></script>
     <script language="javascript" src="../../resource/js/helper/function.js"></script>
     <script language="javascript" src="../../resource/js/payment_momo.js"></script>
@@ -66,6 +68,73 @@
             <button id="search_button" class="btn btn-primary" type="button"><?= translate_text('Tìm Kiếm')?></button>
             <button id="clear_button" class="btn btn-danger" type="button"><?= translate_text('Xóa')?></button>
         </div>
+    </div>
+    <div class="container-fluid">
+        <row>
+            <div class="btn-add col-3">
+                <button style="margin-left: 5%;" class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fas fa-plus"></i>
+                    <p>Thêm mới</p>
+                </button>
+            </div>
+        </row>
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm Mới Thanh toán</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-model-add">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" id="form-add">
+                            <div class="row" style="align-items: center;">
+                                <div class="select-container add pick_website_container col-6">
+                                    <div class="title_pick_website title">
+                                        <h4><?=translate_text('Chọn Website')?>: </h4>
+                                    </div>
+                                    <div class="box">
+                                        <select class="pick_website_select add">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="payment_method_add">Chọn Phương Thức Thanh Toán</label>
+                                    <select name="payment_method_add" id="payment_method_add">
+                                        <option value="1">Thanh Toán Khi Nhận Hàng (COD)</option>
+                                        <option value="2">MoMo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-text">
+                                <div class="form-group">
+                                    <label for="payment_partner_code">Partner Code</label>
+                                    <input type="text" class="form-control" id="payment_partner_code"  placeholder="Nhập Partner Code" autocomplete="off" disabled>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="payment_access_key">Access Key</label>
+                                    <input type="text" class="form-control" id="payment_access_key"  placeholder="Nhập Access Key" autocomplete="off" disabled>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="payment_secret_key">Secret Key</label>
+                                    <input type="text" class="form-control" id="payment_secret_key"  placeholder="Nhập Secret Key" autocomplete="off" disabled>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-close-bottom">Đóng</button>
+                        <button type="button" class="btn btn-primary" id="btn-payment-add">Thêm Mới</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <hr>
     <div class="show-payment-container container-fluid">

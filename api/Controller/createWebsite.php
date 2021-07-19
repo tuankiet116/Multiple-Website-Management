@@ -24,10 +24,9 @@ if(isset($data)){
     $web_icon_base_64 = saveBase64($UploadBase64, $web_icon, $url_save, 'jpg, png, svg, jpeg', 2000, 'icon_web', 'icon_web');
 
     $website->web_name        = $data->web_name;
-    $website->web_url         = $data->web_url;
     $website->web_icon        = $web_icon_base_64;
     $website->web_description = $data->web_description;
-    if($data->web_name == null || $data->web_name == "" || $data->web_url == null || $data->web_url == ""){
+    if($data->web_name == null || $data->web_name == ""){
         http_response_code(200);
         echo json_encode(array(
             "message" => "Data Invalid",

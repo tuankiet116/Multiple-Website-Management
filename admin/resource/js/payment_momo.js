@@ -71,6 +71,9 @@ $(document).ready(function () {
   //Nice Select
   $("#payment-status").niceSelect();
   $("#payment-method").niceSelect();
+  $('#payment_method_add').niceSelect();
+  addPaymentForWebsite();
+  checkPaymentMethod();
 });
 
 /**
@@ -332,3 +335,58 @@ function IActiveButton() {
     ajaxSearchingPayment(null);
   });
 }
+
+function addPaymentForWebsite(){
+  $('#btn-payment-add').click(function(){
+    let data = {
+      'web_id': $('.pick_website_select.add').select2('val'),
+      'payment_method': $('#payment_method_add').val(),
+      'payment_partner_code': $('#payment_partner_code').val(),
+      'payment_access_key': $('#payment_access_key').val(),
+      'payment_secret_key': $('#payment_secret_key').val(),
+    }
+    console.log(data);
+    $(".loader-container").css("display", "flex");
+
+    $.ajax({
+      type: "POST",
+      url: base_url+"api/Controller/createPayment.php",
+      data: JSON.stringify(data),
+      dataType: "JSON",
+      success: function (res) {
+          $(".loader-container").css("display", "none");
+          if(res.code == 200){
+            showAlert('success', `<p>${res.message}</p>`);
+            $('#btn-close-bottom').click();
+            $('.modal-backdrop').css("display", "none");
+            $('#form-add')[0].reset();
+          }
+          else{
+            showAlert('error', `<p>${res?.message}</p>`);
+          }
+      },
+      error: function(res){
+        $(".loader-container").css("display", "none");
+        console.log(res.responseText);
+      }
+    });
+  })
+}
+
+function checkPaymentMethod(){
+  $('#payment_method_add').change(function(){
+    if($(this).val() == "2"){
+      $('#payment_partner_code').removeAttr('disabled');
+      $('#payment_access_key').removeAttr('disabled');
+      $('#payment_secret_key').removeAttr('disabled');
+    }
+    else{
+      $('#payment_partner_code').prop('disabled', true);
+      $('#payment_access_key').prop('disabled', true);
+      $('#payment_secret_key').prop('disabled', true);
+    }
+  })
+}
+
+
+

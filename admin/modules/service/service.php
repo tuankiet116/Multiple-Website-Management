@@ -26,6 +26,16 @@
     <title>Document</title>
 </head>
 <body>
+
+    <div class="loader-container"><div class="loader"></div></div>
+    <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">  
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container">
         <div class="search">
             <div class="title-search">
@@ -39,7 +49,7 @@
                         <h4><?= translate_text('Chọn trang web')?></h4>
                     </div>
                     <div class="box">
-                        <select class="pick_website_select">
+                        <select class="pick_website_select search">
                         </select>
                     </div>
                 </div>
@@ -49,7 +59,7 @@
                         <h4><?= translate_text('Chọn nhóm dịch vụ')?></h4>
                     </div>
                     <div class="box">
-                        <select class="pick_service_gr_select" disabled>
+                        <select class="pick_service_gr_select search" disabled>
                         </select>
                     </div>
                 </div>
@@ -58,7 +68,7 @@
                 <div class="text-input-search">
                     <div class="form-group form-group-fix">
                         <label for="text-search"><?= translate_text('Tìm Kiếm')?></label>
-                        <input type="text" class="form-control" id="text-search" placeholder="tìm kiếm">
+                        <input type="text" class="form-control" id="text-search" placeholder="tìm kiếm" autocomplete="off">
                     </div>
                 </div>
 
@@ -83,7 +93,7 @@
         </div>
         <div class="wrapper-add-service">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-modal-show" data-toggle="modal" data-target="#form-add">
+            <button type="button" class="btn btn-primary btn-modal-show" data-toggle="modal" data-target="#form-add" id="btn-add-service">
                 <i class="fas fa-plus"></i>
                 <p>Thêm Mới Dịch Vụ</p>
             </button>
@@ -94,12 +104,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Thêm Mới</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" id="close-form-add" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="#">
+                            <form action="#" id="form">
                                 <div class="form-group">
                                     <label for="service_name">Tên Dịch Vụ</label>
                                     <input type="text" class="form-control" id="service_name" placeholder="Tên Dịch Vụ">
@@ -133,7 +143,7 @@
 
                                 <div class="content-service">
                                     <div class="content-service-edit">
-                                        <textarea name="content-service-add" id="content-service-add"></textarea>
+                                        <textarea name="content-service-add" id="content_service_add"></textarea>
                                     </div>
                                 </div>
 
@@ -170,14 +180,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Rửa xe</td>
-                        <td>Rửa xe thay dầu</td>
-                        <td>Rửa xe</td>
-                        <td><button class="btn btn-danger btn-status">Đã Ẩn</button></td>
-                        <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update">Chi Tiết</button></td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
@@ -188,28 +191,28 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cập Nhật Dịch Vụ</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-form-update">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <form action="#" id="form-update">
                             <div class="form-group">
-                                <label for="service_name">Tên Dịch Vụ</label>
+                                <label for="service_name_update">Tên Dịch Vụ</label>
                                 <input type="text" class="form-control" id="service_name_update" placeholder="Tên Dịch Vụ">
                             </div>
                             <div class="form-group">
-                                <label for="service_description">Mô tả</label>
+                                <label for="service_description_update">Mô tả</label>
                                 <textarea type="text" class="form-control" id="service_description_update"></textarea>
                             </div>
 
-                            <div style="display: flex; margin-left: 10px; margin-bottom: 30px">
+                            <!-- <div style="display: flex; margin-left: 10px; margin-bottom: 30px">
                                 <div class="pick_website_container fiximg add">
                                     <div class="title_pick_website title-pick">
                                         <h4><?= translate_text('trang web')?></h4>
                                     </div>
                                     <div class="box update">
-                                        <select class="pick_website_select update">
+                                        <select class="pick_website_select update" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -223,11 +226,11 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="content-service">
                                 <div class="content-service-edit">
-                                    <textarea name="content-service-update" id="content-service-update"></textarea>
+                                    <textarea name="content_service_update" id="content_service_update"></textarea>
                                 </div>
                             </div>
 
@@ -244,7 +247,7 @@
     </div>
 </body>
 <script>
-    CKEDITOR.replace('content-service-add', {
+    CKEDITOR.replace('content_service_add', {
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
         width: '100%',
@@ -266,7 +269,7 @@
     });
 
 
-    CKEDITOR.replace('content-service-update', {
+    CKEDITOR.replace('content_service_update', {
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
         width: '100%',

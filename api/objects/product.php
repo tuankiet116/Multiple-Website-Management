@@ -202,7 +202,7 @@
             $stmt->execute();
             $count = $stmt->rowCount();
             if($count === 0){
-                $query = "INSERT INTO ".$this->table."(product_name, product_description, product_image_path, product_price, product_currency, web_id, product_gr_id) 
+                $query = "INSERT INTO ".$this->table." (product_name, product_description, product_image_path, product_price, product_currency, web_id, product_gr_id) 
                             VALUES (:product_name,:product_description,:product_image_path,:product_price,:product_currency,:web_id, :product_gr_id )";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(':product_name'       , $this->product_name);
