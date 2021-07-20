@@ -14,6 +14,7 @@
         public $order_paytype;
         public $order_datetime;
         public $order_status;
+        public $order_reason;
         public $term;
 
         public function __construct($db){
@@ -54,10 +55,34 @@
         public function confirm(){
             $message = "";
             $query ="UPDATE ".$this->table." 
-                     SET order_status = 2
+                     SET order_status = :order_status
                      WHERE order_id = :order_id";
+                     
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":order_id",  $this->order_id, PDO::PARAM_INT);
+            $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
+
+            if($stmt->execute() === true){
+                $message = true;
+                return $message;
+            }
+            else{
+                $message="failure";
+                return $message;
+            }
+        }
+
+        public function cancel(){
+            $message ="";
+            $query = "UPDATE ".$this->table." 
+                      SET order_status = :order_status,
+                          order_reason = :order_reason
+                      WHERE order_id = :order_id";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
+            $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
 
             if($stmt->execute() === true){
                 $message = true;

@@ -1,6 +1,7 @@
 var base_url = '../../../';
-var order_id = null;
+var order_id_g = null;
 $(document).ready(function () {
+    $('#order_reason').niceSelect();
     $(".pick_website_select").select2({
         ajax: { 
           url: "../../../api/Controller/searchTerm.php",
@@ -96,8 +97,9 @@ function getOrder(web_id = false, valueWebSite=null, term){
                             <td>${item.web_name}</td>
                             <td>${item.order_sum_price}</td>
                             <td>${order_status}</td>
-                            <td>
-                                <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
+                            <td >
+                                <button class="btn btn-primary btn-detail" style="display: inline-block" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
+                                <button class="btn btn-danger btn-cancel" order_id="${item.order_id}" data-toggle="modal" data-target="#modal-cancel">Hủy Bỏ</button>
                             </td>
                         </tr>
                     `
@@ -111,6 +113,8 @@ function getOrder(web_id = false, valueWebSite=null, term){
             $('.table > tbody').html(viewData ?? mes).ready(function(){
                 getOrderById();
                 confirmed();
+                cancel();
+                getOrderIdCancel();
             });
         }
     });
@@ -145,8 +149,10 @@ function searchTerm(){
 function confirmed(){
     $('#btn-confirm').click(function(){
         let data ={
-            "order_id": order_id
+            "order_id": order_id_g,
+            "order_status": "2"
         }
+        console.log(data);
         $('.loader-container').css('display', 'flex');
         $.ajax({
             type: "POST",
@@ -159,6 +165,47 @@ function confirmed(){
                 if(res.code == 200){
                     showAlert('success', `<p>${res?.message}</p>`);
                     $('#close-modal-detail').click();
+                    order_id_g = null;
+                }
+                else {
+                    showAlert('error', `<p>${res?.message}</p>`);
+                }
+            },
+            error: function(res){
+                $('.loader-container').css('display', 'none');
+                console.log(res.responeText);
+            }
+        });
+        getOrder(false, null, "");
+    })
+}
+
+function getOrderIdCancel(){
+    $('.btn-cancel').click(function(){
+        order_id_g = $(this).attr('order_id');
+    })
+}
+
+function cancel(){
+    $('#btn-cancel').click(function(){
+        let data ={
+            "order_id": order_id_g,
+            "order_status": "5",
+            "order_reason": $('#order_reason').val()
+        }
+        console.log(data);
+        $('.loader-container').css('display', 'flex');
+        $.ajax({
+            type: "POST",
+            url: base_url+"api/Controller/orderCancel.php",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            async: false,
+            success: function (res) {
+                $('.loader-container').css('display', 'none');
+                if(res.code == 200){
+                    showAlert('success', `<p>${res?.message}</p>`);
+                    $('#close-modal-cancel').click();
                     order_id = null;
                 }
                 else {
@@ -176,6 +223,7 @@ function confirmed(){
 
 function valueDetail(data){
     let order_payment = '';
+    let order_status ='';
     if(data.result.order_payment == 1){
         order_payment ='COD';
     }
@@ -184,6 +232,10 @@ function valueDetail(data){
     }
     else{
         order_payment ='Khác';
+    }
+
+    if(data.result.order_status){
+        order_status = 'Chưa Xác Nhận';
     }
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
@@ -197,7 +249,7 @@ function valueDetail(data){
     $('#order_sum_price').text(data.result.order_sum_price);
     $('#order_paytype').text(data.result.order_paytype);
     $('#order_datetime').text(data.result.order_datetime);
-    $('#order_status').text(data.result.order_status);
+    $('#order_status').text(order_status);
     $('#order_detail_unit_price').text(data.result.order_detail_unit_price);
     $('#order_detail_amount').text(data.result.order_detail_amount);
     $('#user_number_phone').text(data.result.user_number_phone);
