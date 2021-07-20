@@ -44,7 +44,7 @@ $(document).ready(function () {
 
   //call api and render
   getDataTable();
-
+  getWebsiteByID(".btn-back-modal");
   //create
   create();
 
@@ -54,10 +54,114 @@ $(document).ready(function () {
     $("#image_icon_1_update").attr("src", "#");
     $("#image_icon_1_update").css("display", "none");
     $("#input_image_icon_1_update").children("svg").css("display", "inherit");
-    $('#label-domain').html("Tên Miền Website:");
-    $('.domain-listing tbody').html("");
-    $('.domain-listing').css('display', 'table');
+    $("#label-domain").html("Tên Miền Website:");
+    $(".domain-listing tbody").html("");
+    $(".domain-listing").css("display", "table");
+    $("#domain-status").html("");
+    $(".modal").css("overflow-y", "auto");
+    getDataTable();
   });
+
+  $("#modal-domain-detail, #modal-domain, #modal-add-domain").on(
+    "hidden.bs.modal",
+    function () {
+      $("small").css("display", "none");
+    }
+  );
+
+  $("#redirect-domain-manage").click(function () {
+    $(".close-form-update").click();
+    getDomain(web_id);
+  });
+
+  $(".btn-back-modal-info").click(function () {
+    getDomain(web_id);
+  });
+
+  $("#update-domain-btn")
+    .unbind()
+    .click(function () {
+      domainID = $(this).attr("domain-id");
+      domainName = $("#input-domain-detail").val();
+
+      $.ajax({
+        data: JSON.stringify({
+          domain_id: domainID,
+          domain_name: domainName,
+        }),
+        type: "POST",
+        dataType: "JSON",
+        async: false,
+        url: base_url + "api/Controller/updateDomain.php",
+        success: function (data) {
+          switch (data.code) {
+            case "200":
+              showAlert("success", "Cập Nhật Domain Thành Công");
+              $("#domain-small").css("display", "none");
+              getDataTable();
+              break;
+            case 1:
+              showAlert("error", "Hệ Thống Lỗi Không Thể Cập Nhật Tên Miền");
+              break;
+            case 2:
+              $("#domain-small").text(
+                "Tên Miền Đã Được Sử Dụng Cho Trang Web Khác, Vui Lòng Chọn Tên Miền Khác!"
+              );
+              $("#domain-small").css("display", "block");
+              break;
+            case 500:
+              $("#domain-small").text("Không Được Để Trống Tên Miền.");
+              $("#domain-small").css("display", "block");
+              break;
+            default:
+              showAlert("error", "Lỗi Không Xác Định.");
+              break;
+          }
+        },
+        error: function (data) {
+          showAlert("error", data.responseText);
+        },
+      });
+    });
+
+  $("#add-domain-btn")
+    .unbind()
+    .click(function () {
+      domainName = $("#input-domain-add").val();
+      $.ajax({
+        data: JSON.stringify({ domain_name: domainName, web_id: web_id }),
+        type: "POST",
+        dataType: "JSON",
+        async: false,
+        url: base_url + "api/Controller/createDomain.php",
+        success: function (data) {
+          switch (data.code) {
+            case 200:
+              showAlert("success", "Cập Nhật Domain Thành Công");
+              $("#domain-add-small").css("display", "none");
+              getDataTable();
+              break;
+            case 1:
+              showAlert("error", "Hệ Thống Lỗi Không Thể Cập Nhật Tên Miền");
+              break;
+            case 2:
+              $("#domain-add-small").text(
+                "Tên Miền Đã Được Sử Dụng Cho Trang Web Khác, Vui Lòng Chọn Tên Miền Khác!"
+              );
+              $("#domain-add-small").css("display", "block");
+              break;
+            case 500:
+              $("#domain-add-small").text("Không Được Để Trống Tên Miền.");
+              $("#domain-add-small").css("display", "block");
+              break;
+            default:
+              showAlert("error", "Lỗi Không Xác Định.");
+              break;
+          }
+        },
+        error: function (data) {},
+      });
+    });
 });
 
 // api get Data of table
@@ -99,11 +203,11 @@ function getDataTable() {
         rs += `</tr>`;
         return rs;
       });
-      $(".table > tbody")
+      $(".table-listing-website > tbody")
         .html(view)
         .ready(function () {
           activeWeb();
-          getWebsiteByID();
+          getWebsiteByID(".btn-edit");
           update();
           $(".web_description").each(function () {
             if ($(this).text().length > 40) {
@@ -134,7 +238,7 @@ function create() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
-        if (res?.code == 200) {
+        if (res.code == 200) {
           $(".loader-container").css("display", "none");
           showAlert("success", `<p>${res?.message}</p>`);
           $("#form")[0].reset();
@@ -167,7 +271,7 @@ function update() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
-        if (res?.code == 200) {
+        if (res.code == 200) {
           $(".loader-container").css("display", "none");
           showAlert("success", `<p>${res?.message}</p>`);
           $(".close-form-update").click();
@@ -198,7 +302,7 @@ function activeWeb() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
-        if (res?.code == 200) {
+        if (res.code == 200) {
           showAlert("success", `<p>${res.message}</p>`);
         } else {
           showAlert("error", `<p>${res.message}</p>`);
@@ -212,8 +316,8 @@ function activeWeb() {
   });
 }
 
-function getWebsiteByID() {
-  $(".btn-edit").click(function () {
+function getWebsiteByID(element) {
+  $(element).click(function () {
     web_id = $(this).attr("w_id");
     var data = {
       web_id: $(this).attr("w_id"),
@@ -248,16 +352,23 @@ function renderDataFormUpdate(data) {
     $(".domain-listing tbody").html(html);
   } else {
     $(".domain-listing").css("display", "none");
-    $("#label-domain").append(
+    $("#domain-status").html(
       `<span class="badge badge-danger">Chưa Có Domain</span>`
     );
   }
+
+  $("#redirect-domain-manage").removeAttr("href");
+  $("#redirect-domain-manage").attr("data-toggle", "modal");
+  $("#redirect-domain-manage").attr("data-target", "#modal-domain");
+
+  //turn back button
+  $(".btn-back-modal").attr("w_id", data.web_id);
+  $(".modal").css("overflow-y", "auto");
 }
 
 function dataFormCreate() {
   return (data = {
     web_name: $("#web_name").val(),
-    web_url: $("#web_url").val(),
     web_icon: $("#image_icon_1").attr("src"),
     web_description: $("#web_description").val(),
   });
@@ -267,7 +378,6 @@ function dataFormUpdate() {
   return (data = {
     web_id: web_id,
     web_name: $("#web_name_update").val(),
-    web_url: $("#web_url_update").val(),
     web_icon: $("#image_icon_1_update").attr("src"),
     web_description: $("#web_description_update").val(),
   });
@@ -363,5 +473,102 @@ function tooltip(element, maxLength) {
       $(this).text(subString);
       $(this).attr("title", stringOriginal);
     }
+  });
+}
+
+//Domain Information Get/Set/Update
+function getDomain(webID) {
+  $.ajax({
+    data: JSON.stringify({ web_id: webID }),
+    dataType: "JSON",
+    type: "POST",
+    url: base_url + "api/Controller/getDomainByWebID.php",
+    success: function (data) {
+      html = "";
+      if (data.code == 404) {
+        html = `<tr><td colspan = 3 style="color: red;">NOT FOUND</td></tr>`;
+      } else {
+        var html = data.map(function (value, index) {
+          status = "";
+          if (value.domain_active == 0) {
+            status =
+              `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_hide" type="button" class="btn btn-danger btn-status-domain btn-sm">Đã Vô Hiệu Hóa</button>`;
+          } else {
+            status =
+              `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_show" type="button" class="btn btn-basic btn-status-domain btn-sm">Đã Kích Hoạt</button>`;
+          }
+
+          r = `<tr>
+                          <td class = 'domain-name-info'>${value.domain_name}</td>
+                          <td>${status}</td>
+                          <td><button type="button" class="btn btn-info btn-sm btn-detail-domain" data-dismiss="modal" data-toggle="modal" data-target="#modal-domain-detail" domain_id="${value.domain_id}">Chỉnh Sửa</button></td>
+                         </tr>`;
+          return r;
+        });
+      }
+
+      $(".listing-domain > tbody")
+        .html(html)
+        .ready(function () {
+          tooltip(".domain-name-info", 20);
+          $(".btn-detail-domain").click(function () {
+            domain_id = $(this).attr("domain_id");
+            $(".close-modal-domain").click();
+            getDomainByID(domain_id);
+          });
+
+          $('.btn-status-domain').click(function(){
+            domainID = $(this).attr('domain_id').split('_')[0];
+            status = $(this).attr('domain_id').split('_')[1] == 'show'? 0 : 1;
+
+            $.ajax({
+                url: base_url + "api/Controller/ActiveInactiveDomain.php",
+                data: JSON.stringify({'domain_id': domainID, 'domain_active': status}),
+                dataType: 'JSON',
+                type: 'POST',
+                async: false,
+                success: function(data){
+                    switch(data.code){
+                        case 400:
+                            showAlert('warning', 'Thiếu Dữ Liệu Không Thể Cập Nhật Trạng Thái.');
+                            break;
+                        case 500:
+                            showAlert('error', 'Hệ Thống Lỗi Không Thể Cập Nhật Trạng Thái.');
+                            break;
+                        case 200:
+                            showAlert('success', 'Cập Nhật Trạng Thái Tên Miền Thành Công.');
+                            getDomain(webID);
+                            break;
+                        default:
+                            showAlert('error', 'Lỗi Không Xác Định.');
+                            break;
+                    }
+                },
+                error: function(data){
+                    showAlert('error', data.responseText);                }
+            });
+          });
+        });
+    },
+    error: function (data) {
+      showAlert("error", data.responseText);
+    },
+  });
+}
+
+function getDomainByID(domainID) {
+  $.ajax({
+    data: JSON.stringify({ domain_id: domainID }),
+    dataType: "JSON",
+    type: "POST",
+    url: base_url + "api/Controller/getDomainByID.php",
+    async: false,
+    success: function (data) {
+      $("#input-domain-detail").val(data.domain_name);
+      $("#update-domain-btn").attr("domain-id", data.domain_id);
+    },
+    error: function (data) {
+      showAlert("error", data.responseText);
+    },
   });
 }

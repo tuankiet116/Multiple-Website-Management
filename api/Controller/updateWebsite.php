@@ -25,7 +25,6 @@ $web_icon_base_64 = saveBase64($UploadBase64, $web_icon, $url_save, 'jpg, png, s
 if(isset($data) && $data->web_id != "" && $data->web_id != null ){
     $website->web_id            = intval($data->web_id);
     $website->web_name          = $data->web_name;
-    $website->web_url           = $data->web_url;
     $website->web_icon          = $web_icon_base_64;
     $website->web_description   = $data->web_description;
     $message = $website->updateWebsite();
