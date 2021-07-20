@@ -43,8 +43,8 @@
                       INNER JOIN user_tb ON order_tb.user_id = user_tb.user_id 
                       INNER JOIN order_detail ON order_detail.order_id = order_tb.order_id 
                       INNER JOIN product ON order_detail.product_id = product.product_id
-                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id WHERE order_tb.order_status = 1 ".$queryWhere.
-                      " AND order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ";
+                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = 1 
+                      WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
@@ -54,11 +54,10 @@
         public function confirm(){
             $message = "";
             $query ="UPDATE ".$this->table." 
-                     SET order_status = :order_status
+                     SET order_status = 2
                      WHERE order_id = :order_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":order_status", $this->order_status, PDO::PARAM_INT);
-            $stmt->bindParam(":order_id",     $this->order_id, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",  $this->order_id, PDO::PARAM_INT);
 
             if($stmt->execute() === true){
                 $message = true;

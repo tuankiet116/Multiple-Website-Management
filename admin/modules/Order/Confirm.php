@@ -26,6 +26,17 @@ require("inc_security.php");
     <title>Document</title>
 </head>
 <body>
+
+    <div class="loader-container"><div class="loader"></div></div>
+    <div class="alert alert-warning alert-dismissible d-none alert-message" role="alert">
+        <h4 class="alert-heading"></h4>
+        <div class="message">  
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
     <div class="container">
         <div class="title-search">
             <p>Tìm Kiếm</p>
@@ -48,7 +59,6 @@ require("inc_security.php");
             </div>
             <div class="btn-action">
                 <button class="btn btn-primary" id="btn-search">Tìm kiếm</button>
-                <button class="btn btn-danger" id="btn-clear">Xóa</button>
             </div>
         </div>
         <div class="line"></div>

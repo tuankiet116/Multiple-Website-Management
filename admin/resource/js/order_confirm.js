@@ -1,5 +1,5 @@
 var base_url = '../../../';
-
+var order_id = null;
 $(document).ready(function () {
     $(".pick_website_select").select2({
         ajax: { 
@@ -43,7 +43,8 @@ $(document).ready(function () {
 
     $(".pick_website_select").change(function(){
         let web_id = $(this).select2('val');
-        getOrder(true, web_id);
+        getOrder(true, web_id, "");
+        $('#order_search').val("")
     })
     getOrder(false, null, "");
     searchTerm();
@@ -109,6 +110,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
             }
             $('.table > tbody').html(viewData ?? mes).ready(function(){
                 getOrderById();
+                confirmed();
             });
         }
     });
@@ -118,14 +120,15 @@ function getOrderById(){
     $('.btn-detail').click(function () { 
         let data = {
             "order_id": $(this).attr('order_id')
-        } 
+        }
+        order_id =  $(this).attr('order_id');
         $.ajax({
             type: "POSR",
             url: base_url+"api/Controller/getOrderById.php",
             data: JSON.stringify(data),
             dataType: "JSON",
             success: function (res) {
-                console.log(res);
+                // console.log(res);
                 valueDetail(res);
             }
         });
@@ -136,6 +139,38 @@ function searchTerm(){
     $('#btn-search').click(function(){
         let term = $('#order_search').val();
         getOrder(false, null, term);
+    })
+}
+
+function confirmed(){
+    $('#btn-confirm').click(function(){
+        let data ={
+            "order_id": order_id
+        }
+        $('.loader-container').css('display', 'flex');
+        $.ajax({
+            type: "POST",
+            url: base_url+"api/Controller/orderConfirm.php",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            async: false,
+            success: function (res) {
+                $('.loader-container').css('display', 'none');
+                if(res.code == 200){
+                    showAlert('success', `<p>${res?.message}</p>`);
+                    $('#close-modal-detail').click();
+                    order_id = null;
+                }
+                else {
+                    showAlert('error', `<p>${res?.message}</p>`);
+                }
+            },
+            error: function(res){
+                $('.loader-container').css('display', 'none');
+                console.log(res.responeText);
+            }
+        });
+        getOrder(false, null, "");
     })
 }
 
