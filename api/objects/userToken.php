@@ -2,8 +2,11 @@
 
 use Firebase\JWT\JWT;
 
-require_once('../../vendor/autoload.php');
-require_once('../config/database.php');
+include_once('../../../vendor/autoload.php');
+include_once('../../config/database.php');
+
+include_once('../../vendor/autoload.php');
+include_once('../config/database.php');
 
 class userToken
 {
@@ -14,6 +17,7 @@ class userToken
 
     public $user_id;
     public $token;
+    public $tokenId;
 
     public function __construct()
     {
@@ -24,7 +28,7 @@ class userToken
 
     private function getSecretKey()
     {
-        $json_data  = file_get_contents("../../config.json");
+        $json_data  = file_get_contents("../../../config.json");
         $array      = json_decode($json_data, true);
         $secretKey  = $array['secret_key'];
         $this->secretKey = $secretKey;
@@ -95,6 +99,18 @@ class userToken
         {
             return false;
         }
-        return true;
+        else{
+            $query = "SELECT user_id FROM user_tb WHERE user_token = :user_token";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':user_token', $token->jti);
+            $stmt->execute();
+            if($stmt->rowCount() === 1){
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->user_id = $result['user_id'];
+                $this->tokenId = $token->jti;
+                return true;
+            }
+            return false;
+        }
     }
 }

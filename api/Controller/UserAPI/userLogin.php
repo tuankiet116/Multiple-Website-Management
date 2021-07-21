@@ -5,9 +5,9 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-require_once('../objects/userToken.php');
-require_once('../objects/user.php');
-require_once('../config/database.php');
+include_once('../../objects/userToken.php');
+require_once('../../objects/user.php');
+require_once('../../config/database.php');
 
 $database = new ConfigAPI();
 $db = $database->getConnection();
