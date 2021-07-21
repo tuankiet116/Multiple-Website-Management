@@ -36,7 +36,7 @@ require("inc_security.php");
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    
+
     <div class="container">
         <div class="title-search">
             <p>Tìm Kiếm</p>
@@ -59,6 +59,7 @@ require("inc_security.php");
             </div>
             <div class="btn-action">
                 <button class="btn btn-primary" id="btn-search">Tìm kiếm</button>
+                <button class="btn btn-danger" id="btn-clear">xóa</button>
             </div>
         </div>
         <div class="line"></div>
@@ -245,6 +246,31 @@ require("inc_security.php");
             </div>
         </div>
 
+        <div class="modal fade" id="modal-cancel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bạn Có Chắc Là Muốn Hủy Đơn Hàng Này?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-modal-cancel">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="order_reason">
+                            <label for=""><?= translate_text('Lý Do')?>:</label>
+                            <select name="" id="order_reason">
+                                <option value="1">Admin Hủy</option>
+                                <option value="2">Không Xác Nhận Được Với Khách Hàng</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="btn-cancel">Xác Nhận</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

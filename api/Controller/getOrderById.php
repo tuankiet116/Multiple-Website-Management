@@ -16,6 +16,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data) && $data->order_id != null && $data->order_id != ""){
     $order->order_id = intval($data->order_id);
+    $order->order_status = intval($data->order_status);
     $res = $order->getOrder(false, true);
 
     if($res->rowCount() > 0){
@@ -41,6 +42,8 @@ if(isset($data) && $data->order_id != null && $data->order_id != ""){
             "order_detail_quantity"   => $row['order_detail_quantity'],
             "order_detail_unit_price" => $row['order_detail_unit_price'],
             "order_detail_amount"     => $row['order_detail_amount'],
+            "order_reason"            => $row['order_reason'],
+            "order_description"       => $row['order_description']
         ];
 
         http_response_code(200);

@@ -14,6 +14,7 @@
         public $order_paytype;
         public $order_datetime;
         public $order_status;
+        public $order_reason;
         public $term;
 
         public function __construct($db){
@@ -43,10 +44,11 @@
                       INNER JOIN user_tb ON order_tb.user_id = user_tb.user_id 
                       INNER JOIN order_detail ON order_detail.order_id = order_tb.order_id 
                       INNER JOIN product ON order_detail.product_id = product.product_id
-                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = 1 
+                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = :order_status 
                       WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ";
 
             $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":order_status", $this->order_status, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt;
         }
@@ -54,10 +56,34 @@
         public function confirm(){
             $message = "";
             $query ="UPDATE ".$this->table." 
-                     SET order_status = 2
+                     SET order_status = :order_status
                      WHERE order_id = :order_id";
+                     
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":order_id",  $this->order_id, PDO::PARAM_INT);
+            $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
+
+            if($stmt->execute() === true){
+                $message = true;
+                return $message;
+            }
+            else{
+                $message="failure";
+                return $message;
+            }
+        }
+
+        public function cancel(){
+            $message ="";
+            $query = "UPDATE ".$this->table." 
+                      SET order_status = :order_status,
+                          order_reason = :order_reason
+                      WHERE order_id = :order_id";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
+            $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
 
             if($stmt->execute() === true){
                 $message = true;
