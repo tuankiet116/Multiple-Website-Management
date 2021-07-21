@@ -15,7 +15,9 @@ $order = new Order($db);
 $data = json_decode(file_get_contents("php://input"));
 
 $order->term = trim($data->term);
-
+if($data->order_status != null || $data->order_status != ""){
+    $order->order_status = intval($data->order_status);
+}
 $res = $order->getOrder();
 if($res->rowCount() > 0){
     $order_arr =[];
@@ -37,7 +39,12 @@ if($res->rowCount() > 0){
             "user_email"           => $row['user_email'],
             "product_id"           => $row['product_id'],
             "product_name"         => $row['product_name'],
-            "web_name"             => $row['web_name']
+            "web_name"             => $row['web_name'],
+            "order_reason"         => $row['order_reason'],
+            "order_detail_quantity"   => $row['order_detail_quantity'],
+            "order_detail_unit_price" => $row['order_detail_unit_price'],
+            "order_detail_amount"     => $row['order_detail_amount'],
+            "order_description"       => $row['order_description']
         ]);
     }
     http_response_code(200);

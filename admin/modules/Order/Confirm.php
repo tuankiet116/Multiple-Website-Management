@@ -59,6 +59,7 @@ require("inc_security.php");
             </div>
             <div class="btn-action">
                 <button class="btn btn-primary" id="btn-search">Tìm kiếm</button>
+                <button class="btn btn-danger" id="btn-clear">xóa</button>
             </div>
         </div>
         <div class="line"></div>

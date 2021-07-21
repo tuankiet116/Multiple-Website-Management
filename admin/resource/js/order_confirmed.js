@@ -55,14 +55,14 @@ $(document).ready(function () {
 function getOrder(web_id = false, valueWebSite=null, term){
     let data = {
         "term": term,
-        "order_status": "1"
+        "order_status": "2"
     };
     let urlApi = "getAllOrder";
     if(web_id == true && valueWebSite != null){
         data={
             "web_id": valueWebSite,
             "term": term,
-            "order_status": "1"
+            "order_status": "2"
         }
         urlApi = "getOrderByWebId";
     }
@@ -73,9 +73,10 @@ function getOrder(web_id = false, valueWebSite=null, term){
         dataType: "JSON",
         async: false,
         success: function (res) {
+            console.log(res)
             if(res.code == 200){
                 var viewData = res?.result.map(function(item, index){
-                    let order_status = item.order_status == 1? `<p style="color: red">Chưa Xác Nhận <i class="fas fa-times"></i></p>`: ``;
+                    let order_status = item.order_status == 2? `<p style="color: green">Đã Xác Nhận <i class="fas fa-check"></i></p>`: ``;
                     let order_payment = '';
                     let notSp = `Null`
 
@@ -127,16 +128,16 @@ function getOrderById(){
     $('.btn-detail').click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
-            "order_status": "1"
+            "order_status": "2"
         }
-        order_id_g =  $(this).attr('order_id');
+        order_id =  $(this).attr('order_id');
         $.ajax({
             type: "POSR",
             url: base_url+"api/Controller/getOrderById.php",
+            async: false,
             data: JSON.stringify(data),
             dataType: "JSON",
             success: function (res) {
-                // console.log(res);
                 valueDetail(res);
             }
         });
@@ -162,7 +163,7 @@ function confirmed(){
     $('#btn-confirm').click(function(){
         let data ={
             "order_id": order_id_g,
-            "order_status": "2"
+            "order_status": "4"
         }
         console.log(data);
         $('.loader-container').css('display', 'flex');
@@ -177,7 +178,7 @@ function confirmed(){
                 if(res.code == 200){
                     showAlert('success', `<p>${res?.message}</p>`);
                     $('#close-modal-detail').click();
-                    // order_id_g = null;
+                    order_id_g = null;
                 }
                 else {
                     showAlert('error', `<p>${res?.message}</p>`);
@@ -246,7 +247,7 @@ function valueDetail(data){
         order_payment ='Khác';
     }
 
-    if(data.result.order_status == "1"){
+    if(data.result.order_status =="1"){
         order_status = 'Chưa Xác Nhận';
     }
     else if(data.result.order_status == "2"){
