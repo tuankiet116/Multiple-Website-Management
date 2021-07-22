@@ -118,6 +118,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 confirmed();
                 getOrderIdCancel();
                 cancel();
+               
             });
         }
     });
@@ -135,12 +136,15 @@ function getOrderById(){
             url: base_url+"api/Controller/getOrderById.php",
             data: JSON.stringify(data),
             dataType: "JSON",
+            async:false,
             success: function (res) {
                 // console.log(res);
                 valueDetail(res);
             }
         });
+        tooltip('#order_description', 30);
     });
+    
 }
 
 function searchTerm(){
@@ -269,6 +273,7 @@ function valueDetail(data){
     $('#order_detail_amount').text(data.result.order_detail_amount);
     $('#user_number_phone').text(data.result.user_number_phone);
     $('#user_email').text(data.result.user_email);
+    $('#order_description').text(data.result.order_description);
 }
 
 function tooltip(element, maxLength){

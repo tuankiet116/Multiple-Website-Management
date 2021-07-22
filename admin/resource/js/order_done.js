@@ -9,7 +9,7 @@ $(document).ready(function () {
 function getOrder(term){
     let data ={
         "term": term,
-        "order_status": "3"
+        "order_status": "4"
     }
     $.ajax({
         type: "POST",
@@ -20,8 +20,8 @@ function getOrder(term){
         success: function (res) {
             if(res.code == 200){
                 var viewData = res.result.map(function(item, index){
-                    let  order_payment ="";
-                    let  order_reason = "";
+                    let order_payment ="";
+                    let order_status = item.order_status == 4? `<p style="color: green">Đã Giao Thành Công<i class="fas fa-check"></i></p>`: ``;
 
                     if(item.order_payment == 1){
                         order_payment = `COD`;
@@ -33,15 +33,6 @@ function getOrder(term){
                         order_payment = `Khác`;
                     }
 
-                    if(item.order_reason == 1){
-                        order_reason = "Admin Hủy";
-                    }
-                    else if(item.order_reason == 2){
-                        order_reason = "Không Xác Nhận Được Với Khách Hàng";
-                    } 
-                    else if(item.order_reason == 3){
-                        order_reason = "Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng";
-                    }
 
                     return`
                         <tr>
@@ -52,7 +43,7 @@ function getOrder(term){
                             <td>${order_payment}</td>
                             <td>${item.order_trans_id}</td>
                             <td>${item.web_name}</td>
-                            <td>${order_reason}</td>
+                            <td>${order_status}</td>
                             <td>
                                 <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
                             </td>
@@ -80,7 +71,7 @@ function getOrderById(){
     $('.btn-detail').click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
-            "order_status": "3"
+            "order_status": "4"
         }
         order_id_g =  $(this).attr('order_id');
         $.ajax({
@@ -127,8 +118,8 @@ function valueDetail(data){
         order_payment ='Khác';
     }
 
-    if(data.result.order_status == 3){
-        order_status = 'Đơn Đã Hủy';
+    if(data.result.order_status == 4){
+        order_status = 'Đơn Đã Giao Thành Công';
     }
 
     if(data.result.order_reason == 1){
@@ -159,7 +150,6 @@ function valueDetail(data){
     $('#user_number_phone').text(data.result.user_number_phone);
     $('#user_email').text(data.result.user_email);
     $('#order_description').text(data.result.order_description);
-    $('#order_reason').text(order_reason);
 }
 
 function tooltip(element, maxLength){

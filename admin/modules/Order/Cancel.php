@@ -95,6 +95,150 @@
                             <p id="order_id"></p>
                         </div>
                     </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Khách Hàng')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="user_name"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Số Điện Thoại')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="user_number_phone"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('email')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="user_email"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Tên Sản Phẩm')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="product_name"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Số Lượng')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_detail_quantity"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Ghi Chú Của Khách Hàng')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_description"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Trạng Thái Giao Dịch')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_payment_status"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Phương Thức Thanh Toán')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_payment"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('website')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="web_name"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('ID Yêu Cầu')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_request_id"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Mã Giao Dịch')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_trans_id"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Tổng Tiền')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_sum_price"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('QR hoặc Web Hoặc Atm')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_paytype"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Thời Gian')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_datetime"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Trạng Thái Đơn Hàng')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_status"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Lý Do')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_reason"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('order_detail_unit_price')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_detail_unit_price"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('order_detail_amount')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_detail_amount"></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

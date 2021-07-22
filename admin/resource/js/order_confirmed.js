@@ -130,17 +130,19 @@ function getOrderById(){
             "order_id": $(this).attr('order_id'),
             "order_status": "2"
         }
-        order_id =  $(this).attr('order_id');
+        order_id_g =  $(this).attr('order_id');
         $.ajax({
             type: "POSR",
             url: base_url+"api/Controller/getOrderById.php",
             async: false,
             data: JSON.stringify(data),
             dataType: "JSON",
+            async: false,
             success: function (res) {
                 valueDetail(res);
             }
         });
+        tooltip('#order_description', 30);
     });
 }
 
@@ -270,6 +272,8 @@ function valueDetail(data){
     $('#order_detail_amount').text(data.result.order_detail_amount);
     $('#user_number_phone').text(data.result.user_number_phone);
     $('#user_email').text(data.result.user_email);
+    $('#order_description').text(data.result.order_description);
+
 }
 
 function tooltip(element, maxLength){

@@ -151,6 +151,14 @@ require("inc_security.php");
                         </div>
                         <div class="row-data-detail">
                             <div class="title-row">
+                                <p><?= translate_text('Ghi Chú Của Khách Hàng')?>:</p>
+                            </div>
+                            <div class="content-row">
+                                <p id="order_description"></p>
+                            </div>
+                        </div>
+                        <div class="row-data-detail">
+                            <div class="title-row">
                                 <p><?= translate_text('Trạng Thái Giao Dịch')?>:</p>
                             </div>
                             <div class="content-row">
