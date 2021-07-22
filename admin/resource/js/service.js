@@ -61,12 +61,6 @@ $(document).ready(function () {
     $(".categories-add").on("click", function () {
       $(".categories-container-form").show();
     });
-
-    $("#form-update, #close-form-update").on("click", function () {
-      $("#image_icon_1_update").attr("src", "#");
-      $("#image_icon_1_update").css("display", "none");
-      $("#input_image_icon_1_update").children("svg").css("display", "inherit");
-    })
 });
 
 function getService(data){
@@ -120,7 +114,6 @@ function createService(){
       "service_gr_id":        $('.pick_service_gr_select.add').select2('val'),
       "service_image":        $('#image_icon_1').attr("src")
     }
-
     $('.loader-container').css('display', 'flex');
     
     $.ajax({
@@ -176,7 +169,14 @@ function getServiceById(){
           $('#service_name_update').val(res.result.service_name);
           $('#service_description_update').val(res.result.service_description);
           CKEDITOR.instances.content_service_update.setData(res.result.service_content);
-          setImageData(res.result.service_image, "#image_icon_", 1);
+          if(res.result.service_image !== null){
+            setImageData(res.result.service_image, "#image_icon_", 1);
+          }
+          else{
+            $("#image_icon_1_update").attr("src", "#");
+            $("#image_icon_1_update").css("display", "none");
+            $("#input_image_icon_1_update").children("svg").css("display", "inherit");
+          }
         }
         else {
           console.log(res?.message);
@@ -186,6 +186,12 @@ function getServiceById(){
         console.log(res.responseText);
       }
     });
+
+    // $("#form-update, #close-form-update").on("click", function () {
+    //   $("#image_icon_1_update").attr("src", "#");
+    //   $("#image_icon_1_update").css("display", "none");
+    //   $("#input_image_icon_1_update").children("svg").css("display", "inherit");
+    // })
   })
 }
 
@@ -199,7 +205,7 @@ function updateService(){
       "service_id":          service_id_update,
       "service_image":       $('#image_icon_1_update').attr('src')   
     }
-    // console.log(data);
+    console.log(data);
     $('.loader-container').css('display', 'flex');
     $.ajax({
       type: "POST",
@@ -457,7 +463,7 @@ var exGetImg = function (extag, element) {
   readers.onload = function () {
     //Call onload() method after conversion
     var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
-    console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
+    // console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
     $(element).siblings("img").css("display", "block");
     $(element).siblings("svg").css("display", "none");
     $(element).siblings("img").attr("src", imgsSrc);
