@@ -9,6 +9,7 @@
         public $service_content;
         public $service_gr_id;
         public $service_active;
+        public $service_image;
         public $term;
 
         public function __construct($db){
@@ -24,12 +25,13 @@
             
             if($stmt->execute() === true){
                 if($stmt->rowCount() === 0){
-                    $query = "INSERT INTO ".$this->table." (service_name, service_description, service_content, service_gr_id)
-                              VALUES (:service_name, :service_description, :service_content, :service_gr_id)";
+                    $query = "INSERT INTO ".$this->table." (service_name, service_description, service_content, service_gr_id, service_image)
+                              VALUES (:service_name, :service_description, :service_content, :service_gr_id, :service_image)";
                     $stmt = $this->conn->prepare($query);
                     $stmt->bindParam(":service_name",        $this->service_name);
                     $stmt->bindParam(":service_description", $this->service_description);
                     $stmt->bindParam(":service_content",     $this->service_content);
+                    $stmt->bindParam(":service_image",       $this->service_image);
                     $stmt->bindParam(":service_gr_id",       $this->service_gr_id, PDO::PARAM_INT);
 
                     if($stmt->execute()==true){
@@ -129,12 +131,14 @@
                 $query = "UPDATE ".$this->table." SET
                           service_name = :service_name,
                           service_description = :service_description,
-                          service_content = :service_content WHERE
+                          service_content = :service_content,
+                          service_image   = :service_image WHERE
                           service_id = :service_id";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(":service_name",        $this->service_name);
                 $stmt->bindParam(":service_description", $this->service_description);
                 $stmt->bindParam(":service_content",     $this->service_content);
+                $stmt->bindParam(":service_image",       $this->service_image);
                 $stmt->bindParam(":service_id",          $this->service_id, PDO::PARAM_INT);
 
                 if($stmt->execute()){

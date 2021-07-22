@@ -25,7 +25,7 @@ $(document).ready(function () {
     $("#" + id)[0].click();
 
     $("#" + id).change(function (e) {
-      var filename = exGetImg(e.target, "#" + id);
+      exGetImg(e.target, "#" + id);
       $("#submit_configuation").attr("disabled", false);
     });
   });
