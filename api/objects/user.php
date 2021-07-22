@@ -1,4 +1,5 @@
 <?php
+
 class User
 {
     private $conn;
@@ -6,6 +7,7 @@ class User
     public $user_id;
     public $user_name;
     public $user_password;
+    public $user_newpassword;
     public $user_number_phone;
     public $user_email;
     public $user_address;
@@ -38,7 +40,7 @@ class User
                     'user_email'        => $result['user_email'],
                     'user_address'      => $result['user_address']
                 );
-                $this->token= $userToken->createToken($user_id, $userData);
+                $this->token = $userToken->createToken($user_id, $userData);
                 return true;
             } else {
                 $message = array(
@@ -53,6 +55,16 @@ class User
             );
         }
         return $message;
+    }
+
+    public function logout()
+    {
+        if ($this->validateToken() === true) {
+            $query = "UPDATE user_tb SET user_token = '' WHERE user_token =:user_token";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':user_token', $this->user_token);
+            $stmt->execute();
+        }
     }
 
     public function signUp()
@@ -111,27 +123,116 @@ class User
         }
     }
 
-    private function checkTokenExist($token, $user_id){
-        $query = "Select * From user_tb Where user_token =:user_token";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_token', $token);
-        $stmt->execute();
-        if($stmt->rowCount() == 0){
-            $query = "Update user_tb SET user_token =:user_token Where user_id =:user_id";
+    public function getInformation()
+    {
+        if ($this->validateToken() === true) {
+            $query = 'SELECT * FROM user_tb WHERE user_id =:user_id AND user_token =:user_token';
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':user_token', $token);
-            $stmt->bindParam(':user_id'   , $user_id);
-            if($stmt->execute()==true){
+            $stmt->bindParam(':user_id', $this->user_id);
+            $stmt->bindParam(':user_token', $this->user_token);
+            $stmt->execute();
+            if ($stmt->rowCount() === 1) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->user_name = $row['user_name'];
+                $this->user_address = $row['user_address'];
+                $this->user_email = $row['user_email'];
+                $this->user_number_phone = $row['user_number_phone'];
                 return true;
             }
             return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateInformation()
+    {
+        if ($this->validateToken() === true) {
+            if (filter_var($this->user_email, FILTER_VALIDATE_EMAIL) != true) {
+                $message = array('code' => 1, 'message' => "Email's not valid");
+                return $message;
+            } else if ($this->user_address == "" || $this->user_address == NULL) {
+                $message = array('code' => 2, 'message' => "Address's empty");
+                return $message;
+            } else if ($this->user_number_phone == "" || $this->user_number_phone == NULL) {
+                $message = array('code' => 3, 'message' => "Phone number's empty.");
+                return $message;
+            } else {
+                $query = 'UPDATE user_tb SET user_number_phone =:user_number_phone, user_address =:user_address, user_email =:user_email
+                        WHERE user_token =:user_token';
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':user_number_phone', $this->user_number_phone);
+                $stmt->bindParam(':user_address', $this->user_address);
+                $stmt->bindParam(':user_email', $this->user_email);
+                $stmt->bindParam(':user_token', $this->user_token);
+                if ($stmt->execute() === true) {
+                    $message = array('code' => 200, 'message' => 'update information success');
+                    return $message;
+                }
+                $message = array('code' => 500, 'message' => "System's got error, login and try again!");
+                return $message;
+            }
+        } else {
+            $message = array('code' => 403, 'message' => "Your token has expired. Login and try again!");
+            return $message;
+        }
+    }
+
+    public function updatePassword()
+    {
+        if ($this->validateToken() === true) {
+            if ($this->user_newpassword == "" || $this->user_newpassword == NULL) {
+                $message = array('code' => 400, 'message' => "New password's empty");
+                return $message;
+            } else if ($this->user_password == NULL || $this->user_password == "") {
+                $message = array('code' => 402, 'message' => "Old password's empty");
+                return $message;
+            } else {
+                $query = 'UPDATE user_tb SET user_password =:new_password WHERE user_password =:old_password AND user_token =:user_token';
+                $stmt = $this->conn->prepare($query);
+                $this->user_newpassword = md5($this->user_newpassword);
+                $this->user_password    = md5($this->user_password);
+                $stmt->bindParam(':new_password', $this->user_newpassword);
+                $stmt->bindParam(':old_password', $this->user_password);
+                $stmt->bindParam(':user_token', $this->user_token);
+                if ($stmt->execute() === true) {
+                    if($stmt->rowCount() === 1){
+                        $message = array('code' => 200, 'message' => 'Update Password Success');
+                        return $message;
+                    }
+                    else{
+                        $message = array('code' => 404, 'message' => 'Wrong Password');
+                        return $message;
+                    }
+                } else {
+                    $message = array('code' => 500, 'message' => "System's got error");
+                    return $message;
+                }
+            }
+        } else {
+            $message = array('code' => 403, 'message' => 'Token expired.');
+            return $message;
+        }
+    }
+
+    public function checkTokenHasNotExpired()
+    {
+        if ($this->validateToken() === true) {
+            return true;
         }
         return false;
     }
 
-    public function checkTokenUser($token){
-
+    private function validateToken()
+    {
+        $user_token = new userToken();
+        $user_token->token = $this->user_token;
+        if ($user_token->validation() === true) {
+            $this->user_id = $user_token->user_id;
+            $this->user_token = $user_token->tokenId;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
-
-?>
