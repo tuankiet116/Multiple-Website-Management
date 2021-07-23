@@ -30,7 +30,7 @@ if(isset($data)){
     else{
         http_response_code(200);
         echo json_encode([
-            "message"  => "Some Thing Has Wrong!!",
+            "message"  => "Something Has Wrong!!",
             "code"     => 500
         ]);
     }
