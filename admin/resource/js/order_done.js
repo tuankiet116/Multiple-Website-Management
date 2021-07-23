@@ -32,13 +32,10 @@ function getOrder(term){
                     else{
                         order_payment = `Khác`;
                     }
-
-
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
                             <td>${item.order_id}</td>
-                            <td>${item.product_name}</td>
                             <td>${item.user_name}</td>
                             <td>${order_payment}</td>
                             <td>${item.order_trans_id}</td>
@@ -131,11 +128,17 @@ function valueDetail(data){
     else if(data.result.order_reason == 3){
         order_reason = 'Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng'
     }
+
+    let order_detail = data.result.order_detail.map(function(item){
+        return `<span style="display:block; margin-bottom: 10px">
+                    <span style="font-weight: 500">Tên SP</span>: ${item.product_name}, 
+                    <span style="font-weight: 500">SL</span>: ${item.order_detail_quantity}, 
+                    <span style="font-weight: 500">Tổng</span>: ${item.order_detail_amount}
+                </span>`
+    })
     
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
-    $('#product_name').text(data.result.product_name);
-    $('#order_detail_quantity').text(data.result.order_detail_quantity);
     $('#order_payment_status').text(data.result.order_payment_status);
     $('#order_payment').text(order_payment);
     $('#web_name').text(data.result.web_name);
@@ -145,11 +148,10 @@ function valueDetail(data){
     $('#order_paytype').text(data.result.order_paytype);
     $('#order_datetime').text(data.result.order_datetime);
     $('#order_status').text(order_status);
-    $('#order_detail_unit_price').text(data.result.order_detail_unit_price);
-    $('#order_detail_amount').text(data.result.order_detail_amount);
     $('#user_number_phone').text(data.result.user_number_phone);
     $('#user_email').text(data.result.user_email);
     $('#order_description').text(data.result.order_description);
+    $('#order_detail').html(order_detail);
 }
 
 function tooltip(element, maxLength){

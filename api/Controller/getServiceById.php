@@ -27,7 +27,7 @@ if(isset($data) && ($data->service_id != null || $data->service_id != "") && ($d
             "service_description" => $row['service_description'],
             "service_content"     => $row['service_content'],
             "service_gr_id"       => $row['service_gr_id'],
-            "service_gr_name"
+            "service_image"       => $row['service_image']
         ];
         http_response_code(200);
         echo json_encode([

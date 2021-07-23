@@ -21,6 +21,46 @@ $(document).ready(function () {
 
     //search service
     searchService();
+    
+    $(".input-image-container i").on("click", function (e) {
+      var image_element = $(this).siblings(".input-image").find("img");
+      var id_image = "#" + image_element.attr("id");
+      $(id_image).attr("src", "#");
+      $(id_image).css("display", "none");
+      $(id_image).siblings("svg").css("display", "block");
+    });
+
+    $(".input-image-container i").hover(function (e) {
+      $(this).css("display", "block");
+    });
+  
+    $(".input-image-container i").mouseout(function (e) {
+      $(this).css("display", "none");
+    });
+
+    $(".input-image").on("click", function (e) {
+      var id = $(this).attr("id");
+      id = id.replace("input_image_", "");
+      id = "input_" + id;
+      $("#" + id)[0].click();
+  
+      $("#" + id).change(function (e) {
+        exGetImg(e.target, "#" + id);
+        $("#submit_configuation").attr("disabled", false);
+      });
+    });
+    
+    $(".input-image img").hover(function (e) {
+      $(this).closest("div").siblings("i").css("display", "block");
+    });
+  
+    $(".input-image img").mouseout(function (e) {
+      $(this).closest("div").siblings("i").css("display", "none");
+    });
+  
+    $(".categories-add").on("click", function () {
+      $(".categories-container-form").show();
+    });
 });
 
 function getService(data){
@@ -59,6 +99,7 @@ function getService(data){
         getServiceById();
         tooltip('.service-description', 30);
         updateService();
+        
       })
     }
   });
@@ -70,9 +111,9 @@ function createService(){
       "service_name":         $('#service_name').val(),
       "service_description":  $('#service_description').val(),
       "service_content":      CKEDITOR.instances.content_service_add.getData(),
-      "service_gr_id":        $('.pick_service_gr_select.add').select2('val')
+      "service_gr_id":        $('.pick_service_gr_select.add').select2('val'),
+      "service_image":        $('#image_icon_1').attr("src")
     }
-
     $('.loader-container').css('display', 'flex');
     
     $.ajax({
@@ -89,6 +130,9 @@ function createService(){
           $('.pick_service_gr_select.add').empty();
           $('.pick_service_gr_select.add').attr('disabled','true');
           $('.pick_website_select.add').empty();
+          $("#image_icon_1").attr("src", "#");
+          $("#image_icon_1").css("display", "none");
+          $("#input_image_icon_1").children("svg").css("display", "inherit");
           $('#close-form-add').click();
 
         }
@@ -125,6 +169,14 @@ function getServiceById(){
           $('#service_name_update').val(res.result.service_name);
           $('#service_description_update').val(res.result.service_description);
           CKEDITOR.instances.content_service_update.setData(res.result.service_content);
+          if(res.result.service_image !== null){
+            setImageData(res.result.service_image, "#image_icon_", 1);
+          }
+          else{
+            $("#image_icon_1_update").attr("src", "#");
+            $("#image_icon_1_update").css("display", "none");
+            $("#input_image_icon_1_update").children("svg").css("display", "inherit");
+          }
         }
         else {
           console.log(res?.message);
@@ -144,9 +196,10 @@ function updateService(){
       "service_description": $('#service_description_update').val(),
       "service_content":     CKEDITOR.instances.content_service_update.getData(),
       "service_gr_id":       service_gr_id_update,
-      "service_id":          service_id_update,   
+      "service_id":          service_id_update,
+      "service_image":       $('#image_icon_1_update').attr('src')   
     }
-    // console.log(data);
+    console.log(data);
     $('.loader-container').css('display', 'flex');
     $.ajax({
       type: "POST",
@@ -393,4 +446,52 @@ function showAlert(type, message){
     $('.alert button.close').on('click', function(){
         $('.alert').removeClass('d-block');
     });
+}
+
+
+var exGetImg = function (extag, element) {
+  var file = extag.files[0]; //The first file of the selected file (as a fixed format)
+  var readers = new FileReader(); //Create a new file reading object to change the path
+  var filename;
+  readers.readAsDataURL(file); //Convert the read file path to a url type
+  readers.onload = function () {
+    //Call onload() method after conversion
+    var imgsSrc = this.result; //After the image address is read out, the result result is DataURL //this.result is the URL path of the image conversion
+    // console.log(imgsSrc); //The url path of the displayed image can be directly assigned to the src attribute of img
+    $(element).siblings("img").css("display", "block");
+    $(element).siblings("svg").css("display", "none");
+    $(element).siblings("img").attr("src", imgsSrc);
+  };
+};
+
+//set default image which null value
+function checkdefault(default_value, check_parameter) {
+  if (check_parameter == null || check_parameter == "") {
+    return default_value;
+  }
+  return check_parameter;
+}
+
+function setImageData(data, element, max = 0) {
+  if (data && element) {
+    if (max != 0) {
+      var data_arr = data.split(",");
+      if (data_arr.length <= 5) {
+        var i = 1;
+        data_arr.forEach(function (value, key) {
+          value = value.trim();
+          key = key + 1;
+          $(element + key + "_update").attr("src", base_url + value);
+          $(element + key + "_update")
+            .siblings("svg")
+            .css("display", "none");
+          $(element + key + "_update").css("display", "block");
+        });
+      }
+    } else {
+      $(element).attr("src", base_url + data);
+      $(element).siblings("svg").css("display", "none");
+      $(element).css("display", "block");
+    }
+  }
 }

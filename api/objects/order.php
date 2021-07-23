@@ -34,21 +34,25 @@
                       user_tb.user_name, 
                       user_tb.user_number_phone,
                       user_tb.user_email,
-                      order_detail.product_id,
-                      product.product_name,
-                      website_config.web_name,
-                      order_detail.order_detail_quantity,
-                      order_detail.order_detail_unit_price,
-                      order_detail.order_detail_amount
+                      website_config.web_name
                       FROM order_tb 
                       INNER JOIN user_tb ON order_tb.user_id = user_tb.user_id 
-                      INNER JOIN order_detail ON order_detail.order_id = order_tb.order_id 
-                      INNER JOIN product ON order_detail.product_id = product.product_id
                       INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = :order_status 
                       WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":order_status", $this->order_status, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
+        }
+
+        public function getOrderDetail(){
+            $query = "SELECT order_detail.*, product.product_name FROM order_detail 
+                      INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id
+                      INNER JOIN product  ON order_detail.product_id = product.product_id 
+                       AND order_detail.order_id = :order_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":order_id", $this->order_id);
             $stmt->execute();
             return $stmt;
         }
@@ -83,7 +87,7 @@
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
             $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
-            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id);
 
             if($stmt->execute() === true){
                 $message = true;
