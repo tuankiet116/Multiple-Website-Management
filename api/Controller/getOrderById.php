@@ -15,7 +15,7 @@ $order = new Order($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data) && $data->order_id != null && $data->order_id != ""){
-    $order->order_id = intval($data->order_id);
+    $order->order_id = trim($data->order_id);
     $order->order_status = intval($data->order_status);
     $res = $order->getOrder(false, true);
     $detail = $order->getOrderDetail();

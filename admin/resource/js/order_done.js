@@ -32,8 +32,6 @@ function getOrder(term){
                     else{
                         order_payment = `Khác`;
                     }
-
-
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
