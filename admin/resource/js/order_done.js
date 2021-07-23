@@ -104,7 +104,7 @@ function clearTerm(){
 function valueDetail(data){
     let order_payment = '';
     let order_status ='';
-    let order_reason = '';
+
     if(data.result.order_payment == 1){
         order_payment ='COD';
     }
@@ -119,15 +119,6 @@ function valueDetail(data){
         order_status = 'Đơn Đã Giao Thành Công';
     }
 
-    if(data.result.order_reason == 1){
-        order_reason = 'Admin Hủy';
-    }
-    else if(data.result.order_reason == 2){
-        order_reason = 'Không Xác Nhận Được Với Khách Hàng'
-    }
-    else if(data.result.order_reason == 3){
-        order_reason = 'Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng'
-    }
 
     let order_detail = data.result.order_detail.map(function(item){
         return `<span style="display:block; margin-bottom: 10px">
