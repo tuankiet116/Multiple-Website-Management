@@ -61,7 +61,7 @@
                      
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
-            $stmt->bindParam(":order_id",      $this->order_id, PDO::PARAM_INT);
+            $stmt->bindParam(":order_id",      $this->order_id);
 
             if($stmt->execute() === true){
                 $message = true;

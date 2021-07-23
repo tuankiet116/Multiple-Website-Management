@@ -25,4 +25,7 @@ if($data->user_token != NULL && $data->user_token != ""){
         http_response_code(403);
     }
 }
+else{
+    http_response_code(403);
+}
 ?>

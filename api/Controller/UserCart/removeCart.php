@@ -5,19 +5,23 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-require_once('../../config/database.php');
 include_once('../../objects/userToken.php');
 require_once('../../objects/cart.php');
+require_once('../../config/database.php');
 
 $database = new ConfigAPI();
 $db = $database->getConnection();
 
 $cart = new Cart($db);
 $data = json_decode(file_get_contents("php://input"));
-$origin = $_SERVER['HTTP_ORIGIN'];
-if ($data->user_token != "" && $data->user_token != NULL && $cart->setWebID($origin) === true) {
+if (
+    $data->user_token != "" && $data->user_token != NULL
+    && $cart->setWebID($_SERVER['HTTP_ORIGIN']) === true
+    && intVal($data->product_id) !== 0
+) {
     $cart->user_token = $data->user_token;
-    $result = $cart->getCart();
+    $cart->product_id = $data->product_id;
+    $result = $cart->removeCart();
     http_response_code(200);
     echo json_encode($result);
 } else {
@@ -25,4 +29,3 @@ if ($data->user_token != "" && $data->user_token != NULL && $cart->setWebID($ori
     http_response_code(200);
     echo json_encode($message);
 }
-?>
