@@ -19,7 +19,7 @@ if(isset($data)){
        ($data->order_status !="" && $data->order_status !=null) || 
        ($data->order_reason !="" && $data->order_reason !=null))
     {
-            $order->order_id     = intval($data->order_id);
+            $order->order_id     = trim($data->order_id);
             $order->order_status = intval($data->order_status);
             $order->order_reason = intval($data->order_reason);      
     }

@@ -37,14 +37,9 @@ if($res->rowCount() > 0){
             "user_name"            => $row['user_name'],
             "user_number_phone"    => $row['user_number_phone'],
             "user_email"           => $row['user_email'],
-            "product_id"           => $row['product_id'],
-            "product_name"         => $row['product_name'],
             "web_name"             => $row['web_name'],
             "order_reason"         => $row['order_reason'],
-            "order_detail_quantity"   => $row['order_detail_quantity'],
-            "order_detail_unit_price" => $row['order_detail_unit_price'],
-            "order_detail_amount"     => $row['order_detail_amount'],
-            "order_description"       => $row['order_description']
+            "order_description"    => $row['order_description']
         ]);
     }
     http_response_code(200);

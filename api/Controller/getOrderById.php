@@ -18,6 +18,28 @@ if(isset($data) && $data->order_id != null && $data->order_id != ""){
     $order->order_id = intval($data->order_id);
     $order->order_status = intval($data->order_status);
     $res = $order->getOrder(false, true);
+    $detail = $order->getOrderDetail();
+
+    if($detail->rowCount() > 0){
+        $order_detail =[];
+        while($row = $detail->fetch(PDO::FETCH_ASSOC)){
+            array_push($order_detail, [
+                "order_detail_id"         => $row['order_detail_id'],
+                "product_id"              => $row['product_id'],
+                "order_detail_quantity"   => $row['order_detail_quantity'],
+                "order_detail_unit_price" => $row['order_detail_unit_price'],
+                "order_detail_amount"     => $row['order_detail_amount'],
+                "product_name"            => $row['product_name']
+            ]);
+        }
+    }
+    else{
+        http_response_code(200);
+        echo json_encode([
+            "message"  => "Order Detail Not Found!!",
+            "code"     => 500
+        ]);
+    }
 
     if($res->rowCount() > 0){
         $row = $res->fetch(PDO::FETCH_ASSOC);
@@ -36,14 +58,10 @@ if(isset($data) && $data->order_id != null && $data->order_id != ""){
             "user_name"               => $row['user_name'],
             "user_number_phone"       => $row['user_number_phone'],
             "user_email"              => $row['user_email'],
-            "product_id"              => $row['product_id'],
-            "product_name"            => $row['product_name'],
             "web_name"                => $row['web_name'],
-            "order_detail_quantity"   => $row['order_detail_quantity'],
-            "order_detail_unit_price" => $row['order_detail_unit_price'],
-            "order_detail_amount"     => $row['order_detail_amount'],
             "order_reason"            => $row['order_reason'],
-            "order_description"       => $row['order_description']
+            "order_description"       => $row['order_description'],
+            "order_detail"            => $order_detail
         ];
 
         http_response_code(200);
