@@ -39,18 +39,18 @@
                 <row class="container-fluid">
                     <div class="form-group form-post col-3">
                         <label for="postTitle"><?=translate_text('Tiêu Đề')?></label>
-                        <input  required type="text" class="form-control" id="postTitle" placeholder="<?=translate_text('Nhập Tiêu Đề')?>">
+                        <input  required type="text" class="form-control" id="postTitle" placeholder="<?=translate_text('Nhập Tiêu Đề')?>" style="font-size: 11.5px">
                         <small class="form-text text-muted"><?=translate_text('Tiêu Đề Phải Là Duy Nhất.')?></small>
                     </div>
 
                     <div class="form-group form-post col-4">
                         <label for="postDescription"><?=translate_text('Mô Tả')?></label>
-                        <textarea  required type="text" class="form-control" id="postDescription" placeholder="<?=translate_text('Nhập Mô Tả')?>"></textarea>
+                        <textarea  required type="text" class="form-control" id="postDescription" placeholder="<?=translate_text('Nhập Mô Tả')?>" style="font-size: 11.5px"></textarea>
                     </div>
                     
                     <div class="form-group form-post col-3">
                         <label for="metaDescription"><?=translate_text('Mô Tả Meta')?></label>
-                        <textarea  required type="text" class="form-control" id="metaDescription" placeholder="<?=translate_text('Nhập Mô Tả')?>"></textarea>
+                        <textarea  required type="text" class="form-control" id="metaDescription" placeholder="<?=translate_text('Nhập Mô Tả')?>" style="font-size: 11.5px"></textarea>
                         <small class="form-text text-muted"><?=translate_text('Mô Tả Cần Được Tối Ưu.')?></small>
                     </div>
 
@@ -65,7 +65,7 @@
 
                     <div class="form-group form-post col-3">
                         <label for="rewriteName"><?=translate_text('Rewrite Name')?></label>
-                        <textarea  required type="text" class="form-control" id="rewriteName" placeholder="<?=translate_text('Nhập Rewrite Name')?>"></textarea>
+                        <textarea  required type="text" class="form-control" id="rewriteName" placeholder="<?=translate_text('Nhập Rewrite Name')?>" style="font-size: 11.5px"></textarea>
                     </div>
                     
                     <div class="form-group form-post-image form-post col-2">

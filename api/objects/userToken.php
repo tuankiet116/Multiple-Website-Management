@@ -7,7 +7,7 @@ include_once('../../config/database.php');
 
 include_once('../../vendor/autoload.php');
 include_once('../config/database.php');
-
+error_reporting(0);
 class userToken
 {
     private $secretKey;
