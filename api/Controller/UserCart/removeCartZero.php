@@ -21,7 +21,7 @@ if (
 ) {
     $cart->user_token = $data->user_token;
     $cart->product_id = $data->product_id;
-    $result = $cart->removeCart(false);
+    $result = $cart->removeCart(true);
     http_response_code(200);
     echo json_encode($result);
 } else {

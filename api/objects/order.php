@@ -28,7 +28,7 @@
             }
 
             if($order_id_check == true){
-                $queryWhere .= " AND order_tb.order_id = ".$this->order_id;
+                $queryWhere .= " AND order_tb.order_id = '".$this->order_id."'";
             }
             $query = "SELECT order_tb.*, 
                       user_tb.user_name, 
