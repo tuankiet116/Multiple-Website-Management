@@ -73,7 +73,6 @@ require("inc_security.php");
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col"><?= translate_text('Mã Đơn Hàng')?></th>
-                        <th scope="col"><?= translate_text('Tên Sản Phẩm')?></th>
                         <th scope="col"><?= translate_text('Tên Khách Hàng')?></th>
                         <th scope="col"><?= translate_text('Số Điện Thoại')?></th> 
                         <th scope="col"><?= translate_text('Phương Thức Thanh Toán')?></th>
@@ -135,18 +134,10 @@ require("inc_security.php");
                         </div>
                         <div class="row-data-detail">
                             <div class="title-row">
-                                <p><?= translate_text('Tên Sản Phẩm')?>:</p>
+                                <p><?= translate_text('Chi Tiết Đơn Hàng')?>:</p>
                             </div>
                             <div class="content-row">
-                                <p id="product_name"></p>
-                            </div>
-                        </div>
-                        <div class="row-data-detail">
-                            <div class="title-row">
-                                <p><?= translate_text('Số Lượng')?>:</p>
-                            </div>
-                            <div class="content-row">
-                                <p id="order_detail_quantity"></p>
+                                <p id="order_detail"></p>
                             </div>
                         </div>
                         <div class="row-data-detail">
@@ -227,22 +218,6 @@ require("inc_security.php");
                             </div>
                             <div class="content-row">
                                 <p id="order_status"></p>
-                            </div>
-                        </div>
-                        <div class="row-data-detail">
-                            <div class="title-row">
-                                <p><?= translate_text('order_detail_unit_price')?>:</p>
-                            </div>
-                            <div class="content-row">
-                                <p id="order_detail_unit_price"></p>
-                            </div>
-                        </div>
-                        <div class="row-data-detail">
-                            <div class="title-row">
-                                <p><?= translate_text('order_detail_amount')?>:</p>
-                            </div>
-                            <div class="content-row">
-                                <p id="order_detail_amount"></p>
                             </div>
                         </div>
                     </div>

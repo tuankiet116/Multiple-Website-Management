@@ -14,7 +14,7 @@ $db = $database->getConnection();
 $order = new Order($db);
 $data = json_decode(file_get_contents("php://input"));
 if(isset($data) && $data->web_id != null && $data->web_id != ""){
-    $order->web_id = intval($data->web_id);
+    $order->web_id = trim($data->web_id);
     $order->term = trim($data->term);
     $order->order_status = intval($data->order_status);
 

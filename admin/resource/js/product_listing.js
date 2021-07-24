@@ -24,8 +24,8 @@ $(document).ready(function(){
         placeholder: 'Search For Product Group'
       });
       $('.product_group_select_add').prop('disabled', false);
-      activeSelect2PrductGroup(".product_group_select_add", ".website_select_add");
-      web_id = $('.website_select_add').select2('data')[0].id;
+      web_id = $('.website_select_add').select2('val');
+      activeSelect2PrductGroup(".product_group_select_add", web_id);
     })
 
     $('.website_select_update').change(function(){
@@ -35,7 +35,8 @@ $(document).ready(function(){
         placeholder: 'Search For Product Group'
       });
       $('.product_group_select_update').prop('disabled', false);
-      activeSelect2PrductGroup(".product_group_select_update", ".website_select_update");
+      let web_id = $(this).select2('val')
+      activeSelect2PrductGroup(".product_group_select_update", web_id);
     })
     //Show Product
     var data_init = {

@@ -186,12 +186,6 @@ function getServiceById(){
         console.log(res.responseText);
       }
     });
-
-    // $("#form-update, #close-form-update").on("click", function () {
-    //   $("#image_icon_1_update").attr("src", "#");
-    //   $("#image_icon_1_update").css("display", "none");
-    //   $("#input_image_icon_1_update").children("svg").css("display", "inherit");
-    // })
   })
 }
 

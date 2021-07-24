@@ -16,7 +16,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data)){
     if($data->order_id !== null && $data->order_id !==""){
-        $order->order_id = intval($data->order_id);
+        $order->order_id = trim($data->order_id);
         $order->order_status   = intval($data->order_status);
     }
     $message = $order->confirm();
@@ -30,7 +30,7 @@ if(isset($data)){
     else{
         http_response_code(200);
         echo json_encode([
-            "message"  => "Some Thing Has Wrong!!",
+            "message"  => "Something Has Wrong!!",
             "code"     => 500
         ]);
     }
