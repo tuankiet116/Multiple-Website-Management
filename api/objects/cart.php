@@ -40,7 +40,8 @@ class Cart
         if ($stmt->rowCount() === 1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $product_price = $result['product_price'];
-            return $product_price;
+            $this->cart_price = $product_price;
+            return true;
         }
         return false;
     }
@@ -73,7 +74,7 @@ class Cart
     {
         if ($this->validateToken() === true) {
             $query = 'SELECT cart.*, product.product_name, product.product_image_path FROM cart 
-                      INNER JOIN product ON product.product_id = cart.product_id \
+                      INNER JOIN product ON product.product_id = cart.product_id 
                                             AND cart.user_id =:user_id 
                                             AND cart.web_id =:web_id 
                                             AND product.web_id =:web_id';
@@ -81,7 +82,7 @@ class Cart
             $stmt->bindParam(':user_id', $this->user_id);
             $stmt->bindParam(':web_id', $this->web_id);
             $stmt->execute();
-            if ($quantity = $stmt->rowCount() > 0) {
+            if ($stmt->rowCount() > 0) {
                 $data = array();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $item = array(
@@ -94,7 +95,7 @@ class Cart
                     );
                     array_push($data, $item);
                 }
-                $message = array('code' => 200,'quantity'=> $quantity, 'data' => $data);
+                $message = array('code' => 200,'quantity'=> $stmt->rowCount(), 'data' => $data);
                 return $message;
             } else {
                 $message = array('code' => 404,'quantity'=> 0, 'message' => 'Cart is empty.');
@@ -125,13 +126,13 @@ class Cart
             $stmt->bindParam(':web_id', $this->web_id);
             $stmt->execute();
             if ($stmt->rowCount() === 0) {
-                if ($price = $this->getProductPrice() !== false) {
+                if ($this->getProductPrice() === true) {
                     $query = "INSERT INTO cart(user_id, product_id, cart_price, web_id, cart_quantity, cart_active) 
                               VALUES(:user_id, :product_id, :cart_price, :web_id, 1, 1)";
                     $stmt = $this->conn->prepare($query);
                     $stmt->bindParam(':user_id', $this->user_id);
                     $stmt->bindParam(':product_id', $this->product_id);
-                    $stmt->bindParam(':cart_price', $price, PDO::PARAM_INT);
+                    $stmt->bindParam(':cart_price', $this->cart_price);
                     $stmt->bindParam(':web_id', $this->web_id);
                     if ($stmt->execute() === true) {
                         $message = array('code' => 200, 'message' => "Add Product To Cart Success");
@@ -145,7 +146,7 @@ class Cart
                     return $message;
                 }
             } else {
-                if ($price = $this->getProductPrice() !== false) {
+                if ($this->getProductPrice() === true) {
                     $query = "UPDATE cart SET cart_quantity = cart_quantity+1 WHERE user_id =:user_id AND product_id =:product_id AND web_id =:web_id";
                     $stmt = $this->conn->prepare($query);
                     $stmt->bindParam(':user_id', $this->user_id);
