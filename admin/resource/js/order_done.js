@@ -70,15 +70,13 @@ function getOrderById(){
             "order_id": $(this).attr('order_id'),
             "order_status": "4"
         }
-        order_id_g =  $(this).attr('order_id');
         $.ajax({
-            type: "POSR",
+            type: "POST",
             url: base_url+"api/Controller/getOrderById.php",
             data: JSON.stringify(data),
             dataType: "JSON",
             async:false,
             success: function (res) {
-                // console.log(res);
                 valueDetail(res);
             }
         });

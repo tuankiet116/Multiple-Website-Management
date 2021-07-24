@@ -30,7 +30,7 @@ if($stmt === true){
     //     'samesite' => 'None' // None || Lax  || Strict
     //     );
     // setcookie('token', $user->token, $arr_cookie_options);   
-
+    error_reporting(0);
     http_response_code(200);
     echo json_encode(array('data'=>$user->token, 'code'=>200));
 }

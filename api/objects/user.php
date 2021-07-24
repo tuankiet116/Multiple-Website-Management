@@ -102,7 +102,7 @@ class User
                 $stmt->bindParam(':user_name',            $this->user_name);
                 $stmt->bindParam(':user_password',        $password);
                 $stmt->bindParam(':user_email',           $this->user_email);
-                $stmt->bindParam(':user_number_phone',    $this->user_number_phone, PDO::PARAM_INT);
+                $stmt->bindParam(':user_number_phone',    $this->user_number_phone);
                 $stmt->bindParam(':user_address',         $this->user_address);
 
                 if ($stmt->execute() === true) {

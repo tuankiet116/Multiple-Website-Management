@@ -45,7 +45,7 @@
         </div>
         <div class="form-group col-2">
             <label for="searching"><?= translate_text('Tìm Kiếm')?></label>
-            <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm')?>">
+            <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm')?>" style="font-size: 11.5px">
         </div>
         <div class=" col-2">
             <label for="searching"><?= translate_text('Trạng Thái Bài Viết')?></label>

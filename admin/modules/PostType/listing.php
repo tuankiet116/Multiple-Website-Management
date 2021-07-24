@@ -47,11 +47,11 @@
         </div>
         <div class="form-group col-3">
             <label for="searching"><?= translate_text('Tìm Kiếm') ?></label>
-            <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm') ?>">
+            <input type="text" class="form-control" id="searching" placeholder="<?= translate_text('Tìm') ?>" style="font-size: 11.5px">
         </div>
         <div class="col-2 form-group button-search">
-            <button id="search_button" class="btn btn-primary" type="button"><?= translate_text('Tìm') ?></button>
-            <button id="clear_button" class="btn btn-danger" type="button"><?= translate_text('Xóa') ?></button>
+            <button id="search_button" class="btn btn-primary" type="button" style="font-size: 11.5px"><?= translate_text('Tìm') ?></button>
+            <button id="clear_button" class="btn btn-danger" type="button" style="font-size: 11.5px"><?= translate_text('Xóa') ?></button>
         </div>
     </div>
     <hr>
