@@ -68,13 +68,13 @@
                     <row class="container-fluid">
                         <div class="form-group form-post col-4">
                             <label for="postTitle"><?= translate_text('Tiêu Đề') ?></label>
-                            <input disabled required type="text" class="form-control" id="postTypeTitle" placeholder="<?= translate_text('Nhập Tiêu Đề') ?>">
+                            <input disabled required type="text" class="form-control" id="postTypeTitle" placeholder="<?= translate_text('Nhập Tiêu Đề') ?>" style="font-size: 11.5px">
                             <small class="form-text text-muted"><?= translate_text('Tiêu Đề Phải Là Duy Nhất.') ?></small>
                         </div>
 
                         <div class="form-group form-post col-4">
                             <label for="postDescription"><?= translate_text('Mô Tả') ?></label>
-                            <textarea disabled required type="text" class="form-control" id="postTypeDescription" placeholder="<?= translate_text('Nhập Mô Tả') ?>"></textarea>
+                            <textarea disabled required type="text" class="form-control" id="postTypeDescription" placeholder="<?= translate_text('Nhập Mô Tả') ?>" style="font-size: 11.5px"></textarea>
                         </div>
 
                         <div class=" form-group form-post col-4">
