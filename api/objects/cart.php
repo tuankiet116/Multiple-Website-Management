@@ -22,6 +22,7 @@ class Cart
     {
         $user_token = new userToken();
         $user_token->token = $this->user_token;
+        $user_token->web_id = $this->web_id;
         if ($user_token->validation() === true) {
             $this->user_id = $user_token->user_id;
             $this->user_token = $user_token->tokenId;

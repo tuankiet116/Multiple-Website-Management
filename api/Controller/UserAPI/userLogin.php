@@ -1,5 +1,5 @@
-<?php 
-header("Access-Control-Allow-Origin: *"); 
+<?php
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
@@ -16,25 +16,29 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
 $user->user_name = $data->user_name;
 $user->user_password = $data->user_password;
-
-$stmt = $user->login();
-
-if($stmt === true){
-    // These code use for setting cookie but it has not done yet!
-    // $arr_cookie_options = array (
-    //     'expires' => mktime()+60*60*5,
-    //     'path' => '/',
-    //     'domain' => '', // leading dot for compatibility or use subdomain
-    //     'secure' => true,     // or false
-    //     'httponly' => true,    // or false
-    //     'samesite' => 'None' // None || Lax  || Strict
-    //     );
-    // setcookie('token', $user->token, $arr_cookie_options);   
-    error_reporting(0);
-    http_response_code(200);
-    echo json_encode(array('data'=>$user->token, 'code'=>200));
+$origin = $_SERVER['HTTP_ORIGIN'];
+if ($user->setWebID($origin) === true) {
+    $stmt = $user->login();
+    if ($stmt === true) {
+        // These code use for setting cookie but it has not done yet!
+        // $arr_cookie_options = array (
+        //     'expires' => mktime()+60*60*5,
+        //     'path' => '/',
+        //     'domain' => '', // leading dot for compatibility or use subdomain
+        //     'secure' => true,     // or false
+        //     'httponly' => true,    // or false
+        //     'samesite' => 'None' // None || Lax  || Strict
+        //     );
+        // setcookie('token', $user->token, $arr_cookie_options);   
+        error_reporting(0);
+        http_response_code(200);
+        echo json_encode(array('data' => $user->token, 'code' => 200));
+    } else {
+        echo json_encode($stmt);
+    }
 }
-else{
-    echo json_encode($stmt);
+else {
+    $message = array('code' => 403403, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
+    http_response_code(403);
+    echo json_encode($message);
 }
-?>

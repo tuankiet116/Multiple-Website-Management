@@ -14,6 +14,7 @@ class userToken
     private $serverName = "www.vveco.vn";
     private $lifetime = '+300 minutes';
     private $conn;
+    public $web_id;
 
     public $user_id;
     public $token;
@@ -77,10 +78,11 @@ class userToken
         $stmt->bindParam(':user_token', $token);
         $stmt->execute();
         if ($stmt->rowCount() == 0) {
-            $query = "Update user_tb SET user_token =:user_token Where user_id =:user_id";
+            $query = "Update user_tb SET user_token =:user_token Where user_id =:user_id AND web_id =:web_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':user_token', $token);
             $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':web_id', $this->web_id);
             if ($stmt->execute() == true) {
                 return true;
             }
@@ -100,9 +102,10 @@ class userToken
             return false;
         }
         else{
-            $query = "SELECT user_id FROM user_tb WHERE user_token = :user_token";
+            $query = "SELECT user_id FROM user_tb WHERE user_token = :user_token AND web_id =:web_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':user_token', $token->jti);
+            $stmt->bindParam(':web_id', $this->web_id);
             $stmt->execute();
             if($stmt->rowCount() === 1){
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);

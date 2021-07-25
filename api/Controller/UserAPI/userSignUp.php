@@ -67,13 +67,20 @@ if ($data->user_name == "" || $data->user_name == null) {
     $signup->user_number_phone  = htmlspecialchars(trim($data->user_number_phone));
     $signup->user_address       = htmlspecialchars(trim($data->user_address));
 }
-
-$result = $signup->signUp();
-
-if ($result === true) {
-    http_response_code(200);
-    echo json_encode(array("message" => "Sign up Success", "code" => 200));
-} else {
-    http_response_code(200);
-    echo json_encode($result);
+$origin = $_SERVER['HTTP_ORIGIN'];
+if ($user->setWebID($origin) === true) {
+    $result = $signup->signUp();
+    
+    if ($result === true) {
+        http_response_code(200);
+        echo json_encode(array("message" => "Sign up Success", "code" => 200));
+    } else {
+        http_response_code(200);
+        echo json_encode($result);
+    }
+}
+else {
+    $message = array('code' => 403403, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
+    http_response_code(403);
+    echo json_encode($message);
 }
