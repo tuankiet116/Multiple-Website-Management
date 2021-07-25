@@ -47,7 +47,7 @@
         }
 
         public function getOrderDetail(){
-            $query = "SELECT order_detail.*, product.product_name FROM order_detail 
+            $query = "SELECT order_detail.*, product.product_name, product.product_currency FROM order_detail 
                       INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id
                       INNER JOIN product  ON order_detail.product_id = product.product_id 
                        AND order_detail.order_id = :order_id";

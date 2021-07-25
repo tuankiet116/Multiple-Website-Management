@@ -48,6 +48,7 @@ input.style_input:focus{ box-shadow: none;}
 .modal-footer > button:focus{ box-shadow: none;}
 #close-modal-detail:focus, #close-modal-cancel:focus{ outline: none; border: none;}
 .row-data-detail{ display: flex; align-items: center; border-bottom: 1.5px dashed #b8daff; margin-bottom: 15px;}
+.table-data-detail{ border-bottom: 1.5px dashed #b8daff; margin-bottom: 15px}
 .title-row{ min-width: 200px;}
 .title-row > p { font-weight: 700; font-size: 13px; margin-right: 10px;}
 .content-row {flex: 1;}
