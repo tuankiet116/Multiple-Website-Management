@@ -120,14 +120,6 @@
                     </div>
                     <div class="row-data-detail">
                         <div class="title-row">
-                            <p><?= translate_text('Chi Tiết Đơn Hàng')?>:</p>
-                        </div>
-                        <div class="content-row">
-                            <p id="order_detail"></p>
-                        </div>
-                    </div>
-                    <div class="row-data-detail">
-                        <div class="title-row">
                             <p><?= translate_text('Ghi Chú Của Khách Hàng')?>:</p>
                         </div>
                         <div class="content-row">
@@ -204,6 +196,23 @@
                         </div>
                         <div class="content-row">
                             <p id="order_status"></p>
+                        </div>
+                    </div>
+                    <div class="table-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Chi Tiết Đơn Hàng')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <table style="border-collapse: collapse; margin-bottom: 14px; width: 100%; margin-top: 5px; font-size: 14px">
+                                <thead>
+                                    <tr>     
+                                        <th style="border: 1px solid #dee2e6; font-weight: 500; padding: 5px"> Tên Sản Phẩm </th>
+                                        <th style="border: 1px solid #dee2e6; font-weight: 500; padding: 5px"> Số Lượng </th>
+                                        <th style="border: 1px solid #dee2e6; font-weight: 500; padding: 5px"> Tổng </th>            
+                                    </tr>
+                                </thead>
+                                <tbody id="order_detail"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

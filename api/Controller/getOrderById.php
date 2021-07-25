@@ -30,7 +30,8 @@ if(isset($data) && $data->order_id != null && $data->order_id != ""){
                 "order_detail_quantity"   => $row['order_detail_quantity'],
                 "order_detail_unit_price" => $row['order_detail_unit_price'],
                 "order_detail_amount"     => $row['order_detail_amount'],
-                "product_name"            => $row['product_name']
+                "product_name"            => $row['product_name'],
+                "product_currency"        => $row['product_currency']
             ]);
         }
     }
