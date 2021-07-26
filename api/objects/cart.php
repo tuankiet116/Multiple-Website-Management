@@ -74,7 +74,8 @@ class Cart
     public function getCart()
     {
         if ($this->validateToken() === true) {
-            $query = 'SELECT cart.*, product.product_name, product.product_image_path FROM cart 
+            $query = 'SELECT cart.*, product.product_name, product.product_image_path , product.product_currency 
+                      FROM cart 
                       INNER JOIN product ON product.product_id = cart.product_id 
                                             AND cart.user_id =:user_id 
                                             AND cart.web_id =:web_id 
