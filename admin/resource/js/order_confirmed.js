@@ -256,12 +256,16 @@ function valueDetail(data){
     }
 
     let order_detail = data.result.order_detail.map(function(item){
-        return `<span style="display:block; margin-bottom: 10px">
-                    <span style="font-weight: 500">Tên SP</span>: ${item.product_name}, 
-                    <span style="font-weight: 500">SL</span>: ${item.order_detail_quantity}, 
-                    <span style="font-weight: 500">Tổng</span>: ${item.order_detail_amount}
-                </span>`
+        return `<tr>
+                    <td style="border: 1px solid #dee2e6; padding: 5px"> ${item.product_name} </td>
+                    <td style="border: 1px solid #dee2e6; padding: 5px"> ${item.order_detail_quantity} </td>
+                    <td style="border: 1px solid #dee2e6; padding: 5px"> 
+                        <span class="amount-number"> ${item.order_detail_amount} </span>
+                        <span style="font-size: 10px; margin-left: 3px; font-weight: 500"> ${item.product_currency} </span>
+                    </td>
+                </tr>`;
     })
+
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
     $('#order_payment_status').text(data.result.order_payment_status);
@@ -269,7 +273,7 @@ function valueDetail(data){
     $('#web_name').text(data.result.web_name);
     $('#order_request_id').text(data.result.order_request_id);
     $('#order_trans_id').text(data.result.order_trans_id);
-    $('#order_sum_price').text(data.result.order_sum_price);
+    $("#order_sum_price").text(data.result.order_sum_price);
     $('#order_paytype').text(data.result.order_paytype);
     $('#order_datetime').text(data.result.order_datetime);
     $('#order_status').text(order_status);
@@ -277,6 +281,19 @@ function valueDetail(data){
     $('#user_email').text(data.result.user_email);
     $('#order_description').text(data.result.order_description);
     $('#order_detail').html(order_detail);
+
+    $.fn.digits = function () {
+      return this.each(function () {
+        $(this).text(
+          $(this)
+            .text()
+            .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+        );
+      });
+    };
+
+    $(".amount-number").digits();
+    $("#order_sum_price").digits();
 }
 
 function tooltip(element, maxLength){

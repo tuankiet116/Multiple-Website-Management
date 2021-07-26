@@ -6,27 +6,24 @@ header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
 include_once('../../objects/userToken.php');
-require_once('../../objects/user.php');
 require_once('../../config/database.php');
+require_once('../../objects/orderUser.php');
 
 $database = new ConfigAPI();
 $db = $database->getConnection();
 
-$user = new User($db);
+$order = new OrderUser($db);
 $data = json_decode(file_get_contents("php://input"));
-$user->user_token = $data->user_token;
 $origin = $_SERVER['HTTP_ORIGIN'];
-if ($user->setWebID($origin) === true) {
-    $stmt = $user->logout();
-
-    if ($stmt === true) {
-        http_response_code(200);
-    } else {
-        http_response_code(200);
-    }
-}
-else {
-    $message = array('code' => 403403, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
+if ($order->setWebID($origin) === true) {
+    $order->user_token = $data->user_token;
+    $order->order_payment = 1;
+    $result = $order->createOrder();
+    http_response_code(200);
+    echo json_encode($result);
+} else {
+    $message = array('code' => 500, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
     http_response_code(403);
     echo json_encode($message);
 }
+?>

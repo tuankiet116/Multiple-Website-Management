@@ -14,18 +14,26 @@ $db = $database->getConnection();
 
 $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
-if($data->user_token != NULL && $data->user_token != ""){
-    $user->user_token = $data->user_token;
-    $check = $user->checkTokenHasNotExpired();
-    if($check === true){
-        http_response_code(200);
-        echo json_encode(array('message'=>'Validated', 'code'=>200));
+$origin = $_SERVER['HTTP_ORIGIN'];
+if ($user->setWebID($origin) === true) {
+    if($data->user_token != NULL && $data->user_token != ""){
+        $user->user_token = $data->user_token;
+        $check = $user->checkTokenHasNotExpired();
+        if($check === true){
+            http_response_code(200);
+            echo json_encode(array('message'=>'Validated', 'code'=>200));
+        }
+        else{
+            http_response_code(403);
+        }
     }
     else{
         http_response_code(403);
     }
 }
-else{
+else {
+    $message = array('code' => 403403, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
     http_response_code(403);
+    echo json_encode($message);
 }
 ?>

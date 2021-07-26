@@ -2,6 +2,7 @@
 error_reporting(E_ERROR | E_PARSE);
 include_once("../../classes/config_database.php");
 include_once("../../../classes/config_database.php");
+
 class ConfigAPI{
   
     // specify your own database credentials

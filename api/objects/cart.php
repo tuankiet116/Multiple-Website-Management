@@ -22,6 +22,7 @@ class Cart
     {
         $user_token = new userToken();
         $user_token->token = $this->user_token;
+        $user_token->web_id = $this->web_id;
         if ($user_token->validation() === true) {
             $this->user_id = $user_token->user_id;
             $this->user_token = $user_token->tokenId;
@@ -84,6 +85,7 @@ class Cart
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
                 $data = array();
+                $amount = 0;
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $item = array(
                         'cart_id'            => $row['cart_id'],
@@ -93,12 +95,13 @@ class Cart
                         'product_name'       => $row['product_name'],
                         'product_image_path' => $row['product_image_path']
                     );
+                    $amount += $row['cart_price'] * $row['cart_quantity'];
                     array_push($data, $item);
                 }
-                $message = array('code' => 200,'quantity'=> $stmt->rowCount(), 'data' => $data);
+                $message = array('code' => 200,'quantity'=> $stmt->rowCount(), 'amount' => $amount, 'data' => $data);
                 return $message;
             } else {
-                $message = array('code' => 404,'quantity'=> 0, 'message' => 'Cart is empty.');
+                $message = array('code' => 404,'quantity'=> 0, 'amount' => 0, 'message' => 'Cart is empty.');
                 return $message;
             }
         } else {
@@ -179,9 +182,9 @@ class Cart
      * - code 500: error
      * - code 403: token expired
      */
-    public function removeCart()
+    public function removeCart($remove_product = false)
     {
-        if ($this->validateToken() === true) {
+        if ($this->validateToken() === true ) {
             $query = "SELECT * FROM cart WHERE user_id =:user_id AND product_id =:product_id AND cart_active = 1 AND web_id =:web_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':user_id', $this->user_id);
@@ -192,7 +195,7 @@ class Cart
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 $this->cart_quantity = $result['cart_quantity'];
                 $this->cart_id = $result['cart_id'];
-                if ($this->cart_quantity > 1) {
+                if ($this->cart_quantity > 1 && $remove_product === false) {
                     $query = "UPDATE cart SET cart_quantity = cart_quantity-1 WHERE cart_id =:cart_id";
                     $stmt = $this->conn->prepare($query);
                     $stmt->bindParam(':cart_id', $this->cart_id);
