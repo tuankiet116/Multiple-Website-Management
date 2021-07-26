@@ -1,5 +1,5 @@
-<?php 
-header("Access-Control-Allow-Origin: *"); 
+<?php
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
@@ -15,13 +15,18 @@ $db = $database->getConnection();
 $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
 $user->user_token = $data->user_token;
+$origin = $_SERVER['HTTP_ORIGIN'];
+if ($user->setWebID($origin) === true) {
+    $stmt = $user->logout();
 
-$stmt = $user->logout();
-
-if($stmt === true){
-    http_response_code(200);
+    if ($stmt === true) {
+        http_response_code(200);
+    } else {
+        http_response_code(200);
+    }
 }
-else{
-    http_response_code(200);
+else {
+    $message = array('code' => 403403, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
+    http_response_code(403);
+    echo json_encode($message);
 }
-?>

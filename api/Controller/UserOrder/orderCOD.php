@@ -23,7 +23,7 @@ if ($order->setWebID($origin) === true) {
     echo json_encode($result);
 } else {
     $message = array('code' => 500, 'message' => "This origin does not allow. If you're trying do something bad STOP now. We know about you. :)");
-    http_response_code(500);
+    http_response_code(403);
     echo json_encode($message);
 }
 ?>
