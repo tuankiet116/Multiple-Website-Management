@@ -15,10 +15,48 @@
         public $order_datetime;
         public $order_status;
         public $order_reason;
+        public $user_token;
         public $term;
 
         public function __construct($db){
             $this->conn = $db;
+        }
+
+
+        private function validateToken(){
+            $user_token = new userToken();
+            $user_token->token = $this->user_token;
+            $user_token->web_id = $this->web_id;
+            if ($user_token->validation() === true) {
+                $this->user_id = $user_token->user_id;
+                $this->user_token = $user_token->tokenId;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function setWebID($url){
+            $get_url_1 = explode("//", $url);
+            $get_url_2 = explode("/", $get_url_1[1]);
+            $get_url_3 = explode(":", $get_url_2[0]);
+            $main_url = $get_url_3[0];
+            $query = "SELECT domain.domain_name, wc.* FROM domain 
+                        INNER JOIN website_config wc ON wc.web_id = domain.web_id 
+                                                    AND domain.domain_name = :url 
+                                                    AND domain.domain_active = 1 
+                                                    AND wc.web_active = 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':url', $main_url);
+            if ($stmt->execute() === true) {
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $this->web_id = $result['web_id'];
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
 
         public function getOrder($web_id_check = false, $order_id_check = false){
@@ -47,10 +85,14 @@
         }
 
         public function getOrderDetail(){
-            $query = "SELECT order_detail.*, product.product_name, product.product_currency FROM order_detail 
+            $query = "SELECT order_detail.*, 
+                      product.product_name, 
+                      product.product_currency,
+                      product.product_image_path 
+                      FROM order_detail 
                       INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id
                       INNER JOIN product  ON order_detail.product_id = product.product_id 
-                       AND order_detail.order_id = :order_id";
+                      AND order_detail.order_id = :order_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":order_id", $this->order_id);
             $stmt->execute();
@@ -96,6 +138,18 @@
             else{
                 $message="failure";
                 return $message;
+            }
+        }
+
+        public function getOrderByUser(){
+            if($this->validateToken() === true){
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(":user_id",      $this->user_id);
+                $stmt->bindParam(":web_id",       $this->web_id, PDO::PARAM_INT);
+                $stmt->bindParam(":order_status", $this->order_status, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt;
             }
         }
     }
