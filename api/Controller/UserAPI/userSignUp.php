@@ -66,7 +66,6 @@ if ($data->user_name == "" || $data->user_name == null) {
     $signup->user_email         = htmlspecialchars(trim($data->user_email));
     $signup->user_number_phone  = htmlspecialchars(trim($data->user_number_phone));
     $signup->user_address       = htmlspecialchars(trim($data->user_address));
-    $signup->web_id             = intVal($data->web_id);
 }
 $origin = $_SERVER['HTTP_ORIGIN'];
 if ($user->setWebID($origin) === true) {
