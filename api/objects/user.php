@@ -51,9 +51,9 @@ class User
 
         $query = "SELECT * FROM user_tb WHERE user_name = :user_name AND user_password = :user_password AND web_id =:web_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_name', $this->user_name);
-        $stmt->bindParam(':user_password', $password);
-        $stmt->bindParam(':web_id', $this->web_id);
+        $stmt->bindParam(':user_name',      $this->user_name);
+        $stmt->bindParam(':user_password',  $password);
+        $stmt->bindParam(':web_id',         $this->web_id);
 
         if ($stmt->execute() === true) {
             if ($stmt->rowCount() === 1) {
@@ -89,8 +89,8 @@ class User
         if ($this->validateToken() === true) {
             $query = "UPDATE user_tb SET user_token = '' WHERE user_token =:user_token AND web_id =:web_id";
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':user_token', $this->user_token);
-            $stmt->bindParam(':web_id', $this->web_id);
+            $stmt->bindParam(':user_token',   $this->user_token);
+            $stmt->bindParam(':web_id',       $this->web_id);
             $stmt->execute();
         }
     }
@@ -132,7 +132,7 @@ class User
                 $stmt->bindParam(':user_email',           $this->user_email);
                 $stmt->bindParam(':user_number_phone',    $this->user_number_phone);
                 $stmt->bindParam(':user_address',         $this->user_address);
-                $stmt->bindParam(':web_id', $this->web_id);
+                $stmt->bindParam(':web_id',               $this->web_id);
 
                 if ($stmt->execute() === true) {
                     return true;
