@@ -80,18 +80,18 @@ function getOrder(web_id = false, valueWebSite=null, term){
                     let notSp = `Null`
 
                     if(item.order_payment == 1){
-                        order_payment = `COD`;
+                        order_payment ='<span class="badge badge-secondary">COD</span>';
                     }
                     else if(item.order_payment == 2){
-                        order_payment = `MOMO`;
+                        order_payment ='<span class="badge badge-danger">MOMO</span>';
                     }
                     else{
-                        order_payment = `Khác`;
+                        order_payment ='<span class="badge badge-secondary">Khác</span>';
                     }
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td>${item.order_id}</td>
+                            <td class="order_code">${item.order_id}</td>
                             <td>${item.user_name}</td>
                             <td>${item.user_number_phone}</td>
                             <td>${order_payment}</td>
@@ -117,7 +117,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 confirmed();
                 getOrderIdCancel();
                 cancel();
-               
+                tooltip('.order_code', 20);
             });
         }
     });
@@ -240,13 +240,13 @@ function valueDetail(data){
     let order_payment = '';
     let order_status ='';
     if(data.result.order_payment == 1){
-        order_payment ='COD';
+        order_payment ='<span class="badge badge-secondary">COD</span>';
     }
     else if(data.result.order_payment == 2){
-        order_payment ='MOMO';
+        order_payment ='<span class="badge badge-danger">MOMO</span>';
     }
     else{
-        order_payment ='Khác';
+        order_payment ='<span class="badge badge-secondary">Khác</span>';
     }
 
     if(data.result.order_status == "1"){
@@ -261,7 +261,7 @@ function valueDetail(data){
     //   <span style="font-weight: 500">SL</span>: ${item.order_detail_quantity},
     //   <span style="font-weight: 500">Tổng</span>: ${item.order_detail_amount}
     // </span>;
-
+    let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
     let order_detail = data.result.order_detail.map(function(item){
         return `<tr>
                     <td style="border: 1px solid #dee2e6; padding: 5px"> ${item.product_name} </td>
@@ -272,8 +272,8 @@ function valueDetail(data){
 
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
-    $('#order_payment_status').text(data.result.order_payment_status);
-    $('#order_payment').text(order_payment);
+    $('#order_payment_status').html(order_payment_status);
+    $('#order_payment').html(order_payment);
     $('#web_name').text(data.result.web_name);
     $('#order_request_id').text(data.result.order_request_id);
     $('#order_trans_id').text(data.result.order_trans_id);
