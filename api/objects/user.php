@@ -98,9 +98,10 @@ class User
     public function signUp()
     {
         $message = "";
-        $query = "SELECT * FROM user_tb WHERE user_name = :user_name";
+        $query = "SELECT * FROM user_tb WHERE user_name = :user_name AND web_id = :web_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_name',      $this->user_name);
+        $stmt->bindParam(':web_id',         $this->web_id);
         $user_id = "";
 
         if ($stmt->execute() === true) {

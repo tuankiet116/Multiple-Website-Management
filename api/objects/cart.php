@@ -74,8 +74,7 @@ class Cart
     public function getCart()
     {
         if ($this->validateToken() === true) {
-            $query = 'SELECT cart.*, product.product_name, product.product_image_path , product.product_currency 
-                      FROM cart 
+            $query = 'SELECT cart.*, product.product_name, product.product_image_path, product.product_currency FROM cart 
                       INNER JOIN product ON product.product_id = cart.product_id 
                                             AND cart.user_id =:user_id 
                                             AND cart.web_id =:web_id 
@@ -94,12 +93,14 @@ class Cart
                         'cart_price'         => $row['cart_price'],
                         'cart_quantity'      => $row['cart_quantity'],
                         'product_name'       => $row['product_name'],
-                        'product_image_path' => $row['product_image_path']
+                        'product_image_path' => $row['product_image_path'],
+                        'product_currency'   => $row['product_currency']
                     );
+                    $curr = $row['product_currency'];
                     $amount += $row['cart_price'] * $row['cart_quantity'];
                     array_push($data, $item);
                 }
-                $message = array('code' => 200,'quantity'=> $stmt->rowCount(), 'amount' => $amount, 'data' => $data);
+                $message = array('code' => 200,'quantity'=> $stmt->rowCount(), 'amount' => $amount, 'currency' => $curr, 'data' => $data);
                 return $message;
             } else {
                 $message = array('code' => 404,'quantity'=> 0, 'amount' => 0, 'message' => 'Cart is empty.');
