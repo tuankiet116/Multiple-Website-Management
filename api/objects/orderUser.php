@@ -109,7 +109,7 @@ class OrderUser
     private function createOrderCOD(){
         if($this->getCartInformation() === true){
             $this->order_id = $this->createOrderID();
-            $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_momo_error_text)
+            $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
                         VALUES(:order_id, :user_id, 1, 1, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
             $stmt = $this->prepareQueryPDO($query);
             $stmt->bindParam(':order_id'         , $this->order_id);
