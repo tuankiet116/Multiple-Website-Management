@@ -73,11 +73,13 @@ function getOrder(web_id = false, valueWebSite=null, term){
         dataType: "JSON",
         async: false,
         success: function (res) {
+            console.log(res);
             if(res.code == 200){
                 var viewData = res?.result.map(function(item, index){
                     let order_status = item.order_status == 1? `<p style="color: red">Chưa Xác Nhận <i class="fas fa-times"></i></p>`: ``;
                     let order_payment = '';
                     let notSp = `Null`
+                    let order_suspicious = '';
 
                     if(item.order_payment == 1){
                         order_payment ='<span class="badge badge-secondary">COD</span>';
@@ -88,10 +90,14 @@ function getOrder(web_id = false, valueWebSite=null, term){
                     else{
                         order_payment ='<span class="badge badge-secondary">Khác</span>';
                     }
+
+                    if(item.order_suspicious == 1 && item.order_payment == 2){
+                        order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
+                    }
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td class="order_code">${item.order_id}</td>
+                            <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
                             <td>${item.user_name}</td>
                             <td>${item.user_number_phone}</td>
                             <td>${order_payment}</td>
@@ -129,7 +135,7 @@ function getOrderById(){
             "order_id": $(this).attr('order_id'),
             "order_status": "1"
         }
-        order_id_g =  $(this).attr('order_id');
+        order_id_g = $(this).attr('order_id');
         $.ajax({
             type: "POST",
             url: base_url+"api/Controller/getOrderById.php",
@@ -137,8 +143,11 @@ function getOrderById(){
             dataType: "JSON",
             async:false,
             success: function (res) {
-                // console.log(res);
+                console.log(res);
                 valueDetail(res);
+            },
+            error: function(res){
+                console.log(res.responeText);
             }
         });
         tooltip('#order_description', 30);
@@ -239,6 +248,7 @@ function cancel(){
 function valueDetail(data){
     let order_payment = '';
     let order_status ='';
+    let order_suspicious ='';
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -256,11 +266,16 @@ function valueDetail(data){
         order_status = 'Đã Xác Nhận';
     }
 
+    if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
+        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`   
+    }
+
     // <span style="display:block; margin-bottom: 10px">
     //   <span style="font-weight: 500">Tên SP</span>: ${item.product_name},
     //   <span style="font-weight: 500">SL</span>: ${item.order_detail_quantity},
     //   <span style="font-weight: 500">Tổng</span>: ${item.order_detail_amount}
     // </span>;
+    
     let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
     let order_detail = data.result.order_detail.map(function(item){
         return `<tr>
@@ -285,6 +300,7 @@ function valueDetail(data){
     $('#user_email').text(data.result.user_email);
     $('#order_description').text(data.result.order_description);
     $('#order_detail').html(order_detail);
+    $('#order_suspicious').html(order_suspicious);
 
     $.fn.digits = function () {
         return this.each(function () {

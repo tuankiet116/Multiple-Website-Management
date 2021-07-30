@@ -22,6 +22,7 @@ function getOrder(term){
                 var viewData = res.result.map(function(item, index){
                     let  order_payment ="";
                     let  order_reason = "";
+                    let order_suspicious = '';
 
                     if(item.order_payment == 1){
                         order_payment ='<span class="badge badge-secondary">COD</span>';
@@ -43,10 +44,14 @@ function getOrder(term){
                         order_reason = "Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng";
                     }
 
+                    if(item.order_suspicious == 1 && item.order_payment == 2){
+                        order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
+                    }
+
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td class="order_code">${item.order_id}</td>
+                            <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
                             <td>${item.user_name}</td>
                             <td>${order_payment}</td>
                             <td>${item.order_trans_id}</td>
@@ -117,6 +122,7 @@ function valueDetail(data){
     let order_payment = '';
     let order_status ='';
     let order_reason = '';
+    let order_suspicious ='';
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -139,6 +145,10 @@ function valueDetail(data){
     }
     else if(data.result.order_reason == 3){
         order_reason = 'Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng'
+    }
+
+    if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
+        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`   
     }
 
     let order_detail = data.result.order_detail.map(function(item){
@@ -166,6 +176,7 @@ function valueDetail(data){
     $('#order_description').text(data.result.order_description);
     $('#order_reason').text(order_reason);
     $('#order_detail').html(order_detail);
+    $('#order_suspicious').html(order_suspicious);
 
     $.fn.digits = function () {
       return this.each(function () {

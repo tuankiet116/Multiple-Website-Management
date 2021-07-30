@@ -45,7 +45,9 @@ if(isset($data) && $data->web_id != null && $data->web_id != ""){
                 "order_detail_quantity"   => $row['order_detail_quantity'],
                 "order_detail_unit_price" => $row['order_detail_unit_price'],
                 "order_detail_amount"     => $row['order_detail_amount'],
-                "order_description"       => $row['order_description']
+                "order_description"       => $row['order_description'],
+                "order_suspicious"        => $row['order_suspicious'],
+                "order_momo_error_text"   => $row['order_momo_error_text']
             ]);
         }
 
