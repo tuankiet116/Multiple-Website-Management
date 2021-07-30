@@ -113,6 +113,12 @@ $(document).ready(function () {
               $("#domain-small").text("Không Được Để Trống Tên Miền.");
               $("#domain-small").css("display", "block");
               break;
+            case 403:
+              showAlert(
+                "warning",
+                "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+              );
+              break;
             default:
               showAlert("error", "Lỗi Không Xác Định.");
               break;
@@ -154,6 +160,12 @@ $(document).ready(function () {
               $("#domain-add-small").text("Không Được Để Trống Tên Miền.");
               $("#domain-add-small").css("display", "block");
               break;
+            case 403:
+              showAlert(
+                "warning",
+                "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+              );
+              break;
             default:
               showAlert("error", "Lỗi Không Xác Định.");
               break;
@@ -171,19 +183,25 @@ function getDataTable() {
     method: "POST",
     async: false,
     success: function (res) {
-      var view = res.map((e, index) => {
-        if (e.domain_name_list !== null && e.domain_name_list !== "") {
-          var list_url = e.domain_name_list.split(",");
-          list_url = list_url.join(", ");
-        }
-
-        var checkIcon = checkdefault(
-          "data/web_icon/icon_default/default.png",
-          e.web_icon
+      if (res.code == 403) {
+        showAlert(
+          "warning",
+          "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
         );
-        rs = ``;
-        rs += `<tr>`;
-        rs += `
+      } else {
+        var view = res.map((e, index) => {
+          if (e.domain_name_list !== null && e.domain_name_list !== "") {
+            var list_url = e.domain_name_list.split(",");
+            list_url = list_url.join(", ");
+          }
+
+          var checkIcon = checkdefault(
+            "data/web_icon/icon_default/default.png",
+            e.web_icon
+          );
+          rs = ``;
+          rs += `<tr>`;
+          rs += `
                 <td>${index + 1}</td>
                 <td><p class="web_name">${e.web_name}</p></td>
                 <td>${
@@ -194,32 +212,33 @@ function getDataTable() {
                 <td><img src="${base_url}${checkIcon}" alt="icon" class="icon-website"></td>
                 <td><p class="web_description">${e.web_description}</p></td>
               `;
-        if (e.web_active == 1) {
-          rs += `<td><button class="btn btn-success btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
-        } else {
-          rs += `<td><button class="btn btn-danger btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đã Ẩn</button></td>`;
-        }
-        rs += ` <td><button style="width: auto; " class="btn btn-primary btn-edit" data-toggle="modal" data-target="#show-modal-form-update" w_id="${e.web_id}">Chi Tiết</button></td>`;
-        rs += `</tr>`;
-        return rs;
-      });
-      $(".table-listing-website > tbody")
-        .html(view)
-        .ready(function () {
-          activeWeb();
-          getWebsiteByID(".btn-edit");
-          update();
-          $(".web_description").each(function () {
-            if ($(this).text().length > 40) {
-              var stringOriginal = $(this).text();
-              var subString = $(this).text().substring(0, 40) + "...";
-              $(this).text(subString);
-              $(this).attr("title", stringOriginal);
-            }
-          });
-
-          tooltip(".web_url", 30);
+          if (e.web_active == 1) {
+            rs += `<td><button class="btn btn-success btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đang Hiển Thị</button></td>`;
+          } else {
+            rs += `<td><button class="btn btn-danger btn-show-hide" status="${e.web_active}" w_id="${e.web_id}">Đã Ẩn</button></td>`;
+          }
+          rs += ` <td><button style="width: auto; " class="btn btn-primary btn-edit" data-toggle="modal" data-target="#show-modal-form-update" w_id="${e.web_id}">Chi Tiết</button></td>`;
+          rs += `</tr>`;
+          return rs;
         });
+        $(".table-listing-website > tbody")
+          .html(view)
+          .ready(function () {
+            activeWeb();
+            getWebsiteByID(".btn-edit");
+            update();
+            $(".web_description").each(function () {
+              if ($(this).text().length > 40) {
+                var stringOriginal = $(this).text();
+                var subString = $(this).text().substring(0, 40) + "...";
+                $(this).text(subString);
+                $(this).attr("title", stringOriginal);
+              }
+            });
+
+            tooltip(".web_url", 30);
+          });
+      }
     },
     error: function (res) {
       console.log(res.responseText);
@@ -246,6 +265,11 @@ function create() {
           $("#image_icon_1").css("display", "none");
           $("#input_image_icon_1").children("svg").css("display", "inherit");
           $(".close-form-create").click();
+        } else if (res.code == 403) {
+          showAlert(
+            "warning",
+            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+          );
         } else {
           $(".loader-container").css("display", "none");
           showAlert("error", `<p>${res?.message}</p>`);
@@ -275,6 +299,11 @@ function update() {
           $(".loader-container").css("display", "none");
           showAlert("success", `<p>${res?.message}</p>`);
           $(".close-form-update").click();
+        } else if (res.code == 403) {
+          showAlert(
+            "warning",
+            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+          );
         } else {
           $(".loader-container").css("display", "none");
           showAlert("error", `<p>${res?.message}</p>`);
@@ -304,6 +333,11 @@ function activeWeb() {
       success: function (res) {
         if (res.code == 200) {
           showAlert("success", `<p>${res.message}</p>`);
+        } else if (res.code == 403) {
+          showAlert(
+            "warning",
+            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+          );
         } else {
           showAlert("error", `<p>${res.message}</p>`);
         }
@@ -327,7 +361,14 @@ function getWebsiteByID(element) {
       method: "POST",
       data: JSON.stringify(data),
       success: function (res) {
-        renderDataFormUpdate(res);
+        if (res.code == 403) {
+          showAlert(
+            "warning",
+            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+          );
+        } else {
+          renderDataFormUpdate(res);
+        }
       },
     });
   });
@@ -487,15 +528,18 @@ function getDomain(webID) {
       html = "";
       if (data.code == 404) {
         html = `<tr><td colspan = 3 style="color: red;">NOT FOUND</td></tr>`;
+      } else if (res.code == 403) {
+        showAlert(
+          "warning",
+          "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+        );
       } else {
         var html = data.map(function (value, index) {
           status = "";
           if (value.domain_active == 0) {
-            status =
-              `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_hide" type="button" class="btn btn-danger btn-status-domain btn-sm">Đã Vô Hiệu Hóa</button>`;
+            status = `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_hide" type="button" class="btn btn-danger btn-status-domain btn-sm">Đã Vô Hiệu Hóa</button>`;
           } else {
-            status =
-              `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_show" type="button" class="btn btn-basic btn-status-domain btn-sm">Đã Kích Hoạt</button>`;
+            status = `<button w_id="${value.web_id}" domain_id = "${value.domain_id}_show" type="button" class="btn btn-basic btn-status-domain btn-sm">Đã Kích Hoạt</button>`;
           }
 
           r = `<tr>
@@ -517,35 +561,54 @@ function getDomain(webID) {
             getDomainByID(domain_id);
           });
 
-          $('.btn-status-domain').click(function(){
-            domainID = $(this).attr('domain_id').split('_')[0];
-            status = $(this).attr('domain_id').split('_')[1] == 'show'? 0 : 1;
+          $(".btn-status-domain").click(function () {
+            domainID = $(this).attr("domain_id").split("_")[0];
+            status = $(this).attr("domain_id").split("_")[1] == "show" ? 0 : 1;
 
             $.ajax({
-                url: base_url + "api/Controller/ActiveInactiveDomain.php",
-                data: JSON.stringify({'domain_id': domainID, 'domain_active': status}),
-                dataType: 'JSON',
-                type: 'POST',
-                async: false,
-                success: function(data){
-                    switch(data.code){
-                        case 400:
-                            showAlert('warning', 'Thiếu Dữ Liệu Không Thể Cập Nhật Trạng Thái.');
-                            break;
-                        case 500:
-                            showAlert('error', 'Hệ Thống Lỗi Không Thể Cập Nhật Trạng Thái.');
-                            break;
-                        case 200:
-                            showAlert('success', 'Cập Nhật Trạng Thái Tên Miền Thành Công.');
-                            getDomain(webID);
-                            break;
-                        default:
-                            showAlert('error', 'Lỗi Không Xác Định.');
-                            break;
-                    }
-                },
-                error: function(data){
-                    showAlert('error', data.responseText);                }
+              url: base_url + "api/Controller/ActiveInactiveDomain.php",
+              data: JSON.stringify({
+                domain_id: domainID,
+                domain_active: status,
+              }),
+              dataType: "JSON",
+              type: "POST",
+              async: false,
+              success: function (data) {
+                switch (data.code) {
+                  case 400:
+                    showAlert(
+                      "warning",
+                      "Thiếu Dữ Liệu Không Thể Cập Nhật Trạng Thái."
+                    );
+                    break;
+                  case 500:
+                    showAlert(
+                      "error",
+                      "Hệ Thống Lỗi Không Thể Cập Nhật Trạng Thái."
+                    );
+                    break;
+                  case 200:
+                    showAlert(
+                      "success",
+                      "Cập Nhật Trạng Thái Tên Miền Thành Công."
+                    );
+                    getDomain(webID);
+                    break;
+                  case 403:
+                    showAlert(
+                      "warning",
+                      "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+                    );
+                    break;
+                  default:
+                    showAlert("error", "Lỗi Không Xác Định.");
+                    break;
+                }
+              },
+              error: function (data) {
+                showAlert("error", data.responseText);
+              },
             });
           });
         });
@@ -564,8 +627,15 @@ function getDomainByID(domainID) {
     url: base_url + "api/Controller/getDomainByID.php",
     async: false,
     success: function (data) {
-      $("#input-domain-detail").val(data.domain_name);
-      $("#update-domain-btn").attr("domain-id", data.domain_id);
+      if (res.code == 403) {
+        showAlert(
+          "warning",
+          "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
+        );
+      } else {
+        $("#input-domain-detail").val(data.domain_name);
+        $("#update-domain-btn").attr("domain-id", data.domain_id);
+      }
     },
     error: function (data) {
       showAlert("error", data.responseText);

@@ -1,7 +1,5 @@
 <?php
-// required headers
-
-use JetBrains\PhpStorm\Language;
+require_once("../Token/checkToken.php");
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");

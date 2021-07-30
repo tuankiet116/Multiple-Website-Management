@@ -5,9 +5,10 @@
     session_start();
     if(!isset($_SESSION['userlogin']) || !isset($_SESSION['password'])){
         //set response code - 200 OK
-        http_response_code(500);
+        http_response_code(200);
         echo json_encode(array(
-            "error" => "You Do Not Have Access!"
+            "error" => "You Do Not Have Access!",
+            "code" => 403
         ));
         exit;
     }
