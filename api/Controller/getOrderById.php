@@ -63,7 +63,9 @@ if(isset($data) && $data->order_id != null && $data->order_id != ""){
             "web_name"                => $row['web_name'],
             "order_reason"            => $row['order_reason'],
             "order_description"       => $row['order_description'],
-            "order_detail"            => $order_detail
+            "order_detail"            => $order_detail,
+            "order_suspicious"        => $row['order_suspicious'],
+            "order_momo_error_text"   => $row['order_momo_error_text']
         ];
 
         http_response_code(200);

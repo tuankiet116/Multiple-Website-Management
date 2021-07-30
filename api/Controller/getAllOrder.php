@@ -39,7 +39,9 @@ if($res->rowCount() > 0){
             "user_email"           => $row['user_email'],
             "web_name"             => $row['web_name'],
             "order_reason"         => $row['order_reason'],
-            "order_description"    => $row['order_description']
+            "order_description"    => $row['order_description'],
+            "order_suspicious"     => $row['order_suspicious'],
+            "order_momo_error_text"  => $row['order_momo_error_text']
         ]);
     }
     http_response_code(200);

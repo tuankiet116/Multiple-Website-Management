@@ -76,7 +76,7 @@
                       FROM order_tb 
                       INNER JOIN user_tb ON order_tb.user_id = user_tb.user_id 
                       INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = :order_status 
-                      WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ";
+                      WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ORDER BY order_tb.order_datetime DESC";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":order_status", $this->order_status, PDO::PARAM_INT);
@@ -143,7 +143,7 @@
 
         public function getOrderByUser(){
             if($this->validateToken() === true){
-                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status";
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status ORDER BY order_tb.order_datetime DESC";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(":user_id",      $this->user_id);
                 $stmt->bindParam(":web_id",       $this->web_id, PDO::PARAM_INT);

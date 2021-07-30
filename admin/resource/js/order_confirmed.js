@@ -78,21 +78,27 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 var viewData = res?.result.map(function(item, index){
                     let order_status = item.order_status == 2? `<p style="color: green">Đã Xác Nhận <i class="fas fa-check"></i></p>`: ``;
                     let order_payment = '';
-                    let notSp = `Null`
+                    let notSp = `Null`;
+                    let order_suspicious='';
 
                     if(item.order_payment == 1){
-                        order_payment = `COD`;
+                        order_payment ='<span class="badge badge-secondary">COD</span>';
                     }
                     else if(item.order_payment == 2){
-                        order_payment = `MOMO`;
+                        order_payment ='<span class="badge badge-danger">MOMO</span>';
                     }
                     else{
-                        order_payment = `Khác`;
+                        order_payment ='<span class="badge badge-secondary">Khác</span>';
                     }
+
+                    if(item.order_suspicious == 1 && item.order_payment == 2){
+                        order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
+                    }
+                   
                     return`
                         <tr>
                             <th scope="row">${index + 1}</th>
-                            <td>${item.order_id}</td>
+                            <td><p class="order_code">${item.order_id}</p> ${order_suspicious} </td>
                             <td>${item.user_name}</td>
                             <td>${item.user_number_phone}</td>
                             <td>${order_payment}</td>
@@ -118,6 +124,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 confirmed();
                 getOrderIdCancel();
                 cancel();
+                tooltip('.order_code', 20);
             });
         }
     });
@@ -238,14 +245,16 @@ function cancel(){
 function valueDetail(data){
     let order_payment = '';
     let order_status ='';
+    let order_suspicious ='';
+    
     if(data.result.order_payment == 1){
-        order_payment ='COD';
+        order_payment ='<span class="badge badge-secondary">COD</span>';
     }
     else if(data.result.order_payment == 2){
-        order_payment ='MOMO';
+        order_payment ='<span class="badge badge-danger">MOMO</span>';
     }
     else{
-        order_payment ='Khác';
+        order_payment ='<span class="badge badge-secondary">Khác</span>';
     }
 
     if(data.result.order_status =="1"){
@@ -254,6 +263,12 @@ function valueDetail(data){
     else if(data.result.order_status == "2"){
         order_status = 'Đã Xác Nhận';
     }
+
+    if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
+        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`   
+    }
+
+    let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
 
     let order_detail = data.result.order_detail.map(function(item){
         return `<tr>
@@ -268,8 +283,8 @@ function valueDetail(data){
 
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
-    $('#order_payment_status').text(data.result.order_payment_status);
-    $('#order_payment').text(order_payment);
+    $('#order_payment_status').html(order_payment_status);
+    $('#order_payment').html(order_payment);
     $('#web_name').text(data.result.web_name);
     $('#order_request_id').text(data.result.order_request_id);
     $('#order_trans_id').text(data.result.order_trans_id);
@@ -281,6 +296,7 @@ function valueDetail(data){
     $('#user_email').text(data.result.user_email);
     $('#order_description').text(data.result.order_description);
     $('#order_detail').html(order_detail);
+    $('#order_suspicious').html(order_suspicious);
 
     $.fn.digits = function () {
       return this.each(function () {
