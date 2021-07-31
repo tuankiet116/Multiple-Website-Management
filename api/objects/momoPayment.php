@@ -36,11 +36,12 @@ class Momo
 
     private function getMomoInformation()
     {
-        $query = "SELECT payment_partner_code, payment_access_key, payment_secret_key FROM payment WHERE payment_active = 1 AND web_id =:web_id";
+        $query = "SELECT payment_partner_code, payment_access_key, payment_secret_key FROM payment WHERE payment_active = 1 AND web_id =:web_id AND payment_method = 2";
         $stmt = $this->queryPreparePDO($query);
         $stmt->bindParam(':web_id', $this->web_id);
-        $result = $stmt->execute();
+        $stmt->execute();
         if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->partnerCode = $result['payment_partner_code'];
             $this->accessKey = $result['payment_access_key'];
             $this->secretKey = $result['payment_secret_key'];
@@ -135,26 +136,40 @@ class momoCheck extends Momo
     private $message;
     private $localMessage;
     private $rawHash;
+    private $response = array();
+    private $partnerSignature;
 
-    public function __construct($data, $db)
+    public function __construct($db)
     {
-        $this->partnerCode  = $data["partnerCode"];
-        $this->accessKey    = $data["accessKey"];
-        $this->orderID      = $data["orderId"];
-        $this->localMessage = $data["localMessage"];
-        $this->message      = $data["message"];
-        $this->transId      = $data["transId"];
-        $this->orderInfo    = $data["orderInfo"];
-        $this->amount       = $data["amount"];
-        $this->errorCode    = $data["errorCode"];
-        $this->responseTime = $data["responseTime"];
-        $this->requestId    = $data["requestId"];
-        $this->extraData    = $data["extraData"];
-        $this->payType      = $data["payType"];
-        $this->orderType    = $data["orderType"];
-        $this->extraData    = $data["extraData"];
-        $this->m2signature  = $data["signature"]; //MoMo signature
-        $this->conn         = $db;
+        $this->conn = $db;
+    }
+
+    private function setInformation($data)
+    {
+        try {
+            $this->partnerCode  = $data["partnerCode"];
+            $this->accessKey    = $data["accessKey"];
+            $this->orderID      = $data["orderId"];
+            $this->localMessage = $data["localMessage"];
+            $this->message      = $data["message"];
+            $this->transId      = $data["transId"];
+            $this->orderInfo    = $data["orderInfo"];
+            $this->amount       = $data["amount"];
+            $this->errorCode    = $data["errorCode"];
+            $this->responseTime = $data["responseTime"];
+            $this->requestId    = $data["requestId"];
+            $this->extraData    = $data["extraData"];
+            $this->payType      = $data["payType"];
+            $this->orderType    = $data["orderType"];
+            $this->extraData    = $data["extraData"];
+            $this->m2signature  = $data["signature"]; //MoMo signature
+        } catch (Exception $e) {
+            $this->response['message'] = $e;
+            return false;
+        } finally {
+            $this->response['message'] = "";
+            return true;
+        }
     }
 
     private function getMomoInformation()
@@ -174,42 +189,60 @@ class momoCheck extends Momo
         return false;
     }
 
-    private function validation()
+    private function validation($data)
     {
-        if ($this->getMomoInformation() === true) {
-            //Checksum
-            $this->rawHash =
-                "partnerCode="   . $this->partnerCode  .
-                "&accessKey="    . $this->accessKey    .
-                "&requestId="    . $this->requestId    .
-                "&amount="       . $this->amount       .
-                "&orderId="      . $this->orderID      .
-                "&orderInfo="    . $this->orderInfo    .
-                "&orderType="    . $this->orderType    .
-                "&transId="      . $this->transId      .
-                "&message="      . $this->message      .
-                "&localMessage=" . $this->localMessage .
-                "&responseTime=" . $this->responseTime .
-                "&errorCode="    . $this->errorCode    .
-                "&payType="      . $this->payType      .
-                "&extraData="    . $this->extraData;
+        if ($this->setInformation($data) === true) {
+            if ($this->getMomoInformation() === true) {
+                //Checksum
+                $this->rawHash =
+                    "partnerCode="   . $this->partnerCode  .
+                    "&accessKey="    . $this->accessKey    .
+                    "&requestId="    . $this->requestId    .
+                    "&amount="       . $this->amount       .
+                    "&orderId="      . $this->orderID      .
+                    "&orderInfo="    . $this->orderInfo    .
+                    "&orderType="    . $this->orderType    .
+                    "&transId="      . $this->transId      .
+                    "&message="      . $this->message      .
+                    "&localMessage=" . $this->localMessage .
+                    "&responseTime=" . $this->responseTime .
+                    "&errorCode="    . $this->errorCode    .
+                    "&payType="      . $this->payType      .
+                    "&extraData="    . $this->extraData;
 
-            $partnerSignature = hash_hmac("sha256", $this->rawHash, $this->secretKey);
+                $this->partnerSignature = hash_hmac("sha256", $this->rawHash, $this->secretKey);
 
-            if ($this->m2signature == $partnerSignature) {
-                if ($this->errorCode == '0') {
-                    $this->updateOrder(false);
+                if ($this->m2signature == $this->partnerSignature) {
+                    if ($this->errorCode == '0') {
+                        $this->updateOrder(false);
+                    } else {
+                        $this->updateOrder(false);
+                    }
+                    $this->response['message'] = "Received payment result success";
                 } else {
-                    $this->updateOrder(false);
+                    $this->updateOrder(true);
+                    $this->response['message'] = "ERROR! Fail checksum";
                 }
             } else {
-                $this->updateOrder(true);
+                $query = "UPDATE order_tb SET order_text =:order_text WHERE order_id =:order_id";
+                $stmt = $this->queryPreparePDO($query);
+                $stmt->bindParam(':order_text', 'Cannot get payment information to update order payment');
             }
-        } else {
-            $query = "UPDATE order_tb SET order_text =:order_text WHERE order_id =:order_id";
-            $stmt = $this->queryPreparePDO($query);
-            $stmt->bindParam(':order_text', 'Cannot get payment information to update order payment');
+            $debugger = array();
+            $debugger['rawData'] = $this->rawHash;
+            $debugger['momoSignature'] = $this->m2signature;
+            $debugger['partnerSignature'] = $this->partnerSignature;
+            $this->response['debugger'] = $debugger;
+            return $this->response;
         }
+        else{
+            $debugger = array();
+            $debugger['rawData'] = $this->rawHash;
+            $debugger['momoSignature'] = $this->m2signature;
+            $debugger['partnerSignature'] = $this->partnerSignature;
+            $this->response['debugger'] = $debugger;
+            return $this->response;
+        }   
     }
 
     private function updateOrder($suspicious)
@@ -226,16 +259,17 @@ class momoCheck extends Momo
                 order_trans_id =:order_trans_id, 
                 order_text =:order_text, order_suspicious = 0 WHERE order_id =:order_id";
             $stmt = $this->queryPreparePDO($query);
-            $stmt->bindParam(':order_id'            , $this->orderID);
-            $stmt->bindParam(':order_text'          , $this->localMessage);
-            $stmt->bindParam(':order_trans_id'      , $this->transId);
+            $stmt->bindParam(':order_id', $this->orderID);
+            $stmt->bindParam(':order_text', $this->localMessage);
+            $stmt->bindParam(':order_trans_id', $this->transId);
             $stmt->bindParam(':order_payment_status', $this->errorCode);
             $stmt->execute();
         }
     }
 
-    public function updateAndCheckOrder()
+    public function updateAndCheckOrder($data)
     {
-        return $this->validation();
+        $response = $this->validation($data);
+        return $response;
     }
 }

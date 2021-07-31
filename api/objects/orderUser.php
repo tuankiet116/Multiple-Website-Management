@@ -18,6 +18,7 @@ class OrderUser
     public $order_reason;
     public $term;
     public $user_token;
+    public $returnUrl;
 
     public function __construct($db)
     {
@@ -62,24 +63,26 @@ class OrderUser
         }
     }
 
-    private function prepareQueryPDO($query){
+    private function prepareQueryPDO($query)
+    {
         $stmt = $this->conn->prepare($query);
         return $stmt;
     }
 
-    private function removeCart(){
+    private function removeCart()
+    {
         $query = 'DELETE FROM cart WHERE user_id =:user_id AND web_id =:web_id';
         $stmt = $this->prepareQueryPDO($query);
         $stmt->bindParam(':user_id', $this->user_id);
         $stmt->bindParam(':web_id', $this->web_id);
-        if($stmt->execute()===true){
+        if ($stmt->execute() === true) {
             return true;
-
         }
         return false;
     }
 
-    private function getCartInformation(){
+    private function getCartInformation()
+    {
         $this->list_product_info = array();
         $this->order_sum_price = 0;
 
@@ -88,101 +91,150 @@ class OrderUser
         $stmt->bindParam(':user_id', $this->user_id);
         $stmt->bindParam(':web_id', $this->web_id);
         $stmt->execute();
-        if($stmt->rowCount() > 0){
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = array(
-                    'product_id'=>$row['product_id'],
+                    'product_id'    => $row['product_id'],
                     'cart_quantity' => $row['cart_quantity'],
-                    'cart_price' => $row['cart_price']
+                    'cart_price'    => $row['cart_price']
                 );
                 $this->order_sum_price += floatval($row['cart_price']) * intVal($row['cart_quantity']);
                 array_push($this->list_product_info, $result);
             }
 
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    private function createOrderCOD(){
-        if($this->getCartInformation() === true){
+    private function createOrderCOD()
+    {
+        if ($this->getCartInformation() === true) {
             $this->order_id = $this->createOrderID();
             $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
                         VALUES(:order_id, :user_id, 1, 1, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
             $stmt = $this->prepareQueryPDO($query);
-            $stmt->bindParam(':order_id'         , $this->order_id);
-            $stmt->bindParam(':user_id'          , $this->user_id);
-            $stmt->bindParam(':web_id'           , $this->web_id);
-            $stmt->bindParam(':order_sum_price'  , $this->order_sum_price);
+            $stmt->bindParam(':order_id', $this->order_id);
+            $stmt->bindParam(':user_id', $this->user_id);
+            $stmt->bindParam(':web_id', $this->web_id);
+            $stmt->bindParam(':order_sum_price', $this->order_sum_price);
             $stmt->bindParam(':order_description', $this->order_description);
-            if($stmt->execute() === true){
+            if ($stmt->execute() === true) {
                 $values = "";
                 foreach ($this->list_product_info as $key => $value) {
                     $product_id = $value['product_id'];
                     $quantity = $value['cart_quantity'];
                     $unit_price = $value['cart_price'];
                     $amount = floatVal(intVal($quantity) * floatval($unit_price));
-                    $values .= "('".$this->order_id."','". $product_id."','". $quantity."','". $unit_price."','". $amount."')";
-                    if($key != array_key_last($this->list_product_info)){
+                    $values .= "('" . $this->order_id . "','" . $product_id . "','" . $quantity . "','" . $unit_price . "','" . $amount . "')";
+                    if ($key != array_key_last($this->list_product_info)) {
                         $values .= ',';
                     }
                 }
                 $query = "INSERT INTO order_detail(order_id, product_id, order_detail_quantity, order_detail_unit_price, order_detail_amount)
-                VALUES ".$values;
+                VALUES " . $values;
                 $stmt_detail = $this->prepareQueryPDO($query);
 
-                if($stmt_detail->execute() === false){
-                    $result = array('code'=>500, 'message' => "Cannot Create Order Detail COD method payment.");
+                if ($stmt_detail->execute() === false) {
+                    $result = array('code' => 500, 'message' => "Cannot Create Order Detail COD method payment.");
                     return $result;
                 }
                 $this->removeCart();
-                $result = array('code'=>200, 'message' => "Order COD payment method success created.");
+                $result = array('code' => 200, 'message' => "Order COD payment method success created.");
+                return $result;
+            } else {
+                $result = array('code' => 500, 'message' => "Cannot Create Order COD payment method.");
                 return $result;
             }
-            else{
-                $result = array('code'=>500, 'message' => "Cannot Create Order COD payment method.");
-                return $result;
-            }
-        }
-        else{
-            $result = array('code'=>404, 'message' => "Cart's empty");
+        } else {
+            $result = array('code' => 404, 'message' => "Cart's empty");
             return $result;
         }
     }
-    
-    private function createOrderID(){
-        $id = uniqid('ORDER', true);
-        while(true){
+
+    private function createOrderMomo()
+    {
+        if ($this->getCartInformation() === true) {
+            $this->order_id = $this->createOrderID();
+            //create MOMO
+            $momo = new Momo($this->order_id, "", strval($this->order_sum_price), $this->conn, $this->web_id, $this->returnUrl);
+            $resultPayment = $momo->initPayment();
+            $result = array('code' => 200, 'data' => $resultPayment);
+            if ($resultPayment['errorCode'] === 0) {
+                $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
+                        VALUES(:order_id, :user_id, 1, 2, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
+                $stmt = $this->prepareQueryPDO($query);
+                $stmt->bindParam(':order_id', $this->order_id);
+                $stmt->bindParam(':user_id', $this->user_id);
+                $stmt->bindParam(':web_id', $this->web_id);
+                $stmt->bindParam(':order_sum_price', $this->order_sum_price);
+                $stmt->bindParam(':order_description', $this->order_description);
+                if ($stmt->execute() === true) {
+                    $values = "";
+                    foreach ($this->list_product_info as $key => $value) {
+                        $product_id = $value['product_id'];
+                        $quantity = $value['cart_quantity'];
+                        $unit_price = $value['cart_price'];
+                        $amount = floatVal(intVal($quantity) * floatval($unit_price));
+                        $values .= "('" . $this->order_id . "','" . $product_id . "','" . $quantity . "','" . $unit_price . "','" . $amount . "')";
+                        if ($key != array_key_last($this->list_product_info)) {
+                            $values .= ',';
+                        }
+                    }
+                    $query = "INSERT INTO order_detail(order_id, product_id, order_detail_quantity, order_detail_unit_price, order_detail_amount)
+                VALUES " . $values;
+                    $stmt_detail = $this->prepareQueryPDO($query);
+
+                    if ($stmt_detail->execute() === false) {
+                        $result = array('code' => 500, 'message' => "Cannot Create Order Detail MOMO method payment.");
+                        return $result;
+                    }
+                    $this->removeCart();
+                }
+                return $result;
+
+            } else {
+                $result = array('code' => 500, 'message' => "Cannot Create Order MOMO payment method.");
+                return $result;
+            }
+        } else {
+            $result = array('code' => 404, 'message' => "Cart's empty");
+            return $result;
+        }
+    }
+
+    private function createOrderID()
+    {
+        $id = uniqid('ORDER');
+        while (true) {
             $query = "SELECT order_id FROM order_tb WHERE order_id =:order_id";
             $stmt = $this->prepareQueryPDO($query);
             $stmt->bindParam(':order_id', $id);
             $stmt->execute();
-            if($stmt->rowCount() === 0){
+            if ($stmt->rowCount() === 0) {
                 break;
             }
         }
         return $id;
     }
 
-
     public function createOrder()
     {
-        if($this->validateToken() === true){
+        if ($this->validateToken() === true) {
             $result = array();
-            switch($this->order_payment){
+            switch ($this->order_payment) {
                 case 1:
                     $result = $this->createOrderCOD();
                     break;
                 case 2:
+                    $result = $this->createOrderMomo();
                     break;
                 case 3:
-                    $result = array('code' => 400, 'message'=>'No Payment Method Choosed');
+                    $result = array('code' => 400, 'message' => 'No Payment Method Choosed');
             }
             return $result;
-        }
-        else{
+        } else {
             $result = array('code' => 403, 'message' => 'Token Expired');
             return $result;
         }
