@@ -68,7 +68,7 @@ if ($data->user_name == "" || $data->user_name == null) {
     $signup->user_address       = htmlspecialchars(trim($data->user_address));
 }
 $origin = $_SERVER['HTTP_ORIGIN'];
-if ($user->setWebID($origin) === true) {
+if ($signup->setWebID($origin) === true) {
     $result = $signup->signUp();
     
     if ($result === true) {
