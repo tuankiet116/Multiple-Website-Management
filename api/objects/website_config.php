@@ -40,7 +40,7 @@ class Website_Config{
     }
 
     function getWebsiteByID(){
-        $query = "SELECT website_config.*, GROUP_CONCAT(domain.domain_name) as list_domain, GROUP_CONCAT(CAST(domain.domain_active as INT)) as list_domain_status
+        $query = "SELECT website_config.*, GROUP_CONCAT(domain.domain_name) as list_domain, GROUP_CONCAT(CAST(domain.domain_active as UNSIGNED)) as list_domain_status
                     FROM website_config 
                     LEFT JOIN domain On domain.web_id = website_config.web_id  
                     WHERE website_config.web_id = :web_id 

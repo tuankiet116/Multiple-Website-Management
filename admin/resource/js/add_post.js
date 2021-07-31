@@ -574,7 +574,7 @@ var exGetImg = function (extag, element) {
 function createPostSuccess(data) {
   if (data.code == 200) {
     showAlert("success", data.message);
-  } else if (res.code == 403) {
+  } else if (data.code == 403) {
     showAlert(
       "warning",
       "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"

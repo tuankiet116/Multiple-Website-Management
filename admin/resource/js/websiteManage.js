@@ -528,7 +528,7 @@ function getDomain(webID) {
       html = "";
       if (data.code == 404) {
         html = `<tr><td colspan = 3 style="color: red;">NOT FOUND</td></tr>`;
-      } else if (res.code == 403) {
+      } else if (data.code == 403) {
         showAlert(
           "warning",
           "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
@@ -627,7 +627,7 @@ function getDomainByID(domainID) {
     url: base_url + "api/Controller/getDomainByID.php",
     async: false,
     success: function (data) {
-      if (res.code == 403) {
+      if (data.code == 403) {
         showAlert(
           "warning",
           "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
