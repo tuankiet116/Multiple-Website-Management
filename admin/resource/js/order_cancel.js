@@ -64,6 +64,9 @@ function getOrder(term){
                     `;
                 })
             }
+            else if(res.code == 403){
+                showAlert('warning', 'Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!');
+            }
             else{
                 var mes = `<tr style="background-color: white;">
                              <td colspan="9"><p style="color:red; text-align: center">${res?.message}</p></td>
@@ -96,7 +99,13 @@ function getOrderById(){
             async:false,
             success: function (res) {
                 // console.log(res);
-                valueDetail(res);
+                if(res.code == 403){
+                    showAlert('warning', 'Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!');
+                    $(this).remove('data-toggle');
+                }
+                else{
+                    valueDetail(res);
+                }
             }
         });
         tooltip('#order_description', 30);

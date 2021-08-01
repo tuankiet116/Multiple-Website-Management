@@ -16,7 +16,7 @@ $str = '';
 $strcit = 'citylist[0] = [{value:"a", text:"Chọn tỉnh/TP"}';
 $str .= 'regiondb["a"] = [{value:"", text:"Chọn Quận/Huyện"}];';
 $i=-1;
-while($row=mysql_fetch_array($db_country->result)){
+while($row=mysqli_fetch_array($db_country->result)){
 	$i++;
 	$db_quan = new db_query("SELECT cit_id,cit_name
 										FROM city 
@@ -31,7 +31,7 @@ while($row=mysql_fetch_array($db_country->result)){
 		$str .= 'regiondb[' . $row["cit_id"] . '] = [{value:"0", text:"Chọn Quận/Huyện"}';
 		$cit_id = $row["cit_id"];
 		
-		while($quan = mysql_fetch_array($db_quan->result)){
+		while($quan = mysqli_fetch_array($db_quan->result)){
 		
 			$str .= ',{value:"' . $quan["cit_id"] . '", text:"' . $quan["cit_name"] . '"}';
 			

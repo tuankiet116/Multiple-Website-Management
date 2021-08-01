@@ -39,12 +39,12 @@
                         return $message;
                     }
                     else{
-                        $message = "Cannot create Service!!";
+                        $message = "Cannot create service. Contact to admin.";
                         return $message;
                     }
                 }
                 else{
-                    $message = "Service Name Duplicate!!";
+                    $message = "Service Name Duplicate!";
                     return $message;
                 }
             }
