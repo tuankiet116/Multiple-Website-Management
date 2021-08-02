@@ -23,7 +23,7 @@ class Momo
         $this->amount = $amount;
         $this->web_id = $web_id;
         $this->conn = $db;
-        $this->notifyUrl = $_SERVER['HTTP_HOST'] . "/api/Controller/Payment/momoNotify.php";
+        $this->notifyUrl = "http://".$_SERVER['HTTP_HOST'] . "/api/Controller/Payment/momoNotify.php";
         $this->returnUrl = $returnUrl;
         $this->getMomoInformation();
     }
@@ -176,8 +176,8 @@ class momoCheck extends Momo
     {
         $query = "SELECT order_tb.web_id, payment_secret_key 
                     FROM order_tb 
-                    INNER JOIN payment ON order_tb.web_id = payment.web_id AND order_id = :web_id AND payment.payment_method = 2";
-        $stmt = $this->queryPreparePDO($query);
+                    INNER JOIN payment ON order_tb.web_id = payment.web_id AND order_id = :order_id AND payment.payment_method = 2";
+        $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':order_id', $this->orderID);
         $stmt->execute();
         if ($stmt->rowCount() !== 0) {
@@ -225,7 +225,7 @@ class momoCheck extends Momo
                 }
             } else {
                 $query = "UPDATE order_tb SET order_text =:order_text WHERE order_id =:order_id";
-                $stmt = $this->queryPreparePDO($query);
+                $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(':order_text', 'Cannot get payment information to update order payment');
             }
             $debugger = array();
@@ -250,7 +250,7 @@ class momoCheck extends Momo
         //check thanh toán khả nghi
         if ($suspicious === true) {
             $query = "UPDATE order_tb SET order_suspicious = 1 WHERE order_id =:order_id";
-            $stmt = $this->queryPreparePDO($query);
+            $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':order_id', $this->orderID);
             $stmt->execute();
         } else {
@@ -258,12 +258,12 @@ class momoCheck extends Momo
                 order_payment_status =:order_payment_status, 
                 order_trans_id =:order_trans_id, 
                 order_text =:order_text, order_suspicious = 0 WHERE order_id =:order_id";
-            $stmt = $this->queryPreparePDO($query);
+            $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':order_id', $this->orderID);
             $stmt->bindParam(':order_text', $this->localMessage);
             $stmt->bindParam(':order_trans_id', $this->transId);
             $stmt->bindParam(':order_payment_status', $this->errorCode);
-            $stmt->execute();
+            $result = $stmt->execute();
         }
     }
 
