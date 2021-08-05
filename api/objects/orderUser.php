@@ -165,10 +165,10 @@ class OrderUser
                 $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
                         VALUES(:order_id, :user_id, 1, 2, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
                 $stmt = $this->prepareQueryPDO($query);
-                $stmt->bindParam(':order_id', $this->order_id);
-                $stmt->bindParam(':user_id', $this->user_id);
-                $stmt->bindParam(':web_id', $this->web_id);
-                $stmt->bindParam(':order_sum_price', $this->order_sum_price);
+                $stmt->bindParam(':order_id'         , $this->order_id);
+                $stmt->bindParam(':user_id'          , $this->user_id);
+                $stmt->bindParam(':web_id'           , $this->web_id);
+                $stmt->bindParam(':order_sum_price'  , $this->order_sum_price);
                 $stmt->bindParam(':order_description', $this->order_description);
                 if ($stmt->execute() === true) {
                     $values = "";
@@ -183,19 +183,20 @@ class OrderUser
                         }
                     }
                     $query = "INSERT INTO order_detail(order_id, product_id, order_detail_quantity, order_detail_unit_price, order_detail_amount)
-                VALUES " . $values;
+                                VALUES " . $values;
                     $stmt_detail = $this->prepareQueryPDO($query);
 
                     if ($stmt_detail->execute() === false) {
                         $result = array('code' => 500, 'message' => "Cannot Create Order Detail MOMO method payment.");
                         return $result;
                     }
-                    $this->removeCart();
+                    $result = array('code' => 200, 'data' => $resultPayment);
+                    return $result;
                 }
+                $result = array('code' => 500, 'message'=>'Cannot create order');
                 return $result;
-
             } else {
-                $result = array('code' => 500, 'message' => "Cannot Create Order MOMO payment method.");
+                $result = array('code' => 200, 'message' => "Cannot Create MOMO payment method.", 'data'=> $resultPayment);
                 return $result;
             }
         } else {

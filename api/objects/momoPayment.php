@@ -138,6 +138,7 @@ class momoCheck extends Momo
     private $rawHash;
     private $response = array();
     private $partnerSignature;
+    private $userID;
 
     public function __construct($db)
     {
@@ -214,6 +215,8 @@ class momoCheck extends Momo
 
                 if ($this->m2signature == $this->partnerSignature) {
                     if ($this->errorCode == '0') {
+                        $this->getUserInformationByOrder();
+                        $this->removeCart();
                         $this->updateOrder(false);
                     } else {
                         $this->updateOrder(false);
@@ -245,6 +248,19 @@ class momoCheck extends Momo
         }   
     }
 
+    private function getUserInformationByOrder(){
+        $query = "SELECT user_id FROM order_tb WHERE order_id = :order_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_id', $this->order_id);
+        $stmt->execute();
+        if($stmt->rowCount()>0){
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->userID = $result['user_id'];
+            return true;
+        }
+        return false;
+    }
+
     private function updateOrder($suspicious)
     {
         //check thanh toán khả nghi
@@ -265,6 +281,17 @@ class momoCheck extends Momo
             $stmt->bindParam(':order_payment_status', $this->errorCode);
             $result = $stmt->execute();
         }
+    }
+
+    private function removeCart()
+    {
+        $query = 'DELETE FROM cart WHERE user_id =:user_id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $this->user_id);
+        if ($stmt->execute() === true) {
+            return true;
+        }
+        return false;
     }
 
     public function updateAndCheckOrder($data)
