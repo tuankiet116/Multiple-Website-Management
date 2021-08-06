@@ -28,7 +28,8 @@
             //set response code - 200 OK
             http_response_code(500);
             echo json_encode(array(
-                "error" => "You Do Not Have Access!"
+                "error" => "You Do Not Have Access!",
+                "code"  => 403
             ));
             exit;
         }

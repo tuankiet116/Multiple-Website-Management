@@ -162,6 +162,11 @@ $(document).ready(function () {
     });
     //ajax(JSON.stringify(data), url, createPostSuccess, createPossError );
   });
+
+  $("#clear_button").on("click", function(){
+    $("#postTypeTitle").val('');
+    $("#postTypeDescription").val('');
+  })
 });
 
 var base_url = "../../../";
@@ -292,7 +297,7 @@ function createPostSuccess(data){
     showAlert('success', data.message);
   }
   else if(data.code == 403){
-    showAlert('warning', 'Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!');
+    window.location.href='../../error.php';
   }
   else{
     showAlert('warning', data.message);

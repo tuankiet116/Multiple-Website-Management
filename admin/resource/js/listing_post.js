@@ -25,9 +25,14 @@ $(document).ready(function(){
             return JSON.stringify(obj);
           },
           processResults: function (data, params) {
+            if(data.code == 403){
+              window.location.href = '../../error.php';
+            }
+
             if(data.code == 404){
               return;
             }
+
             return {
                 results: $.map(data, function (item) {
                     if(item == 404){
@@ -52,7 +57,7 @@ $(document).ready(function(){
     });
 
     //Show Post 
-    debugger;
+
     ajaxSearchingPost(null);
 
     $('#search_button').on('click', function(){
@@ -133,6 +138,7 @@ function ajaxSearchingPost(data){
         url: '../../../api/Controller/getAllPost.php',
         data: JSON.stringify(data),
         async: false,
+        dataType: 'JSON',
         success: function(data){
             postSuccess(data);
             
@@ -147,6 +153,10 @@ function ajaxSearchingPost(data){
 function postSuccess(data){
     html = "";
     stt = 0;
+    if(data.code==403){
+      window.location.href = '../../error.php';
+      var redirect = '../../error.php';
+    }
     data.forEach(function(value, key){
         var action = '';
         var status = '';
@@ -175,7 +185,10 @@ function postSuccess(data){
           status = '<button style = "width: 100px;" id="post_hide_'+ value.post_id +'" type="button" class="btn btn-danger status_button">Đã Ẩn</button>';
         }
 
-        action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'">'+
+        //detail.php?record_id='+value.post_id+'&web_id='+value.web_id+'
+        let href = `detail.php?record_id=${value.post_id}&web_id=${value.web_id}`;
+
+        action = `<a style = "color: white; text-decoration: none;" href="${redirect ?? href}">`+
                     '<button style = "margin-left: 10px; width: 60px;" id = "info_post_'+ value.post_id +'" type="button" class="btn btn-info">Chi Tiết</button></a>';
 
         if(value.post_type_active == 0){
@@ -231,13 +244,18 @@ function IActiveButton(){
       data: JSON.stringify(data),
       async: false,
       url: "../../../api/Controller/ActiveInactivePost.php",
+      dataType: 'JSON',
       success: function(data){
-        if(data.code == 200){
-          showAlert('success', data.message);
-          
+        if(data.code === 403){
+          window.location.href='../../error.php';
         }
         else{
-          showAlert('error',data.code+": " +data.message);
+          if(data.code == 200){
+            showAlert('success', data.message);  
+          }
+          else{
+            showAlert('error',data.code+": " +data.message);
+          }
         }
       },
       error: function(request, status, error){

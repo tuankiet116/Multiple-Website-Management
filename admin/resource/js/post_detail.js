@@ -54,7 +54,12 @@ $(document).ready(function(){
         async: false,
         url: "../../../api/Controller/getPostByID.php",
         success: function(data){
+          if(data.code == 403){
+            window.location.href='../../error.php';
+          }
+          else{
             showInformation(data);
+          }
         },
         error: function (request, status, error){
             showAlert('error', error + request.responseText);
@@ -356,8 +361,13 @@ function setImageData(data, element, max=0){
             dataType: 'JSON',
             url: url,
             success: function(data){
+              if(data.code == 403){
+                window.location.href='../../error.php';
+              }else{
+
                 updatePostSuccess(data);
                 reload();
+              }
             },
             error: function (request, status, error) {
                 updatePostError(request.responseText);
@@ -382,12 +392,18 @@ function setImageData(data, element, max=0){
         async: false,
         url: "../../../api/Controller/ActiveInactivePost.php",
         success: function(data){
-          if(data.code == 200){
-            showAlert('success', data.message);
-            reload();
+          if(data.code == 403){
+            window.location.href='../../error.php';
           }
           else{
-            showAlert('error',data.code+": " +data.message);
+
+            if(data.code == 200){
+              showAlert('success', data.message);
+              reload();
+            }
+            else{
+              showAlert('error',data.code+": " +data.message);
+            }
           }
         },
         error: function(request, status, error){

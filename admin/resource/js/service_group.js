@@ -86,6 +86,11 @@ function createServiceGroup(){
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href= '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res?.message}</p>`);
           $('#form')[0].reset();
@@ -122,7 +127,13 @@ function activeStatus(){
       async: false,
       dataType: "JSON",
       success: function (res) {
+        // console.log(res)
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href= '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res?.message}</p>`);
           $('.pick_website_select').empty();
@@ -155,6 +166,11 @@ function getServiceGroupById(){
       data: JSON.stringify(data),
       dataType: "JSON",
       success: function (res) {
+
+        if(res.code == 403){
+          window.location.href= '../../error.php';
+        }
+
         if(res.code ==200){
           $('#name-service-group-update').val(res.result.service_gr_name);
           $('#description-service-group-update').val(res.result.service_gr_description);
@@ -188,6 +204,11 @@ function updateServiceGroup(){
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href= '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res?.message}</p>`);
           $('#close-updateModal').click();
@@ -230,6 +251,11 @@ function pickWebsiteSelect(element){
         return JSON.stringify(obj);
       },
       processResults: function (data, params) {
+
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         return {
             results: $.map(data, function (item) {
                 return {

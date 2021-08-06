@@ -23,6 +23,9 @@ $(document).ready(function () {
         return JSON.stringify(obj);
       },
       processResults: function (data, params) {
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+        }
         return {
           results: $.map(data, function (item) {
             return {
@@ -161,6 +164,9 @@ function ajaxSearchingPayment(data) {
     data: JSON.stringify(data),
     async: false,
     success: function (data) {
+      if(data.code == 403){
+        window.location.href='../../error.php';
+      }
       paymentSuccess(data);
     },
     error: function (data) {
@@ -221,12 +227,9 @@ function paymentSuccess(data) {
           '" type="button" class="btn btn-danger status_button">Đã Vô Hiệu Hóa</button>';
       }
 
+      let href = data.code == 403? `../../error.php`:`payment_detail.php?record_id=${value.payment_id}&web_id=${value.web_id}`
       action =
-        '<a style = "color: white; text-decoration: none;" href="payment_detail.php?record_id=' +
-        value.payment_id +
-        "&web_id=" +
-        value.web_id +
-        '">' +
+        `<a style = "color: white; text-decoration: none;" href="${href}">` +
         '<button style = "margin-left: 10px; width: 60px;" id = "info_payment_' +
         value.payment_id +
         '" type="button" class="btn btn-info">Chi Tiết</button></a>';
@@ -319,8 +322,14 @@ function IActiveButton() {
       dataType: "JSON",
       data: JSON.stringify(data),
       async: false,
+      dataType: 'JSON',
       url: "../../../api/Controller/ActiveInactivePayment.php",
       success: function (data) {
+
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if (data.code == 200) {
           showAlert("success", data.message);
         } else {
@@ -354,7 +363,12 @@ function addPaymentForWebsite(){
       data: JSON.stringify(data),
       dataType: "JSON",
       success: function (res) {
+         console.log(res);
           $(".loader-container").css("display", "none");
+          if(res.code == 403){
+            window.location.href = '../../error.php';
+          }
+
           if(res.code == 200){
             showAlert('success', `<p>${res.message}</p>`);
             $('#btn-close-bottom').click();
