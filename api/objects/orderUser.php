@@ -112,8 +112,8 @@ class OrderUser
     {
         if ($this->getCartInformation() === true) {
             $this->order_id = $this->createOrderID();
-            $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
-                        VALUES(:order_id, :user_id, 1, 1, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
+            $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text, order_active)
+                        VALUES(:order_id, :user_id, 1, 1, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "",1)';
             $stmt = $this->prepareQueryPDO($query);
             $stmt->bindParam(':order_id', $this->order_id);
             $stmt->bindParam(':user_id', $this->user_id);
@@ -162,8 +162,8 @@ class OrderUser
             $resultPayment = $momo->initPayment();
             $result = array('code' => 200, 'data' => $resultPayment);
             if ($resultPayment['errorCode'] === 0) {
-                $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text)
-                        VALUES(:order_id, :user_id, 1, 2, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "")';
+                $query = 'INSERT INTO order_tb(order_id, user_id, order_payment_status, order_payment, web_id, order_sum_price, order_datetime, order_status, order_description, order_text, order_active)
+                        VALUES(:order_id, :user_id, 1, 2, :web_id, :order_sum_price, CURRENT_TIMESTAMP(), 1, :order_description, "", 0)';
                 $stmt = $this->prepareQueryPDO($query);
                 $stmt->bindParam(':order_id'         , $this->order_id);
                 $stmt->bindParam(':user_id'          , $this->user_id);
@@ -207,7 +207,7 @@ class OrderUser
 
     private function createOrderID()
     {
-        $id = uniqid('ORDER');
+        $id = strtoupper(uniqid('ORDER'));
         while (true) {
             $query = "SELECT order_id FROM order_tb WHERE order_id =:order_id";
             $stmt = $this->prepareQueryPDO($query);
