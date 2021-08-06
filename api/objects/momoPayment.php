@@ -23,7 +23,7 @@ class Momo
         $this->amount = $amount;
         $this->web_id = $web_id;
         $this->conn = $db;
-        $this->notifyUrl = "http://".$_SERVER['HTTP_HOST'] . "/api/Controller/Payment/momoNotify.php";
+        $this->notifyUrl = "http://" . $_SERVER['HTTP_HOST'] . "/api/Controller/Payment/momoNotify.php";
         $this->returnUrl = $returnUrl;
         $this->getMomoInformation();
     }
@@ -138,6 +138,7 @@ class momoCheck extends Momo
     private $rawHash;
     private $response = array();
     private $partnerSignature;
+    private $userID;
 
     public function __construct($db)
     {
@@ -214,17 +215,20 @@ class momoCheck extends Momo
 
                 if ($this->m2signature == $this->partnerSignature) {
                     if ($this->errorCode == '0') {
-                        $this->updateOrder(false);
+                        $this->removeCart();
+                        $this->getUserInformationByOrder();
+                        $this->updateOrder(false, true);
                     } else {
-                        $this->updateOrder(false);
+                        $this->updateOrder(false, false);
                     }
                     $this->response['message'] = "Received payment result success";
                 } else {
-                    $this->updateOrder(true);
+                    $this->updateOrder(true, true);
                     $this->response['message'] = "ERROR! Fail checksum";
                 }
             } else {
-                $query = "UPDATE order_tb SET order_text =:order_text WHERE order_id =:order_id";
+                $this->removeCart();
+                $query = "UPDATE order_tb SET order_text =:order_text, order_active = 1 WHERE order_id =:order_id";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(':order_text', 'Cannot get payment information to update order payment');
             }
@@ -234,37 +238,77 @@ class momoCheck extends Momo
             $debugger['partnerSignature'] = $this->partnerSignature;
             $this->response['debugger'] = $debugger;
             return $this->response;
-        }
-        else{
+        } else {
             $debugger = array();
             $debugger['rawData'] = $this->rawHash;
             $debugger['momoSignature'] = $this->m2signature;
             $debugger['partnerSignature'] = $this->partnerSignature;
             $this->response['debugger'] = $debugger;
             return $this->response;
-        }   
+        }
     }
 
-    private function updateOrder($suspicious)
+    private function getUserInformationByOrder()
+    {
+        $query = "SELECT user_id FROM order_tb WHERE order_id = :order_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_id', $this->order_id);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->userID = $result['user_id'];
+            return true;
+        }
+        return false;
+    }
+
+    private function updateOrder($suspicious, $active = true)
     {
         //check thanh toán khả nghi
         if ($suspicious === true) {
-            $query = "UPDATE order_tb SET order_suspicious = 1 WHERE order_id =:order_id";
+            $query = "UPDATE order_tb SET order_suspicious = 1, order_active = 1 WHERE order_id =:order_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':order_id', $this->orderID);
             $stmt->execute();
         } else {
-            $query = "UPDATE order_tb SET 
+            if ($active === true) {
+                $query = "UPDATE order_tb SET 
                 order_payment_status =:order_payment_status, 
                 order_trans_id =:order_trans_id, 
+                order_active = 1,
                 order_text =:order_text, order_suspicious = 0 WHERE order_id =:order_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':order_id', $this->orderID);
-            $stmt->bindParam(':order_text', $this->localMessage);
-            $stmt->bindParam(':order_trans_id', $this->transId);
-            $stmt->bindParam(':order_payment_status', $this->errorCode);
-            $result = $stmt->execute();
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':order_id', $this->orderID);
+                $stmt->bindParam(':order_text', $this->localMessage);
+                $stmt->bindParam(':order_trans_id', $this->transId);
+                $stmt->bindParam(':order_payment_status', $this->errorCode);
+                $result = $stmt->execute();
+            }
+            else{
+                $query = "UPDATE order_tb SET 
+                order_payment_status =:order_payment_status, 
+                order_trans_id =:order_trans_id, 
+                order_active = 0,
+                order_text =:order_text, order_suspicious = 0 WHERE order_id =:order_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(':order_id', $this->orderID);
+                $stmt->bindParam(':order_text', $this->localMessage);
+                $stmt->bindParam(':order_trans_id', $this->transId);
+                $stmt->bindParam(':order_payment_status', $this->errorCode);
+                $result = $stmt->execute();
+            }
         }
+    }
+
+    private function removeCart()
+    {
+        $query = 'DELETE FROM cart WHERE user_id =:user_id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $this->user_id);
+        if ($stmt->execute() === true) {
+            return true;
+        }
+        return false;
     }
 
     public function updateAndCheckOrder($data)

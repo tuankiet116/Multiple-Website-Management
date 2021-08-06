@@ -1,0 +1,6 @@
+
+# prevent folder listing
+
+#IndexIgnore *
+
+RedirectMatch 403 ^/api/?$ 
