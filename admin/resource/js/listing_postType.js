@@ -126,7 +126,13 @@ function ajaxSearchingPostType(data) {
     data: JSON.stringify(data),
     async: false,
     success: function (data) {
-      postTypeSuccess(data);
+      if(data.code == 403){
+        window.location.href = '../../error.php'
+      }
+      else{
+
+        postTypeSuccess(data);
+      }
     },
     error: function (data) {
       postTypeError(data);
@@ -138,6 +144,10 @@ function ajaxSearchingPostType(data) {
 function postTypeSuccess(data){
     html = "";
     stt = 0;
+    if(data.code==403){
+      window.location.href = '../../error.php';
+      var redirect = '../../error.php';
+    }
     data.forEach(function(value, key){
         action = '';
 
@@ -182,7 +192,8 @@ function postTypeSuccess(data){
           status_home = '<button style = "width: 100px;" id="pt_home_hide_'+ value.post_type_id +'" type="button" class="btn btn-basic home_button">Đã Ẩn</button>';
         }
 
-        action = '<a style = "color: white; text-decoration: none;" href="detail.php?record_id='+value.post_type_id+'&web_id='+value.web_id+'">'+
+        let href = `detail.php?record_id=${value.post_type_id}&web_id=${value.web_id}`;
+        action = `<a style = "color: white; text-decoration: none;" href="${redirect ?? href}">`+
                     '<button style = "margin-left: 10px; width: 60px;" id = "info_post_type_'+ value.post_type_id +'" type="button" class="btn btn-info">Chi Tiết</button></a>';
 
         var cmp_name_str = value.cmp_name;
@@ -272,12 +283,17 @@ function IActiveStatusButton(){
       async: false,
       url: "../../../api/Controller/ActiveInactivePostType.php",
       success: function(data){
-        if(data.code == 200){
-          showAlert('success', data.message);
-          
+        if(data.code ==403){
+          window.location.href = '../../error.php';
         }
         else{
-          showAlert('error',data.code+": " +data.message);
+          if(data.code == 200){
+            showAlert('success', data.message);
+            
+          }
+          else{
+            showAlert('error',data.code+": " +data.message);
+          }
         }
       },
       error: function(request, status, error){
@@ -307,10 +323,16 @@ function IActiveHomeButton() {
       async: false,
       url: "../../../api/Controller/ActiveInactivePostTypeHome.php",
       success: function (data) {
-        if (data.code == 200) {
-          showAlert("success", data.message);
-        } else {
-          showAlert("error", data.code + ": " + data.message);
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+        }
+        else{
+
+          if (data.code == 200) {
+            showAlert("success", data.message);
+          } else {
+            showAlert("error", data.code + ": " + data.message);
+          }
         }
       },
       error: function (request, status, error) {

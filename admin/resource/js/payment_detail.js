@@ -14,6 +14,10 @@ $(document).ready(function () {
 var status_payment = null;
 
 function getPaymentDataSuccess(data) {
+  if(data.code == 403){
+    window.location.href = '../../error.php';
+  }
+  
   if (data.code == 200) {
     if (data.payment_method == 1) {
       $("#payment_partner_code").attr("disabled", true);
@@ -115,6 +119,10 @@ function getPaymentDataError(jqXHR, textStatus, errorThrown) {
 }
 
 function updateSuccess(data) {
+  if(data.code == 403){
+    window.location.href = '../../error.php';
+  }
+
   if (data.code == 200) {
     getPaymentByID();
     showAlert("success", data.message);
@@ -130,6 +138,10 @@ function updateError(jqXHR, textStatus, errorThrown) {
 }
 
 function updateStatusSuccess(data) {
+  if(data.code == 403){
+    window.location.href = '../../error.php';
+  }
+
   if (data.code == 200) {
     getPaymentByID();
     showAlert("success", data.message);

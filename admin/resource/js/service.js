@@ -71,6 +71,10 @@ function getService(data){
     async: false,
     dataType: "JSON",
     success: function (res) {
+      if(res.code == 403){
+        window.location.href = '../../error.php';
+      }
+
       if(res.code == 200){
         var viewData = res?.result.map(function(item, index){
           let status = item.service_active == 1 ? 
@@ -124,6 +128,11 @@ function createService(){
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res.message}</p>`);
           $('#form')[0].reset();
@@ -165,6 +174,10 @@ function getServiceById(){
       async: false,
       dataType: "JSON",
       success: function (res) {
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res.code == 200){
           $('#service_name_update').val(res.result.service_name);
           $('#service_description_update').val(res.result.service_description);
@@ -209,6 +222,10 @@ function updateService(){
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res.message}</p>`);
           $('#close-form-update').click();
@@ -242,7 +259,7 @@ function searchService(){
     $('#service-status').val("#").niceSelect('update');
     $('.pick_website_select.search').empty();
     $('.pick_service_gr_select.search').attr('disabled', 'true');
-
+    getService({term: "", service_gr_id: null, service_active: null});
   })
 }
 
@@ -264,11 +281,15 @@ function activeStatus(){
       dataType: "JSON",
       success: function (res) {
         $('.loader-container').css('display', 'none');
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res.code == 200){
           showAlert('success', `<p>${res.message}</p>`);
         }
         else{
-          showAlert('success', `<p>${res.message}</p>`);
+          showAlert('error', `<p>${res.message}</p>`);
         }
       },
       error: function(){
@@ -302,6 +323,9 @@ function pickWebsiteSelect(element){
           return JSON.stringify(obj);
         },
         processResults: function (data, params) {
+          if(data.code == 403){
+            window.location.href = '../../error.php';
+          }
           return {
               results: $.map(data, function (item) {
                   return {
@@ -347,6 +371,9 @@ function pickServiceGroupSelect(element, web_id){
               return JSON.stringify(obj);
             },
             processResults: function (data, params) {
+              if(data.code == 403){
+                window.location.href = '../../error.php';
+              }
               return {
                   results: $.map(data.result, function (item) {
                       return {

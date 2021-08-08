@@ -575,10 +575,7 @@ function createPostSuccess(data) {
   if (data.code == 200) {
     showAlert("success", data.message);
   } else if (data.code == 403) {
-    showAlert(
-      "warning",
-      "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
-    );
+    window.location.href = '../../error.php';
   } else {
     showAlert("warning", data.message);
   }

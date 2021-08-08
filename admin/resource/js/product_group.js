@@ -22,6 +22,9 @@ $(document).ready(function () {
             return JSON.stringify(obj);
           },
           processResults: function (data, params) {
+            if(data.code == 403){
+              window.location.href='../../error.php';
+            }
             return {
                 results: $.map(data, function (item) {
                     return {
@@ -71,8 +74,13 @@ function getProductGroup(web_id){
         url: base_url+"api/Controller/getProductGroupByWebId.php",
         async: false,
         data: JSON.stringify(data),
+        dataType: 'JSON',
         success: function (res) {
           $('.loader-container').css('display', 'none');
+          if(res?.code == 403){
+            window.location.href = '../../error.php';
+          }
+
           if(res?.code == 200){
             var viewsData =  res.result.map(function(productGroup, index){
               let result ='';
@@ -123,9 +131,18 @@ function getProductGroupById(){
       url: base_url+"api/Controller/getProductGroupById.php",
       async: false,
       data: JSON.stringify(data),
+      dataType: 'JSON',
       success: function (res) {
-        $('#name-product-group-update').val(res?.result.product_gr_name);
-        $('#description-product-group-update').val(res?.result.product_gr_description);
+        console.log(res);
+
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
+        if(res.code == 200){
+          $('#name-product-group-update').val(res?.result.product_gr_name);
+          $('#description-product-group-update').val(res?.result.product_gr_description);
+        }
       },
       error: function(res){
         console.log(res.responseText);
@@ -148,8 +165,14 @@ function createProductGroup(){
       url: base_url+"api/Controller/createProductGroup.php",
       async: false,
       data: JSON.stringify(data),
+      dataType: 'JSON',
       success: function (res) {
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res?.code == 200){
           showAlert('success', `<p>${res?.message}</p>`);
           $('#form')[0].reset();
@@ -186,8 +209,15 @@ function updateProductGroup(){
       url: base_url+"api/Controller/updateProductGroup.php",
       async: false,
       data: JSON.stringify(data),
+      dataType: 'JSON',
       success: function (res) {
+        console.log(res)
         $('.loader-container').css('display', 'none');
+
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+
         if(res?.code == 200){
           showAlert('success', `<p>${res?.message}</p>`);
           $('#close-updateModal').click();
@@ -216,8 +246,13 @@ function activeStatusProductGroup(){
       url: base_url+"api/Controller/activeProductGroup.php",
       async: false,
       data: JSON.stringify(data),
+      dataType: 'JSON',
       success: function (res) {
         console.log(res)
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+        
         if(res.code == 200){
           showAlert("success", `<p>${res.message}</p>`);
         }

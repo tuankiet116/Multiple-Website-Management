@@ -1,0 +1,8 @@
+
+# disable directory browsing
+
+# serve a standard 403 forbidden error page
+
+RedirectMatch 403 ^/api/Controller/Payment?$ 
+
+

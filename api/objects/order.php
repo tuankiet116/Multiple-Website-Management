@@ -75,7 +75,7 @@
                       website_config.web_name
                       FROM order_tb 
                       INNER JOIN user_tb ON order_tb.user_id = user_tb.user_id 
-                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = :order_status 
+                      INNER JOIN website_config ON order_tb.web_id = website_config.web_id ".$queryWhere." AND order_tb.order_status = :order_status AND order_active = 1 
                       WHERE order_tb.order_id LIKE '%".$this->term."%' OR order_tb.order_trans_id LIKE '%".$this->term."%' ORDER BY order_tb.order_datetime DESC";
 
             $stmt = $this->conn->prepare($query);
@@ -90,7 +90,7 @@
                       product.product_currency,
                       product.product_image_path 
                       FROM order_detail 
-                      INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id
+                      INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id AND order_tb.order_active =1
                       INNER JOIN product  ON order_detail.product_id = product.product_id 
                       AND order_detail.order_id = :order_id";
             $stmt = $this->conn->prepare($query);
@@ -143,7 +143,7 @@
 
         public function getOrderByUser(){
             if($this->validateToken() === true){
-                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status ORDER BY order_tb.order_datetime DESC";
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status AND order_tb.order_active = 1 ORDER BY order_tb.order_datetime DESC";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(":user_id",      $this->user_id);
                 $stmt->bindParam(":web_id",       $this->web_id, PDO::PARAM_INT);

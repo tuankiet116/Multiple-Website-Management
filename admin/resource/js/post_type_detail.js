@@ -3,7 +3,6 @@ $(document).ready(function () {
   url_split = url.split("detail.php?record_id=")[1];
   post_type_id = url_split.split("&web_id=")[0];
   web_id = url_split.split("&web_id=")[1];
-  debugger;
 
   $(".loader-container").css("display", "flex");
 
@@ -21,7 +20,12 @@ $(document).ready(function () {
     async: false,
     url: "../../../api/Controller/getPostTypeByID.php",
     success: function (data) {
-      showInformation(data);
+      if(data.code == 403){
+        window.location.href = '../../error.php';
+      }
+      else{
+        showInformation(data);
+      }
     },
     error: function (request, status, error) {
       showAlert("error", error + request.responseText);
@@ -151,9 +155,14 @@ function submitButton() {
       dataType: "JSON",
       url: url,
       success: function (data) {
-        updatePostTypeSuccess(data);
-        reload();
-        showAlert("success", data.message);
+        if(data.code ==403){
+          window.location.href = '../../error.php';
+        }
+        else{
+          updatePostTypeSuccess(data);
+          reload();
+          showAlert("success", data.message);
+        }
       },
       error: function (request, status, error) {
         updatePostTypeError(request.responseText);
@@ -177,11 +186,17 @@ function IActiveStatusButton(post_type_active, element) {
       async: false,
       url: "../../../api/Controller/ActiveInactivePostType.php",
       success: function (data) {
-        if (data.code == 200) {
-          showAlert("success", data.message);
-          reload();
-        } else {
-          showAlert("error", data.code + ": " + data.message);
+
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+        }
+        else{
+          if (data.code == 200) {
+            showAlert("success", data.message);
+            reload();
+          } else {
+            showAlert("error", data.code + ": " + data.message);
+          }
         }
       },
       error: function (request, status, error) {
@@ -201,7 +216,12 @@ function reload() {
     async: false,
     url: "../../../api/Controller/getPostTypeByID.php",
     success: function (data) {
-      showInformation(data);
+      if(data.code == 403){
+        window.location.href = '../../error.php';
+      }
+      else{
+        showInformation(data);
+      }
     },
     error: function (request, status, error) {
       showAlert("error", error + request.responseText);

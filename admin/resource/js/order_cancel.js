@@ -18,65 +18,68 @@ function getOrder(term){
         async: false,
         dataType: "JSON",
         success: function (res) {
-            if(res.code == 200){
-                var viewData = res.result.map(function(item, index){
-                    let  order_payment ="";
-                    let  order_reason = "";
-                    let order_suspicious = '';
-
-                    if(item.order_payment == 1){
-                        order_payment ='<span class="badge badge-secondary">COD</span>';
-                    }
-                    else if(item.order_payment == 2){
-                        order_payment ='<span class="badge badge-danger">MOMO</span>';
-                    }
-                    else{
-                        order_payment ='<span class="badge badge-secondary">Khác</span>';
-                    }
-
-                    if(item.order_reason == 1){
-                        order_reason = "Admin Hủy";
-                    }
-                    else if(item.order_reason == 2){
-                        order_reason = "Không Xác Nhận Được Với Khách Hàng";
-                    } 
-                    else if(item.order_reason == 3){
-                        order_reason = "Khách Hàng Hủy Đơn";
-                    }
-
-                    if(item.order_suspicious == 1 && item.order_payment == 2){
-                        order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
-                    }
-
-                    return`
-                        <tr>
-                            <th scope="row">${index + 1}</th>
-                            <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
-                            <td>${item.user_name}</td>
-                            <td>${order_payment}</td>
-                            <td>${item.order_trans_id}</td>
-                            <td>${item.web_name}</td>
-                            <td>${order_reason}</td>
-                            <td>
-                                <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
-                            </td>
-                        </tr>
-                    `;
-                })
-            }
-            else if(res.code == 403){
-                showAlert('warning', 'Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!');
+            if(res.code == 403){
+                window.location.href= '../../error.php';
             }
             else{
-                var mes = `<tr style="background-color: white;">
-                             <td colspan="9"><p style="color:red; text-align: center">${res?.message}</p></td>
-                           </tr>`; 
-            }
 
-            $('.table > tbody').html(viewData ?? mes).ready(function(){
-                getOrderById();
-                tooltip('.order_code', 20);
-            });
+                if(res.code == 200){
+                    var viewData = res.result.map(function(item, index){
+                        let  order_payment ="";
+                        let  order_reason = "";
+                        let order_suspicious = '';
+    
+                        if(item.order_payment == 1){
+                            order_payment ='<span class="badge badge-secondary">COD</span>';
+                        }
+                        else if(item.order_payment == 2){
+                            order_payment ='<span class="badge badge-danger">MOMO</span>';
+                        }
+                        else{
+                            order_payment ='<span class="badge badge-secondary">Khác</span>';
+                        }
+    
+                        if(item.order_reason == 1){
+                            order_reason = "Admin Hủy";
+                        }
+                        else if(item.order_reason == 2){
+                            order_reason = "Không Xác Nhận Được Với Khách Hàng";
+                        } 
+                        else if(item.order_reason == 3){
+                            order_reason = "Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng";
+                        }
+    
+                        if(item.order_suspicious == 1 && item.order_payment == 2){
+                            order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
+                        }
+    
+                        return`
+                            <tr>
+                                <th scope="row">${index + 1}</th>
+                                <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
+                                <td>${item.user_name}</td>
+                                <td>${order_payment}</td>
+                                <td>${item.order_trans_id}</td>
+                                <td>${item.web_name}</td>
+                                <td>${order_reason}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
+                                </td>
+                            </tr>
+                        `;
+                    })
+                }
+                else{
+                    var mes = `<tr style="background-color: white;">
+                                 <td colspan="9"><p style="color:red; text-align: center">${res?.message}</p></td>
+                               </tr>`; 
+                }
+    
+                $('.table > tbody').html(viewData ?? mes).ready(function(){
+                    getOrderById();
+                    tooltip('.order_code', 20);
+                });
+            }
         },
         error: function(res){
             console.log(res.responseText);
@@ -100,11 +103,12 @@ function getOrderById(){
             success: function (res) {
                 // console.log(res);
                 if(res.code == 403){
-                    showAlert('warning', 'Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!');
-                    $(this).remove('data-toggle');
+                    window.location.href= '../../error.php';
                 }
                 else{
-                    valueDetail(res);
+                    if(res.code == 200){
+                        valueDetail(res);
+                    }
                 }
             }
         });
