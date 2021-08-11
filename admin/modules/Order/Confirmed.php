@@ -252,7 +252,7 @@ require("inc_security.php");
                             <select name="" id="order_reason">
                                 <option value="1">Admin Hủy</option>
                                 <option value="2">Không Xác Nhận Được Với Khách Hàng</option>
-                                <option value="3">Khách Hàng Hủy Đơn Hoặc Trả Hàng</option>
+                                <option value="4">Trả Hàng</option>
                             </select>
                         </div>
                     </div>

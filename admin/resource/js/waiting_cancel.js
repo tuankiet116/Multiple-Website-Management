@@ -1,4 +1,5 @@
 var base_url = "../../../";
+
 $(document).ready(function () {
     $('#search_reason').niceSelect();
     getOrder("");
@@ -9,7 +10,7 @@ $(document).ready(function () {
 function getOrder(term){
     let data ={
         "term": term,
-        "order_status": "3"
+        "order_status": "5"
     }
     $.ajax({
         type: "POST",
@@ -49,7 +50,7 @@ function getOrder(term){
                             order_reason = "Khách Hàng Hủy Đơn";
                         }
                         else if(item.order_reason == 4){
-                            order_reason = "Trả Hàng";
+                            order_reason ="Trả Hàng"
                         }
     
                         if(item.order_suspicious == 1 && item.order_payment == 2){
@@ -91,12 +92,13 @@ function getOrder(term){
 }
 
 function getOrderById(){
+    let order_id = null;
     $('.btn-detail').click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
-            "order_status": "3"
+            "order_status": "5"
         }
-        order_id_g =  $(this).attr('order_id');
+        order_id =  $(this).attr('order_id');
         $.ajax({
             type: "POST",
             url: base_url+"api/Controller/getOrderById.php",
@@ -118,11 +120,43 @@ function getOrderById(){
         tooltip('#order_description', 30);
     });
     
+    $('#confirm_cancel_order').click(function(){
+        let data ={
+            "order_id": order_id,
+            "order_status": "3",
+            "order_reason": "3"
+        }
+        $.ajax({
+            type: "POST",
+            url: base_url+"api/Controller/orderCancel.php",
+            data: JSON.stringify(data),
+            dataType: "JSON",
+            async: false,
+            success: function (res) {
+                if(res.code == 403){
+                    window.location.href= '../../error.php';
+                }
+
+                if(res.code == 200){
+                    showAlert("success", `<p>${res.message}</p>`);
+                    $('#close_modal_detail').click();
+                }
+                else{
+                    showAlert("error", `<p>${res.message}</p>`);
+                }
+            },
+            error: function (res) {
+                console.log(res.responseText);
+            }
+        });
+        getOrder("");
+    })
 }
 
 function searchTerm(){
     $('#btn-search').click(function(){
         let term = $('#search_code').val();
+        console.log(term)
         getOrder(term);
     })
 }
@@ -149,8 +183,8 @@ function valueDetail(data){
         order_payment ='<span class="badge badge-secondary">Khác</span>';
     }
 
-    if(data.result.order_status == 3){
-        order_status = 'Đơn Đã Hủy';
+    if(data.result.order_status == 5){
+        order_status = 'Đơn Chờ Hủy';
     }
 
     if(data.result.order_reason == 1){
@@ -160,7 +194,10 @@ function valueDetail(data){
         order_reason = 'Không Xác Nhận Được Với Khách Hàng'
     }
     else if(data.result.order_reason == 3){
-        order_reason = 'Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng'
+        order_reason = 'Khách Hàng Hủy Đơn'
+    }
+    else if(item.order_reason == 4){
+        order_reason ="Trả Hàng"
     }
 
     if(data.result.order_suspicious == 1 && data.result.order_payment == 2){

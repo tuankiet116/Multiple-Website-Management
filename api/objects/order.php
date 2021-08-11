@@ -143,7 +143,7 @@
 
         public function getOrderByUser(){
             if($this->validateToken() === true){
-                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status AND order_tb.order_active = 1 ORDER BY order_tb.order_datetime DESC";
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = :order_status AND order_active = 1 ORDER BY order_tb.order_datetime DESC";
                 $stmt = $this->conn->prepare($query);
                 $stmt->bindParam(":user_id",      $this->user_id);
                 $stmt->bindParam(":web_id",       $this->web_id, PDO::PARAM_INT);
