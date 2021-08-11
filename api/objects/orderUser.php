@@ -252,10 +252,62 @@ class OrderUser
         }
     }
 
-    //Khởi tạo yêu cầu hủy đơn để admin xác nhận. Nếu là đơn hàng COD thì sẽ được hủy luôn với điều kiện đơn hàng trong trạng thái chờ xác nhận.
-    private function checkPaymentOfOrder()
-    {
-        $query = "SELECT order_payment, order_status FROM order_tb WHERE order_id =:order_id AND order_status = 1 AND web_id =:web_id";
+    public function getOrderByUser( $orderCancel = false ){
+        if($this->validateToken() === true){
+            if($orderCancel){
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND (order_status = 3 OR order_status = 5) AND order_active = 1 ORDER BY order_tb.order_datetime DESC";
+            }
+            else{
+                $query = "SELECT * FROM order_tb WHERE user_id = :user_id AND web_id = :web_id AND order_status = ".$this->order_status." AND order_active = 1 ORDER BY order_tb.order_datetime DESC";
+            }
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":user_id",      $this->user_id);
+            $stmt->bindParam(":web_id",       $this->web_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt;
+        }
+    }
+
+    public function getOrderDetail(){
+        $query = "SELECT order_detail.*, 
+                  product.product_name, 
+                  product.product_currency,
+                  product.product_image_path 
+                  FROM order_detail 
+                  INNER JOIN order_tb ON order_detail.order_id = order_tb.order_id AND order_tb.order_active =1
+                  INNER JOIN product  ON order_detail.product_id = product.product_id 
+                  AND order_detail.order_id = :order_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":order_id", $this->order_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function cancelOrderUser(){
+        $message ='';
+        if($this->validateToken() === true){
+            $query ="UPDATE order_tb SET order_status = 5, order_reason = 3 WHERE order_id = :order_id AND web_id = :web_id AND user_id = :user_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":order_id", $this->order_id);
+            $stmt->bindParam(":user_id",  $this->user_id);
+            $stmt->bindParam(":web_id",   $this->web_id, PDO::PARAM_INT);
+            if($stmt->execute() === true){
+                $message = true;
+                return $message;
+            }
+            else{
+                $message = 'Do Not Cancel Order!!';
+                return $message;
+            }
+        }
+        else{
+            $message = 'Something has wrong!';
+            return $message;
+        }
+    }
+    
+    private function checkPaymentOfOrder(){
+        $query = "SELECT order_payment FROM order_tb WHERE order_id =:order_id AND order_status = 1 AND web_id =:web_id";
         $stmt = $this->prepareQueryPDO($query);
         $stmt->bindParam(':order_id', $this->order_id);
         $stmt->bindParam(':web_id', $this->web_id);
