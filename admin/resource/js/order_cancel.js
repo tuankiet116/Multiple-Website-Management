@@ -159,8 +159,8 @@ function valueDetail(data){
     else if(data.result.order_reason == 2){
         order_reason = 'Không Xác Nhận Được Với Khách Hàng'
     }
-    else if(data.result.order_reason == 3){
-        order_reason = 'Khách Hàng Hủy Đơn Hoặc Trả Lại Hàng'
+    else if(data.result.order_reason == 4){
+        order_reason = 'Khách Hàng Hủy Đơn'
     }
 
     if(data.result.order_suspicious == 1 && data.result.order_payment == 2){

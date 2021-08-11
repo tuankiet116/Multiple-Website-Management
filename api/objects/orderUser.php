@@ -294,4 +294,72 @@ class OrderUser
             return $message;
         }
     }
+    
+    private function checkPaymentOfOrder(){
+        $query = "SELECT order_payment FROM order_tb WHERE order_id =:order_id AND order_status = 1 AND web_id =:web_id";
+        $stmt = $this->prepareQueryPDO($query);
+        $stmt->bindParam(':order_id', $this->order_id);
+        $stmt->bindParam(':web_id'  , $this->web_id);
+        $stmt->execute();
+        if($stmt->rowCount() === 1){
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->order_payment = $result['order_payment'];
+            return true;
+        }        
+        return false;
+    }
+
+    private function requestCancelCodOrder(){
+        $query =  "UPDATE order_tb SET order_status = 3, order_reason = 3 WHERE order_id =:order_id";
+        $stmt = $this->prepareQueryPDO($query);
+        $stmt->bindParam(':order_id', $this->order_id);
+        if($stmt->execute() === true){
+            return true;
+        }
+        return false;
+    }
+
+    private function requestCancelMomoOrder(){
+        $query =  "UPDATE order_tb SET order_status = 6, order_reason = 3 WHERE order_id =:order_id";
+        $stmt = $this->prepareQueryPDO($query);
+        $stmt->bindParam(':order_id', $this->order_id);
+        if($stmt->execute() === true){
+            return true;
+        }
+        return false;
+    }
+
+    public function createRequestCancel(){
+        if($this->validateToken() === true){
+            if($this->checkPaymentOfOrder() === true){
+                $result = array();
+                switch($this->order_payment){
+                    case 1:
+                        if($this->requestCancelCodOrder() === true){
+                            $result = array('code' => 200, 'message' => 'Request has sent');
+                        }
+                        else{
+                            $result = array('code' => 1002, 'message' => 'Order got error while canceling');
+                        }
+                        break;
+                    case 2:
+                        if($this->requestCancelMomoOrder() === true){
+                            $result = array('code' => 200, 'message' => 'Request has sent');
+                        }
+                        else{
+                            $result = array('code' => 1002, 'message' => 'Order got error while canceling');
+                        }
+                        break;
+                }
+                return $result;
+            }   
+            else{
+                $result = array('code' => 1001, 'message' => 'Order does not have permission');
+                return $result;    
+            }                     
+        }else {
+            $result = array('code' => 403, 'message' => 'Token Expired');
+            return $result;
+        }
+    }
 }
