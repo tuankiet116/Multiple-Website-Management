@@ -34,7 +34,7 @@ class Momo
         return $stmt;
     }
 
-    private function getMomoInformation()
+    protected function getMomoInformation()
     {
         $query = "SELECT payment_partner_code, payment_access_key, payment_secret_key FROM payment WHERE payment_active = 1 AND web_id =:web_id AND payment_method = 2";
         $stmt = $this->queryPreparePDO($query);
@@ -43,8 +43,8 @@ class Momo
         if ($stmt->rowCount() > 0) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->partnerCode = $result['payment_partner_code'];
-            $this->accessKey = $result['payment_access_key'];
-            $this->secretKey = $result['payment_secret_key'];
+            $this->accessKey   = $result['payment_access_key'];
+            $this->secretKey   = $result['payment_secret_key'];
             return true;
         }
         return false;
@@ -56,7 +56,7 @@ class Momo
      * @param json string $data
      * @return string
      */
-    private function execPostRequest($data)
+    protected function execPostRequest($data)
     {
         $ch = curl_init($this->endPoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -173,7 +173,7 @@ class momoCheck extends Momo
         }
     }
 
-    private function getMomoInformation()
+    protected function getMomoInformation()
     {
         $query = "SELECT order_tb.web_id, payment_secret_key 
                     FROM order_tb 
@@ -283,8 +283,7 @@ class momoCheck extends Momo
                 $stmt->bindParam(':order_trans_id', $this->transId);
                 $stmt->bindParam(':order_payment_status', $this->errorCode);
                 $result = $stmt->execute();
-            }
-            else{
+            } else {
                 $query = "UPDATE order_tb SET 
                 order_payment_status =:order_payment_status, 
                 order_trans_id =:order_trans_id, 
@@ -315,5 +314,85 @@ class momoCheck extends Momo
     {
         $response = $this->validation($data);
         return $response;
+    }
+}
+
+class momoRefund extends Momo
+{
+    private $transId;
+    private $requestType = "refundMoMoWallet";
+
+    public function __construct($db, $order_id)
+    {
+        $this->conn = $db;
+        $this->order_id = $order_id;
+        $this->getOrderInformation();
+        $this->getMomoInformation();
+    }
+
+    private function getOrderInformation()
+    {
+        $query = "SELECT * FROM order_tb WHERE order_id =:order_id";
+        $stmt = $this->queryPreparePDO($query);
+        $stmt->bindParam(':order_id', $this->orderID);
+        if ($stmt->execute() === true && $stmt->rowCount() === 1) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->transId = $result['order_trans_id'];
+            $this->amount  = $result['order_sum_price'];
+            $this->web_id  = $result['web_id'];
+            return true;
+        }
+        return false;
+    }
+
+    private function createRefund()
+    {
+        $this->requestId   = time() . "";
+        $this->getMomoInformation();
+        $rawHash =  "partnerCode=" . $this->partnerCode .
+            "&accessKey="  . $this->accessKey  .
+            "&requestId="  . $this->requestId  .
+            "&amount="     . $this->amount     .
+            "&orderId="    . $this->orderID    .
+            "&transId="    . $this->transId    .
+            "&requestType=" . $this->requestType;
+        $signature = hash_hmac("sha256", $rawHash, $this->secretKey);
+        $data = array(
+            "partnerCode" => $this->partnerCode,
+            "accessKey"   => $this->accessKey,
+            "requestId"   => $this->requestId,
+            "amount"      => $this->amount,
+            "orderId"     => $this->orderID,
+            "transId"     => $this->transId,
+            "requestType" => $this->requestType,
+            "signature"   => $signature
+        );
+
+        $data = json_encode($data);
+        $result = $this->execPostRequest($data);
+        return $result;
+    }
+
+    public function refund()
+    {
+        $resultJSON = $this->createRefund();
+        $result = json_decode($resultJSON);
+        //update order has been refunded
+        $query = "UPDATE order_tb 
+        SET order_refund_code       =:order_refund_code, 
+            order_refund_message    =:order_refund_message, 
+            order_refund_request_id =:request_id
+        WHERE order_id =:order_id";
+        $stmt = $this->queryPreparePDO($query);
+        $stmt->bindParam(':order_refund_code'   , $result['errorCode']);
+        $stmt->bindParam(':order_refund_message', $result['localMessage']);
+        $stmt->bindParam(':request_id'          , $result['requestId']);
+        $stmt->bindParam(':order_id'            , $this->orderID);
+        $stmt->execute();
+        return true;
+        if ($result["errorCode"] == 0) {
+            return true;
+        } 
+        return false;
     }
 }
