@@ -14,13 +14,23 @@ $(document).ready(function () {
     $('#service-status').niceSelect();
 
     //creat service
-    createService();
+    $('#btn-submit-add').click(createService);
 
     // load service
     getService({term: "", service_gr_id: null, service_active: null});
 
     //search service
     searchService();
+    $('#btn-search').click(searchService);
+
+    $('#btn-clear').click(function(){
+      $('#text-search').val("");
+      $('.pick_service_gr_select.search').empty();
+      $('#service-status').val("#").niceSelect('update');
+      $('.pick_website_select.search').empty();
+      $('.pick_service_gr_select.search').attr('disabled', 'true');
+      getService({term: "", service_gr_id: null, service_active: null});
+    })
     
     $(".input-image-container i").on("click", function (e) {
       var image_element = $(this).siblings(".input-image").find("img");
@@ -99,206 +109,185 @@ function getService(data){
                    </tr>`; 
       }
       $('.table > tbody').html(viewData ?? mes).ready(function(){
-        activeStatus();
-        getServiceById();
+        $('.btn-status').click(activeStatus)
+        $('.btn-edit').click(getServiceById);
+        $('#btn-submit-update').click(updateService);
         tooltip('.service-description', 30);
-        updateService();
-        
       })
     }
   });
 }
 
 function createService(){
-  $('#btn-submit-add').click(function(){
-    let data = {
-      "service_name":         $('#service_name').val(),
-      "service_description":  $('#service_description').val(),
-      "service_content":      CKEDITOR.instances.content_service_add.getData(),
-      "service_gr_id":        $('.pick_service_gr_select.add').select2('val'),
-      "service_image":        $('#image_icon_1').attr("src")
-    }
-    $('.loader-container').css('display', 'flex');
-    
-    $.ajax({
-      method: "POST",
-      url: base_url+"api/Controller/createService.php",
-      data: JSON.stringify(data),
-      async: false,
-      dataType: "JSON",
-      success: function (res) {
-        $('.loader-container').css('display', 'none');
+  let data = {
+    "service_name":         $('#service_name').val(),
+    "service_description":  $('#service_description').val(),
+    "service_content":      CKEDITOR.instances.content_service_add.getData(),
+    "service_gr_id":        $('.pick_service_gr_select.add').select2('val'),
+    "service_image":        $('#image_icon_1').attr("src")
+  }
+  $('.loader-container').css('display', 'flex');
+  
+  $.ajax({
+    method: "POST",
+    url: base_url+"api/Controller/createService.php",
+    data: JSON.stringify(data),
+    async: false,
+    dataType: "JSON",
+    success: function (res) {
+      $('.loader-container').css('display', 'none');
 
-        if(res.code == 403){
-          window.location.href = '../../error.php';
-        }
-
-        if(res.code == 200){
-          showAlert('success', `<p>${res.message}</p>`);
-          $('#form')[0].reset();
-          $('.pick_service_gr_select.add').empty();
-          $('.pick_service_gr_select.add').attr('disabled','true');
-          $('.pick_website_select.add').empty();
-          $("#image_icon_1").attr("src", "#");
-          $("#image_icon_1").css("display", "none");
-          $("#input_image_icon_1").children("svg").css("display", "inherit");
-          $('#close-form-add').click();
-
-        }
-        else{
-          showAlert('error', `<p>${res?.message}</p>`);
-        }
-      },
-      error: function(res){
-        $('.loader-container').css('display', 'none');
-        console.log(res.responseText);
+      if(res.code == 403){
+        window.location.href = '../../error.php';
       }
-    });
-    getService({term: "", service_gr_id: null, service_active: null});
-  });
 
+      if(res.code == 200){
+        showAlert('success', `<p>${res.message}</p>`);
+        $('#form')[0].reset();
+        $('.pick_service_gr_select.add').empty();
+        $('.pick_service_gr_select.add').attr('disabled','true');
+        $('.pick_website_select.add').empty();
+        $("#image_icon_1").attr("src", "#");
+        $("#image_icon_1").css("display", "none");
+        $("#input_image_icon_1").children("svg").css("display", "inherit");
+        $('#close-form-add').click();
+
+      }
+      else{
+        showAlert('error', `<p>${res?.message}</p>`);
+      }
+    },
+    error: function(res){
+      $('.loader-container').css('display', 'none');
+      console.log(res.responseText);
+    }
+  });
+  getService({term: "", service_gr_id: null, service_active: null});
 }
 
 function getServiceById(){
-  $('.btn-edit').click(function(){
-    let data = {
-        "service_id": $(this).attr('sv_id'),
-        "service_gr_id": $(this).attr('sv_gr_id')
-    }
-    service_gr_id_update = $(this).attr('sv_gr_id');
-    service_id_update    = $(this).attr('sv_id')
-    $.ajax({
-      type: "POST",
-      url: base_url+"api/Controller/getServiceById.php",
-      data: JSON.stringify(data),
-      async: false,
-      dataType: "JSON",
-      success: function (res) {
-        if(res.code == 403){
-          window.location.href = '../../error.php';
-        }
-
-        if(res.code == 200){
-          $('#service_name_update').val(res.result.service_name);
-          $('#service_description_update').val(res.result.service_description);
-          CKEDITOR.instances.content_service_update.setData(res.result.service_content);
-          if(res.result.service_image !== null){
-            setImageData(res.result.service_image, "#image_icon_", 1);
-          }
-          else{
-            $("#image_icon_1_update").attr("src", "#");
-            $("#image_icon_1_update").css("display", "none");
-            $("#input_image_icon_1_update").children("svg").css("display", "inherit");
-          }
-        }
-        else {
-          console.log(res?.message);
-        }
-      },
-      error: function(res){
-        console.log(res.responseText);
+  let data = {
+    "service_id": $(this).attr('sv_id'),
+    "service_gr_id": $(this).attr('sv_gr_id')
+  }
+  service_gr_id_update = $(this).attr('sv_gr_id');
+  service_id_update    = $(this).attr('sv_id')
+  $.ajax({
+    type: "POST",
+    url: base_url+"api/Controller/getServiceById.php",
+    data: JSON.stringify(data),
+    async: false,
+    dataType: "JSON",
+    success: function (res) {
+      if(res.code == 403){
+        window.location.href = '../../error.php';
       }
-    });
-  })
+
+      if(res.code == 200){
+        $('#service_name_update').val(res.result.service_name);
+        $('#service_description_update').val(res.result.service_description);
+        CKEDITOR.instances.content_service_update.setData(res.result.service_content);
+        if(res.result.service_image !== null){
+          setImageData(res.result.service_image, "#image_icon_", 1);
+        }
+        else{
+          $("#image_icon_1_update").attr("src", "#");
+          $("#image_icon_1_update").css("display", "none");
+          $("#input_image_icon_1_update").children("svg").css("display", "inherit");
+        }
+      }
+      else {
+        console.log(res?.message);
+      }
+    },
+    error: function(res){
+      console.log(res.responseText);
+    }
+  });
 }
 
 function updateService(){
-  $('#btn-submit-update').click(function(){
-    let data = {
-      "service_name":        $('#service_name_update').val(),
-      "service_description": $('#service_description_update').val(),
-      "service_content":     CKEDITOR.instances.content_service_update.getData(),
-      "service_gr_id":       service_gr_id_update,
-      "service_id":          service_id_update,
-      "service_image":       $('#image_icon_1_update').attr('src')   
-    }
-    console.log(data);
-    $('.loader-container').css('display', 'flex');
-    $.ajax({
-      type: "POST",
-      url: base_url+"api/Controller/updateService.php",
-      data: JSON.stringify(data),
-      async: false,
-      dataType: "JSON",
-      success: function (res) {
-        $('.loader-container').css('display', 'none');
-        if(res.code == 403){
-          window.location.href = '../../error.php';
-        }
-
-        if(res.code == 200){
-          showAlert('success', `<p>${res.message}</p>`);
-          $('#close-form-update').click();
-        }
-        else{
-          showAlert('error', `<p>${res?.message}</p>`);
-        }
-      },
-      error: function(res){
-        $('.loader-container').css('display', 'none');
-        console.log(res.responseText);
+  let data = {
+    "service_name":        $('#service_name_update').val(),
+    "service_description": $('#service_description_update').val(),
+    "service_content":     CKEDITOR.instances.content_service_update.getData(),
+    "service_gr_id":       service_gr_id_update,
+    "service_id":          service_id_update,
+    "service_image":       $('#image_icon_1_update').attr('src')   
+  }
+  console.log(data);
+  $('.loader-container').css('display', 'flex');
+  $.ajax({
+    type: "POST",
+    url: base_url+"api/Controller/updateService.php",
+    data: JSON.stringify(data),
+    async: false,
+    dataType: "JSON",
+    success: function (res) {
+      $('.loader-container').css('display', 'none');
+      if(res.code == 403){
+        window.location.href = '../../error.php';
       }
-    });
-    getService({term: "", service_gr_id: null, service_active: null});
-  })
+
+      if(res.code == 200){
+        showAlert('success', `<p>${res.message}</p>`);
+        $('#close-form-update').click();
+      }
+      else{
+        showAlert('error', `<p>${res?.message}</p>`);
+      }
+    },
+    error: function(res){
+      $('.loader-container').css('display', 'none');
+      console.log(res.responseText);
+    }
+  });
+  getService({term: "", service_gr_id: null, service_active: null});
 }
 
 function searchService(){
-  $('#btn-search').click(function(){
-    let data = {
-      "term": $('#text-search').val().trim(),
-      "service_gr_id":  $('.pick_service_gr_select.search').select2('val'),
-      "service_active": $('#service-status').val() == '1' || $('#service-status').val() == '0'?  $('#service-status').val() : null
-    }
-    getService(data);
-  });
-
-  $('#btn-clear').click(function(){
-    $('#text-search').val("");
-    $('.pick_service_gr_select.search').empty();
-    $('#service-status').val("#").niceSelect('update');
-    $('.pick_website_select.search').empty();
-    $('.pick_service_gr_select.search').attr('disabled', 'true');
-    getService({term: "", service_gr_id: null, service_active: null});
-  })
+  let data = {
+    "term": $('#text-search').val().trim(),
+    "service_gr_id":  $('.pick_service_gr_select.search').select2('val'),
+    "service_active": $('#service-status').val() == '1' || $('#service-status').val() == '0'?  $('#service-status').val() : null
+  }
+  getService(data);
 }
 
 function activeStatus(){
-  $('.btn-status').click(function(){
-    let data ={
-      "service_id":     $(this).attr('sv_id'),
-      "service_gr_id":  $(this).attr('sv_gr_id'),
-      "service_active": $(this).attr('sv_active') == "1" ? "0" : "1"
-    }
-    console.log(data)
-    $('.loader-container').css('display', 'flex');
+  let data ={
+    "service_id":     $(this).attr('sv_id'),
+    "service_gr_id":  $(this).attr('sv_gr_id'),
+    "service_active": $(this).attr('sv_active') == "1" ? "0" : "1"
+  }
+  console.log(data)
+  $('.loader-container').css('display', 'flex');
 
-    $.ajax({
-      type: "POST",
-      url: base_url+"api/Controller/activeService.php",
-      data: JSON.stringify(data),
-      async:false,
-      dataType: "JSON",
-      success: function (res) {
-        $('.loader-container').css('display', 'none');
-        if(res.code == 403){
-          window.location.href = '../../error.php';
-        }
-
-        if(res.code == 200){
-          showAlert('success', `<p>${res.message}</p>`);
-        }
-        else{
-          showAlert('error', `<p>${res.message}</p>`);
-        }
-      },
-      error: function(){
-        $('.loader-container').css('display', 'none');
-        console.log(res.responseText);
+  $.ajax({
+    type: "POST",
+    url: base_url+"api/Controller/activeService.php",
+    data: JSON.stringify(data),
+    async:false,
+    dataType: "JSON",
+    success: function (res) {
+      $('.loader-container').css('display', 'none');
+      if(res.code == 403){
+        window.location.href = '../../error.php';
       }
-    });
-    getService({term: "", service_gr_id: null, service_active: null});
-  })
+
+      if(res.code == 200){
+        showAlert('success', `<p>${res.message}</p>`);
+      }
+      else{
+        showAlert('error', `<p>${res.message}</p>`);
+      }
+    },
+    error: function(){
+      $('.loader-container').css('display', 'none');
+      console.log(res.responseText);
+    }
+  });
+  getService({term: "", service_gr_id: null, service_active: null});
 }
 
 function pickWebsiteSelect(element){
