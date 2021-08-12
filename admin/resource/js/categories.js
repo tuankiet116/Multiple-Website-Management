@@ -127,6 +127,15 @@ $(document).ready(function () {
           data: JSON.stringify(data),
           async: false,
           success: function(data){
+            // console.log(data)
+            if(typeof(data) === 'string'){
+              $('.loader-container').css('display', 'none');
+              let obj = JSON.parse(data);
+              if(obj.code == 403){
+                window.location.href = '../../error.php';
+              }
+            }
+
             if(data.code == 200){
               $('.loader-container').css('display', 'none');
               showAlert('success', `<p>${data.message}</p>`);
@@ -201,6 +210,15 @@ $(document).ready(function () {
       method: "POST",
       data: JSON.stringify(dataUpdate),
       success: function(data){
+        // console.log(data);
+        if(typeof(data) === 'string'){
+          $('.loader-container').css('display', 'none');
+          let obj = JSON.parse(data);
+          if(obj.code == 403){
+            window.location.href = '../../error.php';
+          }
+        }
+
         if(data.code == 200){
           $('.loader-container').css('display', 'none');
           showAlert('success', `<p>${data.message}</p>`);
@@ -213,7 +231,6 @@ $(document).ready(function () {
           $('.loader-container').css('display', 'none');
           showAlert('error', `<p>${data.message}</p>`);
         }
-
       },
       error: function(data){
         showAlert('error', data.responseText);
@@ -227,10 +244,17 @@ $(document).ready(function () {
 
 function getCateById(data){
   $.ajax({
-    url: base_url+'api/Controller/getCategoriesByID.php',
+    url: base_url + 'api/Controller/getCategoriesByID.php',
     method: 'POST',
     data: JSON.stringify(data),
+    async: false,
     success: function(res){
+      if(typeof(res) === 'string'){
+        let obj = JSON.parse(res);
+        if(obj.code == 403){
+          window.location.href = '../../error.php';
+        }
+      }
       renderFormUpdate(res);
     }
   })
@@ -624,14 +648,14 @@ function getAllCate(web_id){
         $('.disable').removeAttr('disabled');
 
         $('.show-modal-update').click(function(){
-          $('.modal-update').css("display", "block");
-          $('body').css("overflow", "hidden");
           cmp_id = parseInt($(this).attr('id_cate'));
           var dataGetCateByID = {
             'cmp_id': $(this).attr('id_cate'),
             'web_id': web_id
           }
           getCateById(dataGetCateByID);
+          $('.modal-update').css("display", "block");
+          $('body').css("overflow", "hidden");
         })
       })
     }

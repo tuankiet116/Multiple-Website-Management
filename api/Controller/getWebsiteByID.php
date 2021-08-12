@@ -39,7 +39,10 @@ $website->web_id = intVal($data->web_id);
         http_response_code(200);
     
         // make it json format
-        echo json_encode($website_array);
+        echo json_encode([
+            "code" => 200,
+            "result" => $website_array
+        ]);
     }
     else{
         // set response code - 404 Not found

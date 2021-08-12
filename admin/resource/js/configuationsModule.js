@@ -233,6 +233,9 @@ var exGetImg = function(extag, element) {
 }
 
 function loadSuccessConfiguration(data){
+  if(parseInt(data.code)==403){ 
+    window.location.href = '../../error.php';
+  }
   if(parseInt(data.code) == 200){// Request OK
           
     found = true;
@@ -604,18 +607,23 @@ function uploadInformation(){
 }
 
 function successUpload(data){
-  if(data.code == 200){
-    found = true;
-    $('#submit_configuation').attr('disabled', true);
-    showAlert('success', data.message)
-    var data_webID = {
-      "web_id": web_id
-    }
-    url = '../../../api/Controller/getConfiguations.php';
-    ajax(JSON.stringify(data_webID), url, loadSuccessConfiguration, errorLoadConfiguration);
+  if(data.code == 403){
+    window.location.href = '../../error.php';
   }
   else{
-    showAlert('warning', data.message);
+    if(data.code == 200){
+      found = true;
+      $('#submit_configuation').attr('disabled', true);
+      showAlert('success', data.message)
+      var data_webID = {
+        "web_id": web_id
+      }
+      url = '../../../api/Controller/getConfiguations.php';
+      ajax(JSON.stringify(data_webID), url, loadSuccessConfiguration, errorLoadConfiguration);
+    }
+    else{
+      showAlert('warning', data.message);
+    }
   }
 }
 

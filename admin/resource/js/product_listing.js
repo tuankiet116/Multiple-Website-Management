@@ -183,6 +183,10 @@ function ajaxSearchingProduct(data){
         data: JSON.stringify(data),
         async: false,
         success: function(data){
+            if(data.code ==403){
+              window.location.href ='../../error.php';
+            }
+
             if(data.code == 404){
                 productError(data);
             }
@@ -330,6 +334,11 @@ function IActiveButton(){
       async: false,
       url: "../../../api/Controller/ActiveInactiveProduct.php",
       success: function(data){
+        if(data.code == 403){
+          window.location.href = '../../error.php';
+          showAlert('error',data.code+": " +data.message);
+        }
+
         if(data.code == 200){
           showAlert('success', data.message);
           
@@ -577,6 +586,9 @@ function loadProductByID(product_id){
     url: base_url+"api/Controller/getProductByIDAll.php",
     async: false,
     success:function(data){
+      if(data.code == 403){
+        window.location.href = '../../error.php';
+      }
       result = data;
     },
     error:function(data){
@@ -671,6 +683,10 @@ function ajax(data,  url, success, error, type = 'POST', dataType = 'JSON', asyn
 }
 
 function updateSuccess(data){
+  if(data.code == 403){
+    window.location.href = '../../error.php';
+  }
+
   if(data.code == 200){
     showAlert('success', data.message);
     $('#modal-update-close').click();
@@ -692,6 +708,10 @@ function updateError(data){
 }
 
 function createSuccess(data){
+  if(data.code == 403){
+    window.location.href = '../../error.php';
+  }
+
   if(data.code == 200){
     showAlert('success', data.message);
     $('#modal-add-close').click();

@@ -17,7 +17,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 $order->term = trim($data->term);
 if($data->order_status != null || $data->order_status != ""){
-    $order->order_status = intval($data->order_status);
+    $order->order_status = $data->order_status;
 }
 $res = $order->getOrder();
 if($res->rowCount() > 0){

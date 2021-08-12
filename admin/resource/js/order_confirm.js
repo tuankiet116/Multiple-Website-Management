@@ -74,57 +74,62 @@ function getOrder(web_id = false, valueWebSite=null, term){
         async: false,
         success: function (res) {
             console.log(res);
-            if(res.code == 200){
-                var viewData = res?.result.map(function(item, index){
-                    let order_status = item.order_status == 1? `<p style="color: red">Chưa Xác Nhận <i class="fas fa-times"></i></p>`: ``;
-                    let order_payment = '';
-                    let notSp = `Null`
-                    let order_suspicious = '';
-
-                    if(item.order_payment == 1){
-                        order_payment ='<span class="badge badge-secondary">COD</span>';
-                    }
-                    else if(item.order_payment == 2){
-                        order_payment ='<span class="badge badge-danger">MOMO</span>';
-                    }
-                    else{
-                        order_payment ='<span class="badge badge-secondary">Khác</span>';
-                    }
-
-                    if(item.order_suspicious == 1 && item.order_payment == 2){
-                        order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
-                    }
-                    return`
-                        <tr>
-                            <th scope="row">${index + 1}</th>
-                            <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
-                            <td>${item.user_name}</td>
-                            <td>${item.user_number_phone}</td>
-                            <td>${order_payment}</td>
-                            <td>${item.order_trans_id ?? notSp}</td>
-                            <td>${item.web_name}</td>
-                            <td>${item.order_sum_price}</td>
-                            <td>${order_status}</td>
-                            <td >
-                                <button class="btn btn-primary btn-detail" style="display: inline-block" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
-                                <button class="btn btn-danger btn-cancel" order_id="${item.order_id}" data-toggle="modal" data-target="#modal-cancel">Hủy Bỏ</button>
-                            </td>
-                        </tr>
-                    `
-                });
+            if(res.code == 403){
+                window.location.href = '../../error.php';
             }
             else{
-                var mes = `<tr style="background-color: white;">
-                             <td colspan="11"><p style="color:red; text-align: center">${res?.message}</p></td>
-                           </tr>`; 
+                if(res.code == 200){
+                    var viewData = res?.result.map(function(item, index){
+                        let order_status = item.order_status == 1? `<p style="color: red">Chưa Xác Nhận <i class="fas fa-times"></i></p>`: ``;
+                        let order_payment = '';
+                        let notSp = `Null`
+                        let order_suspicious = '';
+    
+                        if(item.order_payment == 1){
+                            order_payment ='<span class="badge badge-secondary">COD</span>';
+                        }
+                        else if(item.order_payment == 2){
+                            order_payment ='<span class="badge badge-danger">MOMO</span>';
+                        }
+                        else{
+                            order_payment ='<span class="badge badge-secondary">Khác</span>';
+                        }
+    
+                        if(item.order_suspicious == 1 && item.order_payment == 2){
+                            order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
+                        }
+                        return`
+                            <tr>
+                                <th scope="row">${index + 1}</th>
+                                <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
+                                <td>${item.user_name}</td>
+                                <td>${item.user_number_phone}</td>
+                                <td>${order_payment}</td>
+                                <td>${item.order_trans_id ?? notSp}</td>
+                                <td>${item.web_name}</td>
+                                <td>${item.order_sum_price}</td>
+                                <td>${order_status}</td>
+                                <td >
+                                    <button class="btn btn-primary btn-detail" style="display: inline-block" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
+                                    <button class="btn btn-danger btn-cancel" order_id="${item.order_id}" data-toggle="modal" data-target="#modal-cancel">Hủy Bỏ</button>
+                                </td>
+                            </tr>
+                        `
+                    });
+                }
+                else{
+                    var mes = `<tr style="background-color: white;">
+                                 <td colspan="11"><p style="color:red; text-align: center">${res?.message}</p></td>
+                               </tr>`; 
+                }
+                $('.table > tbody').html(viewData ?? mes).ready(function(){
+                    getOrderById();
+                    confirmed();
+                    getOrderIdCancel();
+                    cancel();
+                    tooltip('.order_code', 20);
+                });
             }
-            $('.table > tbody').html(viewData ?? mes).ready(function(){
-                getOrderById();
-                confirmed();
-                getOrderIdCancel();
-                cancel();
-                tooltip('.order_code', 20);
-            });
         }
     });
 }
@@ -144,7 +149,14 @@ function getOrderById(){
             async:false,
             success: function (res) {
                 console.log(res);
-                valueDetail(res);
+                if(res.code == 403){
+                    window.location.href = '../../error.php';
+                }
+                else{
+                    if(res.code == 200){
+                        valueDetail(res)
+                    }
+                }
             },
             error: function(res){
                 console.log(res.responeText);
@@ -186,13 +198,18 @@ function confirmed(){
             async: false,
             success: function (res) {
                 $('.loader-container').css('display', 'none');
-                if(res.code == 200){
-                    showAlert('success', `<p>${res?.message}</p>`);
-                    $('#close-modal-detail').click();
-                    // order_id_g = null;
+                if(res.code == 403){
+                    window.location.href = '../../error.php'
                 }
-                else {
-                    showAlert('error', `<p>${res?.message}</p>`);
+                else{
+                    if(res.code == 200){
+                        showAlert('success', `<p>${res?.message}</p>`);
+                        $('#close-modal-detail').click();
+                        // order_id_g = null;
+                    }
+                    else {
+                        showAlert('error', `<p>${res?.message}</p>`);
+                    }
                 }
             },
             error: function(res){
@@ -227,13 +244,18 @@ function cancel(){
             async: false,
             success: function (res) {
                 $('.loader-container').css('display', 'none');
-                if(res.code == 200){
-                    showAlert('success', `<p>${res?.message}</p>`);
-                    $('#close-modal-cancel').click();
-                    order_id = null;
+                if(res.code == 403){
+                    window.location.href = '../../error.php'
                 }
-                else {
-                    showAlert('error', `<p>${res?.message}</p>`);
+                else{
+                    if(res.code == 200){
+                        showAlert('success', `<p>${res?.message}</p>`);
+                        $('#close-modal-cancel').click();
+                        order_id = null;
+                    }
+                    else {
+                        showAlert('error', `<p>${res?.message}</p>`);
+                    }
                 }
             },
             error: function(res){
@@ -267,7 +289,7 @@ function valueDetail(data){
     }
 
     if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
-        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`   
+        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`;   
     }
 
     // <span style="display:block; margin-bottom: 10px">

@@ -19,8 +19,8 @@ $data = json_decode(file_get_contents("php://input"));
 $web_url = $_SERVER['HTTP_ORIGIN'];
 if($order->setWebID($web_url) === true && $data->user_token != "" && $data->user_token != null){
     $order->user_token = trim($data->user_token);
-    $order->order_status = intval($data->order_status);
-    $res = $order->getOrderByUser();
+    // $order->order_status = intval($data->order_status);
+    $res = $order->getOrderByUser(true);
     
     if($res->rowCount() > 0){
         $arr_order = [];

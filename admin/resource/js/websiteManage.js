@@ -257,6 +257,14 @@ function create() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
+
+        if(typeof(res) === 'string'){
+          let obj = JSON.parse(res);
+          if(obj.code == 403){
+            window.location.href = '../../error.php';
+          }
+        }
+
         if (res.code == 200) {
           $(".loader-container").css("display", "none");
           showAlert("success", `<p>${res?.message}</p>`);
@@ -266,10 +274,7 @@ function create() {
           $("#input_image_icon_1").children("svg").css("display", "inherit");
           $(".close-form-create").click();
         } else if (res.code == 403) {
-          showAlert(
-            "warning",
-            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
-          );
+          window.location.href = '../../error.php';
         } else {
           $(".loader-container").css("display", "none");
           showAlert("error", `<p>${res?.message}</p>`);
@@ -295,15 +300,19 @@ function update() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
+        if(typeof(res) === 'string'){
+          let obj = JSON.parse(res);
+          if(obj.code == 403){
+            window.location.href = '../../error.php';
+          }
+        }
+
         if (res.code == 200) {
           $(".loader-container").css("display", "none");
           showAlert("success", `<p>${res?.message}</p>`);
           $(".close-form-update").click();
         } else if (res.code == 403) {
-          showAlert(
-            "warning",
-            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
-          );
+          window.location.href = '../../error.php';
         } else {
           $(".loader-container").css("display", "none");
           showAlert("error", `<p>${res?.message}</p>`);
@@ -331,13 +340,18 @@ function activeWeb() {
       async: false,
       data: JSON.stringify(data),
       success: function (res) {
+
+        if(typeof(res) === 'string'){
+          let obj = JSON.parse(res);
+          if(obj.code == 403){
+            window.location.href = '../../error.php';
+          }
+        }
+
         if (res.code == 200) {
           showAlert("success", `<p>${res.message}</p>`);
         } else if (res.code == 403) {
-          showAlert(
-            "warning",
-            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
-          );
+          window.location.href = '../../error.php';
         } else {
           showAlert("error", `<p>${res.message}</p>`);
         }
@@ -361,14 +375,24 @@ function getWebsiteByID(element) {
       method: "POST",
       data: JSON.stringify(data),
       success: function (res) {
-        if (res.code == 403) {
-          showAlert(
-            "warning",
-            "Phiên đăng nhập hết hạn! Vui Lòng Tải Lại Trang Để Đăng Nhập Lại!"
-          );
-        } else {
-          renderDataFormUpdate(res);
+        // console.log(res);
+        if(typeof(res) === 'string'){
+          let obj = JSON.parse(res);
+          if(obj.code == 403){
+            window.location.href = '../../error.php';
+          }
         }
+
+        if(res.code == 200){
+          renderDataFormUpdate(res.result);
+        }
+
+        if(res.code == 403){
+          window.location.href = '../../error.php';
+        }
+      },
+      error: function (res) {
+        console.log(res.responseText);
       },
     });
   });
