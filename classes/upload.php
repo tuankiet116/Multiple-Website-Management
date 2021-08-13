@@ -93,7 +93,7 @@ class upload_image{
 			$new_filename					= $this->generate_name($filename, $name_prefix);
 			$this->file_name				= $new_filename;
 
-			file_put_contents("{$url}/{$new_filename}.{$type}", $data);
+			$result_file = file_put_contents("{$url}/{$new_filename}.{$type}", $data);
 			$result = "{$url}/{$new_filename}.{$type}";
 			$result = substr($result, 6);	
 			return $result;
