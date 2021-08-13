@@ -307,7 +307,7 @@ class OrderUser
     }
     
     private function checkPaymentOfOrder(){
-        $query = "SELECT order_payment FROM order_tb WHERE order_id =:order_id AND order_status = 1 AND web_id =:web_id";
+        $query = "SELECT order_payment, order_status FROM order_tb WHERE order_id =:order_id AND order_status = 1 AND web_id =:web_id";
         $stmt = $this->prepareQueryPDO($query);
         $stmt->bindParam(':order_id', $this->order_id);
         $stmt->bindParam(':web_id', $this->web_id);
@@ -333,10 +333,10 @@ class OrderUser
         return false;
     }
 
-    //Khởi tạo yêu cầu hủy đơn, chuyển order_status = 6
+    //Khởi tạo yêu cầu hủy đơn, chuyển order_status = 5
     private function requestCancelMomoOrder()
     {
-        $query =  "UPDATE order_tb SET order_status = 6, order_reason = 3 WHERE order_id =:order_id";
+        $query =  "UPDATE order_tb SET order_status = 5, order_reason = 3 WHERE order_id =:order_id";
         $stmt = $this->prepareQueryPDO($query);
         $stmt->bindParam(':order_id', $this->order_id);
         if ($stmt->execute() === true) {
@@ -370,6 +370,7 @@ class OrderUser
                     return $result;
                 } else {
                     $result = array('code' => 1003, 'message' => 'Order could not be canceled. This order has been excepted.');
+                    return $result;
                 }
             } else {
                 $result = array('code' => 1001, 'message' => 'Order does not have permission');

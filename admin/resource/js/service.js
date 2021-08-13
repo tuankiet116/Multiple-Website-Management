@@ -103,7 +103,6 @@ function getService(data){
         getServiceById();
         tooltip('.service-description', 30);
         updateService();
-        
       })
     }
   });
