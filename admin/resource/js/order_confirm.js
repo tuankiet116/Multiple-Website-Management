@@ -73,7 +73,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
         dataType: "JSON",
         async: false,
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             if(res.code == 403){
                 window.location.href = '../../error.php';
             }
@@ -270,6 +270,7 @@ function valueDetail(data){
     let order_payment = '';
     let order_status ='';
     let order_suspicious ='';
+    let order_refund_code = null;
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -291,11 +292,14 @@ function valueDetail(data){
         order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`;   
     }
 
-    // <span style="display:block; margin-bottom: 10px">
-    //   <span style="font-weight: 500">Tên SP</span>: ${item.product_name},
-    //   <span style="font-weight: 500">SL</span>: ${item.order_detail_quantity},
-    //   <span style="font-weight: 500">Tổng</span>: ${item.order_detail_amount}
-    // </span>;
+    if(data.result.order_refund_code == 0){
+        order_refund_code = `Đã Hoàn Tiền`;
+    }
+
+    if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
+        order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    }
+
     
     let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
     let order_detail = data.result.order_detail.map(function(item){
@@ -322,6 +326,7 @@ function valueDetail(data){
     $('#order_description').text(data.result.order_description);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
+    $('#order_refund_code').text(order_refund_code);
 
     $.fn.digits = function () {
         return this.each(function () {

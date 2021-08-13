@@ -292,22 +292,6 @@ class Order
                 }
             }
         }
-        // $query = "UPDATE " . $this->table . " 
-        //           SET order_status = 3,
-        //           order_reason = :order_reason
-        //           WHERE order_id = :order_id";
-
-        // $stmt = $this->conn->prepare($query);
-        // $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
-        // $stmt->bindParam(":order_id",      $this->order_id);
-
-        // if ($stmt->execute() === true) {
-        //     $message = true;
-        //     return $message;
-        // } else {
-        //     $message = "failure";
-        //     return $message;
-        // }
     }
 
     public function getOrderByUser()

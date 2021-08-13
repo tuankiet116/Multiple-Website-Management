@@ -173,6 +173,7 @@ function valueDetail(data){
     let order_status ='';
     let order_reason = '';
     let order_suspicious ='';
+    let order_refund_code = null;
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -213,6 +214,18 @@ function valueDetail(data){
     })
     let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
 
+    if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
+        order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`;   
+    }
+
+    if(data.result.order_refund_code == 0){
+        order_refund_code = `Đã Hoàn Tiền`;
+    }
+
+    if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
+        order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    }
+
     $('#order_id').text(data.result.order_id);
     $('#user_name').text(data.result.user_name);
     $('#order_payment_status').html (order_payment_status);
@@ -230,7 +243,8 @@ function valueDetail(data){
     $('#order_reason').text(order_reason);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
-
+    $('#order_refund_code').text(order_refund_code);
+    
     $.fn.digits = function () {
       return this.each(function () {
         $(this).text(
