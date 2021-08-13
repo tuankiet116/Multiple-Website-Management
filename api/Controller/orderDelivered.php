@@ -16,19 +16,15 @@ $order = new Order($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data)){
-    if(($data->order_id     !="" && $data->order_id !=null) || 
-       ($data->order_reason !="" && $data->order_reason !=null))
-    {
-            $order->order_id     = trim($data->order_id);
-            $order->order_reason = intval($data->order_reason);      
+    if($data->order_id !== null && $data->order_id !==""){
+        $order->order_id = trim($data->order_id);
     }
-    
-    $message = $order->cancel();
+    $message = $order->delivered();
     if($message === true){
         http_response_code(200);
         echo json_encode([
-            "message"  => "Cancelled!!",
-            "code"     => 200
+            "message" => "Delivered",
+            "code"    => 200
         ]);
     }
     else{

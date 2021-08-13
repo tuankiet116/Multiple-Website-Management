@@ -185,8 +185,7 @@ function clearTerm(){
 function confirmed(){
     $('#btn-confirm').click(function(){
         let data ={
-            "order_id": order_id_g,
-            "order_status": "2"
+            "order_id": order_id_g
         }
         console.log(data);
         $('.loader-container').css('display', 'flex');

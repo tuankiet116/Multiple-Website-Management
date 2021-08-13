@@ -73,7 +73,6 @@ function getOrder(web_id = false, valueWebSite=null, term){
         dataType: "JSON",
         async: false,
         success: function (res) {
-            console.log(res)
             if(res.code == 403){
                 window.location.href= '../../error.php';
             }
@@ -187,14 +186,13 @@ function clearTerm(){
 function confirmed(){
     $('#btn-confirm').click(function(){
         let data ={
-            "order_id": order_id_g,
-            "order_status": "4"
+            "order_id": order_id_g
         }
-        console.log(data);
+        // console.log(data);
         $('.loader-container').css('display', 'flex');
         $.ajax({
             type: "POST",
-            url: base_url+"api/Controller/orderConfirm.php",
+            url: base_url+"api/Controller/orderDelivered.php",
             data: JSON.stringify(data),
             dataType: "JSON",
             async: false,
