@@ -93,7 +93,7 @@ function getOrder(term){
 
 function getOrderById(){
     let order_id = null;
-    $('.btn-detail').click(function () { 
+    $('.btn-detail').unbind().click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
             "order_status": "5"
@@ -120,7 +120,7 @@ function getOrderById(){
         tooltip('#order_description', 30);
     });
     
-    $('#confirm_cancel_order').click(function(){
+    $('#confirm_cancel_order').unbind().click(function(){
         let data ={
             "order_id": order_id,
             "order_status": "3",
@@ -133,7 +133,8 @@ function getOrderById(){
             dataType: "JSON",
             async: false,
             success: function (res) {
-                switch(res){
+                console.log(res);
+                switch(res.code){
                     case 403:
                         window.location.href= '../../error.php';
                         break;
@@ -165,7 +166,7 @@ function getOrderById(){
 }
 
 function searchTerm(){
-    $('#btn-search').click(function(){
+    $('#btn-search').unbind().click(function(){
         let term = $('#search_code').val();
         console.log(term)
         getOrder(term);
@@ -173,7 +174,7 @@ function searchTerm(){
 }
 
 function clearTerm(){
-    $('#btn-cancel').click(function(){
+    $('#btn-cancel').unbind().click(function(){
         $('#search_code').val("");
         getOrder("");
     })

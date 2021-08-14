@@ -124,9 +124,9 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 }
                 $('.table > tbody').html(viewData ?? mes).ready(function(){
                     getOrderById();
-                    confirmed();
+                    $('#btn-confirm').unbind().click(confirmed);
                     getOrderIdCancel();
-                    cancel();
+                    $('#btn-cancel').unbind().click(cancel);
                     tooltip('.order_code', 20);
                 });
             }
@@ -135,7 +135,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
 }
 
 function getOrderById(){
-    $('.btn-detail').click(function () { 
+    $('.btn-detail').unbind().click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
             "order_status": "1"
@@ -168,14 +168,14 @@ function getOrderById(){
 }
 
 function searchTerm(){
-    $('#btn-search').click(function(){
+    $('#btn-search').unbind().click(function(){
         let term = $('#order_search').val();
         getOrder(false, null, term);
     })
 }
 
 function clearTerm(){
-    $('#btn-clear').click(function(){
+    $('#btn-clear').unbind().click(function(){
         $('.pick_website_select').empty();
         $('#order_search').val('');
         getOrder(false, null, "");
@@ -183,95 +183,91 @@ function clearTerm(){
 }
 
 function confirmed(){
-    $('#btn-confirm').click(function(){
-        let data ={
-            "order_id": order_id_g
-        }
-        console.log(data);
-        $('.loader-container').css('display', 'flex');
-        $.ajax({
-            type: "POST",
-            url: base_url+"api/Controller/orderConfirm.php",
-            data: JSON.stringify(data),
-            dataType: "JSON",
-            async: false,
-            success: function (res) {
-                $('.loader-container').css('display', 'none');
-                if(res.code == 403){
-                    window.location.href = '../../error.php'
-                }
-                else{
-                    if(res.code == 200){
-                        showAlert('success', `<p>${res?.message}</p>`);
-                        $('#close-modal-detail').click();
-                        // order_id_g = null;
-                    }
-                    else {
-                        showAlert('error', `<p>${res?.message}</p>`);
-                    }
-                }
-            },
-            error: function(res){
-                $('.loader-container').css('display', 'none');
-                console.log(res.responeText);
+    let data ={
+        "order_id": order_id_g
+    }
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+        type: "POST",
+        url: base_url+"api/Controller/orderConfirm.php",
+        data: JSON.stringify(data),
+        dataType: "JSON",
+        async: false,
+        success: function (res) {
+            console.log(res);
+            $('.loader-container').css('display', 'none');
+            if(res.code == 403){
+                window.location.href = '../../error.php'
             }
-        });
-        getOrder(false, null, "");
-    })
+            else{
+                if(res.code == 200){
+                    showAlert('success', `<p>${res?.message}</p>`);
+                    $('#close-modal-detail').click();
+                    // order_id_g = null;
+                }
+                else {
+                    showAlert('error', `<p>${res?.message}</p>`);
+                }
+            }
+        },
+        error: function(res){
+            $('.loader-container').css('display', 'none');
+            console.log(res.responeText);
+        }
+    });
+    getOrder(false, null, "");
 }
 
 function getOrderIdCancel(){
-    $('.btn-cancel').click(function(){
+    $('.btn-cancel').unbind().click(function(){
         order_id_g = $(this).attr('order_id');
     })
 }
 
 function cancel(){
-    $('#btn-cancel').click(function(){
-        let data ={
-            "order_id": order_id_g,
-            "order_status": "3",
-            "order_reason": $('#order_reason').val()
-        }
-        console.log(data);
-        $('.loader-container').css('display', 'flex');
-        $.ajax({
-            type: "POST",
-            url: base_url+"api/Controller/orderCancel.php",
-            data: JSON.stringify(data),
-            dataType: "JSON",
-            async: false,
-            success: function (res) {
-                $('.loader-container').css('display', 'none');
-                switch(res.code){
-                    case 403:
-                        window.location.href= '../../error.php';
-                        break;
-                    case 200:
-                        showAlert("success", `<p>Hủy thành công</p>`);
-                        $('#close_modal_detail').click();
-                        break;
-                    case 500:
-                        showAlert("error", `<p>Lỗi không thể hủy đơn lúc này</p>`);
-                        break;
-                    case 404:
-                        showAlert("error", `<p>Đơn hàng không tồn tại</p>`);
-                        break;
-                    case 1002:
-                        showAlert("error", `<p>Đơn hàng đã được xử lý. Vui lòng kiểm tra lại.</p>`);
-                        break;
-                    default:
-                        showAlert("error", `<p>Có lỗi xảy ra (default)</p>`);
-                        break;
-                }
-            },
-            error: function(res){
-                showAlert("error", `<p>Có lỗi xảy ra (error)</p>`);
-                console.log(res.responseText);
+    let data ={
+        "order_id": order_id_g,
+        "order_status": "3",
+        "order_reason": $('#order_reason').val()
+    }
+    console.log(data);
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+        type: "POST",
+        url: base_url+"api/Controller/orderCancel.php",
+        data: JSON.stringify(data),
+        dataType: "JSON",
+        async: false,
+        success: function (res) {
+            $('.loader-container').css('display', 'none');
+            switch(res.code){
+                case 403:
+                    window.location.href= '../../error.php';
+                    break;
+                case 200:
+                    showAlert("success", `<p>Hủy thành công</p>`);
+                    $('#close_modal_detail').click();
+                    break;
+                case 500:
+                    showAlert("error", `<p>Lỗi không thể hủy đơn lúc này</p>`);
+                    break;
+                case 404:
+                    showAlert("error", `<p>Đơn hàng không tồn tại</p>`);
+                    break;
+                case 1002:
+                    showAlert("error", `<p>Đơn hàng đã được xử lý. Vui lòng kiểm tra lại.</p>`);
+                    break;
+                default:
+                    showAlert("error", `<p>Có lỗi xảy ra (default)</p>`);
+                    break;
             }
-        });
-        getOrder(false, null, "");
-    })
+        },
+        error: function(res){
+            showAlert("error", `<p>Có lỗi xảy ra (error)</p>`);
+            console.log(res.responseText);
+        }
+    });
+    getOrder(false, null, "");
 }
 
 function valueDetail(data){

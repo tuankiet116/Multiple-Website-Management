@@ -77,7 +77,7 @@ function getOrder(term){
 }
 
 function getOrderById(){
-    $('.btn-detail').click(function () { 
+    $('.btn-detail').unbind().click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
             "order_status": "4"
@@ -108,14 +108,14 @@ function getOrderById(){
 }
 
 function searchTerm(){
-    $('#btn-search').click(function(){
+    $('#btn-search').unbind().click(function(){
         let term = $('#search_code').val();
         getOrder(term);
     })
 }
 
 function clearTerm(){
-    $('#btn-cancel').click(function(){
+    $('#btn-cancel').unbind().click(function(){
         $('#search_code').val("");
         getOrder("");
     })
