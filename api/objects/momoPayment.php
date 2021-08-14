@@ -139,6 +139,7 @@ class momoCheck extends Momo
     private $response = array();
     private $partnerSignature;
     private $userID;
+    private $orderID;
 
     public function __construct($db)
     {
@@ -215,8 +216,8 @@ class momoCheck extends Momo
 
                 if ($this->m2signature == $this->partnerSignature) {
                     if ($this->errorCode == '0') {
-                        $this->removeCart();
                         $this->getUserInformationByOrder();
+                        $this->removeCart();
                         $this->updateOrder(false, true);
                     } else {
                         $this->updateOrder(false, false);
@@ -227,6 +228,7 @@ class momoCheck extends Momo
                     $this->response['message'] = "ERROR! Fail checksum";
                 }
             } else {
+                $this->getUserInformationByOrder();
                 $this->removeCart();
                 $query = "UPDATE order_tb SET order_text =:order_text, order_active = 1 WHERE order_id =:order_id";
                 $stmt = $this->conn->prepare($query);
@@ -252,7 +254,7 @@ class momoCheck extends Momo
     {
         $query = "SELECT user_id FROM order_tb WHERE order_id = :order_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':order_id', $this->order_id);
+        $stmt->bindParam(':order_id', $this->orderID);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -303,7 +305,7 @@ class momoCheck extends Momo
     {
         $query = 'DELETE FROM cart WHERE user_id =:user_id';
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':user_id', $this->userID);
         if ($stmt->execute() === true) {
             return true;
         }
