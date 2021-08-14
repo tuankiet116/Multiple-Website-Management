@@ -248,7 +248,7 @@ class Order
                     
                 case 2:
                     if ($order_status != 4 && $order_status != 3 && $order_payment_status == 0) {
-                        if ($order_refund_code !== 0) {
+                        if ($order_refund_code != 0) {
                             $momoRefund = new momoRefund($this->conn, $this->order_id);
                             if ($momoRefund->refund() === true) {
                                 $result = array('code' => 200, 'message' => 'success');
