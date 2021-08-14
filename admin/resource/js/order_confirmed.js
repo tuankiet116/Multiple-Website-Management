@@ -244,24 +244,31 @@ function cancel(){
             async: false,
             success: function (res) {
                 $('.loader-container').css('display', 'none');
-                if(res.code == 403){
-                    window.location.href= '../../error.php';
-                }
-                else{
-
-                    if(res.code == 200){
-                        showAlert('success', `<p>${res?.message}</p>`);
-                        $('#close-modal-cancel').click();
-                        order_id = null;
-                    }
-                    else {
-                        showAlert('error', `<p>${res?.message}</p>`);
-                    }
+                switch(res){
+                    case 403:
+                        window.location.href= '../../error.php';
+                        break;
+                    case 200:
+                        showAlert("success", `<p>Hủy thành công</p>`);
+                        $('#close_modal_detail').click();
+                        break;
+                    case 500:
+                        showAlert("error", `<p>Lỗi không thể hủy đơn lúc này</p>`);
+                        break;
+                    case 404:
+                        showAlert("error", `<p>Đơn hàng không tồn tại</p>`);
+                        break;
+                    case 1002:
+                        showAlert("error", `<p>Đơn hàng đã được xử lý. Vui lòng kiểm tra lại.</p>`);
+                        break;
+                    default:
+                        showAlert("error", `<p>Có lỗi xảy ra (default)</p>`);
+                        break;
                 }
             },
             error: function(res){
-                $('.loader-container').css('display', 'none');
-                console.log(res.responeText);
+                showAlert("error", `<p>Có lỗi xảy ra (error)</p>`);
+                console.log(res.responseText);
             }
         });
         getOrder(false, null, "");
