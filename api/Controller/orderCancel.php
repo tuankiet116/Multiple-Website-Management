@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once("../Token/checkToken.php");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -15,35 +15,18 @@ $db = $database->getConnection();
 $order = new Order($db);
 $data = json_decode(file_get_contents("php://input"));
 
-if(isset($data)){
-    if(($data->order_id     !="" && $data->order_id !=null) || 
-       ($data->order_reason !="" && $data->order_reason !=null))
-    {
-            $order->order_id     = trim($data->order_id);
-            $order->order_reason = intval($data->order_reason);      
-    }
-    
-    $message = $order->cancel();
-    if($message === true){
-        http_response_code(200);
-        echo json_encode([
-            "message"  => "Cancelled!!",
-            "code"     => 200
-        ]);
-    }
-    else{
-        http_response_code(200);
-        echo json_encode([
-            "message"  => $message,
-            "code"     => 500
-        ]);
-    }
-}
-else{
+if (($data->order_id     != "" && $data->order_id != null) ||
+    ($data->order_reason != "" && $data->order_reason != null)
+) {
+    $order->order_id     = trim($data->order_id);
+    $order->order_reason = intval($data->order_reason);
+    $result = $order->cancelAndRefund();
+    http_response_code(200);
+    echo json_encode($result);
+} else {
     http_response_code(200);
     echo json_encode([
         "message"  => "Data Invalid!!",
         "code"     => 403
     ]);
 }
-?>
