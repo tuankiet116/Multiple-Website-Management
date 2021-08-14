@@ -198,6 +198,14 @@
                             <p id="order_status"></p>
                         </div>
                     </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Trạng Thái Hoàn Tiền')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_refund_code"></p>
+                        </div>
+                    </div>
                     <div class="table-data-detail">
                         <div class="title-row">
                             <p><?= translate_text('Chi Tiết Đơn Hàng')?>:</p>
