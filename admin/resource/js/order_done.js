@@ -28,7 +28,8 @@ function getOrder(term){
                         let order_payment ="";
                         let order_status = item.order_status == 4? `<p style="color: green">Đã Giao Thành Công<i class="fas fa-check"></i></p>`: ``;
                         let order_suspicious = '';
-    
+                        let order_refund_code = null;
+
                         if(item.order_payment == 1){
                             order_payment ='<span class="badge badge-secondary">COD</span>';
                         }
@@ -42,15 +43,27 @@ function getOrder(term){
                         if(item.order_suspicious == 1 && item.order_payment == 2){
                             order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
                         }
+
+                        let order_payment_status = item.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
+
+                        if(item.order_refund_code == 0){
+                            order_refund_code = `<p>Đã Hoàn Tiền</p>`;
+                        }
+                    
+                        if(item.order_refund_code != 0 && item.order_refund_code != null){
+                            order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
+                        }
+
                         return`
                             <tr>
                                 <th scope="row">${index + 1}</th>
                                 <td><p class="order_code">${item.order_id}</p> ${order_suspicious}</td>
                                 <td>${item.user_name}</td>
-                                <td>${order_payment}</td>
+                                <td>${order_payment} ${order_payment_status}</td>
                                 <td>${item.order_trans_id}</td>
                                 <td>${item.web_name}</td>
                                 <td>${order_status}</td>
+                                <td>${order_refund_code}</td>
                                 <td>
                                     <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
                                 </td>

@@ -64,7 +64,8 @@
                         <th scope="col"><?= translate_text('Phương Thức Thanh Toán')?></th>
                         <th scope="col"><?= translate_text('Mã Giao Dịch')?></th>
                         <th scope="col"><?= translate_text('Website')?></th>
-                        <th scope="col"><?= translate_text('Trạng Thái')?></th>
+                        <th scope="col"><?= translate_text('Trạng Thái Đơn Hàng')?></th>
+                        <th scope="col"><?= translate_text('Trạng Thái Hoàn Tiền')?></th>
                         <th scope="col"><?= translate_text('Hành Động')?></th>
                     </tr>
                 </thead>
