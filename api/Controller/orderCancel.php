@@ -7,6 +7,7 @@ header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
 require_once('../config/database.php');
+require_once('../objects/momoPayment.php');
 require_once('../objects/order.php');
 
 $database = new ConfigAPI();

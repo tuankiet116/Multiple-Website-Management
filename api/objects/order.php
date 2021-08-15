@@ -113,13 +113,13 @@ class Order
         $stmt->bindParam(":order_id", $this->order_id);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $order_status         = $row['order_status'];
-            $order_refund_code    = $row['order_refund_code'];
-            $order_payment        = $row['order_payment'];
-            $order_payment_status = $row['order_payment_status'];
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $order_payment        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
 
-            if ($order_refund_code == 0 && $order_payment == 2 && $order_payment_status == 0 && $order_refund_code != NULL) {
+            if ($order_refund_code === 0 && $order_payment === 2 && $order_payment_status === 0 ) {
                 $message = "This Order was Refund";
                 return $message;
             }
@@ -156,13 +156,13 @@ class Order
         $stmt->bindParam(":order_id", $this->order_id);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $order_status         = $row['order_status'];
-            $order_refund_code    = $row['order_refund_code'];
-            $order_payment        = $row['order_payment'];
-            $order_payment_status = $row['order_payment_status'];
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $order_payment        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
 
-            if ($order_refund_code == 0 && $order_payment == 2 && $order_payment_status == 0) {
+            if ($order_refund_code === 0 && $order_payment === 2 && $order_payment_status === 0 ) {
                 $message = "This Order was Refund";
                 return $message;
             }
@@ -217,10 +217,10 @@ class Order
         $stmt->execute();
         if ($stmt->rowCount() === 1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $payment_check        = $result['order_payment'];
-            $order_status         = $result['order_status'];
-            $order_refund_code    = $result['order_refund_code'];
-            $order_payment_status = $result['order_payment_status'];
+            $payment_check        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
             $result = array();
             if ($order_status == 4 or $order_status == 3) {
                 $result = array('code' => 1002, 'Order could not be canceled because it has been proccessed.');
@@ -247,8 +247,8 @@ class Order
                     break;
                     
                 case 2:
-                    if ($order_status != 4 && $order_status != 3 && $order_payment_status == 0) {
-                        if ($order_refund_code != 0) {
+                    if ($order_status !== 4 && $order_status !== 3 && $order_payment_status === 0 ) {
+                        if ($order_refund_code !== 0 ) {
                             $momoRefund = new momoRefund($this->conn, $this->order_id);
                             if ($momoRefund->refund() === true) {
                                 $result = array('code' => 200, 'message' => 'success');
