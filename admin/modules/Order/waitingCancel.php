@@ -33,7 +33,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="section-search">
             <div class="title-search">
                 <p><?= translate_text('Tìm Kiếm')?></p>
@@ -177,7 +177,7 @@
                     </div>
                     <div class="row-data-detail">
                         <div class="title-row">
-                            <p><?= translate_text('QR hoặc Web Hoặc Atm')?>:</p>
+                            <p><?= translate_text('Hình thức thanh toán trực tuyến')?>:</p>
                         </div>
                         <div class="content-row">
                             <p id="order_paytype"></p>

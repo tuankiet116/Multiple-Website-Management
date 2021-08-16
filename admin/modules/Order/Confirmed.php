@@ -36,7 +36,7 @@ require("inc_security.php");
         </button>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="title-search">
             <p>Tìm Kiếm</p>
         </div>
@@ -190,7 +190,7 @@ require("inc_security.php");
                         </div>
                         <div class="row-data-detail">
                             <div class="title-row">
-                                <p><?= translate_text('QR hoặc Web Hoặc Atm')?>:</p>
+                                <p><?= translate_text('Hình thức thanh toán trực tuyến')?>:</p>
                             </div>
                             <div class="content-row">
                                 <p id="order_paytype"></p>

@@ -66,7 +66,20 @@ function getOrder(term){
                         if(item.order_refund_code != 0 && item.order_refund_code != null){
                             order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
                         }
-    
+                        
+                        if(item.order_refund_code == null){
+                            order_refund_code = '<p style="color: red">N/A</p>';
+                        }
+                        
+                        if(item.order_trans_id == null){
+                            item.order_trans_id = '<p style="color: red">N/A</p>';
+                        }
+                        
+                        if(item.user_name == null){
+                            item.user_name = '<p style="color: red">N/A</p>';
+                        }
+
+
                         return`
                             <tr>
                                 <th scope="row">${index + 1}</th>
@@ -249,24 +262,60 @@ function valueDetail(data){
         order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
     }
 
-    $('#order_id').text(data.result.order_id);
-    $('#user_name').text(data.result.user_name);
+    if(data.result.order_refund_code == null){
+        order_refund_code = '<p style="color: red">N/A</p>'
+    }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_id == null){
+        data.result.order_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.user_name == null){
+        data.result.user_name = '<p style="color: red">N/A</p>';
+    }
+
+    if(order_payment == null){
+        order_payment = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.web_name == null){
+        data.result.web_name = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_trans_id == null){
+        data.result.order_trans_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_paytype == null){
+        data.result.order_paytype = '<p style="color: red">N/A</p>';
+    }
+
+    $('#order_id').html(data.result.order_id);
+    $('#user_name').html(data.result.user_name);
     $('#order_payment_status').html (order_payment_status);
     $('#order_payment').html(order_payment);
-    $('#web_name').text(data.result.web_name);
-    $('#order_request_id').text(data.result.order_request_id);
-    $('#order_trans_id').text(data.result.order_trans_id);
-    $('#order_sum_price').text(data.result.order_sum_price);
-    $('#order_paytype').text(data.result.order_paytype);
-    $('#order_datetime').text(data.result.order_datetime);
-    $('#order_status').text(order_status);
-    $('#user_number_phone').text(data.result.user_number_phone);
-    $('#user_email').text(data.result.user_email);
-    $('#order_description').text(data.result.order_description);
-    $('#order_reason').text(order_reason);
+    $('#web_name').html(data.result.web_name);
+    $('#order_request_id').html(data.result.order_request_id);
+    $('#order_trans_id').html(data.result.order_trans_id);
+    $('#order_sum_price').html(data.result.order_sum_price);
+    $('#order_paytype').html(data.result.order_paytype);
+    $('#order_datetime').html(data.result.order_datetime);
+    $('#order_status').html(order_status);
+    $('#user_number_phone').html(data.result.user_number_phone);
+    $('#user_email').html(data.result.user_email);
+    $('#order_description').html(data.result.order_description);
+    $('#order_reason').html(order_reason);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
-    $('#order_refund_code').text(order_refund_code);
+    $('#order_refund_code').html(order_refund_code);
     
     $.fn.digits = function () {
       return this.each(function () {
