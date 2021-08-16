@@ -382,7 +382,6 @@ class momoRefund extends Momo
         );
 
         $data = json_encode($data);
-        echo $data;
         $result = $this->execPostRequest($data);
         return $result;
     }
