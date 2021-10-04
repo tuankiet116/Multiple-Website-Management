@@ -79,7 +79,7 @@ require("inc_security.php");
                         <th scope="col"><?= translate_text('Website')?></th>
                         <th scope="col"><?= translate_text('Tổng Tiền')?></th>
                         <th scope="col"><?= translate_text('Trạng Thái Đơn Hàng')?></th>
-                        <th scope="col"><?= translate_text('Trạng Thái Hoàn Tiền')?></th>
+                        <!-- <th scope="col"><?= translate_text('Trạng Thái Hoàn Tiền')?></th> -->
                         <th scope="col"><?= translate_text('Hành Động')?></th>
                     </tr>
                 </thead>
@@ -190,14 +190,6 @@ require("inc_security.php");
                         </div>
                         <div class="row-data-detail">
                             <div class="title-row">
-                                <p><?= translate_text('Hình thức thanh toán trực tuyến')?>:</p>
-                            </div>
-                            <div class="content-row">
-                                <p id="order_paytype"></p>
-                            </div>
-                        </div>
-                        <div class="row-data-detail">
-                            <div class="title-row">
                                 <p><?= translate_text('Thời Gian')?>:</p>
                             </div>
                             <div class="content-row">
@@ -212,14 +204,14 @@ require("inc_security.php");
                                 <p id="order_status"></p>
                             </div>
                         </div>
-                        <div class="row-data-detail">
+                        <!-- <div class="row-data-detail">
                             <div class="title-row">
                                 <p><?= translate_text('Trạng Thái Hoàn Tiền')?>:</p>
                             </div>
                             <div class="content-row">
                                 <p id="order_refund_code"></p>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="table-data-detail">
                             <div class="title-row">
                                 <p><?= translate_text('Chi Tiết Đơn Hàng')?>:</p>

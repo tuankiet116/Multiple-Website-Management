@@ -61,7 +61,7 @@ if(isset($data) && $data->web_id != null && $data->web_id != ""){
     else{
         http_response_code(200);
         echo json_encode([
-            "message"  => "Order Not Found!!",
+            "message"  => "Không có đơn hàng nào.",
             "code"     => 500
         ]);
     }

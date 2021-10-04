@@ -28,7 +28,6 @@ function getOrder(term){
                         let order_payment ="";
                         let order_status = item.order_status == 4? `<p style="color: green">Đã Giao Thành Công<i class="fas fa-check"></i></p>`: ``;
                         let order_suspicious = '';
-                        let order_refund_code = null;
 
                         if(item.order_payment == 1){
                             order_payment ='<span class="badge badge-secondary">COD</span>';
@@ -46,17 +45,17 @@ function getOrder(term){
 
                         let order_payment_status = item.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
 
-                        if(item.order_refund_code == 0){
-                            order_refund_code = `<p>Đã Hoàn Tiền</p>`;
-                        }
+                        // if(item.order_refund_code == 0){
+                        //     order_refund_code = `<p>Đã Hoàn Tiền</p>`;
+                        // }
                     
-                        if(item.order_refund_code != 0 && item.order_refund_code != null){
-                            order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
-                        }
+                        // if(item.order_refund_code != 0 && item.order_refund_code != null){
+                        //     order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
+                        // }
 
-                        if(item.order_refund_code == null){
-                            order_refund_code = '<p style="color: red">N/A</p>';
-                        }
+                        // if(item.order_refund_code == null){
+                        //     order_refund_code = '<p style="color: red">N/A</p>';
+                        // }
                         
                         if(item.order_trans_id == null){
                             item.order_trans_id = '<p style="color: red">N/A</p>';
@@ -75,7 +74,6 @@ function getOrder(term){
                                 <td>${item.order_trans_id}</td>
                                 <td>${item.web_name}</td>
                                 <td>${order_status}</td>
-                                <td>${order_refund_code}</td>
                                 <td>
                                     <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
                                 </td>
@@ -150,7 +148,6 @@ function valueDetail(data){
     let order_payment = '';
     let order_status ='';
     let order_suspicious ='';
-    let order_refund_code = null;
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -178,17 +175,17 @@ function valueDetail(data){
                 </tr>`;
     })
 
-    if(data.result.order_refund_code == 0){
-        order_refund_code = `Đã Hoàn Tiền`;
-    }
+    // if(data.result.order_refund_code == 0){
+    //     order_refund_code = `Đã Hoàn Tiền`;
+    // }
 
-    if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
-        order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
-    }
+    // if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
+    //     order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    // }
 
-    if(data.result.order_refund_code == null){
-        order_refund_code = '<p style="color: red">N/A</p>'
-    }
+    // if(data.result.order_refund_code == null){
+    //     order_refund_code = '<p style="color: red">N/A</p>'
+    // }
 
     if(data.result.order_request_id == null){
         data.result.order_request_id = '<p style="color: red">N/A</p>';
@@ -239,7 +236,7 @@ function valueDetail(data){
     $('#order_description').html(data.result.order_description);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
-    $('#order_refund_code').html(order_refund_code);
+    // $('#order_refund_code').html(order_refund_code);
     
     $.fn.digits = function () {
       return this.each(function () {

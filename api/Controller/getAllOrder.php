@@ -55,7 +55,7 @@ if($res->rowCount() > 0){
 else{
     http_response_code(200);
     echo json_encode([
-        "message"  => "Order Not Found!!",
+        "message"  => "Không có đơn hàng nào.",
         "code"     => 500
     ]);
 }
