@@ -33,7 +33,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="section-search">
             <div class="title-search">
                 <p><?= translate_text('Tìm Kiếm')?></p>
@@ -65,6 +65,7 @@
                         <th scope="col"><?= translate_text('Mã Giao Dịch')?></th>
                         <th scope="col"><?= translate_text('Website')?></th>
                         <th scope="col"><?= translate_text('Lý Do')?></th>
+                        <th scope="col"><?= translate_text('Trạng Thái Hoàn Tiền')?></th>
                         <th scope="col"><?= translate_text('Hành Động')?></th>
                     </tr>
                 </thead>
@@ -176,7 +177,7 @@
                     </div>
                     <div class="row-data-detail">
                         <div class="title-row">
-                            <p><?= translate_text('QR hoặc Web Hoặc Atm')?>:</p>
+                            <p><?= translate_text('Hình thức thanh toán trực tuyến')?>:</p>
                         </div>
                         <div class="content-row">
                             <p id="order_paytype"></p>
@@ -204,6 +205,14 @@
                         </div>
                         <div class="content-row">
                             <p id="order_reason"></p>
+                        </div>
+                    </div>
+                    <div class="row-data-detail">
+                        <div class="title-row">
+                            <p><?= translate_text('Trạng Thái Hoàn Tiền')?>:</p>
+                        </div>
+                        <div class="content-row">
+                            <p id="order_refund_code"></p>
                         </div>
                     </div>
                     <div class="table-data-detail">

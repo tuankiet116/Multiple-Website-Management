@@ -42,7 +42,8 @@ if($res->rowCount() > 0){
             "order_reason"         => $row['order_reason'],
             "order_description"    => $row['order_description'],
             "order_suspicious"     => $row['order_suspicious'],
-            "order_momo_error_text"  => $row['order_momo_error_text']
+            "order_refund_code"    => $row['order_refund_code'],
+            "order_refund_message" => $row['order_refund_message']
         ]);
     }
     http_response_code(200);

@@ -108,41 +108,85 @@ class Order
     public function confirm()
     {
         $message = "";
-        $query = "UPDATE " . $this->table . " 
-                     SET order_status = :order_status
-                     WHERE order_id = :order_id";
-
+        $query = "SELECT * FROM order_tb WHERE order_id = :order_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
-        $stmt->bindParam(":order_id",      $this->order_id);
+        $stmt->bindParam(":order_id", $this->order_id);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $order_payment        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
 
-        if ($stmt->execute() === true) {
-            $message = true;
-            return $message;
+            if ($order_refund_code === 0 && $order_payment === 2 && $order_payment_status === 0 ) {
+                $message = "This Order was Refund";
+                return $message;
+            }
+
+            if ($order_status == 1) {
+                $query = "UPDATE " . $this->table . " 
+                          SET order_status = 2
+                          WHERE order_id   = :order_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(":order_id", $this->order_id);
+
+                if ($stmt->execute() === true) {
+                    $message = true;
+                    return $message;
+                } else {
+                    $message = "failure";
+                    return $message;
+                }
+            } else {
+                $message = "This Order Not In Confirm Status!!";
+                return $message;
+            }
         } else {
-            $message = "failure";
+            $message = "Something has wrong!";
             return $message;
         }
     }
 
-    public function cancel()
+    public function delivered()
     {
         $message = "";
-        $query = "UPDATE " . $this->table . " 
-                      SET order_status = :order_status,
-                          order_reason = :order_reason
-                      WHERE order_id = :order_id";
-
+        $query = "SELECT * FROM order_tb WHERE order_id = :order_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":order_status",  $this->order_status, PDO::PARAM_INT);
-        $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
-        $stmt->bindParam(":order_id",      $this->order_id);
+        $stmt->bindParam(":order_id", $this->order_id);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $order_payment        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
 
-        if ($stmt->execute() === true) {
-            $message = true;
-            return $message;
+            if ($order_refund_code === 0 && $order_payment === 2 && $order_payment_status === 0 ) {
+                $message = "This Order was Refund";
+                return $message;
+            }
+
+            if ($order_status == 2) {
+                $query = "UPDATE " . $this->table . " 
+                          SET order_status = 4
+                          WHERE order_id   = :order_id";
+                $stmt = $this->conn->prepare($query);
+                $stmt->bindParam(":order_id",  $this->order_id);
+
+                if ($stmt->execute() === true) {
+                    $message = true;
+                    return $message;
+                } else {
+                    $message = "failure";
+                    return $message;
+                }
+            } else {
+                $message = "This Order Not In Confirmed Status!!";
+                return $message;
+            }
         } else {
-            $message = "failure";
+            $message = "Something has wrong!!";
             return $message;
         }
     }
@@ -163,31 +207,91 @@ class Order
     // Hủy đơn và hoàn tiền cho đơn hàng thanh toán online
     // Kiểm tra xem đơn hàng đã được thanh toán hay chưa? Và có phải là đơn hàng thanh toán online hay ko? Và đơn hàng này đã được hoàn tiền hay chưa?
     // Trạng thái 0 của trạng thái thanh toán và hoàn tiền nghĩa là thành công. 
-    public function refundOrder()
+    public function cancelAndRefund()
     {
         //check payment is payment online
-        $query = 'SELECT order_payment FROM order_tb WHERE order_id =:order_id AND order_payment_status = 0 AND order_refund_code != 0';
+        $query = 'SELECT order_payment, order_status, order_refund_code, order_payment_status
+                     FROM order_tb WHERE order_id =:order_id';
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_id', $this->order_id);
         $stmt->execute();
         if ($stmt->rowCount() === 1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $payment_check = $result['order_payment'];
+            $payment_check        = $result['order_payment'] == "" || $result['order_payment'] == NULL? NULL:intval($result['order_payment']);
+            $order_status         = $result['order_status'] == "" || $result['order_status'] == NULL? NULL:intval($result['order_status']);
+            $order_refund_code    = $result['order_refund_code'] == "" || $result['order_refund_code'] == NULL? NULL:intval($result['order_refund_code']);
+            $order_payment_status = $result['order_payment_status'] == "" || $result['order_payment_status'] == NULL? NULL:intval($result['order_payment_status']);
             $result = array();
+            if ($order_status == 4 or $order_status == 3) {
+                $result = array('code' => 1002, 'Order could not be canceled because it has been proccessed.');
+                return $result;
+            }
             switch ($payment_check) {
                 case 1:
-                    if ($this->cancel() === true) {
-                        $result = array('code' => 200, 'message' => 'success');
+                    $query = "UPDATE " . $this->table . " 
+                                    SET order_status = 3,
+                                    order_reason = :order_reason
+                                    WHERE order_id = :order_id";
+
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
+                    $stmt->bindParam(":order_id",      $this->order_id);
+
+                    if ($stmt->execute() === true) {
+                        $result = array('code' => 200, 'Order canceling success.');
+                        return $result;
                     } else {
-                        $result = array('code' => 500, 'message' => 'Error while canceling cod order');
+                        $result = array('code' => 500, 'Order canceling error.');
+                        return $result;
                     }
                     break;
+                    
                 case 2:
-                    $momoRefund = new momoRefund($this->conn, $this->order_id);
-                    if ($momoRefund->refund() === true) {
-                        $result = array('code' => 200, 'message' => 'success');
+                    if ($order_status !== 4 && $order_status !== 3 && $order_payment_status === 0 ) {
+                        if ($order_refund_code !== 0 ) {
+                            $momoRefund = new momoRefund($this->conn, $this->order_id);
+                            if ($momoRefund->refund() === true) {
+                                $result = array('code' => 200, 'message' => 'success');
+                            } else {
+                                $result = array('code' => 500, 'message' => 'Error while canceling momo order');
+                            }
+                        } else {
+                            $query = "UPDATE " . $this->table . " 
+                                    SET order_status = 3,
+                                    order_reason = :order_reason
+                                    WHERE order_id = :order_id";
+
+                            $stmt = $this->conn->prepare($query);
+                            $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
+                            $stmt->bindParam(":order_id",      $this->order_id);
+
+                            if ($stmt->execute() === true) {
+                                $result = array('code' => 200, 'Order canceling success.');
+                                return $result;
+                            } else {
+                                $result = array('code' => 500, 'Order canceling error.');
+                                return $result;
+                            }
+                        }
                     } else {
-                        $result = array('code' => 500, 'message' => 'Error while canceling momo order');
+                        $query = "UPDATE " . $this->table . " 
+                                    SET order_status = 3,
+                                    order_reason = :order_reason
+                                    WHERE order_id = :order_id";
+
+                        $stmt = $this->conn->prepare($query);
+                        $stmt->bindParam(":order_reason",   $this->order_reason, PDO::PARAM_INT);
+                        $stmt->bindParam(":order_id",      $this->order_id);
+
+                        if ($stmt->execute() === true) {
+                            $result = array('code' => 200, 'Order canceling success.');
+                            return $result;
+                        } else {
+                            $result = array('code' => 500, 'Order canceling error.');
+                            return $result;
+                        }
                     }
+
                     break;
             }
             return $result;

@@ -28,16 +28,10 @@ class Momo
         $this->getMomoInformation();
     }
 
-    protected function queryPreparePDO($query)
-    {
-        $stmt = $this->conn->prepare($query);
-        return $stmt;
-    }
-
-    protected function getMomoInformation()
+    private function getMomoInformation()
     {
         $query = "SELECT payment_partner_code, payment_access_key, payment_secret_key FROM payment WHERE payment_active = 1 AND web_id =:web_id AND payment_method = 2";
-        $stmt = $this->queryPreparePDO($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':web_id', $this->web_id);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
@@ -139,6 +133,7 @@ class momoCheck extends Momo
     private $response = array();
     private $partnerSignature;
     private $userID;
+    private $orderID;
 
     public function __construct($db)
     {
@@ -215,8 +210,8 @@ class momoCheck extends Momo
 
                 if ($this->m2signature == $this->partnerSignature) {
                     if ($this->errorCode == '0') {
-                        $this->removeCart();
                         $this->getUserInformationByOrder();
+                        $this->removeCart();
                         $this->updateOrder(false, true);
                     } else {
                         $this->updateOrder(false, false);
@@ -227,6 +222,7 @@ class momoCheck extends Momo
                     $this->response['message'] = "ERROR! Fail checksum";
                 }
             } else {
+                $this->getUserInformationByOrder();
                 $this->removeCart();
                 $query = "UPDATE order_tb SET order_text =:order_text, order_active = 1 WHERE order_id =:order_id";
                 $stmt = $this->conn->prepare($query);
@@ -252,7 +248,7 @@ class momoCheck extends Momo
     {
         $query = "SELECT user_id FROM order_tb WHERE order_id = :order_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':order_id', $this->order_id);
+        $stmt->bindParam(':order_id', $this->orderID);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -303,7 +299,7 @@ class momoCheck extends Momo
     {
         $query = 'DELETE FROM cart WHERE user_id =:user_id';
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':user_id', $this->userID);
         if ($stmt->execute() === true) {
             return true;
         }
@@ -321,6 +317,7 @@ class momoRefund extends Momo
 {
     private $transId;
     private $requestType = "refundMoMoWallet";
+    private $order_id;
 
     public function __construct($db, $order_id)
     {
@@ -333,13 +330,29 @@ class momoRefund extends Momo
     private function getOrderInformation()
     {
         $query = "SELECT * FROM order_tb WHERE order_id =:order_id";
-        $stmt = $this->queryPreparePDO($query);
-        $stmt->bindParam(':order_id', $this->orderID);
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_id', $this->order_id);
         if ($stmt->execute() === true && $stmt->rowCount() === 1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->transId = $result['order_trans_id'];
             $this->amount  = $result['order_sum_price'];
             $this->web_id  = $result['web_id'];
+            return true;
+        }
+        return false;
+    }
+
+    private function getMomoInformation()
+    {
+        $query = "SELECT payment_partner_code, payment_access_key, payment_secret_key FROM payment WHERE payment_active = 1 AND web_id =:web_id AND payment_method = 2";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':web_id', $this->web_id);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->partnerCode = $result['payment_partner_code'];
+            $this->accessKey   = $result['payment_access_key'];
+            $this->secretKey   = $result['payment_secret_key'];
             return true;
         }
         return false;
@@ -353,7 +366,7 @@ class momoRefund extends Momo
             "&accessKey="  . $this->accessKey  .
             "&requestId="  . $this->requestId  .
             "&amount="     . $this->amount     .
-            "&orderId="    . $this->orderID    .
+            "&orderId="    . $this->order_id    .
             "&transId="    . $this->transId    .
             "&requestType=" . $this->requestType;
         $signature = hash_hmac("sha256", $rawHash, $this->secretKey);
@@ -362,7 +375,7 @@ class momoRefund extends Momo
             "accessKey"   => $this->accessKey,
             "requestId"   => $this->requestId,
             "amount"      => $this->amount,
-            "orderId"     => $this->orderID,
+            "orderId"     => $this->order_id,
             "transId"     => $this->transId,
             "requestType" => $this->requestType,
             "signature"   => $signature
@@ -377,20 +390,22 @@ class momoRefund extends Momo
     {
         $resultJSON = $this->createRefund();
         $result = json_decode($resultJSON);
+        $errorCodeRefund = $result->errorCode;
+        $localMessage = $result->localMessage;
+        $requestId = $result->requestId;
         //update order has been refunded
         $query = "UPDATE order_tb 
         SET order_refund_code       =:order_refund_code, 
             order_refund_message    =:order_refund_message, 
             order_refund_request_id =:request_id
         WHERE order_id =:order_id";
-        $stmt = $this->queryPreparePDO($query);
-        $stmt->bindParam(':order_refund_code'   , $result['errorCode']);
-        $stmt->bindParam(':order_refund_message', $result['localMessage']);
-        $stmt->bindParam(':request_id'          , $result['requestId']);
-        $stmt->bindParam(':order_id'            , $this->orderID);
-        $stmt->execute();
-        return true;
-        if ($result["errorCode"] == 0) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':order_refund_code'   , $errorCodeRefund);
+        $stmt->bindParam(':order_refund_message', $localMessage);
+        $stmt->bindParam(':request_id'          , $requestId);
+        $stmt->bindParam(':order_id'            , $this->order_id);
+        $reslt = $stmt->execute();
+        if ($result->errorCode == 0) {
             return true;
         } 
         return false;

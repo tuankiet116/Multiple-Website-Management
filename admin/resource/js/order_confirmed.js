@@ -73,7 +73,6 @@ function getOrder(web_id = false, valueWebSite=null, term){
         dataType: "JSON",
         async: false,
         success: function (res) {
-            console.log(res)
             if(res.code == 403){
                 window.location.href= '../../error.php';
             }
@@ -85,7 +84,8 @@ function getOrder(web_id = false, valueWebSite=null, term){
                         let order_payment = '';
                         let notSp = `Null`;
                         let order_suspicious='';
-    
+                        let order_refund_code = null;
+
                         if(item.order_payment == 1){
                             order_payment ='<span class="badge badge-secondary">COD</span>';
                         }
@@ -99,18 +99,40 @@ function getOrder(web_id = false, valueWebSite=null, term){
                         if(item.order_suspicious == 1 && item.order_payment == 2){
                             order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
                         }
-                       
+
+                        if(item.order_refund_code == 0){
+                            order_refund_code = `<p>Đã Hoàn Tiền</p>`;
+                        }
+                    
+                        if(item.order_refund_code != 0 && item.order_refund_code != null){
+                            order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
+                        }
+
+                        if(item.order_refund_code == null){
+                            order_refund_code = '<p style="color: red">N/A</p>';
+                        }
+                        
+                        if(item.order_trans_id == null){
+                            item.order_trans_id = '<p style="color: red">N/A</p>';
+                        }
+                        
+                        if(item.user_name == null){
+                            item.user_name = '<p style="color: red">N/A</p>';
+                        }
+
+                        let order_payment_status = item.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
                         return`
                             <tr>
                                 <th scope="row">${index + 1}</th>
                                 <td><p class="order_code">${item.order_id}</p> ${order_suspicious} </td>
                                 <td>${item.user_name}</td>
                                 <td>${item.user_number_phone}</td>
-                                <td>${order_payment}</td>
+                                <td>${order_payment} ${order_payment_status}</td>
                                 <td>${item.order_trans_id ?? notSp}</td>
                                 <td>${item.web_name}</td>
                                 <td>${item.order_sum_price}</td>
                                 <td>${order_status}</td>
+                                <td>${order_refund_code}</td>
                                 <td >
                                     <button class="btn btn-primary btn-detail" style="display: inline-block" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
                                     <button class="btn btn-danger btn-cancel" order_id="${item.order_id}" data-toggle="modal" data-target="#modal-cancel">Hủy Bỏ</button>
@@ -126,10 +148,10 @@ function getOrder(web_id = false, valueWebSite=null, term){
                 }
                 $('.table > tbody').html(viewData ?? mes).ready(function(){
                     getOrderById();
-                    confirmed();
+                    $('#btn-confirm').unbind().click(confirmed)
                     getOrderIdCancel();
-                    cancel();
-                    tooltip('.order_code', 20);
+                    $('#btn-cancel').unbind().click(cancel);
+                    tooltip('.order_code', 10);
                 });
             }
 
@@ -138,7 +160,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
 }
 
 function getOrderById(){
-    $('.btn-detail').click(function () { 
+    $('.btn-detail').unbind().click(function () { 
         let data = {
             "order_id": $(this).attr('order_id'),
             "order_status": "2"
@@ -170,14 +192,14 @@ function getOrderById(){
 }
 
 function searchTerm(){
-    $('#btn-search').click(function(){
+    $('#btn-search').unbind().click(function(){
         let term = $('#order_search').val();
         getOrder(false, null, term);
     })
 }
 
 function clearTerm(){
-    $('#btn-clear').click(function(){
+    $('#btn-clear').unbind().click(function(){
         $('.pick_website_select').empty();
         $('#order_search').val('');
         getOrder(false, null, "");
@@ -185,96 +207,98 @@ function clearTerm(){
 }
 
 function confirmed(){
-    $('#btn-confirm').click(function(){
-        let data ={
-            "order_id": order_id_g,
-            "order_status": "4"
-        }
-        console.log(data);
-        $('.loader-container').css('display', 'flex');
-        $.ajax({
-            type: "POST",
-            url: base_url+"api/Controller/orderConfirm.php",
-            data: JSON.stringify(data),
-            dataType: "JSON",
-            async: false,
-            success: function (res) {
-                $('.loader-container').css('display', 'none');
-                if(res.code == 403){
-                    window.location.href= '../../error.php';
-                }
-                else{
-                    if(res.code == 200){
-                        showAlert('success', `<p>${res?.message}</p>`);
-                        $('#close-modal-detail').click();
-                        //order_id_g = null;
-                    }
-                    else {
-                        showAlert('error', `<p>${res?.message}</p>`);
-                    }
-                }
-            },
-            error: function(res){
-                $('.loader-container').css('display', 'none');
-                console.log(res.responeText);
+    let data ={
+        "order_id": order_id_g
+    }
+    // console.log(data);
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+        type: "POST",
+        url: base_url+"api/Controller/orderDelivered.php",
+        data: JSON.stringify(data),
+        dataType: "JSON",
+        async: false,
+        success: function (res) {
+            $('.loader-container').css('display', 'none');
+            if(res.code == 403){
+                window.location.href= '../../error.php';
             }
-        });
-        getOrder(false, null, "");
-    })
+            else{
+                if(res.code == 200){
+                    showAlert('success', `<p>${res?.message}</p>`);
+                    $('#close-modal-detail').click();
+                    //order_id_g = null;
+                }
+                else {
+                    showAlert('error', `<p>${res?.message}</p>`);
+                }
+            }
+        },
+        error: function(res){
+            $('.loader-container').css('display', 'none');
+            console.log(res.responeText);
+        }
+    });
+    getOrder(false, null, "");
 }
 
 function getOrderIdCancel(){
-    $('.btn-cancel').click(function(){
+    $('.btn-cancel').unbind().click(function(){
         order_id_g = $(this).attr('order_id');
     })
 }
 
 function cancel(){
-    $('#btn-cancel').click(function(){
-        let data ={
-            "order_id": order_id_g,
-            "order_status": "3",
-            "order_reason": $('#order_reason').val()
-        }
-        console.log(data);
-        $('.loader-container').css('display', 'flex');
-        $.ajax({
-            type: "POST",
-            url: base_url+"api/Controller/orderCancel.php",
-            data: JSON.stringify(data),
-            dataType: "JSON",
-            async: false,
-            success: function (res) {
-                $('.loader-container').css('display', 'none');
-                if(res.code == 403){
+    let data ={
+        "order_id": order_id_g,
+        "order_status": "3",
+        "order_reason": $('#order_reason').val()
+    }
+    console.log(data);
+    $('.loader-container').css('display', 'flex');
+    $.ajax({
+        type: "POST",
+        url: base_url+"api/Controller/orderCancel.php",
+        data: JSON.stringify(data),
+        dataType: "JSON",
+        async: false,
+        success: function (res) {
+            $('.loader-container').css('display', 'none');
+            switch(res){
+                case 403:
                     window.location.href= '../../error.php';
-                }
-                else{
-
-                    if(res.code == 200){
-                        showAlert('success', `<p>${res?.message}</p>`);
-                        $('#close-modal-cancel').click();
-                        order_id = null;
-                    }
-                    else {
-                        showAlert('error', `<p>${res?.message}</p>`);
-                    }
-                }
-            },
-            error: function(res){
-                $('.loader-container').css('display', 'none');
-                console.log(res.responeText);
+                    break;
+                case 200:
+                    showAlert("success", `<p>Hủy thành công</p>`);
+                    $('#close_modal_detail').click();
+                    break;
+                case 500:
+                    showAlert("error", `<p>Lỗi không thể hủy đơn lúc này</p>`);
+                    break;
+                case 404:
+                    showAlert("error", `<p>Đơn hàng không tồn tại</p>`);
+                    break;
+                case 1002:
+                    showAlert("error", `<p>Đơn hàng đã được xử lý. Vui lòng kiểm tra lại.</p>`);
+                    break;
+                default:
+                    showAlert("error", `<p>Có lỗi xảy ra (default)</p>`);
+                    break;
             }
-        });
-        getOrder(false, null, "");
-    })
+        },
+        error: function(res){
+            showAlert("error", `<p>Có lỗi xảy ra (error)</p>`);
+            console.log(res.responseText);
+        }
+    });
+    getOrder(false, null, "");
 }
 
 function valueDetail(data){
     let order_payment = '';
     let order_status ='';
     let order_suspicious ='';
-    
+    let order_refund_code = null;
     if(data.result.order_payment == 1){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
@@ -309,22 +333,68 @@ function valueDetail(data){
                 </tr>`;
     })
 
-    $('#order_id').text(data.result.order_id);
-    $('#user_name').text(data.result.user_name);
+    if(data.result.order_refund_code == 0){
+        order_refund_code = `Đã Hoàn Tiền`;
+    }
+
+    if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
+        order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    }
+
+    if(data.result.order_refund_code == null){
+        order_refund_code = '<p style="color: red">N/A</p>'
+    }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_id == null){
+        data.result.order_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.user_name == null){
+        data.result.user_name = '<p style="color: red">N/A</p>';
+    }
+
+    if(order_payment == null){
+        order_payment = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.web_name == null){
+        data.result.web_name = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_trans_id == null){
+        data.result.order_trans_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_paytype == null){
+        data.result.order_paytype = '<p style="color: red">N/A</p>';
+    }
+
+    $('#order_id').html(data.result.order_id);
+    $('#user_name').html(data.result.user_name);
     $('#order_payment_status').html(order_payment_status);
     $('#order_payment').html(order_payment);
-    $('#web_name').text(data.result.web_name);
-    $('#order_request_id').text(data.result.order_request_id);
-    $('#order_trans_id').text(data.result.order_trans_id);
-    $("#order_sum_price").text(data.result.order_sum_price);
-    $('#order_paytype').text(data.result.order_paytype);
-    $('#order_datetime').text(data.result.order_datetime);
-    $('#order_status').text(order_status);
-    $('#user_number_phone').text(data.result.user_number_phone);
-    $('#user_email').text(data.result.user_email);
-    $('#order_description').text(data.result.order_description);
+    $('#web_name').html(data.result.web_name);
+    $('#order_request_id').html(data.result.order_request_id);
+    $('#order_trans_id').html(data.result.order_trans_id);
+    $("#order_sum_price").html(data.result.order_sum_price);
+    $('#order_paytype').html(data.result.order_paytype);
+    $('#order_datetime').html(data.result.order_datetime);
+    $('#order_status').html(order_status);
+    $('#user_number_phone').html(data.result.user_number_phone);
+    $('#user_email').html(data.result.user_email);
+    $('#order_description').html(data.result.order_description);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
+    $('#order_refund_code').html(order_refund_code);
+
 
     $.fn.digits = function () {
       return this.each(function () {
