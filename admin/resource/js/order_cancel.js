@@ -37,7 +37,7 @@ function getOrder(term){
                             order_payment ='<span class="badge badge-danger">MOMO</span>';
                         }
                         else{
-                            order_payment ='<span class="badge badge-secondary">Khác</span>';
+                            '<p style="color: red">N/A</p>';;
                         }
     
                         if(item.order_reason == 1){
@@ -52,6 +52,9 @@ function getOrder(term){
                         else if(item.order_reason == 4){
                             order_reason = "Trả Hàng";
                         }
+                        else{
+                            order_reason = '<p style="color: red">N/A</p>';
+                        }
     
                         if(item.order_suspicious == 1 && item.order_payment == 2){
                             order_suspicious = `<span class="badge badge-danger" style="display: block; width: 100px">Giao Dịch Khả Nghi</span>`;
@@ -59,14 +62,26 @@ function getOrder(term){
 
                         let order_payment_status = item.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
 
-                        if(item.order_refund_code == 0){
-                            order_refund_code = `<p>Đã Hoàn Tiền</p>`;
-                        }
+                        // if(item.order_refund_code == 0){
+                        //     order_refund_code = `<p>Đã Hoàn Tiền</p>`;
+                        // }
                     
-                        if(item.order_refund_code != 0 && item.order_refund_code != null){
-                            order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
+                        // if(item.order_refund_code != 0 && item.order_refund_code != null){
+                        //     order_refund_code = `<p>Chưa Hoàn Tiền</p> <span>(${item.order_refund_message})</span>`;
+                        // }
+
+                        // if(item.order_refund_code == null){
+                        //     order_refund_code = '<p style="color: red">N/A</p>';
+                        // }
+                        
+                        if(item.order_trans_id == null){
+                            item.order_trans_id = '<p style="color: red">N/A</p>';
                         }
-    
+                        
+                        if(item.user_name == null){
+                            item.user_name = '<p style="color: red">N/A</p>';
+                        }
+
                         return`
                             <tr>
                                 <th scope="row">${index + 1}</th>
@@ -76,7 +91,6 @@ function getOrder(term){
                                 <td>${item.order_trans_id}</td>
                                 <td>${item.web_name}</td>
                                 <td>${order_reason}</td>
-                                <td>${order_refund_code}</td>
                                 <td>
                                     <button class="btn btn-primary btn-detail" order_id="${item.order_id}" data-toggle="modal" data-target="#show-modal-detail">Chi Tiết</button>
                                 </td>
@@ -178,6 +192,9 @@ function valueDetail(data){
     else if(data.result.order_reason == 4){
         order_reason = "Trả Hàng";
     }
+    else{
+        order_reason = '<p style="color: red">N/A</p>';
+    }
 
     if(data.result.order_suspicious == 1 && data.result.order_payment == 2){
         order_suspicious = `<span class="badge badge-danger">Giao dịch Khả Nghi</span>`   
@@ -192,33 +209,68 @@ function valueDetail(data){
     })
     let order_payment_status = data.result.order_payment_status == 0 ? `<span class="badge badge-success">Đã Thanh Toán</span>`:`<span class="badge badge-danger">Chưa Thanh Toán</span>`
 
-    if(data.result.order_refund_code == 0){
-        order_refund_code = `Đã Hoàn Tiền`;
+    // if(data.result.order_refund_code == 0){
+    //     order_refund_code = `Đã Hoàn Tiền`;
+    // }
+
+    // if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
+    //     order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    // }
+    
+    // if(data.result.order_refund_code == null){
+    //     order_refund_code = '<p style="color: red">N/A</p>'
+    // }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
     }
 
-    if(data.result.order_refund_code != 0 && data.result.order_refund_code != null){
-        order_refund_code = `Chưa Hoàn Tiền (${data.result.order_refund_message})`;
+    if(data.result.order_id == null){
+        data.result.order_id = '<p style="color: red">N/A</p>';
     }
 
+    if(data.result.user_name == null){
+        data.result.user_name = '<p style="color: red">N/A</p>';
+    }
 
-    $('#order_id').text(data.result.order_id);
-    $('#user_name').text(data.result.user_name);
-    $('#order_payment_status').html (order_payment_status);
+    if(order_payment == null){
+        order_payment = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.web_name == null){
+        data.result.web_name = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_request_id == null){
+        data.result.order_request_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_trans_id == null){
+        data.result.order_trans_id = '<p style="color: red">N/A</p>';
+    }
+
+    if(data.result.order_paytype == null){
+        data.result.order_paytype = '<p style="color: red">N/A</p>';
+    }
+
+    $('#order_id').html(data.result.order_id);
+    $('#user_name').html(data.result.user_name);
+    $('#order_payment_status').html(order_payment_status);
     $('#order_payment').html(order_payment);
-    $('#web_name').text(data.result.web_name);
-    $('#order_request_id').text(data.result.order_request_id);
-    $('#order_trans_id').text(data.result.order_trans_id);
-    $('#order_sum_price').text(data.result.order_sum_price);
-    $('#order_paytype').text(data.result.order_paytype);
-    $('#order_datetime').text(data.result.order_datetime);
-    $('#order_status').text(order_status);
-    $('#user_number_phone').text(data.result.user_number_phone);
-    $('#user_email').text(data.result.user_email);
-    $('#order_description').text(data.result.order_description);
-    $('#order_reason').text(order_reason);
+    $('#web_name').html(data.result.web_name);
+    $('#order_request_id').html(data.result.order_request_id);
+    $('#order_trans_id').html(data.result.order_trans_id);
+    $('#order_sum_price').html(data.result.order_sum_price);
+    $('#order_paytype').html(data.result.order_paytype);
+    $('#order_datetime').html(data.result.order_datetime);
+    $('#order_status').html(order_status);
+    $('#user_number_phone').html(data.result.user_number_phone);
+    $('#user_email').html(data.result.user_email);
+    $('#order_description').html(data.result.order_description);
+    $('#order_reason').html(order_reason);
     $('#order_detail').html(order_detail);
     $('#order_suspicious').html(order_suspicious);
-    $('#order_refund_code').text(order_refund_code);
+    // $('#order_refund_code').html(order_refund_code);
 
     $.fn.digits = function () {
       return this.each(function () {
