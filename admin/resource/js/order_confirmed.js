@@ -89,7 +89,7 @@ function getOrder(web_id = false, valueWebSite=null, term){
                             order_payment ='<span class="badge badge-secondary">COD</span>';
                         }
                         else if(item.order_payment == 2){
-                            order_payment ='<span class="badge badge-danger">MOMO</span>';
+                            order_payment ='<span style="background-color: magenta !important;" class="badge badge-danger">MOMO</span>';
                         }
                         else{
                             order_payment ='<span class="badge badge-secondary">Khác</span>';
@@ -299,7 +299,7 @@ function valueDetail(data){
         order_payment ='<span class="badge badge-secondary">COD</span>';
     }
     else if(data.result.order_payment == 2){
-        order_payment ='<span class="badge badge-danger">MOMO</span>';
+        order_payment ='<span style="background-color: magenta !important;" class="badge badge-danger">MOMO</span>';
     }
     else{
         order_payment ='<span class="badge badge-secondary">Khác</span>';

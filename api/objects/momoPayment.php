@@ -8,7 +8,7 @@ class Momo
     private $secretKey;
     private $returnUrl;
     private $notifyUrl;
-    private $extraData = "merchantName=MoMo Partner";
+    private $extraData = "merchantName=Công ty CP Thương mại Dịch vụ và Sản xuất T&Q";
     private $requestType = "captureMoMoWallet";
     private $orderInfo;
     private $amount;

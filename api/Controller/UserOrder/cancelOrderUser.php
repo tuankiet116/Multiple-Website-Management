@@ -1,4 +1,4 @@
-<?php 
+<?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");
@@ -15,18 +15,23 @@ $db = $database->getConnection();
 $order = new OrderUser($db);
 $data = json_decode(file_get_contents("php://input"));
 $web_url = $_SERVER['HTTP_ORIGIN'];
-if($order->setWebID($web_url) === true && $data->user_token != "" && $data->user_token != null){
+if ($order->setWebID($web_url) === true && $data->user_token != "" && $data->user_token != null) {
+    http_response_code(200);
+    echo json_encode([
+        "message" => "Failure",
+        "code"    => 403
+    ]);
+    return;
     $order->user_token = trim($data->user_token);
     $order->order_id   = trim($data->order_id);
     $message = $order->cancelOrderUser();
-    if($message === true){
+    if ($message === true) {
         http_response_code(200);
         echo json_encode([
             "message" => "Successful!!",
             "code"    => 200
         ]);
-    }
-    else{
+    } else {
         http_response_code(200);
         echo json_encode([
             "message" => "Failure",
@@ -34,5 +39,3 @@ if($order->setWebID($web_url) === true && $data->user_token != "" && $data->user
         ]);
     }
 }
-
-?>

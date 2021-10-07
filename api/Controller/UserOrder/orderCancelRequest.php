@@ -16,6 +16,12 @@ $order = new OrderUser($db);
 $data = json_decode(file_get_contents("php://input"));
 $origin = $_SERVER['HTTP_ORIGIN'];
 if ($order->setWebID($origin) === true) {
+    http_response_code(200);
+    echo json_encode([
+        "message" => "Failure",
+        "code"    => 403
+    ]);
+    return;
     $order->user_token = $data->userToken;
     $order->order_id = $data->orderId;
     $result = $order->createRequestCancel();
