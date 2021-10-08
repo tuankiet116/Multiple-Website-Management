@@ -135,7 +135,7 @@ function createPolicies(){
       }
 
       if(res.code == 200){
-        showAlert('success', `<p>${res.message}</p>`);
+        showAlert('success', `<p>${res.result}</p>`);
         $('#form')[0].reset();
         $('.pick_website_select.add').empty();
         $("#image_icon_1").attr("src", "#");
@@ -144,15 +144,17 @@ function createPolicies(){
         $('#close-form-add').click();
       }
       else{
-        showAlert('error', `<p>${res?.message}</p>`);
+        showAlert('error', `<p>${res?.result}</p>`);
       }
+
+      getPolicies({term: "", policies_active: null});
     },
     error: function(res){
       $('.loader-container').css('display', 'none');
-      console.log(res.responseText);
+      showAlert('error', `<p>có lỗi xảy ra</p>`);
     }
   });
-  getPolicies({term: "", policies_active: null});
+  
 }
 
 function getPoliciesById(){
@@ -176,7 +178,7 @@ function getPoliciesById(){
         $('#policies_description_update').val(res.result[0].policies_description);
         $('#web_id_update').val(res.result[0].web_id);
         CKEDITOR.instances.content_policies_update.setData(res.result[0].policies_content);
-        if(res.result[0].policies_image!== null){
+        if(res.result[0].policies_image!= null && res.result[0].policies_image!=""){
           setImageData(res.result[0].policies_image, "#image_icon_", 1);
         }
         else{
@@ -186,11 +188,11 @@ function getPoliciesById(){
         }
       }
       else {
-        console.log(res?.message);
+        showAlert('error', `<p>có lỗi xảy ra</p>`);
       }
     },
     error: function(res){
-      console.log(res.responseText);
+      showAlert('error', `<p>có lỗi xảy ra</p>`);
     }
   });
 }
@@ -212,25 +214,27 @@ function updatePolicies(){
     data: JSON.stringify(data),
     dataType: "JSON",
     success: function (res) {
+      console.log(res);
       $('.loader-container').css('display', 'none');
       if(res.code == 403){
         window.location.href = '../../error.php';
       }
 
       if(res.code == 200){
-        showAlert('success', `<p>${res.message}</p>`);
+        showAlert('success', `<p>${res.result}</p>`);
         $('#close-form-update').click();
       }
       else{
-        showAlert('error', `<p>${res?.message}</p>`);
+        showAlert('error', `<p>${res?.result}</p>`);
       }
+      getPolicies({term: "", policies_active: null});
     },
     error: function(res){
       $('.loader-container').css('display', 'none');
-      console.log(res.responseText);
+      showAlert('error', `<p>có lỗi xảy ra</p>`);
     }
   });
-  getPolicies({term: "", policies_active: null});
+  
 }
 
 function searchPolicies(){
@@ -247,7 +251,6 @@ function activeStatus(){
     "policies_id":     $(this).attr('policies_id'),
     "policies_active": $(this).attr('policies_active') == "1" ? "0" : "1"
   }
-  console.log(data)
 
   $.ajax({
     type: "POST",
@@ -261,18 +264,19 @@ function activeStatus(){
       }
 
       if(res.code == 200){
-        showAlert('success', `<p>${res.message}</p>`);
+        showAlert('success', `<p>${res.result}</p>`);
       }
       else{
-        showAlert('error', `<p>${res.message}</p>`);
+        showAlert('error', `<p>${res.result}</p>`);
       }
+      getPolicies({term: "", policies_active: null});
     },
-    error: function(){
+    error: function(res){
       $('.loader-container').css('display', 'none');
-      console.log(res.responseText);
+      showAlert('error', `<p>có lỗi xảy ra</p>`);
     }
   });
-  getPolicies({term: "", policies_active: null});
+  
 }
 
 function pickWebsiteSelect(element){
