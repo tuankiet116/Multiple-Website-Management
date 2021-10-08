@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div class="select-search">
+                <div class="select-search" style="width: 100px">
                     <label for="searching"><?= translate_text('Trạng Thái')?></label>
                     <select id="service-status" class=" form-group">
                         <option value="#">All</option>
@@ -220,7 +220,8 @@
                                     <textarea name="content_policies_update" id="content_policies_update"></textarea>
                                 </div>
                             </div>
-
+                            
+                            <input type="hidden" id="web_id_update">
                         </form>
                     </div>
                     <div class="modal-footer">

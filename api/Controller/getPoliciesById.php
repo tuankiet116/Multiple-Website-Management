@@ -35,6 +35,7 @@ if(isset($policies->policies_id)){
             "policies_active"           => $row['policies_active'],
             "policies_content"          => $row['policies_content'],
             "policies_image"            => $row['policies_image'],
+            "web_id"                    => $row['web_id'],
             "policies_term"             => $data->term
 
         );

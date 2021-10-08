@@ -17,7 +17,6 @@ $(document).ready(function () {
     getPolicies({term: "", policies_active: null});
 
     //search service
-    // searchPolicies();
     $('#btn-search').click(searchPolicies);
 
     $('#btn-clear').click(function(){
@@ -158,7 +157,7 @@ function createPolicies(){
 
 function getPoliciesById(){
   let data = {
-    "policies_id": $(this).attr('policies_id'), 
+    policies_id: $(this).attr('policies_id'), 
   }
   policies_id_update = $(this).attr('policies_id')
   $.ajax({
@@ -171,13 +170,14 @@ function getPoliciesById(){
       if(res.code == 403){
         window.location.href = '../../error.php';
       }
-
+      
       if(res.code == 200){
-        $('#policies_title_update').val(res.result.policies_title);
-        $('#policies_description_update').val(res.result.policies_description);
-        CKEDITOR.instances.content_policies_update.setData(res.result.policies_content);
-        if(res.result.policies_image!== null){
-          setImageData(res.result.policies_image, "#image_icon_", 1);
+        $('#policies_title_update').val(res.result[0].policies_title);
+        $('#policies_description_update').val(res.result[0].policies_description);
+        $('#web_id_update').val(res.result[0].web_id);
+        CKEDITOR.instances.content_policies_update.setData(res.result[0].policies_content);
+        if(res.result[0].policies_image!== null){
+          setImageData(res.result[0].policies_image, "#image_icon_", 1);
         }
         else{
           $("#image_icon_1_update").attr("src", "#");
@@ -197,19 +197,19 @@ function getPoliciesById(){
 
 function updatePolicies(){
   let data = {
-    "policies_title":        $('#policies_title_update').val(),
+    "policies_title":       $('#policies_title_update').val(),
     "policies_description": $('#policies_description_update').val(),
     "policies_content":     CKEDITOR.instances.content_policies_update.getData(),
     "policies_id":          policies_id_update,
-    "policies_image":       $('#image_icon_1_update').attr('src')   
+    "policies_image":       $('#image_icon_1_update').attr('src'),
+    "web_id":               $('#web_id_update').val()                        
   }
-  console.log(data);
+  
   $('.loader-container').css('display', 'flex');
   $.ajax({
     type: "POST",
     url: base_url+"api/Controller/updatePolicies.php",
     data: JSON.stringify(data),
-    async: false,
     dataType: "JSON",
     success: function (res) {
       $('.loader-container').css('display', 'none');
