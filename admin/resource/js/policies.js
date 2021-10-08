@@ -1,6 +1,5 @@
 var base_url ='../../../';
-var service_gr_id_update = null;
-var service_id_update = null
+var policies_id_update = null
 $(document).ready(function () {
     pickWebsiteSelect('.pick_website_select');
 
@@ -12,22 +11,21 @@ $(document).ready(function () {
     $('#service-status').niceSelect();
 
     //creat service
-    $('#btn-submit-add').click(createService);
+    $('#btn-submit-add').click(createPolicies);
 
     // load service
-    getService({term: "", service_gr_id: null, service_active: null});
+    getPolicies({term: "", policies_active: null});
 
     //search service
-    searchService();
-    $('#btn-search').click(searchService);
+    // searchPolicies();
+    $('#btn-search').click(searchPolicies);
 
     $('#btn-clear').click(function(){
       $('#text-search').val("");
-      $('.pick_service_gr_select.search').empty();
       $('#service-status').val("#").niceSelect('update');
       $('.pick_website_select.search').empty();
       $('.pick_service_gr_select.search').attr('disabled', 'true');
-      getService({term: "", service_gr_id: null, service_active: null});
+      getPolicies({term: "", policies_active: null});
     })
     
     $(".input-image-container i").on("click", function (e) {
@@ -71,10 +69,10 @@ $(document).ready(function () {
     });
 });
 
-function getService(data){
+function getPolicies(data){
   $.ajax({
     type: "POST",
-    url: base_url+"api/Controller/getAllService.php",
+    url: base_url+"api/Controller/getAllPolicies.php",
     data: JSON.stringify(data),
     async: false,
     dataType: "JSON",
@@ -85,18 +83,17 @@ function getService(data){
 
       if(res.code == 200){
         var viewData = res?.result.map(function(item, index){
-          let status = item.service_active == 1 ? 
-          `<button class="btn btn-success btn-status" sv_active="${item.service_active}" sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Đã Hiện</button>` :
-          `<button class="btn btn-danger btn-status" sv_active="${item.service_active}"  sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Đã Ẩn</button>`
+          let status = item.policies_active == 1 ? 
+          `<button class="btn btn-success btn-status" policies_active="${item.policies_active}" policies_id="${item.policies_id}">Đã Hiện</button>` :
+          `<button class="btn btn-danger btn-status" policies_active="${item.policies_active}"  policies_id="${item.policies_id}">Đã Ẩn</button>`
 
           return `
             <tr>
               <th scope="row">${index + 1}</th>
-              <td>${item.service_name}</td>
-              <td class="service-description">${item.service_description}</td>
-              <td>${item.service_gr_name}</td>
+              <td>${item.policies_title}</td>
+              <td class="service-description">${item.policies_description}</td>
               <td>${status}</td>
-              <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update" sv_id="${item.service_id}" sv_gr_id="${item.service_gr_id}">Chi Tiết</button></td>
+              <td><button class="btn btn-warning btn-edit" data-toggle="modal" data-target="#form-update" policies_id="${item.policies_id}">Chi Tiết</button></td>
             </tr>`
         })
 
@@ -108,27 +105,26 @@ function getService(data){
       }
       $('.table > tbody').html(viewData ?? mes).ready(function(){
         $('.btn-status').click(activeStatus)
-        $('.btn-edit').click(getServiceById);
-        $('#btn-submit-update').click(updateService);
+        $('.btn-edit').click(getPoliciesById);
+        $('#btn-submit-update').click(updatePolicies);
         tooltip('.service-description', 30);
       })
     }
   });
 }
 
-function createService(){
+function createPolicies(){
   let data = {
-    "service_name":         $('#service_name').val(),
-    "service_description":  $('#service_description').val(),
-    "service_content":      CKEDITOR.instances.content_service_add.getData(),
-    "service_gr_id":        $('.pick_service_gr_select.add').select2('val'),
-    "service_image":        $('#image_icon_1').attr("src")
+    "policies_title":        $('#policies_title').val(),
+    "policies_description":  $('#policies_description').val(),
+    "policies_content":      CKEDITOR.instances.content_policies_add.getData(),
+    "policies_image":        $('#image_icon_1').attr("src")
   }
   $('.loader-container').css('display', 'flex');
   
   $.ajax({
     method: "POST",
-    url: base_url+"api/Controller/createService.php",
+    url: base_url+"api/Controller/createPolicies.php",
     data: JSON.stringify(data),
     async: false,
     dataType: "JSON",
@@ -142,8 +138,6 @@ function createService(){
       if(res.code == 200){
         showAlert('success', `<p>${res.message}</p>`);
         $('#form')[0].reset();
-        $('.pick_service_gr_select.add').empty();
-        $('.pick_service_gr_select.add').attr('disabled','true');
         $('.pick_website_select.add').empty();
         $("#image_icon_1").attr("src", "#");
         $("#image_icon_1").css("display", "none");
@@ -160,19 +154,17 @@ function createService(){
       console.log(res.responseText);
     }
   });
-  getService({term: "", service_gr_id: null, service_active: null});
+  getPolicies({term: "", policies_active: null});
 }
 
-function getServiceById(){
+function getPoliciesById(){
   let data = {
-    "service_id": $(this).attr('sv_id'),
-    "service_gr_id": $(this).attr('sv_gr_id')
+    "policies_id": $(this).attr('policies_id'), 
   }
-  service_gr_id_update = $(this).attr('sv_gr_id');
-  service_id_update    = $(this).attr('sv_id')
+  policies_id_update = $(this).attr('policies_id')
   $.ajax({
     type: "POST",
-    url: base_url+"api/Controller/getServiceById.php",
+    url: base_url+"api/Controller/getPoliciesById.php",
     data: JSON.stringify(data),
     async: false,
     dataType: "JSON",
@@ -182,11 +174,11 @@ function getServiceById(){
       }
 
       if(res.code == 200){
-        $('#service_name_update').val(res.result.service_name);
-        $('#service_description_update').val(res.result.service_description);
-        CKEDITOR.instances.content_service_update.setData(res.result.service_content);
-        if(res.result.service_image !== null){
-          setImageData(res.result.service_image, "#image_icon_", 1);
+        $('#policies_title_update').val(res.result.policies_title);
+        $('#policies_description_update').val(res.result.policies_description);
+        CKEDITOR.instances.content_policies_update.setData(res.result.policies_content);
+        if(res.result.policies_image!== null){
+          setImageData(res.result.policies_image, "#image_icon_", 1);
         }
         else{
           $("#image_icon_1_update").attr("src", "#");
@@ -204,20 +196,19 @@ function getServiceById(){
   });
 }
 
-function updateService(){
+function updatePolicies(){
   let data = {
-    "service_name":        $('#service_name_update').val(),
-    "service_description": $('#service_description_update').val(),
-    "service_content":     CKEDITOR.instances.content_service_update.getData(),
-    "service_gr_id":       service_gr_id_update,
-    "service_id":          service_id_update,
-    "service_image":       $('#image_icon_1_update').attr('src')   
+    "policies_title":        $('#policies_title_update').val(),
+    "policies_description": $('#policies_description_update').val(),
+    "policies_content":     CKEDITOR.instances.content_policies_update.getData(),
+    "policies_id":          policies_id_update,
+    "policies_image":       $('#image_icon_1_update').attr('src')   
   }
   console.log(data);
   $('.loader-container').css('display', 'flex');
   $.ajax({
     type: "POST",
-    url: base_url+"api/Controller/updateService.php",
+    url: base_url+"api/Controller/updatePolicies.php",
     data: JSON.stringify(data),
     async: false,
     dataType: "JSON",
@@ -240,23 +231,21 @@ function updateService(){
       console.log(res.responseText);
     }
   });
-  getService({term: "", service_gr_id: null, service_active: null});
+  getPolicies({term: "", policies_active: null});
 }
 
-function searchService(){
+function searchPolicies(){
   let data = {
     "term": $('#text-search').val().trim(),
-    "service_gr_id":  $('.pick_service_gr_select.search').select2('val'),
-    "service_active": $('#service-status').val() == '1' || $('#service-status').val() == '0'?  $('#service-status').val() : null
+    "policies_active": $('#service-status').val() == '1' || $('#service-status').val() == '0'?  $('#service-status').val() : null
   }
-  getService(data);
+  getPolicies(data);
 }
 
 function activeStatus(){
   let data ={
-    "service_id":     $(this).attr('sv_id'),
-    "service_gr_id":  $(this).attr('sv_gr_id'),
-    "service_active": $(this).attr('sv_active') == "1" ? "0" : "1"
+    "policies_id":     $(this).attr('policies_id'),
+    "policies_active": $(this).attr('policies_active') == "1" ? "0" : "1"
   }
   console.log(data)
   $('.loader-container').css('display', 'flex');
@@ -285,7 +274,7 @@ function activeStatus(){
       console.log(res.responseText);
     }
   });
-  getService({term: "", service_gr_id: null, service_active: null});
+  getPolicies({term: "", policies_active: null});
 }
 
 function pickWebsiteSelect(element){

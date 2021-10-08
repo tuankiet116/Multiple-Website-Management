@@ -99,12 +99,12 @@
                         <div class="modal-body">
                             <form action="#" id="form">
                                 <div class="form-group">
-                                    <label for="service_name">Tiêu đề </label>
-                                    <input type="text" class="form-control" id="service_name" placeholder="Tiêu đề">
+                                    <label for="policies_title">Tiêu đề </label>
+                                    <input type="text" class="form-control" id="policies_title" placeholder="Tiêu đề">
                                 </div>
                                 <div class="form-group">
-                                    <label for="service_description">Mô tả</label>
-                                    <textarea type="text" class="form-control" id="service_description"></textarea>
+                                    <label for="policies_description">Mô tả</label>
+                                    <textarea type="text" class="form-control" id="policies_description"></textarea>
                                 </div>
 
                                 <div style="display: flex; margin-left: 10px; margin-bottom: 30px">
@@ -137,7 +137,7 @@
 
                                 <div class="content-service">
                                     <div class="content-service-edit">
-                                        <textarea name="content-service-add" id="content_service_add"></textarea>
+                                        <textarea name="content_policies_add" id="content_policies_add"></textarea>
                                     </div>
                                 </div>
 
@@ -191,12 +191,12 @@
                     <div class="modal-body">
                         <form action="#">
                             <div class="form-group">
-                                <label for="service_name_update">Tiêu đề chính sách</label>
-                                <input type="text" class="form-control" id="service_name_update" placeholder="Tiêu đề chính sách">
+                                <label for="policies_title_update">Tiêu đề chính sách</label>
+                                <input type="text" class="form-control" id="policies_title_update" placeholder="Tiêu đề chính sách">
                             </div>
                             <div class="form-group">
-                                <label for="service_description_update">Mô tả</label>
-                                <textarea type="text" class="form-control" id="service_description_update"></textarea>
+                                <label for="policies_description_update">Mô tả</label>
+                                <textarea type="text" class="form-control" id="policies_description_update"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -217,7 +217,7 @@
 
                             <div class="content-service">
                                 <div class="content-service-edit">
-                                    <textarea name="content_service_update" id="content_service_update"></textarea>
+                                    <textarea name="content_policies_update" id="content_policies_update"></textarea>
                                 </div>
                             </div>
 
@@ -234,7 +234,7 @@
     </div>
 </body>
 <script>
-    CKEDITOR.replace('content_service_add', {
+    CKEDITOR.replace('content_policies_add', {
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
         width: '100%',
@@ -256,7 +256,7 @@
     });
 
 
-    CKEDITOR.replace('content_service_update', {
+    CKEDITOR.replace('content_policies_update', {
         extraPlugins: 'image2,uploadimage',
         removePlugins: 'image',
         width: '100%',
