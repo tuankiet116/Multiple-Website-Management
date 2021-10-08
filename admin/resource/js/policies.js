@@ -104,7 +104,7 @@ function getPolicies(data){
                    </tr>`; 
       }
       $('.table > tbody').html(viewData ?? mes).ready(function(){
-        $('.btn-status').click(activeStatus)
+        $('.btn-status').click(activeStatus);
         $('.btn-edit').click(getPoliciesById);
         $('#btn-submit-update').click(updatePolicies);
         tooltip('.service-description', 30);
@@ -118,7 +118,8 @@ function createPolicies(){
     "policies_title":        $('#policies_title').val(),
     "policies_description":  $('#policies_description').val(),
     "policies_content":      CKEDITOR.instances.content_policies_add.getData(),
-    "policies_image":        $('#image_icon_1').attr("src")
+    "policies_image":        $('#image_icon_1').attr("src"),
+    "web_id":                $('.pick_website_select.add').select2('val')
   }
   $('.loader-container').css('display', 'flex');
   
@@ -126,7 +127,6 @@ function createPolicies(){
     method: "POST",
     url: base_url+"api/Controller/createPolicies.php",
     data: JSON.stringify(data),
-    async: false,
     dataType: "JSON",
     success: function (res) {
       $('.loader-container').css('display', 'none');
@@ -143,7 +143,6 @@ function createPolicies(){
         $("#image_icon_1").css("display", "none");
         $("#input_image_icon_1").children("svg").css("display", "inherit");
         $('#close-form-add').click();
-
       }
       else{
         showAlert('error', `<p>${res?.message}</p>`);
@@ -243,18 +242,17 @@ function searchPolicies(){
 }
 
 function activeStatus(){
+  $('.loader-container').css('display', 'flex');
   let data ={
     "policies_id":     $(this).attr('policies_id'),
     "policies_active": $(this).attr('policies_active') == "1" ? "0" : "1"
   }
   console.log(data)
-  $('.loader-container').css('display', 'flex');
 
   $.ajax({
     type: "POST",
-    url: base_url+"api/Controller/activeService.php",
+    url: base_url+"api/Controller/ActiveInactivePolicies.php",
     data: JSON.stringify(data),
-    async:false,
     dataType: "JSON",
     success: function (res) {
       $('.loader-container').css('display', 'none');
