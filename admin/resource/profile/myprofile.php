@@ -87,7 +87,7 @@ else{
 <link href="<?=$fs_stype_css?>" rel="stylesheet" type="text/css">
 <link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css">
 <link href="../css/mycss.css" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap/css/bootstrap.css"> 
 <script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
 <script language="javascript">

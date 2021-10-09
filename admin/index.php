@@ -36,8 +36,8 @@ $loginName	= isset($_SESSION["userlogin"]) ? $_SESSION["userlogin"] : "";
 	<link rel="stylesheet" type="text/css" href="resource/css/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="resource/css/layout.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
-	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="resource/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="resource/js/slimScroll.min.js"></script>
 	<script type="text/javascript" src="resource/js/jquery.layout.js"></script>

@@ -59,6 +59,7 @@ if ($post_image_background === false) {
             if ($stmt === true) {
                 http_response_code(200);
                 echo json_encode(array("message" => "Update Success ", "code" => 200));
+                exit();
             }
             http_response_code(200);
             echo json_encode(array(

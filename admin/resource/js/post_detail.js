@@ -210,7 +210,7 @@ function setSelect2Data(id ,data_select = "", data){
 function showInformation(data){
     $('#postTitle').val(checkdefault("", data.post_title));
     $('#postDescription').val(checkdefault("", data.post_description));
-    $('#metaDescription').val(checkdefault("", data.meta_description));
+    $('#metaDescription').val(checkdefault("", data.post_meta_description));
     $('#postColorBackground').val(checkdefault("#ffffff", data.post_color_background));
     $('#rewriteName').val(checkdefault("", data.post_rewrite_name));
     $('.datetime-container').html(`<div><p> Thời Gian Tạo: `+ data.post_datetime_create +`</p></div> 
