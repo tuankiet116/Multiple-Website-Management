@@ -209,10 +209,10 @@ textarea{
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 16px;
+    width: 16px;
     left: 4px;
-    bottom: 4px;
+    bottom: 2px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
@@ -261,3 +261,13 @@ input:checked + .slider:before {
     100% {right: 0px; opacity: 0}
   } */
 
+
+
+/********** NEW **********/
+
+.switch span {
+    height: 20px !important;
+    width: 50px !important;
+    bottom: -7px;
+    margin-top: 7px;
+}

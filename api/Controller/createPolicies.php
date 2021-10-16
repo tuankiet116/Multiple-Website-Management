@@ -34,22 +34,26 @@ if ($data->policies_title == "" || $data->policies_title == null || $data->web_i
     $policies_image = array(htmlspecialchars(trim($data->policies_image)));
     $UploadBase64 = new upload_image();
 
-    //Save post image
-    $url_save = '../../data/image/policies';
-    $image = saveBase64($UploadBase64, $policies_image, $url_save, 'jpg, png, jpeg', 5000, 'Policies', '');
+    //Save policies image
+    $url_save = '../../data/image/post';
+    $policies_image = saveBase64($UploadBase64, $policies_image, $url_save, 'jpg, png, jpeg', 5000, 'policies', '');
 
     $policies->web_id                    = intval($data->web_id);
     $policies->policies_title            = htmlspecialchars(trim($data->policies_title));
     $policies->policies_description      = htmlspecialchars(trim($data->policies_description));
     $policies->policies_meta_description = htmlspecialchars(trim($data->policies_meta_description));
     $policies->policies_content          = $data->policies_content;
-    $policies->policies_image            = $image;
+    $policies->policies_image            = htmlspecialchars(trim($policies_image));
     $policies->policies_rewrite_name     = htmlspecialchars(trim($data->policies_rewrite_name));
 
     $result = $policies->createPolicies();
     http_response_code(200);
     echo json_encode($result);
 }
+
+unset($UploadBase64);
+unset($db);
+unset($policies);
 
 function saveBase64($UploadBase64, $data, $url_save, $extension_list, $limit_size, $filename = "", $name_prefix = "")
 {

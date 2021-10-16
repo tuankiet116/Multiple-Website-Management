@@ -67,12 +67,12 @@
                         <label class="form-check-label" for="cmp_rewrite_name"><?= translate_text('Tên đường link danh mục')?> <span class="req-form">(*)</span></label>
                         <input type="text" class="form-control disable" id="cmp_rewrite_name" placeholder="...." autocomplete="off" name="cmp_rewrite_name" disabled>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="form-check-label" for="cmp_icon"><?= translate_text('icon')?></label>
                         <input type="text" class="form-control disable" id="cmp_icon" placeholder="...." autocomplete="off" name="cmp_icon" disabled>
-                    </div>
+                    </div> -->
                     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="form-check-label" for="cmp_background"><?= translate_text('ảnh cho banner')?></label>
                         <div class="customs-file">
                             <div class="input-image-container">
@@ -121,20 +121,20 @@
                                 <p><?= translate_text('Hình 5')?></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="form-check-label" for="bgt_type"><?= translate_text('loại banner')?></label>
                         <select class="custom-select disable" id="bgt_type" name="bgt_type" disabled>
                             <option value="static">tĩnh</option>
                             <option value="slide">chuyển động slide</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label class="form-check-label" for="cmp_meta_description"><?= translate_text('thẻ meta')?></label>
                         <input type="text" class="form-control disable" id="cmp_meta_description" placeholder="...." autocomplete="off" name="cmp_meta_description" disabled>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 0">
                         <span class="form-check-label"><?= translate_text('kích hoạt danh mục')?></span>
                         <label class="switch" for="cmp_active">
                             <input type="checkbox" id="cmp_active" name="cmp_active" disabled class="disable"/>
@@ -164,7 +164,7 @@
     <div class="modal-update">
         <div class="overlay"></div>
         <div class="modal-body">
-            <div class="form">
+            <div class="form" style="width: 100%">
                 <div class="title-form-update">
                     <p><?= translate_text('Sửa Danh Mục')?></p>
                 </div>
@@ -177,12 +177,12 @@
                         <label class="form-check-label form-check-label-update" for="cmp_rewrite_name_update"><?= translate_text('Tên Đường Link Danh Mục')?></label>
                         <input type="text" class="form-control" id="cmp_rewrite_name_update" placeholder="Sửa Tên Đường Link Danh Mục" autocomplete="off" name="cmp_rewrite_name_update">
                     </div>
-                    <div class="form-group form-group-update">
+                    <!-- <div class="form-group form-group-update">
                         <label class="form-check-label form-check-label-update" for="cmp_icon_update"><?= translate_text('Icon')?></label>
                         <input type="text" class="form-control " id="cmp_icon_update" placeholder="Sửa Icon" autocomplete="off" name="cmp_icon_update">
-                    </div>
+                    </div> -->
                     
-                    <div class="form-group form-group-update">
+                    <!-- <div class="form-group form-group-update">
                         <label class="form-check-label form-check-label-update" for="cmp_background"><?= translate_text('ảnh cho banner')?></label>
                         <div class="customs-file">
                             <div class="input-image-container">
@@ -231,15 +231,15 @@
                                 <p><?= translate_text('Hình 5')?></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <div class="form-group form-group-update">
+                    <!-- <div class="form-group form-group-update">
                         <label class="form-check-label form-check-label-update" for="bgt_type_update"><?= translate_text('Loại banner')?></label>
                         <select class="custom-select disable" id="bgt_type_update" name="bgt_type_update" >
                             <option value="static">tĩnh</option>
                             <option value="slide">chuyển động slide</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="form-group form-group-update">
                         <label class="form-check-label form-check-label-update" for="cmp_meta_description_update"><?= translate_text('Thẻ Meta')?></label>

@@ -49,22 +49,22 @@
                     <hr style=" border-top: 1px solid black;">
                     <div class="card">
                         <div class="row">
-                            <div class="form-group form-configuations col-3">
+                            <div class="form-group form-configuations col-6">
                                 <label for="input-site-title"><?=translate_text('Tiêu Đề Website')?></label>
                                 <input name="input-site-title" type="text" class="form-control" id="input-site-title" placeholder="<?=translate_text('Thêm Tiêu Đề')?>">
                             </div>
-                            <div class="form-group form-configuations col-3">
+                            <div class="form-group form-configuations col-6">
                                 <label for="input-meta-description"><?=translate_text('Meta Description')?></label>
                                 <input name="input-meta-description" type="text" class="form-control" id="input-meta-description" placeholder="<?=translate_text('Meta Description')?>">
                             </div>
-                            <div class="form-group form-configuations col-3">
+                            <!-- <div class="form-group form-configuations col-3">
                                 <label for="input-meta-keyword"><?=translate_text('Meta Keyword')?></label>
                                 <input name="input-meta-keyword" type="text" class="form-control" id="input-meta-keyword" placeholder="<?=translate_text('Meta Keyword')?>">
                             </div>
                             <div class="form-group form-configuations col-3">
                                 <label for="input-rewrite-name-homepage"><?=translate_text('Rewrite Name Trang Chủ')?></label>
                                 <input name="input-rewrite-name-homepage" type="text" class="form-control" id="input-rewrite-name-homepage" placeholder="<?=translate_text('Rewrite Name')?>">
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row">
                             <div id="form-check-rewrite" class="form-check form-configuations col-3" style="padding-left: 17px;">
@@ -135,7 +135,7 @@
                                 <label for="input-payment"><?=translate_text('Thông Tin Thanh Toán')?></label>
                                 <input type="text" class="form-control" id="input-payment" placeholder="<?=translate_text('Thêm Thông Tin Thanh Toán')?>">
                             </div>
-                            <div class="form-group form-configuations" col-6>
+                            <div class="form-group form-configuations col-6">
                                 <label for="input-fee-transport"><?=translate_text('Thông Tin Vận Chuyển')?></label>
                                 <input type="text" class="form-control" id="input-fee-transport" placeholder="<?=translate_text('Thêm Thông Tin Vận Chuyển')?>">
                             </div>
@@ -283,12 +283,12 @@
                             </div>
                         </div>
                         <div class="row" style="height: 100%;">
-                            <div style="text-align: center; height: 365px;" class="form-group form-configuations col-12">
+                            <div style="text-align: center; height: 180px;" class="form-group form-configuations col-12">
                                 <label for="input_banner"><?=translate_text('Banner Giới Thiệu')?></label>
                                 <div style="width: 100%; height: 100%;" class="form-image-input">
                                     <div style="width: 100%; height: 100%;" class="input-image-container">
                                         <i style="margin-top: 20px; margin-left: 90%;" class="fas fa-trash-alt"></i>
-                                        <div style="width: 100%; height: 50%; overflow: hidden;" class="input-image" id="input_image_banner">
+                                        <div style="width: 100%; height: 100%; overflow: hidden;" class="input-image" id="input_image_banner">
                                             <img style="width: 100%; height: 100%; object-fit: cover;" id="image_banner" src="#"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>                                        
                                             <input type="file" class="form-input-image" id="input_banner">
@@ -298,7 +298,7 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="form-group form-configuations col-6">
                                 <label for="input-banner-title"><?=translate_text('Tiêu Đề Banner')?></label>
                                 <input type="text" class="form-control" id="input-banner-title" placeholder="<?=translate_text('Thêm Tiêu Đề Banner')?>">
@@ -307,8 +307,8 @@
                                 <label for="input-banner-description"><?=translate_text('Mô Tả Banner')?></label>
                                 <textarea class="form-control" id="input-banner-description" placeholder="<?=translate_text('Mô Tả')?>"></textarea>
                             </div>
-                        </div> 
-                        <div id="form-check-banner" class="form-check form-configuations">
+                        </div>  -->
+                        <div id="form-check-banner" class="form-check form-configuations" style="margin-top: 40px">
                             <label class="label-form-check form-check-active-banner" for="check-active-banner"><?=translate_text('Kích Hoạt Banner')?></label>
                             <label class="switch">
                                 <input class="check-box" id="check-active-banner" type="checkbox">

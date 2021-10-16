@@ -26,8 +26,8 @@ if (
     $UploadBase64 = new upload_image();
 
     //Save post image
-    $url_save = '../../data/image/policies';
-    $image = saveBase64($UploadBase64, $policies_image, $url_save, 'jpg, png, jpeg', 5000, 'Policies', '');
+    $url_save = '../../data/image/post';
+    $policies_image = saveBase64($UploadBase64, $policies_image, $url_save, 'jpg, png, jpeg', 5000, 'policies', '');
 
     $policies->web_id                    = intval($data->web_id);
     $policies->policies_id               = intVal($data->policies_id);
@@ -35,7 +35,7 @@ if (
     $policies->policies_description      = htmlspecialchars(trim($data->policies_description));
     $policies->policies_meta_description = htmlspecialchars(trim($data->policies_meta_description));
     $policies->policies_content          = $data->policies_content;
-    $policies->policies_image            = $image;
+    $policies->policies_image            = htmlspecialchars(trim($policies_image));
     $policies->policies_rewrite_name     = htmlspecialchars(trim($data->policies_rewrite_name));
 
     $message = $policies->updatePolicies();

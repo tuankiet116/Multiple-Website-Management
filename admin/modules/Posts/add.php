@@ -68,7 +68,7 @@
                 </div>
                 <div class="container-fluid post-info">
                     <row class="container-fluid">
-                        <div class="form-group form-post col-3">
+                        <div class="form-group form-post col-4">
                             <label for="postTitle"><?= translate_text('Tiêu Đề') ?></label>
                             <input disabled required type="text" class="form-control" id="postTitle" placeholder="<?= translate_text('Nhập Tiêu Đề') ?>" style="font-size: 11.5px">
                             <small class="form-text text-muted"><?= translate_text('Tiêu Đề Phải Là Duy Nhất.') ?></small>
@@ -79,22 +79,22 @@
                             <textarea disabled required type="text" class="form-control" id="postDescription" placeholder="<?= translate_text('Nhập Mô Tả') ?>" style="font-size: 11.5px"></textarea>
                         </div>
 
-                        <div class="form-group form-post col-3">
+                        <div class="form-group form-post col-4">
                             <label for="metaDescription"><?= translate_text('Mô Tả Meta') ?></label>
                             <textarea disabled required type="text" class="form-control" id="metaDescription" placeholder="<?= translate_text('Nhập Mô Tả') ?>" style="font-size: 11.5px"></textarea>
                             <small class="form-text text-muted"><?= translate_text('Mô Tả Cần Được Tối Ưu.') ?></small>
                         </div>
 
-                        <div class="form-group form-post col-2">
+                        <!-- <div class="form-group form-post col-2">
                             <label for="postColorBackground"><?= translate_text('Màu Nền') ?></label>
                             <input disabled type="color" value="#ffffff" class="form-control" id="postColorBackground" placeholder="<?= translate_text('Chọn Màu') ?>">
-                        </div>
+                        </div> -->
                     </row>
 
                     <row class="container-fluid">
 
 
-                        <div class="form-group form-post col-3">
+                        <div class="form-group form-post col-4">
                             <label for="rewriteName"><?= translate_text('Rewrite Name') ?></label>
                             <textarea disabled required type="text" class="form-control" id="rewriteName" placeholder="<?= translate_text('Nhập Rewrite Name') ?>" style="font-size: 11.5px"></textarea>
                         </div>
@@ -115,7 +115,7 @@
                             </div>
                         </div>
 
-                        <div class=" form-group form-post col-3">
+                        <div class=" form-group form-post col-4">
                             <label><?= translate_text('Chọn Sản Phẩm Liên Kết') ?></label>
                             <div class="box" style="margin: 0;">
                                 <select disabled class="pick_product">

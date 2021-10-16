@@ -522,40 +522,40 @@ function ResetForm(){
 
 //Get Data From Input
 function GetAllData(){
-  input_email                 = $('#input-admin-email').val().replace(/"/g, "'");
-  input_site_title            = $('#input-site-title').val().replace(/"/g, "'");
-  input_meta_description      = $('#input-meta-description').val().replace(/"/g, "'");
-  input_meta_keyword          = $('#input-meta-keyword').val().replace(/"/g, "'");
+  input_email                 = $('#input-admin-email').val()
+  input_site_title            = $('#input-site-title').val()
+  input_meta_description      = $('#input-meta-description').val()
+  input_meta_keyword          = $('#input-meta-keyword').val()
   input_rewrite               = $('#input-rewrite').val() == 'on'? 1:0;
-  // input_extention             = $('#input-extention').val().replace(/"/g, "'");
-  // pick_language               = $('.pick_language').select2('val').replace(/"/g, "'");
-  input_hotline               = $('#input-hotline').val().replace(/"/g, "'");;
-  input_hotline_banhang       = $('#input-hotline-banhang').val().replace(/"/g, "'");
-  input_hotline_kythuat       = $('#input-hotline-kythuat').val().replace(/"/g, "'");
-  input_address               = $('#input-address').val().replace(/"/g, "'");
+  // input_extention             = $('#input-extention').val()
+  // pick_language               = $('.pick_language').select2('val')
+  input_hotline               = $('#input-hotline').val();
+  input_hotline_banhang       = $('#input-hotline-banhang').val()
+  input_hotline_kythuat       = $('#input-hotline-kythuat').val()
+  input_address               = $('#input-address').val()
   check_active_contact        = $('#check-active-contact').val() == 'on'? 1:0;
-  input_payment               = $('#input-payment').val().replace(/"/g, "'");
-  input_fee_transport         = $('#input-fee-transport').val().replace(/"/g, "'");
-  input_contact_sale          = $('#input-contact-sale').val().replace(/"/g, "'");
-  input_info_company          = $('#input-info-company').val().replace(/"/g, "'");
-  input_page_fb               = $('#input-page-fb').val().replace(/"/g, "'");
-  input_link_fb               = $('#input-link-fb').val().replace(/"/g, "'");
-  input_link_insta            = $('#input-link-insta').val().replace(/"/g, "'");
-  input_link_twitter          = $('#input-link-twitter').val().replace(/"/g, "'");
-  input_map                   = $('#input-map').val().replace(/"/g, "'");
-  input_banner_title          = $('#input-banner-title').val().replace(/"/g, "'");
-  input_banner_description    = $('#input-banner-description').val().replace(/"/g, "'");
+  input_payment               = $('#input-payment').val()
+  input_fee_transport         = $('#input-fee-transport').val()
+  input_contact_sale          = $('#input-contact-sale').val()
+  input_info_company          = $('#input-info-company').val()
+  input_page_fb               = $('#input-page-fb').val()
+  input_link_fb               = $('#input-link-fb').val()
+  input_link_insta            = $('#input-link-insta').val()
+  input_link_twitter          = $('#input-link-twitter').val()
+  input_map                   = $('#input-map').val()
+  input_banner_title          = $('#input-banner-title').val()
+  input_banner_description    = $('#input-banner-description').val()
   check_active_banner         = $('#check-active-banner').val() == 'on'? 1:0;
   check_active_product        = $('#check-active-product').val() == 'on'? 1:0;
   check_active_sale           = $('#check-active-sale').val() == 'on'? 1:0;
   check_active_service        = $('#check-active-service').val() == 'on'? 1:0;
-  input_rewrite_name_homepage = $('#input-rewrite-name-homepage').val().replace(/"/g, "'");
+  input_rewrite_name_homepage = $('#input-rewrite-name-homepage').val()
 
   data = {
     con_admin_email           : input_email.trim(),
     con_site_title            : input_site_title.trim(),
     con_meta_description      : input_meta_description.trim(),
-    con_meta_keyword          : input_meta_keyword.trim(),
+    con_meta_keyword          : input_meta_keyword,
     con_mod_rewrite           : input_rewrite,
     // con_extenstion            : input_extention.trim(),
     // lang_id                   : pick_language.trim(),
@@ -573,10 +573,10 @@ function GetAllData(){
     con_link_twitter          : input_link_twitter.trim(),
     con_link_insta            : input_link_insta.trim(),
     con_map                   : input_map.trim(),
-    con_banner_title          : input_banner_title.trim(),
-    con_banner_description    : input_banner_description.trim(),
+    con_banner_title          : "",
+    con_banner_description    : "",
     con_banner_active         : check_active_banner,
-    con_rewrite_name_homepage : input_rewrite_name_homepage.trim(),
+    con_rewrite_name_homepage : "",
     con_active_product        : check_active_product,
     con_active_sale           : check_active_sale,
     con_active_service        : check_active_service

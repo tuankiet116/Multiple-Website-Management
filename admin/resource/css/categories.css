@@ -175,17 +175,18 @@ position: absolute;
 right: 0;
 top: 0;
 transition: .4s;
+height: 20px;
 }
 
 .slider:before {
 background-color: #fff;
-bottom: 4px;
+bottom: 2px;
 content: "";
-height: 26px;
+height: 16px;
 left: 4px;
 position: absolute;
 transition: .4s;
-width: 26px;
+width: 16px;
 }
 
 input:checked + .slider {
@@ -344,4 +345,13 @@ border-radius: 50%;
     color: #ffffff;
     /* width: 30px; */
     padding: 5px 5px;
+}
+
+
+
+/********** NEW **********/
+
+.switch span {
+    height: 20px !important;
+    width: 50px !important;
 }

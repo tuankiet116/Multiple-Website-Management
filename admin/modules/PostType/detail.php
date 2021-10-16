@@ -64,10 +64,9 @@ require_once("inc_security.php")
                                 <option value="grid"> grid </option>
                                 <option value="slide"> slide </option>
                                 <option value="special"> special </option>
-                                <option value="column"> column </option>
                             </select>
                         </div>
-                        <small class="form-text text-muted"><?= translate_text('grid: dạng lưới <br> slide: dạng slide <br> special: dạng đặc biệt <br> column: dạng cột') ?></small>
+                        <small class="form-text text-muted"><?= translate_text('grid: dạng lưới <br> slide: dạng slide <br> special: dạng đặc biệt') ?></small>
                     </div>
                 </row>
                 <div class="datetime-container container">

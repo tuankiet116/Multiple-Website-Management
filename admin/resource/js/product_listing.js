@@ -566,7 +566,7 @@ function loadModal(product_id, web_id, web_select2, product_gr_select2){
     $('#update-description').val(product_data.product_description);
     $('#update-price').val(product_data.product_price);
     $('#Modal select.currency-select').val(product_data.product_currency).niceSelect('update');
-    optionWeb = "<option selected value = '"+web_data.web_id+"' title = '"+web_data.web_icon+"' >"+web_data.web_name+"</option>";
+    optionWeb = "<option selected value = '"+web_data.result.web_id+"' title = '"+web_data.result.web_icon+"' >"+web_data.result.web_name+"</option>";
     optionProductGr = `<option selected value ='${product_data.product_gr_id}'>${product_data.product_gr_name}</option>`;
     setSelect2Data(web_select2, optionWeb, product_data);
     setSelect2Data(product_gr_select2, optionProductGr, product_data);
